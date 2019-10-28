@@ -1,0 +1,53 @@
+{
+  "defaultSeverity": "warning",
+  "emitErrors": true,
+  "failOnHint": true,
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["node_modules/**", "dist/**"]
+  },
+  "rules": {
+    "array-type": [true, "generic"],
+    "no-namespace": false,
+    "max-line-length": {
+      "options": [120]
+    },
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
+    "ordered-imports": true,
+    "semicolon": [true, "never"],
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+    "indent": [true, "spaces", 2],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "interface-name": [true, "never-prefix"],
+    "object-literal-sort-keys": [false, "match-declaration-order", "shorthand-first"],
+    "no-console": false, // allow console but we will remove console.log in production builds
+    "no-debugger": true
+  },
+  "jsRules": {
+    "no-namespace": false,
+    "max-line-length": {
+      "options": [120]
+    },
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
+    "ordered-imports": true,
+    "semicolon": [true, "never"],
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+    "indent": [true, "spaces", 2],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "object-literal-sort-keys": [false, "match-declaration-order", "shorthand-first"],
+    "no-console": false, // allow console but we will remove console.log in production builds
+    "no-debugger": true
+  }
+}

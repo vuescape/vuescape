@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "plugins": [{ "name": "typescript-tslint-plugin" }],
+    "baseUrl": ".",
+    "sourceMap": true,
+    "target": "esnext",
+    "module": "esnext",
+    // this enables stricter inference for data properties on `this`
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,    
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    // Avoid problem with compile error using @Getter
+    "strictPropertyInitialization": false,
+    // "noImplicitThis": true
+    "allowJs": true,
+    "paths": {
+      "@vuescape/*": ["src/*"],
+    },
+    "types": ["webpack-env", "mocha"],
+    "outDir": "./dist/",
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  "exclude": ["node_modules", "**/dist/**"]
+}
