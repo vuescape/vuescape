@@ -7,7 +7,7 @@ import { AsyncResult, ModuleOptions, ModuleState, StoreModuleOptions, StoreModul
 
 import { NotificationOperation } from '@vuescape/store/Notification'
 
-export class StoreModule<T, S extends ModuleState<T, P>, R extends RootState, P = {}> implements Module<S, R> {
+export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements Module<S, R> {
   public namespaced?: boolean
   public state?: S | (() => S)
   public getters?: GetterTree<S, R>

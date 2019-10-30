@@ -1,8 +1,9 @@
 import Vue from 'vue'
-import { Store } from 'vuex'
+import Vuex, { Store } from 'vuex'
 
-import { store } from '@vuescape/store'
+import { setStore } from '@vuescape/store'
 import { AuthenticationModuleName, AuthenticationOperation } from '@vuescape/store/modules/Authentication'
+import { RootStore } from '@vuescape/store/modules/Root'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
 import { RootState } from '@vuescape/store/RootState'
 import { AppOptions, VuescapeConfiguration } from '@vuescape/types'
@@ -46,17 +47,19 @@ export async function applicationBootstrapper(options: AppOptions) {
   try {
     Vue.config.errorHandler = options.errorHandler || defaultErrorHandler
 
-    const vuexStore: Store<RootState> = options.store || store
+    const vuexStore: Store<any> = options.store || new Vuex.Store<any>(new RootStore())
+    setStore(vuexStore)
+    
     const storeModulesToRegister = options.storeModulesToRegister || {}
     
     await registerStoreModules(vuexStore, storeModulesToRegister)
     await useVueLibraries(vuexStore)
 
     const { sync } = await import('vuex-router-sync')
-    sync(store, options.router)
+    sync(vuexStore, options.router)
   
-    if ((store.state as any)[AuthenticationModuleName]) {
-      await store.dispatch(`${AuthenticationModuleName}/${AuthenticationOperation.Action.TRY_RESIGN_IN}`)
+    if ((vuexStore.state as any)[AuthenticationModuleName]) {
+      await vuexStore.dispatch(`${AuthenticationModuleName}/${AuthenticationOperation.Action.TRY_RESIGN_IN}`)
     }
 
     // Vue.component(options.componentName, options.rootComponent)
