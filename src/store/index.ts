@@ -1,11 +1,12 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
-
-import { RootStore } from '@vuescape/store/modules/Root'
+import Vuex, { Store } from 'vuex'
 
 Vue.use(Vuex)
 
-export let store = new Vuex.Store(new RootStore())
+export let store : Store<any>
 
+export function setStore(vuexStore : Store<any>) {
+  store = vuexStore
+}
 export { registerDynamicModule } from './registerDynamicModule'
 export { RootState } from './RootState'
