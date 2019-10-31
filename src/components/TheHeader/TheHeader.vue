@@ -32,7 +32,7 @@ import { Action, namespace, State } from 'vuex-class'
 import { AuthenticationModuleName, AuthenticationOperation } from '@vuescape/store/modules/Authentication'
 import { ns } from '@vuescape/store/modules/types'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
-import { Guid, Menu, VuescapeConfiguration } from '@vuescape/types'
+import { Guid, Menu } from '@vuescape/types'
 
 import NavigationMenu from '@vuescape/components/NavigationMenu'
 

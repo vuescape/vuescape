@@ -23,8 +23,6 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { namespace, State } from 'vuex-class'
 
-import { VuescapeConfiguration } from '@vuescape/types'
-
 @Component
 export default class NotFound extends Vue {
   @(namespace('notFound').State(

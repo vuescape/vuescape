@@ -46,8 +46,6 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { namespace, State } from 'vuex-class'
 
-import { VuescapeConfiguration } from '@vuescape/types'
-
 const appInfoNamespace = 'appInfo'
 
 @Component

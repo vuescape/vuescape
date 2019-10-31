@@ -20,7 +20,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { namespace, State } from 'vuex-class'
 
-import { AppInfo, VuescapeConfiguration } from '@vuescape/types'
+import { AppInfo } from '@vuescape/types'
 
 @Component
 export default class TheFooter extends Vue {
