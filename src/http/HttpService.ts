@@ -4,7 +4,7 @@ import qs from 'qs'
 import { HttpMethod } from './HttpMethod'
 
 export class HttpService {
-  public static UseAuthToken = (authToken?: string) => {
+  public static useAuthToken = (authToken?: string) => {
     axios.defaults.headers.common.Authorization = `Bearer ${authToken}`
     return axios
   }
