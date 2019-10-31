@@ -2,7 +2,9 @@ import Vue, { VueConstructor } from 'vue'
 import VueRouter from 'vue-router'
 import { Store } from 'vuex'
 
-// TODO: should simple UI properties of appOptions be in app configuration?
+import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
+import { Dictionary } from '@vuescape/types'
+
 export interface AppOptions {
   router: VueRouter
   el: string
