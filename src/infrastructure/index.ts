@@ -1,4 +1,4 @@
-export { applicationBootstrapper } from './applicationBootstrapper'
+export { ApplicationBootstrapper } from './ApplicationBootstrapper'
 export { makePropertyCompare } from './comparison'
 export *  from './ComponentBase'
 export { formatUtcDateTimeString } from './dateTimeUtility'
