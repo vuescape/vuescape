@@ -106,8 +106,7 @@ export class ApplicationBootstrapper {
     Vue.use(VueResize)
     Vue.use(ElLoading)
 
-    const theme = { ...this.vuetifyTheme }
-    Vue.use(Vuetify, theme)
+    Vue.use(Vuetify, { theme: this.vuetifyTheme })
 
     try {
       Vue.config.errorHandler = this.errorHandler || this.defaultErrorHandler
