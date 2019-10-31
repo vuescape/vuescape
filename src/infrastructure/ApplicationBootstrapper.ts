@@ -61,8 +61,9 @@ export class ApplicationBootstrapper {
     console.error(err, vm, info)
   }
 
-  public async withInit(initFunction: () => Promise<void>) {
+  public withInit(initFunction: () => Promise<void>) {
     this.initFunction = initFunction
+    return this
   }
 
   public withErrorHandler(errorHandler: ErrorHandler) {
