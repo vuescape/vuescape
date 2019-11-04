@@ -39,7 +39,7 @@ export default class TheFooter extends Vue {
   ))
   private version: string | undefined
 
-  @(namespace('theFooter')
+  @(namespace('theFooter/configuration')
   .State(
     state => {
       if (state && state.value) {

@@ -1,16 +1,16 @@
 <template>
   <a
     href="/"
-    v-if="notFoundProperties.notFoundImageUrl"
+    v-if="notFoundConfiguration.notFoundImageUrl"
   >
     <img
       alt="404 - Page Not Found"
-      :src="notFoundProperties.notFoundImageUrl"
+      :src="notFoundConfiguration.notFoundImageUrl"
     />
   </a>
   <div
-    v-else-if="notFoundProperties.notFoundHtml"
-    v-html="notFoundProperties.notFoundHtml"
+    v-else-if="notFoundConfiguration.notFoundHtml"
+    v-html="notFoundConfiguration.notFoundHtml"
   >
   </div>
   <div v-else>
@@ -25,15 +25,15 @@ import { namespace, State } from 'vuex-class'
 
 @Component
 export default class NotFound extends Vue {
-  @(namespace('notFound').State(
+  @(namespace('notFound/configuration').State(
     state => {
       if (state && state.value) {
-        const notFoundProperties: any = state.value
-        return notFoundProperties || {}
+        const notFoundConfiguration: any = state.value
+        return notFoundConfiguration || {}
       }
       return {}
     },
   ))
-  private notFoundProperties: any
+  private notFoundConfiguration: any
 }
 </script>

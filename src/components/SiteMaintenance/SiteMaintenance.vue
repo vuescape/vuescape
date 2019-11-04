@@ -10,7 +10,7 @@
       <v-card v-else-if="isPerformingMaintenance === 'true'">
         <div class="site-maintenance__card-div--constrain">
           <img
-            :src="siteMaintenanceProperties.siteMaintenanceImageUrl"
+            :src="siteMaintenanceConfiguration.siteMaintenanceImageUrl"
             class="site-maintenance__card-img--header"
           />
         </div>
@@ -27,7 +27,7 @@
           class=""
         >
           <img
-            :src="siteMaintenanceProperties.maintenanceCompleteImageUrl"
+            :src="siteMaintenanceConfiguration.maintenanceCompleteImageUrl"
             class=""
           />
         </div>
@@ -54,17 +54,17 @@ export default class SiteMaintenance extends Vue {
   private wasPreviouslyPerformingMaintenance = false
   private sitePerformanceMaintenanceMessage = ''
 
-  @(namespace('siteMaintenance')
+  @(namespace('siteMaintenance/configuration')
   .State(
     state => {
       if (state && state.value) {
-        const siteMaintenanceProperties: any = state.value
-        return siteMaintenanceProperties || {}
+        const siteMaintenanceConfiguration: any = state.value
+        return siteMaintenanceConfiguration || {}
       }
       return {}
     },
   ))
-  private siteMaintenanceProperties: string
+  private siteMaintenanceConfiguration: string
 
   @(namespace(appInfoNamespace)
   .State(

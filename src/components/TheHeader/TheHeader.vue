@@ -36,11 +36,6 @@ import { Guid, Menu } from '@vuescape/types'
 
 import NavigationMenu from '@vuescape/components/NavigationMenu'
 
-// // import(/* webpackChunkName: 'app-info-handler' */ '@vuescape/components/AppInfoHandler').then(m => m.default)
-// const NavigationMenu = import(/* webpackChunkName: 'navigation-menu' */ '@vuescape/components/NavigationMenu').then(
-//   m => m.default,
-// )
-
 @Component({
   components: { NavigationMenu },
 })
@@ -50,7 +45,7 @@ export default class TheHeader extends Vue {
   @State
   private isAuthenticated: boolean
 
-  @(namespace('theHeader')
+  @(namespace('theHeader/configuration')
   .State(
     state => {
       if (state && state.value) {
@@ -67,7 +62,7 @@ export default class TheHeader extends Vue {
     return this.isAuthenticated || this.theHeaderProps.shouldShowHeader
   }
 
-  @(namespace('menuConfiguration')
+  @(namespace('menu/configuration')
   .State(
     state => {
       if (state && state.value) {
