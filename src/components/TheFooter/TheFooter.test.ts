@@ -13,7 +13,7 @@ import { withSuccessResponse } from '@vuescape/test/mockHttpClient'
 
 import TheFooter from '.'
 
-const theFooterProperties = {
+const theFooterConfiguration = {
   copyrightName: 'Vuescape',
   logoAltText: 'Vuescape',
   logoUrl: '/images/logo.png',
@@ -44,7 +44,7 @@ describe('TheFooter.vue --', () => {
       localVue.use(Vuetify)
       localVue.use(Vuex)
       const store = new Vuex.Store(new RootStore())
-      registerDynamicModule('theFooter', makeStoreModule(theFooterProperties), store, false)
+      registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
 
       // Act
       const wrapper = shallowMount(TheFooter, { store, localVue })
@@ -62,7 +62,7 @@ describe('TheFooter.vue --', () => {
       localVue.use(Vuex)
       const store = new Vuex.Store(new RootStore())
       registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), store, false)
-      registerDynamicModule('theFooter', makeStoreModule(theFooterProperties), store, false)
+      registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
 
       // Act
       const wrapper = shallowMount(TheFooter, { store, localVue })
@@ -83,7 +83,7 @@ describe('TheFooter.vue --', () => {
       localVue.use(Vuex)
 
       const store = new Vuex.Store(new RootStore())
-      registerDynamicModule('theFooter', makeStoreModule(theFooterProperties), store, false)
+      registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
 
       // Act
       const wrapper = shallowMount(TheFooter, { store, localVue })
@@ -101,7 +101,7 @@ describe('TheFooter.vue --', () => {
 
       const store = new Vuex.Store(new RootStore())
       registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), store, false)
-      registerDynamicModule('theFooter', makeStoreModule(theFooterProperties), store, false)
+      registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
       const appVersion = '127.0.0.1'
 
       const request = () => store.dispatch(ns(AppInfoModuleName, AppInfoOperation.Action.FetchAppInfo))

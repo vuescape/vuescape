@@ -46,7 +46,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { namespace, State } from 'vuex-class'
 
-const appInfoNamespace = 'appInfo'
+import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 
 @Component
 export default class SiteMaintenance extends Vue {
@@ -66,7 +66,7 @@ export default class SiteMaintenance extends Vue {
   ))
   private siteMaintenanceConfiguration: string
 
-  @(namespace(appInfoNamespace)
+  @(namespace(AppInfoModuleName)
   .State(
     state => {
       const isSiteInMaintenanceMode = state.asyncResult.status === 200 ? state.value.isSiteInMaintenanceMode : undefined
@@ -75,7 +75,7 @@ export default class SiteMaintenance extends Vue {
   ))
   private isSiteInMaintenanceMode?: boolean
 
-  @(namespace(appInfoNamespace)
+  @(namespace(AppInfoModuleName)
   .State(
     state => {
       return state.asyncResult.status === 200 ? state.value.siteMaintenanceMessage : undefined

@@ -20,6 +20,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { namespace, State } from 'vuex-class'
 
+import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { AppInfo } from '@vuescape/types'
 
 @Component
@@ -29,7 +30,7 @@ export default class TheFooter extends Vue {
 
   private formattedVersion = ''
 
-  @(namespace('appInfo')
+  @(namespace(AppInfoModuleName)
   .State(
     state => {
       return state && state.asyncResult && state.asyncResult.status === 200 && state.value
