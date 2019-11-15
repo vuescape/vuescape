@@ -3,10 +3,9 @@ import expect from 'expect'
 import Vuetify from 'vuetify'
 import Vuex from 'vuex'
 
-
 import { AppInfoModuleName, AppInfoOperation, AppInfoStore } from '@vuescape/store/modules/AppInfo'
 import { RootStore } from '@vuescape/store/modules/Root'
-import { makeStoreModule, ns, StoreModule, StoreModuleOptions } from '@vuescape/store/modules/types'
+import { makeStoreModule, ns } from '@vuescape/store/modules/types'
 import { registerDynamicModule } from '@vuescape/store/registerDynamicModule'
 
 import { withSuccessResponse } from '@vuescape/test/mockHttpClient'
@@ -55,7 +54,7 @@ describe('TheFooter.vue --', () => {
       expect(footerText).toContain(currentYear)
     })
 
-    it('should contain the copyright symbol',  async done => {
+    it('should contain the copyright symbol', async done => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
@@ -68,10 +67,10 @@ describe('TheFooter.vue --', () => {
       const wrapper = shallowMount(TheFooter, { store, localVue })
 
       // Assert
-        const footerHtml = wrapper.find('v-flex-stub')
-        const copyrightSymbol = footerHtml.text().substring(0, 1)
-        expect(copyrightSymbol).toBe('©')
-        done()
+      const footerHtml = wrapper.find('v-flex-stub')
+      const copyrightSymbol = footerHtml.text().substring(0, 1)
+      expect(copyrightSymbol).toBe('©')
+      done()
     })
   })
 
