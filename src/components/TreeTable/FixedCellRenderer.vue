@@ -4,7 +4,7 @@
         <!-- style="font-family: 'Open Sans'" -->
       <span
         v-on="on"
-        :class="this.cellToDisplay.cssClasses" 
+        :class="cellToDisplay.cssClasses" 
       >{{cellToDisplay.value}}</span>
     </template>
     <v-card>
