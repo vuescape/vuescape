@@ -1,4 +1,4 @@
-import { Dictionary } from '@vuescape/types/Dictionary'
+import { Dictionary } from '@vuescape/types'
 
 export function round(value: any, places: number = 0) {
   let p = places || 0
