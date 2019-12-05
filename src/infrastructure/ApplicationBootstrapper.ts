@@ -12,8 +12,12 @@ import 'element-theme-chalk/lib/loading.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.scss'
 import 'vue-resize/dist/vue-resize.css'
 import { ErrorHandler } from 'vue-router/types/router'
+
+// import 'vuetify/dist/vuetify.min.css'
+
 import { VuetifyTheme } from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import Vuetify from 'vuetify/lib'
+import 'vuetify/src/stylus/app.styl'
 
 export class ApplicationBootstrapper {
   private vuetifyTheme = {}
@@ -101,7 +105,7 @@ export class ApplicationBootstrapper {
 
     const VueResize: any = (await import('vue-resize')).default
     const ElLoading: any = (await import('element-loading')).default
-    const Vuetify = (await import('vuetify')).default
+    // const Vuetify = (await import('vuetify')).default
 
     Vue.use(VueResize)
     Vue.use(ElLoading)

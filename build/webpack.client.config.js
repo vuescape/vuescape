@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const merge = require('webpack-merge')
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 const getMinimizerLoaders = require('./minimizerLoader')
 const resolve = require('./resolve')
@@ -48,6 +49,7 @@ const clientConfig = env => {
     },
 
     plugins: [
+      new VuetifyLoaderPlugin(),
       new MiniCssExtractPlugin({
         filename: 'vuescape.css',
       }),
