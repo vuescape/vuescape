@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -57,6 +58,17 @@ const clientConfig = env => {
       ]),
     ],
   }
+
+  if (process.env.NODE_ENV === 'production') {
+    config.plugins.push(
+      new webpack.SourceMapDevToolPlugin({
+        publicPath: 'http://localhost:9999/',
+        filename: '[file].map',
+      }),
+    )
+  }
+  
+  return config
 }
 
 module.exports = env => merge(base(env), clientConfig(env), {})

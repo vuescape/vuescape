@@ -850,13 +850,13 @@ const config = env => {
         '@vuescape': path.join(packageDirectory, 'src'),
       },
     },
-    devtool: 'inline-source-map',
+    devtool: process.env.NODE_ENV !== 'production' ? 'inline-source-map' : false,
     devServer: {
       contentBase: path.join(packageDirectory, 'dist'),
     },
     plugins: [
       new VueLoaderPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
+      // new webpack.NoEmitOnErrorsPlugin(),
       new CaseSensitivePathsPlugin(),
       new FriendlyErrorsWebpackPlugin(),
     ],
