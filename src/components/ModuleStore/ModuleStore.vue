@@ -3,7 +3,7 @@ import { Component, Prop } from 'vue-property-decorator'
 
 import { HttpAsyncAction, HttpMethod } from '@vuescape/http'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
-import { ModuleState, ns, StoreModuleState, ValueMapper } from '@vuescape/store/modules/types'
+import { ns, StoreModuleState, ValueMapper } from '@vuescape/store/modules/types'
 
 @Component
 export default class ModuleStore extends ComponentBase {
@@ -22,7 +22,7 @@ export default class ModuleStore extends ComponentBase {
   private endpointUrl: string
 
   @Prop({ type: String, required: true })
-  private apiBaseUrlKey: string
+  private apiBaseUrl: string
 
   @Prop()
   private initialValue: any
@@ -47,7 +47,7 @@ export default class ModuleStore extends ComponentBase {
       this.namespace,
       this.httpMethod,
       this.endpointUrl,
-      undefined, // baseUrl
+      this.apiBaseUrl,
       this.initialValue,
       this.valueMapper,
     )
