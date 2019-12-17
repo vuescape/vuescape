@@ -36,11 +36,11 @@ const mutations: MutationTree<RootState> = {
     Object.keys(currentState).forEach(property => {
       // TODO: handle config, auth and profile with a better approach instead of hard code here
       if (
-        property === 'api/configuration' ||
         property === 'notifications' ||
         property === 'authentication' ||
         property === 'route' ||
-        property === 'userProfile'
+        property === 'userProfile' ||
+        property.endsWith('/configuration')
       ) {
         // no-op
       } else if (property === 'isAuthenticated') {
