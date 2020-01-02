@@ -97,28 +97,28 @@ export default class SlidingPanes extends Vue {
   }
 
   public closePane(index: number) {
+    console.log('SPLITPANE close index ' + index)
     if (this.panes[index].width === 100) {
       this.maximizeOrRestorePane(index)
       this.closePane(index)
-      return
-    }
+    } else {
+      this.setWidth(index, 0, 0)
 
-    this.setWidth(index, 0, 0)
+      const totalRemainingWidth = this.panes
+        .filter(p => p.width !== 0)
+        .reduce((totalWidth, pane) => {
+          return totalWidth + pane.width
+        }, 0)
 
-    const totalRemainingWidth = this.panes
-      .filter(p => p.width !== 0)
-      .reduce((totalWidth, pane) => {
-        return totalWidth + pane.width
-      }, 0)
-
-    for (let i = 0; i < this.panes.length; i++) {
-      if (i !== index) {
-        const width = (this.panes[i].width * 100) / totalRemainingWidth
-        this.setWidth(i, width, width)
+      for (let i = 0; i < this.panes.length; i++) {
+        if (i !== index) {
+          const width = (this.panes[i].width * 100) / totalRemainingWidth
+          this.setWidth(i, width, width)
+        }
       }
-    }
 
-    console.log('SPLITPANE close index ' + index)
+      this.$emit('pane-closed', index)
+    }
   }
 
   //#endregion
@@ -149,17 +149,14 @@ export default class SlidingPanes extends Vue {
           pane,
         }
       })
-      .reduce(
-        (result, value, index, array) => {
-          const arr = array
-            .filter(v => v.pane.width !== 0)
-            .slice(index, index + 2)
-            .map(p => p.itemIndex)
-          result.push(arr)
-          return result
-        },
-        [] as Array<Array<number>>,
-      )
+      .reduce((result, value, index, array) => {
+        const arr = array
+          .filter(v => v.pane.width !== 0)
+          .slice(index, index + 2)
+          .map(p => p.itemIndex)
+        result.push(arr)
+        return result
+      }, [] as Array<Array<number>>)
       .filter(v => v.length === 2)
 
     // Hide all splitters
@@ -319,7 +316,7 @@ export default class SlidingPanes extends Vue {
     return links
   }
 
-//#endregion 
+  //#endregion
 
   private getMainHeight() {
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
