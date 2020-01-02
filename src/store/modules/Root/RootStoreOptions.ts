@@ -1,16 +1,10 @@
-import { ActionTree, ModuleTree, MutationTree, Store, StoreOptions } from 'vuex'
+import { ActionTree, MutationTree, StoreOptions } from 'vuex'
 
 import { NotificationOperation } from '@vuescape/store/Notification'
 import { RootState } from '@vuescape/store/RootState'
 
 import { StoreAction } from './StoreAction'
 import { StoreMutation } from './StoreMutation'
-
-const defaultState: RootState = {
-  isAuthenticated: false,
-  notifications: [],
-  isSpinning: false,
-}
 
 const notificationOperation = new NotificationOperation()
 
@@ -59,16 +53,13 @@ const mutations: MutationTree<RootState> = {
 
 Object.assign(mutations, notificationOperation.mutations())
 
-export class RootStore extends Store<RootState> {
-  private static readonly NullOptions: StoreOptions<RootState> = {}
-
-  public modules: ModuleTree<RootState> = {}
-
-  public actions: ActionTree<RootState, RootState> = actions
-
-  public mutations: MutationTree<RootState> = mutations
-  constructor() {
-    super(RootStore.NullOptions)
-    this.replaceState(defaultState)
-  }
+export const rootStoreOptions: StoreOptions<RootState> = {
+  actions,
+  mutations,
+  plugins: [],
+  state: {
+    isAuthenticated: false,
+    notifications: [],
+    isSpinning: false,
+  },
 }

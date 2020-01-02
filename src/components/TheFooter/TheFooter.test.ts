@@ -4,7 +4,7 @@ import Vuetify from 'vuetify'
 import Vuex from 'vuex'
 
 import { AppInfoModuleName, AppInfoOperation, AppInfoStore } from '@vuescape/store/modules/AppInfo'
-import { RootStore } from '@vuescape/store/modules/Root'
+import { rootStoreOptions } from '@vuescape/store/modules/Root'
 import { makeStoreModule, ns } from '@vuescape/store/modules/types'
 import { registerDynamicModule } from '@vuescape/store/registerDynamicModule'
 
@@ -42,7 +42,7 @@ describe('TheFooter.vue --', () => {
       const localVue = createLocalVue()
       localVue.use(Vuetify)
       localVue.use(Vuex)
-      const store = new Vuex.Store(new RootStore())
+      const store = new Vuex.Store(rootStoreOptions)
       registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
 
       // Act
@@ -59,7 +59,7 @@ describe('TheFooter.vue --', () => {
       const localVue = createLocalVue()
       localVue.use(Vuetify)
       localVue.use(Vuex)
-      const store = new Vuex.Store(new RootStore())
+      const store = new Vuex.Store(rootStoreOptions)
       registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), store, false)
       registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
 
@@ -81,7 +81,7 @@ describe('TheFooter.vue --', () => {
       localVue.use(Vuetify)
       localVue.use(Vuex)
 
-      const store = new Vuex.Store(new RootStore())
+      const store = new Vuex.Store(rootStoreOptions)
       registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
 
       // Act
@@ -98,7 +98,7 @@ describe('TheFooter.vue --', () => {
       localVue.use(Vuetify)
       localVue.use(Vuex)
 
-      const store = new Vuex.Store(new RootStore())
+      const store = new Vuex.Store(rootStoreOptions)
       registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), store, false)
       registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
       const appVersion = '127.0.0.1'
