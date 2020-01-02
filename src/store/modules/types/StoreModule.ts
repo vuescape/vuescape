@@ -172,6 +172,7 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
         endPending(state)
         state.isEmpty = true
         state.hasValue = false
+        state.value = undefined
       },
       [StoreOperation.Mutation.SET_ASYNC_RESULT](state, payload: AsyncResult) {
         endPending(state)
