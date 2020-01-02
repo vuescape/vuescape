@@ -66,17 +66,18 @@ const toCurrencyDisplay = (value: string, places: number, emptyDisplay: string) 
 const toMMCurrencyDisplay = (value: string, places: number, emptyDisplay: string) => {
   const formatter = (numberValue: number) => {
     const p = places || 1
-    return round(numberValue, p) >= 0.0
-      ? '$' + toNumber(numberValue, p) + 'mm'
-      : '-$' + toNumber(numberValue, p) + 'mm'
+    return round(numberValue, p) >= 0.0 ? '$' + toNumber(numberValue, p) + 'mm' : '-$' + toNumber(numberValue, p) + 'mm'
   }
 
   return formatWithNumber(value, formatter, emptyDisplay)
 }
 
 const toPercentageDisplay = (value: string, places: number, emptyDisplay: string) => {
-  const formatter = (numberValue: number) =>
-    round(numberValue, places) >= 0.0 ? toNumber(numberValue, places) + '%' : '-' + toNumber(numberValue, places) + '%'
+  const formatter = (numberValue: number) => {
+    return round(numberValue, places) >= 0.0
+      ? toNumber(numberValue, places) + '%'
+      : '-' + toNumber(numberValue, places) + '%'
+  }
 
   return formatWithNumber(value, formatter, emptyDisplay)
 }
