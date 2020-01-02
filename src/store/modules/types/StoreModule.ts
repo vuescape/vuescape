@@ -1,7 +1,5 @@
 import { AsyncAction, HttpAsyncAction } from '@vuescape/http'
 
-import { RootState } from '@vuescape/store/RootState'
-
 import { ActionContext, ActionTree, GetterTree, Module, ModuleTree, MutationTree } from 'vuex'
 import { AsyncResult, ModuleOptions, ModuleState, StoreModuleOptions, StoreModuleState, StoreOperation } from './'
 
