@@ -1,4 +1,5 @@
 export { AsyncAction } from './AsyncAction'
+export { Axios, CacheOptions } from './Axios'
 export { HttpAsyncAction } from './HttpAsyncAction'
 export { HttpMethod } from './HttpMethod'
 export { HttpService } from './HttpService'

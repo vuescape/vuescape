@@ -49,12 +49,13 @@ export default class ComponentBase extends Vue {
     httpMethod: HttpMethod,
     endpoint: string,
     baseUrl?: string,
+    shouldUseCache = true,
     initialValue?: T,
     mapper?: ValueMapper<T>,
     isEmpty?: IsEmptyFunction<T>,
     props?: P,
   ) {
-    const service = (new RestService<T>(endpoint, baseUrl) as any)[httpMethod]()
+    const service = (new RestService<T>(endpoint, baseUrl, shouldUseCache) as any)[httpMethod]()
     const asyncActions = { [endpoint]: service }
     // TODO: Figure out type issue with initialValue and remove as any
     // Argument of type 'T' is not assignable to parameter of type 'AxiosResponse<T>'.

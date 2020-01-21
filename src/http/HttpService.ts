@@ -1,20 +1,20 @@
-import axios, { AxiosPromise } from 'axios'
+import { AxiosPromise } from 'axios'
+
+import { Axios } from '.'
+
 import qs from 'qs'
 
 import { HttpMethod } from './HttpMethod'
 
 export class HttpService {
-  public static useAuthToken = (authToken?: string) => {
-    axios.defaults.headers.common.Authorization = `Bearer ${authToken}`
-    return axios
-  }
-
   private baseUrl = ''
+  private shouldUseCache: boolean
 
-  public constructor(baseUrl?: string) {
+  public constructor(baseUrl?: string, shouldUseCache = false) {
     if (baseUrl) {
       this.baseUrl = baseUrl
     }
+    this.shouldUseCache = shouldUseCache
   }
 
   public invoke<T>(httpMethod: HttpMethod, endpoint: string, args?: {}) {
@@ -34,8 +34,9 @@ export class HttpService {
     }
     const axiosConfig = {
       baseURL: this.baseUrl,
+      shouldCache: this.shouldUseCache,
     }
-    return axios.get<T>(endpoint + formattedArgs, axiosConfig)
+    return Axios.instance.get<T>(endpoint + formattedArgs, axiosConfig)
   }
 
   public post<T>(endpoint: string, args?: any): AxiosPromise<T> {
@@ -43,6 +44,6 @@ export class HttpService {
     const axiosConfig = {
       baseURL: this.baseUrl,
     }
-    return axios.post<T>(endpoint, formattedArgs, axiosConfig)
+    return Axios.instance.post<T>(endpoint, formattedArgs, axiosConfig)
   }
 }

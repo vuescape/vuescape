@@ -5,9 +5,11 @@ export class RestService<T> extends ServiceBase<T> {
   constructor(
     endpoint: string,
     baseUrl?: string,
+    shouldUseCache?: boolean,
     asyncAction?: (httpMethod: HttpMethod, endPoint: string, baseUrl?: string) => AsyncAction<T> | HttpAsyncAction<T>,
   ) {
-    super(endpoint, baseUrl, asyncAction)
+    super(endpoint, baseUrl, shouldUseCache, asyncAction)
+    this.shouldUseCache = shouldUseCache || false
   }
 
   public get() {

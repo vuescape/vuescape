@@ -10,7 +10,7 @@ export class AppInfoService extends ServiceBase<AppInfo> {
       baseUrl?: string,
     ) => AsyncAction<AppInfo> | HttpAsyncAction<AppInfo>,
   ) {
-    super('/appInfo.json', baseUrl, asyncAction)
+    super('/appInfo.json', baseUrl, false, asyncAction)
   }
 
   public get() {

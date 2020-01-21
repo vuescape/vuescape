@@ -24,6 +24,9 @@ export default class ModuleStore extends ComponentBase {
   @Prop({ type: String, required: true })
   private apiBaseUrl: string
 
+  @Prop({ type: Boolean, required: false, default: true })
+  private shouldUseCache: boolean
+
   @Prop()
   private initialValue: any
 
@@ -48,6 +51,7 @@ export default class ModuleStore extends ComponentBase {
       this.httpMethod,
       this.endpointUrl,
       this.apiBaseUrl,
+      this.shouldUseCache,
       this.initialValue,
       this.valueMapper,
     )

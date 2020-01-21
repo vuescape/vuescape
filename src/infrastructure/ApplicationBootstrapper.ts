@@ -3,6 +3,7 @@ import Vue, { VueConstructor } from 'vue'
 import VueRouter from 'vue-router'
 import { Store } from 'vuex'
 
+import { Axios, CacheOptions } from '@vuescape/http'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
 import { RootState } from '@vuescape/store/RootState'
@@ -12,8 +13,6 @@ import 'element-theme-chalk/lib/loading.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.scss'
 import 'vue-resize/dist/vue-resize.css'
 import { ErrorHandler } from 'vue-router/types/router'
-
-// import 'vuetify/dist/vuetify.min.css'
 
 import { VuetifyTheme } from 'vuetify'
 import Vuetify from 'vuetify/lib'
@@ -29,6 +28,7 @@ export class ApplicationBootstrapper {
   private initFunction = async () => {
     return
   }
+  private cacheOptions: CacheOptions
 
   private validate() {
     if (!this.router) {
@@ -63,6 +63,16 @@ export class ApplicationBootstrapper {
   Usually this is caused by an error during rendering but could be at any point during the component lifecycle.`,
     )
     console.error(err, vm, info)
+  }
+
+  public withRequestCaching(
+    maxAgeMinutes = 15,
+    maxSize = 100,
+    shouldCacheAllGetRequests = true,
+    cacheFlag = 'shouldCache',
+  ) {
+    this.cacheOptions = { maxAgeMinutes, maxSize, shouldCacheAllRequests: shouldCacheAllGetRequests, cacheFlag }
+    return this
   }
 
   public withInit(initFunction: () => Promise<void>) {
@@ -117,13 +127,16 @@ export class ApplicationBootstrapper {
 
       setStore(this.vuexStore)
 
+      if (this.cacheOptions) {
+        await Axios.initCaching(this.cacheOptions)
+      }
+
       await this.registerStoreModules(this.vuexStore, this.storeModules)
 
       const { sync } = await import('vuex-router-sync')
       sync(this.vuexStore, this.router)
 
       await this.initFunction()
-      
       // tslint:disable-next-line:no-unused-expression
       new Vue({
         el: this.rootComponentOptions.el,
