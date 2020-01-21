@@ -85,7 +85,7 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
       shouldUseGlobalSpinner: moduleOptions.shouldUseGlobalSpinner,
       errorHandlerBuilder: moduleOptions.errorHandlerBuilder,
     })
-    context.commit(StoreOperation.Mutation.RESET)
+    // context.commit(StoreOperation.Mutation.RESET)
     context.commit(StoreOperation.Mutation.PENDING, true)
     setTimeout(() => {
       if (context.state.isPending) {
@@ -172,7 +172,6 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
         endPending(state)
         state.isEmpty = true
         state.hasValue = false
-        state.value = undefined
       },
       [StoreOperation.Mutation.SET_ASYNC_RESULT](state, payload: AsyncResult) {
         endPending(state)
