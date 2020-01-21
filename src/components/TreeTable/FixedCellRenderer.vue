@@ -24,7 +24,7 @@ import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { TreeTableItem } from './TreeTableItem'
 
 @Component({})
-export default class DefaultCellRenderer extends ComponentBase {
+export default class FixedCellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private cell: TreeTableItem
 
