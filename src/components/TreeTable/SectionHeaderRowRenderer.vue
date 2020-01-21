@@ -1,17 +1,19 @@
 <template>
-  <tr
-    :class="rowToDisplay.cssClasses"
-    :key='rowToDisplay.id'
-  >
+  <tr :class="rowToDisplay.cssClasses" :key="rowToDisplay.id">
     <td
-      v-for='(cell, index) in rowToDisplay.items'
-      class="subheader"
-      :class="[{ 'tree-table-item--clickable':  index === 0 ? rowToDisplay.isExpandable && cell.onclick : cell.onclick  }, cell.cssClasses]"
-      :key='cell.id'
-      :colspan='cell.colspan'
-      @click="cell.onclick && cell.onclick(row, cell)"
+      v-for="(cell, index) in rowToDisplay.items"
+      :class="[
+        { 'tree-table-item--clickable': index === 0 ? rowToDisplay.isExpandable && cell.onclick : cell.onclick },
+        cell.cssClasses,
+      ]"
+      :key="cell.id"
+      :colspan="cell.colspan"
+      @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
-    <!-- style="font-family: 'Segoe UI', Verdana, 'Roboto', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;" -->
+      <span v-if="index === 0 && rowToDisplay.isExpandable">
+        <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i>
+        <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i>
+      </span>
       <span :style="getIndentStyle(rowToDisplay.depth)">
         <span v-if="index === 0" :class="cell.cssClasses">
           {{ cell.value }}
@@ -21,7 +23,7 @@
   </tr>
 </template>
 
-<script <script lang='ts'>
+<script <script lang="ts">
 import Component from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 
@@ -31,8 +33,7 @@ import { TreeTableHeaderRow } from './TreeTableHeaderRow'
 import { TreeTableItem } from './TreeTableItem'
 import { TreeTableRow } from './TreeTableRow'
 
-@Component({
-})
+@Component({})
 export default class SectionHeaderRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
@@ -47,3 +48,8 @@ export default class SectionHeaderRowRenderer extends ComponentBase {
   }
 }
 </script>
+<style scoped>
+.material-icons {
+  margin-left: -7px;
+}
+</style>
