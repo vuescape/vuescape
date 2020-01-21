@@ -76,7 +76,7 @@ export default class DataRowRenderer extends ComponentBase {
   }
 
   private getIndentStyle(depth: number, index: number, cell: any) {
-    const indentation = index === 0 ? { 'padding-left': `${depth * 3}em` } : '{}'
+    const indentation = index === 0 ? { 'padding-left': `${++depth * 2}em` } : '{}'
     return indentation
   }
 }
