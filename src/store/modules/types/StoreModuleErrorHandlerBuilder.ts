@@ -39,7 +39,7 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
         })
         // TODO: how to avoid store module having dependency on router
         // Use vuex (rootstate) to contain reactive URL to navigate to?
-        return makeRouter().push('/sign-in')
+        makeRouter().push('/sign-in')
       } else if (status === 400) {
         const errorMessage: NotificationMessage = {
           key: Guid.newGuid(),
