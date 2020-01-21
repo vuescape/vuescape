@@ -32,7 +32,7 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
     const moduleState: ModuleState<T, P> = new StoreModuleState<T, P>(
       false,
       false,
-      false,
+      true,
       false,
       { status: 0 },
       [],
