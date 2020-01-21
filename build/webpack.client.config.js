@@ -24,7 +24,8 @@ const clientConfig = env => {
     output: {
       path: outputPath,
       filename: 'vuescape.js',
-      library: 'vuescape'
+      library: 'vuescape',
+      libraryTarget: 'umd'
     },
     optimization: {
       minimizer: getMinimizerLoaders(),
