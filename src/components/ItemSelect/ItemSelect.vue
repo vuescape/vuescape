@@ -5,6 +5,8 @@
     :label="label"
     :no-data-text="noDataText"
     :filter="filterFunctionImpl"
+    :return-object="true"
+    menu-props="auto"
   >
     <!-- https://stackoverflow.com/questions/50891858/vue-how-to-pass-down-slots-inside-wrapper-component -->
     <!-- Pass on all named slots -->
@@ -32,7 +34,7 @@ export default class ItemSelect extends Vue {
   private filterFunction: (item: any, queryText: string) => boolean
   @Prop({ type: Array, required: false, default: () => ['id', 'name'] })
   private filterProperties: Array<string>
-  @Prop({ type: Function, required: false})
+  @Prop({ type: Function, required: false })
   private beforeFilter: any
 
   private get filterFunctionImpl() {
