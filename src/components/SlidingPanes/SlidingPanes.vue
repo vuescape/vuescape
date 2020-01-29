@@ -280,7 +280,11 @@ export default class SlidingPanes extends Vue {
     const links = []
     if (this.slidingPaneConfig[index].shouldShowMaximize) {
       const maximizeRestoreIconName: string = this.panes[index].width === 100 ? 'fullscreen_exit' : 'fullscreen'
-      const maximizeRestoreIcon = h('i', { class: ['material-icons'] }, maximizeRestoreIconName)
+      const maximizeRestoreIcon = h(
+        'i',
+        { class: ['material-icons', 'sliding-panes__material-icons--large'] },
+        maximizeRestoreIconName,
+      )
       links.push(
         h(
           'a',
@@ -297,7 +301,7 @@ export default class SlidingPanes extends Vue {
     }
 
     if (this.slidingPaneConfig[index].shouldShowClose) {
-      const icon = h('i', { class: ['material-icons'] }, 'close')
+      const icon = h('i', { class: ['material-icons', 'sliding-panes__material-icons--large'] }, 'close')
       links.push(
         h(
           'a',
@@ -399,9 +403,16 @@ export default class SlidingPanes extends Vue {
   overflow-y: auto !important;
   overflow-x: auto !important;
 }
-.splitpanes__splitter {
-  /* cursor seems to render properly sometimes so set here to try to help */
-  cursor: col-resize !important;
-  background-color: #fafafa !important;
+.splitpanes.default-theme .splitpanes__pane {
+  background-color: white;
+}
+.splitpanes--vertical > .splitpanes__splitter {
+  background-color: #f5f5f5 !important;
+}
+div.noUi-pips.noUi-pips-horizontal {
+  height: 50px;
+}
+i.sliding-panes__material-icons--large {
+  font-size: 24px;
 }
 </style>
