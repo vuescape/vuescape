@@ -12,7 +12,7 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
   private static defaultIsEmpty<T>(value: T) {
     if (value !== null && value !== undefined && (value as any).length === 0) {
       return true
-    } else if (Object.keys(value).length === 0 && (value as any).constructor === Object ) {
+    } else if (value && Object.keys(value).length === 0 && (value as any).constructor === Object ) {
       // Empty object {} is also empty
       return true
     } else if (value) {
