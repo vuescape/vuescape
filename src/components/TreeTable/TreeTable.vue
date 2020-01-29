@@ -1,40 +1,37 @@
 <template>
-  <div class='box'>
+  <div class="box" :style="cssStyleValue">
     <vue-scrolling-table
-      :scroll-horizontal='scrollHorizontal'
-      :scroll-vertical='scrollVertical'
-      :sync-header-scroll='syncHeaderScroll'
-      :sync-footer-scroll='syncFooterScroll'
-      :include-footer='includeFooter'
-      :dead-area-color='deadAreaColor'
-      :class='{ freezeFirstColumn:freezeFirstColumn }'
+      :scroll-horizontal="scrollHorizontal"
+      :scroll-vertical="scrollVertical"
+      :sync-header-scroll="syncHeaderScroll"
+      :sync-footer-scroll="syncFooterScroll"
+      :include-footer="includeFooter"
+      :dead-area-color="deadAreaColor"
+      :class="{ freezeFirstColumn: freezeFirstColumn }"
     >
-      <template slot='thead'>
+      <template slot="thead">
         <tr>
           <th
-            v-for='header in headersToDisplay'
+            v-for="header in headersToDisplay"
             :style="header.id === 'id' ? '{ min-width: 400px; }' : '{}'"
-            :class='header.cssClasses'
-            :key='header.id'
-            :colspan='header.colspan'
-          >{{ header.text }}</th>
+            :class="header.cssClasses"
+            :key="header.id"
+            :colspan="header.colspan"
+          >
+            {{ header.text }}
+          </th>
         </tr>
       </template>
-      <template slot='tbody'>
-        <row-renderer
-          v-for='row in rowsToDisplay'
-          :key="row.id"
-          :row="row"
-        ></row-renderer>
+      <template slot="tbody">
+        <row-renderer v-for="row in rowsToDisplay" :key="row.id" :row="row"></row-renderer>
       </template>
     </vue-scrolling-table>
   </div>
 </template>
 
-<script <script lang='ts'>
-import VueScrollingTable from 'vue-scrolling-table'
-
+<script <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
+import VueScrollingTable from 'vue-scrolling-table'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
@@ -63,12 +60,18 @@ export default class TreeTable extends ComponentBase {
   private syncFooterScroll = true
   @Prop({ type: Boolean, required: false, default: false })
   private includeFooter = false
-  @Prop({ type: String, required: false, default: '#DDDDDD' })
+  @Prop({ type: String, required: false, default: '#FFFFFF' })
   private deadAreaColor: string
   @Prop({ type: Boolean, required: false, default: true })
   private freezeFirstColumn: boolean
   @Prop({ type: Number, required: false, default: 100000 })
   private maxRows: number
+  @Prop({ type: String, required: false, default: '' })
+  private cssStyle: string
+
+  private get cssStyleValue() {
+    return this.cssStyle
+  }
 
   public async setSize(maxWidth = 240) {
     const els = document.getElementsByClassName('fixed-column') as any
@@ -120,11 +123,6 @@ export default class TreeTable extends ComponentBase {
   private get rowsToDisplay() {
     return this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
   }
-
-  private async mounted() {
-    await this.setSize()
-    await this.$nextTick()
-  }
 }
 </script>
 
@@ -138,12 +136,19 @@ export default class TreeTable extends ComponentBase {
 table.scrolling tr {
   text-align: left;
 }
+/* TODO: fix this so that we don't get double lines*/
+table.scrolling tr.subheader {
+  /* margin: -1px 0; */
+}
 table.scrolling td.subheader {
-  background-color: #f2f2f2 !important;
-  border-bottom: 1px solid #555555;
-  border-top: 1px solid #555555;
-  font-weight: bold;
+  background-color: #f8f8f8 !important;
+  border-bottom: 1px solid #555555 !important;
+  border-top: 1px solid #555555 !important;
+  font-weight: 500;
   padding-left: 0.4em;
+  height: 33px;
+  vertical-align: middle;
+  font-family: 'Segoe UI';
 }
 table.scrolling tr.data-row:hover td {
   background-color: rgb(235, 248, 240) !important;
@@ -154,21 +159,41 @@ table.scrolling td i.material-icons {
 table.scrolling td,
 table.scrolling th {
   border: 0px solid #ddd !important;
+  font-size: small;
+  font-family: 'Segoe UI';
+}
+table.scrolling td {
+  height: 31px;
+  vertical-align: middle;
+}
+table.scrolling thead.scrollsync {
+  background-color: white !important;
+  overflow-y: auto !important;
 }
 table.scrolling thead th {
   border: 0px;
   background-color: #0092bc !important;
   color: #ffffff;
   text-align: center;
+  height: 32px;
+  font-weight: 500;
+}
+table.scrolling td.cell--value--raw.subheader {
+  border-left: 0 !important;
 }
 table.scrolling td.cell--value--raw {
+  width: 13em;
+  max-width: 13em;
+  min-width: 13em;
   text-align: right;
-  padding-right: 5px;
+  padding-right: 10px;
   border-left: 1px solid #ddd !important;
-  width: 10%;
 }
 table.scrolling td.cell--value--common {
-  padding-left: 10px;
+  width: 7em;
+  max-width: 7em;
+  min-width: 7em;
+  padding-left: 20px;
   border-left: 0 !important;
   width: 6%;
   /* text-align: center */
@@ -205,14 +230,16 @@ table.freezeFirstColumn tbody th:first-child {
   left: 0;
 }
 
+table.scrolling {
+  background-color: white !important;
+  height: 100% !important;
+}
 /* * {
   font-family: sans-serif;
 } */
 .box {
   clear: both;
   padding: 0;
-  min-height: 300px;
-  height: 300px;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
@@ -224,6 +251,12 @@ table.freezeFirstColumn tbody th:first-child {
 .fa {
 	font-family: FontAwesome;
 } */
+table.scrolling.scrollx tbody {
+  overflow-x: auto !important;
+}
+table.scrolling.scrolly tbody {
+  overflow-y: auto !important;
+}
 
 td.selected-metric-left {
   -webkit-box-shadow: inset 3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
