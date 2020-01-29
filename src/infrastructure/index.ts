@@ -1,6 +1,6 @@
 export { ApplicationBootstrapper } from './ApplicationBootstrapper'
 export { makePropertyCompare } from './comparison'
-export *  from './ComponentBase'
+export { default as ComponentBase } from './ComponentBase'
 export { formatUtcDateTimeString } from './dateTimeUtility'
 export { selectElementContents } from './dom'
 export { makeAuthenticatedNavigationGuard } from './navigationGuard'
