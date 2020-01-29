@@ -13,7 +13,6 @@
         <tr>
           <th
             v-for="header in headersToDisplay"
-            :style="header.id === 'id' ? '{ min-width: 400px; }' : '{}'"
             :class="header.cssClasses"
             :key="header.id"
             :colspan="header.colspan"
@@ -71,30 +70,6 @@ export default class TreeTable extends ComponentBase {
 
   private get cssStyleValue() {
     return this.cssStyle
-  }
-
-  public async setSize(maxWidth = 240) {
-    const els = document.getElementsByClassName('fixed-column') as any
-    for (let i = 0; i < els.length; i++) {
-      i++
-      i--
-      els[i].style.width = els[i].style.minWidth = '100%'
-    }
-
-    for (let i = 0; i < els.length; i++) {
-      i++
-      i--
-      const width = els[i].getBoundingClientRect().width
-      if (width > maxWidth) {
-        maxWidth = width
-      }
-    }
-
-    for (let i = 0; i < els.length; i++) {
-      i++
-      i--
-      els[i].style.minWidth = maxWidth + 'px'
-    }
   }
 
   @Watch('rows')
@@ -195,7 +170,6 @@ table.scrolling td.cell--value--common {
   min-width: 7em;
   padding-left: 20px;
   border-left: 0 !important;
-  width: 6%;
   /* text-align: center */
 }
 table.scrolling td {
