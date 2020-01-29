@@ -1,6 +1,7 @@
 <script lang="ts">
 import Vue, { CreateElement } from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Action, namespace, State } from 'vuex-class'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { StoreOperation } from '@vuescape/store/modules'
@@ -64,6 +65,12 @@ export default class SlidingPanes extends ComponentBase {
   // Saved vuex watchers so we can destroy watchers when component is destroyed
   private vuexWatchers = new Array<() => void>()
 
+  @(namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE))
+  private setAvailableHeight: (availableHeight: Array<number>) => void
+
+  @(namespace('window/availableHeight').State(state => state.value))
+  private availableHeight: Array<number>
+
   //#region Public API
 
   public isPaneOpen(index: number) {
@@ -76,10 +83,12 @@ export default class SlidingPanes extends ComponentBase {
   }
 
   public setWidths(...widths: Array<number>) {
+    console.info(...widths)
     if (widths) {
       widths.forEach((width, index) => {
         this.setWidth(index, width)
       })
+      this.onTransitionEndSetAvailableHeight()
     }
   }
 
@@ -93,6 +102,7 @@ export default class SlidingPanes extends ComponentBase {
       eventType: EventType.PaneMaximized,
       payload: index,
     })
+    this.onTransitionEndSetAvailableHeight()
   }
 
   public closePane(index: number) {
@@ -114,10 +124,13 @@ export default class SlidingPanes extends ComponentBase {
           this.setWidth(i, width, width)
         }
       }
+
       this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/${StoreOperation.Mutation.SET_VALUE}`, {
         eventType: EventType.PaneClosed,
         payload: index,
       })
+
+      this.onTransitionEndSetAvailableHeight()
     }
   }
 
@@ -321,6 +334,20 @@ export default class SlidingPanes extends ComponentBase {
 
   //#endregion
 
+  private onTransitionEndSetAvailableHeight() {
+    // SlidingPanes uses a transition to close the window so we need to wait for the transition to end before
+    // re-rendering any components dependant on the height.
+    const el = this.$el
+    const self = this
+    // tslint:disable-next-line: only-arrow-functions
+    const onTransitionEnd = function() {
+      self.setAvailableHeight([self.availableHeight[0]])
+      // We only want to listen now...don't want to respond to all transitionend events
+      el.removeEventListener('transitionend', onTransitionEnd)
+    }
+    el.addEventListener('transitionend', onTransitionEnd)
+  }
+
   private doMaximizeOrRestorePane(index: number) {
     const isMaximized = this.panes[index].width === 100
     if (isMaximized) {
@@ -394,24 +421,24 @@ export default class SlidingPanes extends ComponentBase {
     }
   }
 
-  private async onResized(event: any) {
-    const isOnlyOnePaneVisible = this.panes.filter(item => item.width !== 0).length === 1
-
-    for (let i = 0; i < this.panes.length; i++) {
-      // If we are going max or min then don't save this as we will want to
-      // restore to the previous value and not the min max setting
-      if (event[i].width !== 0 && event[i].width !== 100) {
-        this.setWidth(i, event[i].width)
-      } else {
-        this.setWidth(i, event[i].width, this.panes[i].savedWidth)
-      }
+  private async onResized(event: Array<{ width: number }>) {
+    // If we resize to a maximize scenario then use maximize logic
+    const maximizeIndex = event.findIndex(item => item.width === 100)
+    if (maximizeIndex >= 0) {
+      this.maximizeOrRestorePane(maximizeIndex)
+      return
     }
 
-    console.log('SPLITPANE onResized fired', event)
+    for (let i = 0; i < this.panes.length; i++) {
+      this.setWidth(i, event[i].width, this.panes[i].savedWidth)
+    }
+
     this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/SET_VALUE`, {
       eventType: EventType.PaneResized,
       payload: event,
     })
+
+    this.setAvailableHeight([this.availableHeight[0]])
   }
 
   private async onPaneClick(event: any) {
