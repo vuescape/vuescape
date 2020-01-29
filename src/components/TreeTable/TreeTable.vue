@@ -46,7 +46,7 @@ import { TreeTableRow } from './TreeTableRow'
 @Component({
   components: { RowRenderer, VueScrollingTable },
 })
-export default class TreeTableTest extends ComponentBase {
+export default class TreeTable extends ComponentBase {
   @Prop({ type: Array, required: true })
   private headers: Array<TreeTableHeaderRow>
 
