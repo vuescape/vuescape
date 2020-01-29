@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <div
-      :ref="sliderId"
-      :id="sliderId"
-    >
-    </div>
+  <div style="margin-top: 8px;">
+    <div :ref="sliderId" :id="sliderId"></div>
   </div>
 </template>
 
@@ -94,7 +90,7 @@ export default class DateRangeSlider extends Vue {
     this.slider.noUiSlider.set(values)
   }
 
-  public get getValues() : Array<number> {
+  public get getValues(): Array<number> {
     return this.slider.noUiSlider.get()
   }
 
@@ -124,13 +120,12 @@ export default class DateRangeSlider extends Vue {
     // Want array with length 1 longer than start with alternating false, true values
     configuration.connect = [...Array(configuration.start.length + 1).keys()].map(val => val % 2 === 1)
     configuration.behaviour = this.behavior
-    configuration.range = { min: this.startingRangeValue, max: (this.startingRangeValue + this.numberOfRanges) }
+    configuration.range = { min: this.startingRangeValue, max: this.startingRangeValue + this.numberOfRanges }
     configuration.pips.values = [...Array(this.numberOfRanges).keys()].map(val => this.startingRangeValue + val)
     configuration.pips.format.to = this.rangeAxisFormatter || this.defaultRangeAxisFormatter
 
     this.slider = this.$refs[this.sliderId]
     noUiSlider.create(this.slider, configuration)
-
 
     // Fire Event if new value is set with the slider
     this.slider.noUiSlider.on('set', (values: any, handle: any, unencoded: any, tap: any, positions: any) => {
@@ -207,11 +202,11 @@ export default class DateRangeSlider extends Vue {
   right: -4px !important; /* The 17 here is half of the 34 width. The - pulls it in the other direction */
   cursor: ew-resize !important;
   opacity: 1 !important;
-  background-color: #dedede;
+  background-color: white;
   border-color: #bbb;
 }
 .noUi-value {
-  margin-top: -2px!important;
+  margin-top: -2px !important;
 }
 .noUi-handle::before {
   left: 1.25px !important;
@@ -224,13 +219,14 @@ export default class DateRangeSlider extends Vue {
 }
 .noUi-connect {
   cursor: grab !important;
-  background: #0092bc !important;
+  /* background: rgba(0, 0, 0, 0.1) !important; */
+  background: rgba(0, 0, 0, 0.3) !important;
   opacity: 0.25;
 }
 .noUi-pips-horizontal {
   margin-top: -33px;
   font-size: smaller;
-  font-family: 'Open Sans, Helvetica, Segoe UI, Verdana, Roboto, Arial, sans-serif';
+  font-family: 'Segoe UI', Helvetica, Segoe UI, Verdana, Roboto, Arial, sans-serif;
 }
 .noUi-marker-horizontal.noUi-marker {
   height: 0;
@@ -260,5 +256,8 @@ export default class DateRangeSlider extends Vue {
 }
 .noUi-handle-5 {
   background-color: #38598b; /* rgba(52,188,0, 0.2); */
+}
+.noUi-target {
+  background-color: white;
 }
 </style>
