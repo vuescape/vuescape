@@ -1,5 +1,5 @@
 <template>
-  <span style="font-family: 'Open Sans'">{{cellToDisplay.value}}</span>
+  <span>{{cellToDisplay.value}}</span>
 </template>
 
 <script <script lang='ts'>

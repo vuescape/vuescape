@@ -1,7 +1,6 @@
 <template>
   <v-tooltip right>
     <template v-slot:activator="{ on }">
-        <!-- style="font-family: 'Open Sans'" -->
       <span
         v-on="on"
         :class="cellToDisplay.cssClasses" 
