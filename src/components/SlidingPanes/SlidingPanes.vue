@@ -2,6 +2,9 @@
 import Vue, { CreateElement } from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
+import ComponentBase from '@vuescape/infrastructure/ComponentBase'
+import { StoreOperation } from '@vuescape/store/modules'
+
 import Splitpanes from 'splitpanes'
 
 import 'splitpanes/dist/splitpanes.css'
@@ -9,10 +12,12 @@ import 'splitpanes/dist/splitpanes.css'
 import { SlidingPaneAction } from './SlidingPaneAction'
 import { SlidingPaneConfig } from './SlidingPaneConfig'
 
+import { EventType } from './EventType'
+
 @Component({
   components: { Splitpanes },
 })
-export default class SlidingPanes extends Vue {
+export default class SlidingPanes extends ComponentBase {
   // Amount to adjust height (e.g. accounting for header & footer)
   // Is there a better way?  Could have array of ids and use document.getElementById to get height
   // to dynamically calc and take off of window height. Forces external elements to have unique IDs
@@ -42,6 +47,9 @@ export default class SlidingPanes extends Vue {
 
   @Prop({ type: Boolean, default: true })
   public areSlotsReactive: boolean
+
+  @Prop({ type: String, required: true })
+  public eventNamespace: string
 
   private panes: Array<{ width: number; savedWidth: number }> = this.slidingPaneConfig.map(p => {
     return {
@@ -80,26 +88,16 @@ export default class SlidingPanes extends Vue {
   }
 
   public maximizeOrRestorePane(index: number) {
-    const isMaximized = this.panes[index].width === 100
-    if (isMaximized) {
-      // tslint:disable-next-line: prefer-for-of
-      for (let i = 0; i < this.panes.length; i++) {
-        if (this.panes[i].width !== this.panes[i].savedWidth) {
-          this.setWidth(i, this.panes[i].savedWidth)
-        }
-      }
-    } else {
-      for (let i = 0; i < this.panes.length; i++) {
-        // Not sure this is 100% accurate since with multiple panes might not want to hide all?
-        this.setWidth(i, i === index ? 100 : 0)
-      }
-    }
+    this.doMaximizeOrRestorePane(index)
+    this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/SET_VALUE`, {
+      eventType: EventType.PaneMaximized,
+      payload: index,
+    })
   }
 
   public closePane(index: number) {
-    console.log('SPLITPANE close index ' + index)
     if (this.panes[index].width === 100) {
-      this.maximizeOrRestorePane(index)
+      this.doMaximizeOrRestorePane(index)
       this.closePane(index)
     } else {
       this.setWidth(index, 0, 0)
@@ -116,8 +114,10 @@ export default class SlidingPanes extends Vue {
           this.setWidth(i, width, width)
         }
       }
-
-      this.$emit('pane-closed', index)
+      this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/${StoreOperation.Mutation.SET_VALUE}`, {
+        eventType: EventType.PaneClosed,
+        payload: index,
+      })
     }
   }
 
@@ -125,7 +125,6 @@ export default class SlidingPanes extends Vue {
 
   //#region render functions
   public render(h: CreateElement) {
-    console.log('render called')
     const rootNode = h('div', [this.createResizeObserver(h), this.createSplitPanes(h)])
 
     // After creating root node hide unnecessary splitters
@@ -322,6 +321,23 @@ export default class SlidingPanes extends Vue {
 
   //#endregion
 
+  private doMaximizeOrRestorePane(index: number) {
+    const isMaximized = this.panes[index].width === 100
+    if (isMaximized) {
+      // tslint:disable-next-line: prefer-for-of
+      for (let i = 0; i < this.panes.length; i++) {
+        if (this.panes[i].width !== this.panes[i].savedWidth) {
+          this.setWidth(i, this.panes[i].savedWidth)
+        }
+      }
+    } else {
+      for (let i = 0; i < this.panes.length; i++) {
+        // Not sure this is 100% accurate since with multiple panes might not want to hide all?
+        this.setWidth(i, i === index ? 100 : 0)
+      }
+    }
+  }
+
   private getMainHeight() {
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
     const mainHeight = windowHeight - this.windowHeightAdjustmentPx
@@ -354,6 +370,11 @@ export default class SlidingPanes extends Vue {
         }
       })
     }
+
+    this.registerStoreModuleWithInitialValue(`${this.eventNamespace}/slidingPaneEvent`, {
+      eventType: EventType.None,
+      payload: {},
+    })
   }
 
   private destroyed() {
@@ -366,6 +387,7 @@ export default class SlidingPanes extends Vue {
   }
 
   private async handleResize() {
+    // TODO: Use vuex?
     const newheight = this.getMainHeight()
     if (newheight !== this.height) {
       this.height = newheight
@@ -386,6 +408,10 @@ export default class SlidingPanes extends Vue {
     }
 
     console.log('SPLITPANE onResized fired', event)
+    this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/SET_VALUE`, {
+      eventType: EventType.PaneResized,
+      payload: event,
+    })
   }
 
   private async onPaneClick(event: any) {
