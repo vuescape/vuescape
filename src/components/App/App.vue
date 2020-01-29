@@ -1,14 +1,16 @@
 <template>
   <div>
     <v-app>
-      <transition
-        name="app__component--transition"
-        mode="out-in"
-      >
-        <the-header ref="header"></the-header>
+      <transition name="app__component--transition" mode="out-in">
+        <the-header ref="theHeader"></the-header>
       </transition>
       <v-content class="app__content--height">
-        <div class="app__container--scroll">
+        <resize-observer
+          ref="contentResizeObserver"
+          id="contentResizeObserver"
+          @notify="handleResize"
+        ></resize-observer>
+        <div class="app__container--scroll" ref="appContainer">
           <v-container fluid>
             <v-alert
               v-if="notifications && notifications.length > 0"
@@ -20,21 +22,15 @@
               dismissible
               @click="notificationClosed(notifications[0].key)"
             >
-              {{notifications[0].message}}
+              {{ notifications[0].message }}
             </v-alert>
-            <transition
-              name="app__component--transition"
-              mode="out-in"
-            >
+            <transition name="app__component--transition" mode="out-in">
               <router-view></router-view>
             </transition>
           </v-container>
         </div>
       </v-content>
-      <v-footer
-        fixed
-        app
-      >
+      <v-footer fixed app ref="theFooter">
         <the-footer class="the-footer__layout--margin"></the-footer>
       </v-footer>
     </v-app>
@@ -45,26 +41,23 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Action, State } from 'vuex-class'
+import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Action, namespace, State } from 'vuex-class'
 
+import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { RootOperation } from '@vuescape/store/modules/Root'
-import { NotificationMessage } from '@vuescape/store/modules/types'
+import { NotificationMessage, ns, StoreOperation } from '@vuescape/store/modules/types'
 import { Menu } from '@vuescape/types'
 
-const AppInfoHandler = () =>
-  import(/* webpackChunkName: 'app-info-handler' */ '@vuescape/components/AppInfoHandler').then(m => m.default)
-const AppInfoPoller = () =>
-  import(/* webpackChunkName: 'app-info-poller' */ '@vuescape/components/AppInfoPoller').then(m => m.default)
-const TheFooter = () =>
-  import(/* webpackChunkName: 'the-footer' */ '@vuescape/components/TheFooter').then(m => m.default)
-const TheHeader = () =>
-  import(/* webpackChunkName: 'the-header' */ '@vuescape/components/TheHeader').then(m => m.default)
+import AppInfoHandler from '@vuescape/components/AppInfoHandler'
+import AppInfoPoller from '@vuescape/components/AppInfoPoller'
+import TheFooter from '@vuescape/components/TheFooter'
+import TheHeader from '@vuescape/components/TheHeader'
 
 @Component({
   components: { AppInfoHandler, AppInfoPoller, TheHeader, TheFooter },
 })
-export default class App extends Vue {
+export default class App extends ComponentBase {
   @Prop({ type: String, default: '/site-maintenance' })
   private siteMaintenanceRoutePath: string
 
@@ -73,8 +66,40 @@ export default class App extends Vue {
   @Action(RootOperation.Action.NotificationActions.REMOVE)
   private removeNotification: any
 
+  @(namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE))
+  private setAvailableHeight: (availableHeight: Array<number>) => void
+
+  @State private isAuthenticated: boolean
+
+  @Watch('isAuthenticated')
+  private async onIsAuthenticatedChanged(val: any, oldVal: any) {
+    await this.handleResize()
+  }
+
   private async notificationClosed(notificationKey: string) {
     await this.removeNotification(notificationKey)
+  }
+
+  private async handleResize() {
+    const availableHeight = await this.getAvailableHeight()
+    this.setAvailableHeight([availableHeight])
+  }
+  private async mounted() {
+    const availableHeight = await this.getAvailableHeight()
+    this.registerStoreModuleWithInitialValue<Array<number>>('window/availableHeight', [availableHeight])
+  }
+  private async getAvailableHeight() {
+    await this.$nextTick()
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+    const theHeader = this.$refs.theHeader as any
+    const theFooter = this.$refs.theFooter as any
+    if (!theHeader.$el.getBoundingClientRect || !theFooter.$el.getBoundingClientRect) {
+      return windowHeight
+    }
+    const theHeaderHeight = theHeader.$el.getBoundingClientRect().height as number
+    const theFooterHeight = theFooter.$el.getBoundingClientRect().height as number
+    const availableHeight = windowHeight - theHeaderHeight - theFooterHeight
+    return availableHeight
   }
 }
 </script>
@@ -159,5 +184,11 @@ body {
 .status-failed {
   background-color: #ffc7ce;
   color: #9c2d75;
+}
+.el-loading-mask {
+    background-color: rgba(255,255,255,0);
+}
+i.material-icons {
+  font-size: 16px;
 }
 </style>
