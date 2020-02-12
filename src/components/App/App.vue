@@ -30,8 +30,8 @@
           </v-container>
         </div>
       </v-content>
-      <v-footer fixed app ref="theFooter">
-        <the-footer class="the-footer__layout--margin"></the-footer>
+      <v-footer fixed app ref="theFooter" :height="36" class="v-footer__layout--border">
+        <the-footer></the-footer>
       </v-footer>
     </v-app>
     <app-info-poller></app-info-poller>
@@ -98,7 +98,10 @@ export default class App extends ComponentBase {
     }
     const theHeaderHeight = theHeader.$el.getBoundingClientRect().height as number
     const theFooterHeight = theFooter.$el.getBoundingClientRect().height as number
-    const availableHeight = windowHeight - theHeaderHeight - theFooterHeight
+    const contentPane = document.querySelector('main') as Element
+    const paddingTop = Number.parseFloat(window.getComputedStyle(contentPane, null).getPropertyValue('padding-top'))
+    const availableHeight = windowHeight - theHeaderHeight - theFooterHeight - paddingTop
+
     return availableHeight
   }
 }
@@ -107,19 +110,42 @@ export default class App extends ComponentBase {
 <style>
 @import url(//fonts.googleapis.com/css?family=Open+Sans);
 @import url(//fonts.googleapis.com/css?family=Raleway);
+.v-content {
+  flex: unset;
+}
+.app__sliding-pane--single {
+  padding-right: 1em;
+  padding-left: 1em;
+  margin-right: auto;
+  margin-left: auto;
+}
+.app__sliding-pane--multiple {
+  padding-right: 0em;
+  padding-left: 0em;
+  margin-right: 0px;
+  margin-left: 10px;
+}
+.appHome--main {
+  margin-top: -16px !important; /* compensate for container padding */
+  margin-bottom: -16px !important; /* compensate for container padding */
+}
+.container.fluid {
+  padding: 0 !important;
+  overflow: hidden;
+}
+.application {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 .app__v-alert--margin {
   margin-top: 1em;
 }
-.the-footer__layout--margin {
-  margin-top: 6px;
-}
 .app__content--height {
   max-height: 100vh !important;
-  padding: 58px 0px 32px !important;
+  padding: 0px 0px 36px !important;
 }
 .app__container--scroll {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   backface-visibility: hidden;
   margin-left: 8px;
 }
@@ -146,6 +172,9 @@ export default class App extends ComponentBase {
 .table__overflow {
   overflow-x: inherit !important;
   overflow-y: inherit !important;
+}
+.v-footer__layout--border {
+  border-top: 1px solid #ade3ef;
 }
 html {
   overflow-y: hidden;
@@ -186,9 +215,42 @@ body {
   color: #9c2d75;
 }
 .el-loading-mask {
-    background-color: rgba(255,255,255,0);
+  background-color: rgba(255, 255, 255, 0);
 }
 i.material-icons {
   font-size: 16px;
+}
+@media (min-width: 800) {
+  .app__sliding-pane--single {
+    width: 770px;
+  }
+  .app__sliding-pane--multiple {
+    width: auto;
+  }
+}
+@media (min-width: 1200px) {
+  .app__sliding-pane--single {
+    width: 1170px;
+  }
+  .app__sliding-pane--multiple {
+    width: auto;
+  }
+}
+@media (min-width: 1700) {
+  .app__sliding-pane--single {
+    width: 1500px;
+  }
+  .app__sliding-pane--multiple {
+    width: auto;
+  }
+}
+.el-loading-spinner .el-loading-text {
+  color: #5f6768!important;
+}
+.el-loading-spinner .path{
+stroke: #5f6768!important;;
+}
+.v-toolbar__items { 
+  font-size: 13px;
 }
 </style>
