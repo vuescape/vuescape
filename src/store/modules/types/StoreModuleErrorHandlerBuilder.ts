@@ -1,6 +1,5 @@
 import { ActionContext } from 'vuex'
 
-import { makeRouter } from '@vuescape/infrastructure/router'
 import { ErrorHandler, ErrorHandlerBuilder } from '@vuescape/store/modules/types/'
 import { Guid } from '@vuescape/types'
 
@@ -37,9 +36,10 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
         await this.context.dispatch(`${AuthenticationModuleName}/${AuthenticationOperation.Action.SIGN_OUT}`, null, {
           root: true,
         })
-        // TODO: how to avoid store module having dependency on router
-        // Use vuex (rootstate) to contain reactive URL to navigate to?
-        makeRouter().push('/sign-in')
+        // Instead of routing to sign-in do an entire app reload from the current URL.
+        // This will cause the sign-in page to load with the current URL location as param since 
+        // there is no token to automatically sign in.
+        document.location.reload(true)
       } else if (status === 400) {
         const errorMessage: NotificationMessage = {
           key: Guid.newGuid(),
