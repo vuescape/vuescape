@@ -49,7 +49,7 @@ describe('TheFooter.vue --', () => {
       const wrapper = shallowMount(TheFooter, { store, localVue })
 
       // Assert
-      const footerHtml = wrapper.find('v-flex-stub')
+      const footerHtml = wrapper.find('.the-footer__copyright')
       const footerText = footerHtml.text()
       expect(footerText).toContain(currentYear)
     })
@@ -67,53 +67,10 @@ describe('TheFooter.vue --', () => {
       const wrapper = shallowMount(TheFooter, { store, localVue })
 
       // Assert
-      const footerHtml = wrapper.find('v-flex-stub')
+      const footerHtml = wrapper.find('.the-footer__copyright')
       const copyrightSymbol = footerHtml.text().substring(0, 1)
       expect(copyrightSymbol).toBe('©')
       done()
-    })
-  })
-
-  describe('version number --', () => {
-    it('should be empty when appInfo is not retrieved', async () => {
-      // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
-      localVue.use(Vuex)
-
-      const store = new Vuex.Store(rootStoreOptions)
-      registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
-
-      // Act
-      const wrapper = shallowMount(TheFooter, { store, localVue })
-      // Assert
-      const versionHtml = wrapper.find('.the-footer__version--center')
-      const versionText = versionHtml.text()
-      expect(versionText).toBe('')
-    })
-
-    it('should contain the current version when appInfo is retrieved', async () => {
-      // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
-      localVue.use(Vuex)
-
-      const store = new Vuex.Store(rootStoreOptions)
-      registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), store, false)
-      registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
-      const appVersion = '127.0.0.1'
-
-      const request = () => store.dispatch(ns(AppInfoModuleName, AppInfoOperation.Action.FetchAppInfo))
-      const response = { version: appVersion, isSiteInMaintenanceMode: false, siteMaintenanceMessage: '' }
-
-      // Act
-      const wrapper = shallowMount(TheFooter, { store, localVue })
-      await withSuccessResponse(request, response)
-
-      // Assert
-      const versionHtml = wrapper.find('.the-footer__version--center')
-      const versionText = versionHtml.text()
-      expect(versionText).toContain(appVersion)
     })
   })
 })
