@@ -11,12 +11,7 @@
     >
       <template slot="thead">
         <tr>
-          <th
-            v-for="header in headersToDisplay"
-            :class="header.cssClasses"
-            :key="header.id"
-            :colspan="header.colspan"
-          >
+          <th v-for="header in headersToDisplay" :class="header.cssClasses" :key="header.id" :colspan="header.colspan">
             {{ header.text }}
           </th>
         </tr>
@@ -99,8 +94,8 @@ export default class TreeTable extends ComponentBase {
     return this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
   }
 }
+// https://stackoverflow.com/questions/41882616/why-border-is-not-visible-with-position-sticky-when-background-color-exists
 </script>
-
 <style>
 .fixed-column {
   text-align: unset;
@@ -123,7 +118,6 @@ table.scrolling td.subheader {
   padding-left: 0.4em;
   height: 33px;
   vertical-align: middle;
-  font-family: 'Segoe UI';
 }
 table.scrolling tr.data-row:hover td {
   background-color: rgb(235, 248, 240) !important;
@@ -135,7 +129,6 @@ table.scrolling td,
 table.scrolling th {
   border: 0px solid #ddd !important;
   font-size: small;
-  font-family: 'Segoe UI';
 }
 table.scrolling td {
   height: 31px;
@@ -147,7 +140,7 @@ table.scrolling thead.scrollsync {
 }
 table.scrolling thead th {
   border: 0px;
-  background-color: #0092bc !important;
+  background-color: #16a5c6 !important;
   color: #ffffff;
   text-align: center;
   height: 32px;
@@ -161,16 +154,18 @@ table.scrolling td.cell--value--raw {
   max-width: 13em;
   min-width: 13em;
   text-align: right;
-  padding-right: 10px;
+  padding-right: 6px;
+  padding-left: 4px;
   border-left: 1px solid #ddd !important;
 }
 table.scrolling td.cell--value--common {
   width: 7em;
   max-width: 7em;
   min-width: 7em;
-  padding-left: 20px;
+  padding-left: 12px;
+  padding-right: 6px;
   border-left: 0 !important;
-  /* text-align: center */
+  text-align: center;
 }
 table.scrolling td {
   border: 0px;
@@ -208,9 +203,6 @@ table.scrolling {
   background-color: white !important;
   height: 100% !important;
 }
-/* * {
-  font-family: sans-serif;
-} */
 .box {
   clear: both;
   padding: 0;
@@ -256,27 +248,27 @@ td.selected-metric {
   cursor: default;
 }
 
-table.scrolling td.very-positive {
-  background-color: #6ed071;
-  color: darkgreen;
+table td.very-positive {
+  background-color: #6ed071 !important;
+  color: darkgreen !important;
 }
 
-table.scrolling td.positive {
-  background-color: #b7eebc;
-  color: darkgreen;
+table td.positive {
+  background-color: #b7eebc !important;
+  color: darkgreen !important;
 }
 
-table.scrolling td.neutral {
-  background-color: #fff2e5;
+table td.neutral {
+  background-color: #fff2e5 !important;
 }
 
-table.scrolling td.negative {
-  background-color: #ffbbc0;
-  color: darkred;
+table td.negative {
+  background-color: #ffbbc0 !important;
+  color: darkred !important;
 }
 
-table.scrolling td.very-negative {
-  background-color: #fb7072;
-  color: darkred;
+table td.very-negative {
+  background-color: #fb7072 !important;
+  color: darkred !important;
 }
 </style>
