@@ -1,6 +1,5 @@
 declare module 'element-loading'
 declare module 'vue-resize'
 declare module '*.png'
-declare module 'nouislider'
 declare module 'splitpanes'
 declare module 'vue-scrolling-table'
