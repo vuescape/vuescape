@@ -2,9 +2,9 @@
   <v-tooltip right>
     <template v-slot:activator="{ on }">
       <span
-        v-on="on"
         :class="cellToDisplay.cssClasses" 
       >{{cellToDisplay.value}}</span>
+      <span v-if="false" v-on="on"></span> <!-- temp activator that is not shown to disable tooltip -->
     </template>
     <v-card>
       <v-card-title primary-title>{{cellToDisplay.value}}</v-card-title>
