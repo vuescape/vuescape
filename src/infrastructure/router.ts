@@ -12,7 +12,7 @@ export function makeRouter(routes?: Array<RouteConfig>, navigationGuard? : Navig
   Vue.use(VueRouter)
   router = new VueRouter({
     mode: 'history',
-    linkActiveClass: 'is-active',
+    linkActiveClass: 'app__router--is-active',
     scrollBehavior: () => ({ y: 0, x: 0 }),
     routes,
   })
