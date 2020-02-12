@@ -1,27 +1,27 @@
 <template>
-  <v-toolbar
-    v-if="shouldDisplayHeader"
-    app
-    fixed
-    :style="`height:58px;${theHeaderProps.toolbarStyle}`"
-    ref="toolbar"
-  >
-    <v-toolbar-title>
+  <div>
+    <v-toolbar
+      v-if="shouldDisplayHeader"
+      height="36"
+      class="the-header__toolbar--size"
+      :style="theHeaderProps.toolbarStyle"
+      ref="toolbar"
+    >
       <img
+        id="home-logo"
         class="the-header__img--layout"
         :src="theHeaderProps.logoUrl"
         :alt="theHeaderProps.logoAltText"
-      >
-    </v-toolbar-title>
-    <v-spacer></v-spacer>
-    <navigation-menu
-      style="height:58px; margin-top:-6px;"
-      v-if="shouldDisplayHeader"
-      :isHelpAvailable="theHeaderProps.shouldDisplayHelp"
-      :menus="menus"
-      :helpComponent="theHeaderProps.helpComponent"
-    ></navigation-menu>
-  </v-toolbar>
+      />
+      <v-spacer></v-spacer>
+      <navigation-menu
+        v-if="shouldDisplayHeader"
+        :isHelpAvailable="theHeaderProps.shouldDisplayHelp"
+        :menus="menus"
+        :helpComponent="theHeaderProps.helpComponent"
+      ></navigation-menu>
+    </v-toolbar>
+  </div>
 </template>
 
 <script lang="ts">
@@ -45,16 +45,13 @@ export default class TheHeader extends Vue {
   @State
   private isAuthenticated: boolean
 
-  @(namespace('theHeader/configuration')
-  .State(
-    state => {
-      if (state && state.value) {
-        const headerProps: any = state.value
-        return headerProps || TheHeader.DefaultHeaderConfig
-      }
-      return TheHeader.DefaultHeaderConfig
-    },
-  ))
+  @(namespace('theHeader/configuration').State(state => {
+    if (state && state.value) {
+      const headerProps: any = state.value
+      return headerProps || TheHeader.DefaultHeaderConfig
+    }
+    return TheHeader.DefaultHeaderConfig
+  }))
   // TODO: define type for header state
   private theHeaderProps: any
 
@@ -62,29 +59,23 @@ export default class TheHeader extends Vue {
     return this.isAuthenticated || this.theHeaderProps.shouldShowHeader
   }
 
-  @(namespace('menu/configuration')
-  .State(
-    state => {
-      if (state && state.value) {
-        return state.value
-      }
-      return []
-    },
-  ))
+  @(namespace('menu/configuration').State(state => {
+    if (state && state.value) {
+      return state.value
+    }
+    return []
+  }))
   private menus: Array<Menu>
 }
-</script> 
-<style scoped>
-.the-header__toolbar--height {
-  height: 58px !important;
-}
+</script>
+<style>
 .the-header__toolbar--size {
-  height: 58px !important;
-  padding-top: -6px !important;
+  height: 36px;
+  border-bottom: 100px;
 }
 .the-header__img--layout {
   vertical-align: middle;
-  max-height: 46px;
-  max-width: 207px;
+  max-height: 20px;
+  max-width: 92px;
 }
 </style>
