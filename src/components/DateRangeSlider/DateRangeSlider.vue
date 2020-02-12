@@ -58,7 +58,7 @@ export default class DateRangeSlider extends Vue {
     //    return 'A'}},{ to: function(value){ return 'A'}},{ to: function(value){
     //    return 'A'}},{ to: function(value){ return 'A'}}],
     pips: {
-      mode: 'values',
+      mode: 'values' as 'range' | 'steps' | 'positions' | 'count' | 'values',
       density: 100,
       values: [] as Array<number>, // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
       format: {
@@ -122,7 +122,10 @@ export default class DateRangeSlider extends Vue {
     configuration.behaviour = this.behavior
     configuration.range = { min: this.startingRangeValue, max: this.startingRangeValue + this.numberOfRanges }
     configuration.pips.values = [...Array(this.numberOfRanges).keys()].map(val => this.startingRangeValue + val)
-    configuration.pips.format.to = this.rangeAxisFormatter || this.defaultRangeAxisFormatter
+    configuration.pips.format = {
+      to: this.rangeAxisFormatter || this.defaultRangeAxisFormatter,
+      from: (value: string) => 0,
+    }
 
     this.slider = this.$refs[this.sliderId]
     noUiSlider.create(this.slider, configuration)
@@ -152,7 +155,7 @@ export default class DateRangeSlider extends Vue {
     // Adjust the pip locations to place between the actual pips so that the text is centered
     // between the handles
     const startOfPipPercentage = (pips[0] as any).style.left.replace('%', '')
-    
+
     // Default to  one pip so allocate 100% for this pip
     const endOfPipPercentage = pips.length > 1 ? (pips[1] as any).style.left.replace('%', '') : 100
 
