@@ -3,10 +3,12 @@ import { NavigationGuard, RawLocation, Route } from 'vue-router'
 
 import { store } from '../store'
 
-const authenticatedNavigationGuardImpl : any = (to: Route,
+const authenticatedNavigationGuardImpl: any = (
+  to: Route,
   from: Route,
-  next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void
-, signInPath: string) => {
+  next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void,
+  signInPath: string,
+) => {
   const doesRouteRequireAuthentication = to.matched.some(record => record.meta.requiresAuth)
   const doesRouteRequireAuthorization = to.matched.some(record => record.meta.roles)
   const isAuthenticated = store.state.isAuthenticated
@@ -23,11 +25,11 @@ const authenticatedNavigationGuardImpl : any = (to: Route,
   } else {
     next()
   }
-} 
+}
 
 export const makeAuthenticatedNavigationGuard = (signInPath: string) => {
   const authenticatedNavigationGuard: NavigationGuard<Vue> = (to, from, next) => {
     authenticatedNavigationGuardImpl(to, from, next, signInPath)
   }
-   return authenticatedNavigationGuard
+  return authenticatedNavigationGuard
 }
