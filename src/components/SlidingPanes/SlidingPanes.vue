@@ -62,6 +62,8 @@ export default class SlidingPanes extends ComponentBase {
   // Height of panes.  Gets set dynamically on resize.
   private height = 100
 
+  private resizeTimer: any
+
   // Saved vuex watchers so we can destroy watchers when component is destroyed
   private vuexWatchers = new Array<() => void>()
 
@@ -213,6 +215,9 @@ export default class SlidingPanes extends ComponentBase {
           // 'push-other-panes': false
         },
         on: {
+          resize: (event: any) => {
+            self.onResize(event)
+          },
           resized: (event: any) => {
             self.onResized(event)
           },
@@ -418,6 +423,18 @@ export default class SlidingPanes extends ComponentBase {
     const newheight = this.getMainHeight()
     if (newheight !== this.height) {
       this.height = newheight
+    }
+  }
+
+  private async onResize(event: Array<{ width: number }>) {
+    const self = this
+    if (!self.resizeTimer) {
+      this.resizeTimer = setTimeout(() => {
+        console.info('resize fired')
+        self.setAvailableHeight([self.availableHeight[0]])
+
+        self.resizeTimer = undefined
+      }, 50)
     }
   }
 
