@@ -1,139 +1,90 @@
 <template>
   <v-toolbar-items>
-    <v-toolbar-items
-      v-for="menu in menus"
-      :key="menu.id"
-    >
+    <v-toolbar-items v-for="menu in menus" :key="menu.id">
       <v-menu
         v-if="menu.items"
-        open-on-hover
-        attach
-        bottom
+        auto
+        open-on-click
         offset-y
-        max-height="500"
         :disabled="isSiteInMaintenanceMode"
       >
         <v-btn
           :aria-label="menu.title"
           flat
           slot="activator"
-          style="min-width: 64px"
-          :class="{ 'btn--active': isSubItemActive(menu.path) }"
+          :class="{ 'v-btn--active': isSubItemActive(menu.path), 'navigation-menu--v-btn__style': true }"
           :disabled="isSiteInMaintenanceMode"
-        >{{menu.title}}</v-btn>
-        <v-list
-          v-if="menu.items"
-          light
         >
+          <v-icon v-if="menu.icon" small color="#555" class="navigation-menu--v-icon__layout">{{ menu.icon }}</v-icon
+          >&nbsp;{{ menu.title }} &nbsp;
+          <v-icon v-if="menu.icon" small color="#555" style="font-size: 10px;margin-top: 4px;"
+            >fas fa-caret-down</v-icon
+          ></v-btn
+        >
+        <v-list class="navigation-menu--v-list__alignment" v-if="menu.items" light>
           <v-list-tile
+            class="navigation-menu--v-list-tile__font"
             :aria-label="menuItem.title"
             v-for="menuItem in menu.items"
             :key="menuItem.id"
             :to="{ path: menuItem.path }"
           >
-            <v-list-tile-title :aria-label="menuItem.title">{{menuItem.title}}</v-list-tile-title>
+            <v-list-tile-title :aria-label="menuItem.title">{{ menuItem.title }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
       <v-btn
         v-else
         flat
-        style="min-width: 64px"
+        class="navigation-menu--v-btn__style"
         :title="menu.icon ? menu.title : ''"
         :aria-label="menu.ariaLabel"
         :to="{ path: menu.path }"
         :disabled="isSiteInMaintenanceMode"
       >
-        <v-icon
-          v-if="menu.icon"
-          x-large
-          color="primary"
-        >{{menu.icon}}</v-icon>
-        {{menu.icon ? '' : menu.title}}
+        <v-icon v-if="menu.icon" small class="navigation-menu--v-icon__layout">{{ menu.icon }}</v-icon>
+        &nbsp;{{ menu.title }}
       </v-btn>
     </v-toolbar-items>
     <v-toolbar-items v-if="isAuthenticated">
-      <v-menu
-        open-on-hover
-        attach
-        bottom
-        offset-y
-        max-height="500"
+      <v-divider class="mx-3" inset vertical></v-divider>
+      <v-btn
+        class="navigation-menu--v-btn__style"
+        aria-label="Sign Out"
+        flat
+        slot="activator"
+        navigation-menu--v-btn__style
         :disabled="isSiteInMaintenanceMode"
+        @click.prevent="redirectAndSignOut"
       >
-        <v-btn
-          aria-label="User Menu"
-          flat
-          slot="activator"
-          style="min-width: 64px"
-          :disabled="isSiteInMaintenanceMode"
-        >
-          {{firstName}}
-          <v-icon
-            x-large
-            color="primary"
-          >person</v-icon>
-
-        </v-btn>
-        <v-list light>
-          <v-list-tile
-            @click.prevent="redirectAndSignOut"
-            :to="{path: '/'}"
-          >
-            <v-list-tile-title>Sign Out</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
+        <v-icon small class="navigation-menu--v-icon__layout">fas fa-sign-out-alt</v-icon>
+        &nbsp;Sign Out
+      </v-btn>
     </v-toolbar-items>
     <!-- TODO: This HACK prevents vuetify menu from going off the screen to the right. Do this properly.  -->
-    <div
-      v-else
-      style="width:100px;"
-    >
-    </div>
+    <div v-else style="width:100px;"></div>
     <v-toolbar-items v-if="isHelpAvailable">
       <v-btn
         title="Help"
         flat
-        style="min-width: 64px"
+        class="navigation-menu--v-btn__style"
         @click="shouldShowHelp = true"
         :disabled="isSiteInMaintenanceMode"
       >
-        <v-icon
-          x-large
-          color="primary"
-        >help</v-icon>
+        <v-icon small>help</v-icon>
       </v-btn>
     </v-toolbar-items>
-    <v-dialog
-      v-model="shouldShowHelp"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-      scrollable
-    >
+    <v-dialog v-model="shouldShowHelp" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
       <v-card tile>
-        <v-toolbar
-          card
-          dark
-          color="primary"
-        >
+        <v-toolbar card dark>
           <v-toolbar-title aria-label="Help">Help</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn
-            aria-label="Close"
-            icon
-            dark
-            @click="closeHelp"
-          >
+          <v-btn aria-label="Close" icon dark @click="closeHelp">
             <v-icon aria-label="Close">close</v-icon>
           </v-btn>
         </v-toolbar>
         <div v-if="shouldShowHelp">
-          <transition
-            name="component-fade"
-            mode="in-out"
-          >
+          <transition name="component-fade" mode="in-out">
             <submit-issue></submit-issue>
           </transition>
         </div>
@@ -171,11 +122,9 @@ export default class NavigationMenu extends Vue {
   @State
   private isAuthenticated: boolean
 
-  @(namespace(UserProfileModuleName).State(
-    state => {
-      return state.value.firstName
-    },
-  ))
+  @(namespace(UserProfileModuleName).State(state => {
+    return state.value.firstName
+  }))
   private firstName: string
 
   @Action(ns(AuthenticationModuleName, AuthenticationOperation.Action.SIGN_OUT))
@@ -183,6 +132,12 @@ export default class NavigationMenu extends Vue {
 
   @Getter(ns(AppInfoModuleName, AppInfoOperation.Getter.IsSiteInMaintenanceMode))
   private isSiteInMaintenanceMode: boolean
+
+  @(namespace('window/availableHeight').State(state => {
+    console.info(state.value[0])
+    return state.value[0]
+  }))
+  private availableHeight: Array<number>
 
   public isSubItemActive(input: string) {
     const paths = (Array.isArray(input) ? input : [input]) as Array<string>
@@ -199,8 +154,39 @@ export default class NavigationMenu extends Vue {
   // TODO: Use app config  signOutRedirectUri
   private async redirectAndSignOut() {
     await this.signOut()
-    this.$router.push('/sign-in')
-    window.location.reload(true)
+    window.location.href = '/sign-in'
   }
 }
 </script>
+
+<style>
+i.v-icon {
+  font-weight: normal;
+}
+.v-btn__content {
+  font-weight: normal;
+}
+.navigation-menu--v-list-tile__font a div {
+  font-size: 13px;
+  color: unset;
+}
+.navigation-menu--v-list-tile__font a.v-list__tile--active div {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.87);
+}
+.navigation-menu--v-btn__style {
+  min-width: 64px;
+  font-size: 13px;
+}
+.navigation-menu--v-icon__layout {
+  margin-top: 2px;
+}
+.navigation-menu--v-list__alignment {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.menuable__content__active {
+  max-height: 500px!important;
+}
+</style>
