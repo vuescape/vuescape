@@ -1,6 +1,6 @@
 <template>
-  <div style="margin-top: 8px;">
-    <div :ref="sliderId" :id="sliderId"></div>
+  <div>
+    <div :ref="sliderId" :id="sliderId" style="margin-right: 5px;"></div>
   </div>
 </template>
 
@@ -148,14 +148,21 @@ export default class DateRangeSlider extends Vue {
     }
 
     const pips = this.slider.getElementsByClassName('noUi-value')
-    const left1 = (pips[0] as any).style.left.replace('%', '')
-    const left2 = (pips[1] as any).style.left.replace('%', '')
-    const adjustment = (Number(left2) - Number(left1)) / 2
+
+    // Adjust the pip locations to place between the actual pips so that the text is centered
+    // between the handles
+    const startOfPipPercentage = (pips[0] as any).style.left.replace('%', '')
+    
+    // Default to  one pip so allocate 100% for this pip
+    const endOfPipPercentage = pips.length > 1 ? (pips[1] as any).style.left.replace('%', '') : 100
+
+    const percentAdjustment = (Number(endOfPipPercentage) - Number(startOfPipPercentage)) / 2
     let pip: { style?: { left: string } } & Element
     for (pip of pips) {
-      const newStyle = pip.style!.left.replace('%', '').toString()
-      const left = Number(newStyle)
-      pip.style!.left = left + adjustment + '%'
+      const currentPipLeftPercent = pip.style!.left.replace('%', '').toString()
+      const currentPipLeftPercentNumber = Number(currentPipLeftPercent)
+      // Take the current pip location and add the adjustment to the right
+      pip.style!.left = currentPipLeftPercentNumber + percentAdjustment + '%'
     }
 
     this.slider.noUiSlider.set(this.startingHandlePositions)
@@ -198,50 +205,68 @@ export default class DateRangeSlider extends Vue {
 
 <style>
 .noUi-handle {
-  width: 8px !important;
-  right: -4px !important; /* The 17 here is half of the 34 width. The - pulls it in the other direction */
-  cursor: ew-resize !important;
-  opacity: 1 !important;
-  background-color: white;
-  border-color: #bbb;
+  content: url('./handle.svg') !important;
+  height: 23px !important;
+  width: 6px !important;
+  top: 0.1px !important;
+  border: unset;
+  border-radius: unset;
+  background: unset;
+  cursor: ew-resize;
+  box-shadow: unset;
+  background: unset;
 }
 .noUi-value {
-  margin-top: -2px !important;
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: -5px !important;
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+.noUi-horizontal {
+  height: 24px;
+}
+.noUi-horizontal .noUi-handle {
+  top: 7px;
+  height: 10px;
+  color: rgba(0, 0, 0, 0.87);
 }
 .noUi-handle::before {
-  left: 1.25px !important;
-  background-color: #bbb;
+  content: none;
+  /* left: 1.25px !important;
+  background-color: #bbb; */
 }
 .noUi-handle::after {
-  left: 3.5px !important;
-  color: blue;
-  background-color: #bbb;
+  content: none;
+  /* border-left: 1px solid rgba(0, 0, 0, 0.87);
+  left: 1.5px !important; */
+  /* height: 23px;
+  top: -8px; */
 }
 .noUi-connect {
   cursor: grab !important;
-  /* background: rgba(0, 0, 0, 0.1) !important; */
   background: rgba(0, 0, 0, 0.3) !important;
   opacity: 0.25;
 }
 .noUi-pips-horizontal {
   margin-top: -33px;
-  font-size: smaller;
-  font-family: 'Segoe UI', Helvetica, Segoe UI, Verdana, Roboto, Arial, sans-serif;
+  font-size: x-small;
 }
 .noUi-marker-horizontal.noUi-marker {
-  height: 0;
+  height: 5.5px;
+  width: 1px;
+  margin-left: -0.5px;
 }
 .noUi-handle-left {
-  right: -8px !important;
+  right: -3px !important;
 }
 .noUi-handle-right {
-  right: 0px !important;
+  right: -3px !important;
 }
 .noUi-handle-0 {
-  background-color: #e7eaf6; /* rgba(135,0,188, .2); */
+  /* background-color: #e7eaf6; rgba(135,0,188, .2); */
 }
 .noUi-handle-1 {
-  background-color: #e7eaf6; /* rgba(135,0,188, .2); */
+  /* background-color: #e7eaf6; rgba(135,0,188, .2); */
 }
 .noUi-handle-2 {
   background-color: #e7eaf6; /* rgba(135,0,188, .2); */
@@ -258,6 +283,15 @@ export default class DateRangeSlider extends Vue {
   background-color: #38598b; /* rgba(52,188,0, 0.2); */
 }
 .noUi-target {
+  border-top: 1px solid rgba(0, 0, 0, 0.87);
+  border-bottom: unset;
+  border-right: unset;
+  border-left: unset;
+  border-radius: 0;
   background-color: white;
+  box-shadow: unset;
+}
+.noUi-base {
+  color: rgba(0, 0, 0, 0.87);
 }
 </style>
