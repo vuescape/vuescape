@@ -1,29 +1,23 @@
 <template>
   <v-toolbar-items>
     <v-toolbar-items v-for="menu in menus" :key="menu.id">
-      <v-menu
-        v-if="menu.items"
-        auto
-        open-on-click
-        offset-y
-        :disabled="isSiteInMaintenanceMode"
-      >
+      <v-menu v-if="menu.items" auto open-on-click offset-y :disabled="isSiteInMaintenanceMode">
         <v-btn
           :aria-label="menu.title"
           flat
           slot="activator"
-          :class="{ 'v-btn--active': isSubItemActive(menu.path), 'navigation-menu--v-btn__style': true }"
+          :class="{ 'v-btn--active': isSubItemActive(menu.path), 'navigation-menu__v-btn--style': true }"
           :disabled="isSiteInMaintenanceMode"
         >
-          <v-icon v-if="menu.icon" small color="#555" class="navigation-menu--v-icon__layout">{{ menu.icon }}</v-icon
+          <v-icon v-if="menu.icon" small color="#555" class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon
           >&nbsp;{{ menu.title }} &nbsp;
-          <v-icon v-if="menu.icon" small color="#555" style="font-size: 10px;margin-top: 4px;"
+          <v-icon v-if="menu.icon" small color="#555" class="navigation-menu__v-icon--dropdown"
             >fas fa-caret-down</v-icon
           ></v-btn
         >
-        <v-list class="navigation-menu--v-list__alignment" v-if="menu.items" light>
+        <v-list class="navigation-menu__v-list--alignment" v-if="menu.items" light>
           <v-list-tile
-            class="navigation-menu--v-list-tile__font"
+            class="navigation-menu__v-list-tile--font"
             :aria-label="menuItem.title"
             v-for="menuItem in menu.items"
             :key="menuItem.id"
@@ -36,28 +30,28 @@
       <v-btn
         v-else
         flat
-        class="navigation-menu--v-btn__style"
+        class="navigation-menu__v-btn--style"
         :title="menu.icon ? menu.title : ''"
         :aria-label="menu.ariaLabel"
         :to="{ path: menu.path }"
         :disabled="isSiteInMaintenanceMode"
       >
-        <v-icon v-if="menu.icon" small class="navigation-menu--v-icon__layout">{{ menu.icon }}</v-icon>
+        <v-icon v-if="menu.icon" small class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon>
         &nbsp;{{ menu.title }}
       </v-btn>
     </v-toolbar-items>
     <v-toolbar-items v-if="isAuthenticated">
       <v-divider class="mx-3" inset vertical></v-divider>
       <v-btn
-        class="navigation-menu--v-btn__style"
+        class="navigation-menu__v-btn--style"
         aria-label="Sign Out"
         flat
         slot="activator"
-        navigation-menu--v-btn__style
+        navigation-menu__v-btn--style
         :disabled="isSiteInMaintenanceMode"
         @click.prevent="redirectAndSignOut"
       >
-        <v-icon small class="navigation-menu--v-icon__layout">fas fa-sign-out-alt</v-icon>
+        <v-icon small class="navigation-menu__v-icon--layout">fas fa-sign-out-alt</v-icon>
         &nbsp;Sign Out
       </v-btn>
     </v-toolbar-items>
@@ -67,7 +61,7 @@
       <v-btn
         title="Help"
         flat
-        class="navigation-menu--v-btn__style"
+        class="navigation-menu__v-btn--style"
         @click="shouldShowHelp = true"
         :disabled="isSiteInMaintenanceMode"
       >
@@ -166,27 +160,31 @@ i.v-icon {
 .v-btn__content {
   font-weight: normal;
 }
-.navigation-menu--v-list-tile__font a div {
+.navigation-menu__v-icon--dropdown {
+  font-size: 10px!important;
+  margin-top: 4px!important;
+}
+.navigation-menu__v-list-tile--font a div {
   font-size: 13px;
   color: unset;
 }
-.navigation-menu--v-list-tile__font a.v-list__tile--active div {
+.navigation-menu__v-list-tile--font a.v-list__tile--active div {
   font-size: 13px;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.87);
 }
-.navigation-menu--v-btn__style {
+.navigation-menu__v-btn--style {
   min-width: 64px;
   font-size: 13px;
 }
-.navigation-menu--v-icon__layout {
+.navigation-menu__v-icon--layout {
   margin-top: 2px;
 }
-.navigation-menu--v-list__alignment {
+.navigation-menu__v-list--alignment {
   padding-top: 0;
   padding-bottom: 0;
 }
 .menuable__content__active {
-  max-height: 500px!important;
+  max-height: 500px !important;
 }
 </style>

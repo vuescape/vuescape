@@ -108,8 +108,6 @@ export default class App extends ComponentBase {
 </script>
 
 <style>
-@import url(//fonts.googleapis.com/css?family=Open+Sans);
-@import url(//fonts.googleapis.com/css?family=Raleway);
 .v-content {
   flex: unset;
 }
@@ -124,10 +122,6 @@ export default class App extends ComponentBase {
   padding-left: 0em;
   margin-right: 0px;
   margin-left: 10px;
-}
-.appHome--main {
-  margin-top: -16px !important; /* compensate for container padding */
-  margin-bottom: -16px !important; /* compensate for container padding */
 }
 .container.fluid {
   padding: 0 !important;
@@ -157,7 +151,7 @@ export default class App extends ComponentBase {
 .app__component--transition-leave-to {
   opacity: 0;
 }
-.no-wrap {
+.app__no-wrap {
   white-space: nowrap;
 }
 /* Set margin left so that container class does not cause page header to be indented.
@@ -214,6 +208,30 @@ body {
   background-color: #ffc7ce;
   color: #9c2d75;
 }
+table td.very-positive {
+  background-color: #6ed071 !important;
+  color: darkgreen !important;
+}
+
+table td.positive {
+  background-color: #b7eebc !important;
+  color: darkgreen !important;
+}
+
+table td.neutral {
+  background-color: #fff2e5 !important;
+}
+
+table td.negative {
+  background-color: #ffbbc0 !important;
+  color: darkred !important;
+}
+
+table td.very-negative {
+  background-color: #fb7072 !important;
+  color: darkred !important;
+}
+
 .el-loading-mask {
   background-color: rgba(255, 255, 255, 0);
 }

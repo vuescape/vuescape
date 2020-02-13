@@ -69,7 +69,7 @@ export default class CardGrid extends ComponentBase {
 }
 </script>
 
-<style scoped>
+<style>
 .card-grid__resource--href {
   text-decoration: none;
   overflow: hidden;

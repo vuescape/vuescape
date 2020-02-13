@@ -1,5 +1,5 @@
 <template>
-  <div class="box" :style="cssStyleValue">
+  <div class="tree-table__div--box" :style="cssStyleValue">
     <vue-scrolling-table
       :scroll-horizontal="scrollHorizontal"
       :scroll-vertical="scrollVertical"
@@ -100,7 +100,7 @@ export default class TreeTable extends ComponentBase {
 .fixed-column {
   text-align: unset;
 }
-.tree-table-item--clickable {
+.tree-table-item__td--clickable {
   cursor: pointer;
 }
 table.scrolling tr {
@@ -203,7 +203,7 @@ table.scrolling {
   background-color: white !important;
   height: 100% !important;
 }
-.box {
+.tree-table__div--box {
   clear: both;
   padding: 0;
   margin-left: auto;
@@ -246,29 +246,5 @@ td.selected-metric-interior {
 
 td.selected-metric {
   cursor: default;
-}
-
-table td.very-positive {
-  background-color: #6ed071 !important;
-  color: darkgreen !important;
-}
-
-table td.positive {
-  background-color: #b7eebc !important;
-  color: darkgreen !important;
-}
-
-table td.neutral {
-  background-color: #fff2e5 !important;
-}
-
-table td.negative {
-  background-color: #ffbbc0 !important;
-  color: darkred !important;
-}
-
-table td.very-negative {
-  background-color: #fb7072 !important;
-  color: darkred !important;
 }
 </style>

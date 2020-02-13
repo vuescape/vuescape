@@ -94,7 +94,7 @@ export default class AppInfoPoller extends ComponentBase {
 }
 </script>
 
-<style scoped>
+<style>
 .app-info-handler__title--heading {
   color: white;
 }

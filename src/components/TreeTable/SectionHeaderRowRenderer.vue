@@ -3,7 +3,7 @@
     <td
       v-for="(cell, index) in rowToDisplay.items"
       :class="[
-        { 'tree-table-item--clickable': index === 0 ? rowToDisplay.isExpandable && cell.onclick : cell.onclick },
+        { 'tree-table-item__td--clickable': index === 0 ? rowToDisplay.isExpandable && cell.onclick : cell.onclick },
         cell.cssClasses,
       ]"
       :key="cell.id"

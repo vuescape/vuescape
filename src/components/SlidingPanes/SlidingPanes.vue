@@ -479,9 +479,6 @@ export default class SlidingPanes extends ComponentBase {
 .splitpanes--vertical > .splitpanes__splitter {
   background-color: #dddddd !important;
 }
-div.noUi-pips.noUi-pips-horizontal {
-  height: 50px;
-}
 i.sliding-panes__material-icons--large {
   margin-top: 6px;
   margin-right: 6px;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :ref="sliderId" :id="sliderId" style="margin-right: 5px;"></div>
+    <div :ref="sliderId" :id="sliderId" class="date-range-slider__div--margin"></div>
   </div>
 </template>
 
@@ -250,6 +250,9 @@ export default class DateRangeSlider extends Vue {
   background: rgba(0, 0, 0, 0.3) !important;
   opacity: 0.25;
 }
+div.noUi-pips.noUi-pips-horizontal {
+  height: 50px;
+}
 .noUi-pips-horizontal {
   margin-top: -33px;
   font-size: x-small;
@@ -296,5 +299,8 @@ export default class DateRangeSlider extends Vue {
 }
 .noUi-base {
   color: rgba(0, 0, 0, 0.87);
+}
+.date-range-slider__div--margin {
+  margin-right: 5px;
 }
 </style>
