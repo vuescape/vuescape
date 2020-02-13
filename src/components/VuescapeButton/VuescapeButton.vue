@@ -17,6 +17,10 @@ export default class VuescapeButton extends Vue {
 </script>
 
 <style>
+/* turn off min-width for all buttons because buttons are too large by default */
+.v-btn {
+  min-width: 0;
+}
 .vuescape-button__v-btn--style {
   margin-bottom: 0;
   font-size: 11px;
