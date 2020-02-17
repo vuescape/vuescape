@@ -263,12 +263,12 @@ i.material-icons {
   }
 }
 .el-loading-spinner .el-loading-text {
-  color: #5f6768!important;
+  color: #5f6768 !important;
 }
-.el-loading-spinner .path{
-stroke: #5f6768!important;;
+.el-loading-spinner .path {
+  stroke: #5f6768 !important;
 }
-.v-toolbar__items { 
+.v-toolbar__items {
   font-size: 13px;
 }
 </style>
