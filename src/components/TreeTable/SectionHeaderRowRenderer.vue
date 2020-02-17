@@ -14,7 +14,7 @@
         <font-awesome-icon
           v-if="rowToDisplay.isExpanded"
           class="section-header-row-renderer__icon"
-          :icon="['fal', 'chevron-up']"
+          :icon="['fal', 'chevron-down']"
         />
         <!-- <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i> -->
         <font-awesome-icon

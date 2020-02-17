@@ -10,7 +10,7 @@
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
       <span v-if="index === 0 && rowToDisplay.isExpandable">
-        <font-awesome-icon v-if="rowToDisplay.isExpanded" class="data-row-renderer__icon" :icon="['fal', 'chevron-up']" />
+        <font-awesome-icon v-if="rowToDisplay.isExpanded" class="data-row-renderer__icon" :icon="['fal', 'chevron-down']" />
         <!-- <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i> -->
         <font-awesome-icon v-if="!rowToDisplay.isExpanded" class="data-row-renderer__icon" :icon="['fal', 'chevron-right']" />
         <!-- <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i> -->
