@@ -60,3 +60,10 @@ export default class ItemSelect extends Vue {
   }
 }
 </script>
+
+<style>
+/* To size font awesome svg icon in the apped slot */
+.v-input__append-inner .v-input__icon--append svg.v-icon {
+  font-size: 13px;
+}
+</style>

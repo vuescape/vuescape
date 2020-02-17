@@ -10,7 +10,6 @@ import { RootState } from '@vuescape/store/RootState'
 import { Dictionary } from '@vuescape/types'
 
 import 'element-theme-chalk/lib/loading.css'
-import 'material-design-icons-iconfont/dist/material-design-icons.scss'
 import 'vue-resize/dist/vue-resize.css'
 import { ErrorHandler } from 'vue-router/types/router'
 
@@ -19,6 +18,7 @@ import Vuetify from 'vuetify/lib'
 import 'vuetify/src/stylus/app.styl'
 
 export class ApplicationBootstrapper {
+  private iconfont: string
   private vuetifyTheme = {}
   private errorHandler: ErrorHandler
   private storeModules = {}
@@ -95,6 +95,11 @@ export class ApplicationBootstrapper {
     return this
   }
 
+  public withIconfont(iconFont: string) {
+    this.iconfont = iconFont
+    return this
+  }
+
   public withTheme(theme: Partial<VuetifyTheme>) {
     this.vuetifyTheme = theme
     return this
@@ -120,7 +125,11 @@ export class ApplicationBootstrapper {
     Vue.use(VueResize)
     Vue.use(ElLoading)
 
-    Vue.use(Vuetify, { theme: this.vuetifyTheme })
+    const vuetifyOptions: any = { theme: this.vuetifyTheme }
+    if (this.iconfont) {
+      vuetifyOptions.iconfont = this.iconfont
+    }
+    Vue.use(Vuetify, vuetifyOptions)
 
     try {
       Vue.config.errorHandler = this.errorHandler || this.defaultErrorHandler

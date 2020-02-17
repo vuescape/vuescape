@@ -1,7 +1,10 @@
 <template>
   <v-btn @click="$emit('click', $event)" small outline depressed color="primary" class="vuescape-button__v-btn--style"
-    ><v-icon v-if="icons" class="vuescape-button__v-icon--font">{{ icons }}</v-icon
-    ><slot></slot
+    >
+    <font-awesome-icon :icon="icons" class="vuescape-button__v-icon--font" :style="{ color: '#555'}" />
+
+    <!-- <v-icon v-if="icons" class="vuescape-button__v-icon--font">{{ icons }}</v-icon> -->
+    <slot></slot
   ></v-btn>
 </template>
 
@@ -11,8 +14,8 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class VuescapeButton extends Vue {
-  @Prop({ type: String })
-  private icons: string
+  @Prop({ type: Array })
+  private icons: Array<string>
 }
 </script>
 
@@ -30,6 +33,10 @@ export default class VuescapeButton extends Vue {
   height: 26px;
 }
 .vuescape-button__v-icon--font {
-  font-size: 14px;
+  font-size: 18px;
+  /* margin-top: -1px; */
 }
+/* button.vuescape-button__v-btn--style .v-btn__content svg {
+
+} */
 </style>

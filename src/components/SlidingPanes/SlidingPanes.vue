@@ -15,8 +15,12 @@ import { SlidingPaneConfig } from './SlidingPaneConfig'
 
 import { EventType } from './EventType'
 
+import CloseIcon from 'mdi-vue/Close.vue'
+import FullscreenIcon from 'mdi-vue/Fullscreen.vue'
+import FullscreenExitIcon from 'mdi-vue/FullscreenExit.vue'
+
 @Component({
-  components: { Splitpanes },
+  components: { CloseIcon, FullscreenIcon, FullscreenExitIcon, Splitpanes },
 })
 export default class SlidingPanes extends ComponentBase {
   // Amount to adjust height (e.g. accounting for header & footer)
@@ -296,12 +300,9 @@ export default class SlidingPanes extends ComponentBase {
   private createHeaderButtons(h: CreateElement, index: number) {
     const links = []
     if (this.slidingPaneConfig[index].shouldShowMaximize) {
-      const maximizeRestoreIconName: string = this.panes[index].width === 100 ? 'fullscreen_exit' : 'fullscreen'
-      const maximizeRestoreIcon = h(
-        'i',
-        { class: ['material-icons', 'sliding-panes__material-icons--large'] },
-        maximizeRestoreIconName,
-      )
+      const maximizeRestoreIcon = h(this.panes[index].width === 100 ? 'fullscreen-exit-icon' : 'fullscreen-icon')
+      const iconWrapper = h('span', { class: ['sliding-panes__material-icons--large'] }, [maximizeRestoreIcon])
+
       links.push(
         h(
           'a',
@@ -312,13 +313,14 @@ export default class SlidingPanes extends ComponentBase {
               },
             },
           },
-          [maximizeRestoreIcon],
+          [iconWrapper],
         ),
       )
     }
 
     if (this.slidingPaneConfig[index].shouldShowClose) {
-      const icon = h('i', { class: ['material-icons', 'sliding-panes__material-icons--large'] }, 'close')
+      const icon = h('close-icon')
+      const iconWrapper = h('span', { class: ['sliding-panes__material-icons--large'] }, [icon])
       links.push(
         h(
           'a',
@@ -329,7 +331,7 @@ export default class SlidingPanes extends ComponentBase {
               },
             },
           },
-          [icon],
+          [iconWrapper],
         ),
       )
     }
@@ -479,7 +481,7 @@ export default class SlidingPanes extends ComponentBase {
 .splitpanes--vertical > .splitpanes__splitter {
   background-color: #dddddd !important;
 }
-i.sliding-panes__material-icons--large {
+.sliding-panes__material-icons--large {
   margin-top: 6px;
   margin-right: 6px;
   font-size: 24px;

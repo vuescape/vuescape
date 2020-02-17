@@ -9,8 +9,16 @@
           :class="{ 'v-btn--active': isSubItemActive(menu.path), 'navigation-menu__v-btn--style': true }"
           :disabled="isSiteInMaintenanceMode"
         >
-          <v-icon v-if="menu.icon" small color="#555" class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon
-          >&nbsp;{{ menu.title }} &nbsp;
+          <!-- <font-awesome-icon v-if="menu.icon" :icon="menu.icon.split(' ')" class="navigation-menu__v-icon--layout" :style="{ color: '#555' }" /> -->
+          <font-awesome-icon
+            v-if="menu.icon"
+            :icon="getIconArray(menu.icon)"
+            class="navigation-menu__v-icon--layout"
+            :style="{ color: '#555' }"
+          />
+
+          <!-- <v-icon v-if="menu.icon" small color="#555" class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon> -->
+          &nbsp;{{ menu.title }} &nbsp;
           <v-icon v-if="menu.icon" small color="#555" class="navigation-menu__v-icon--dropdown"
             >fas fa-caret-down</v-icon
           ></v-btn
@@ -36,7 +44,13 @@
         :to="{ path: menu.path }"
         :disabled="isSiteInMaintenanceMode"
       >
-        <v-icon v-if="menu.icon" small class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon>
+        <font-awesome-icon
+          class="navigation-menu__v-icon--layout"
+          v-if="menu.icon"
+          :style="{ color: '#555' }"
+          :icon="getIconArray(menu.icon)"
+        />
+        <!-- <v-icon v-if="menu.icon" small class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon> -->
         &nbsp;{{ menu.title }}
       </v-btn>
     </v-toolbar-items>
@@ -51,7 +65,12 @@
         :disabled="isSiteInMaintenanceMode"
         @click.prevent="redirectAndSignOut"
       >
-        <v-icon small class="navigation-menu__v-icon--layout">fas fa-sign-out-alt</v-icon>
+        <font-awesome-icon
+          class="navigation-menu__v-icon--layout"
+          :style="{ color: '#555' }"
+          :icon="['fa', 'sign-out-alt']"
+        />
+        <!-- <v-icon small class="navigation-menu__v-icon--layout">fad sign-out-alt</v-icon> -->
         &nbsp;Sign Out
       </v-btn>
     </v-toolbar-items>
@@ -141,6 +160,11 @@ export default class NavigationMenu extends Vue {
     return isInPath
   }
 
+  private getIconArray(iconString: string) {
+    const iconArray = iconString.split(' ')
+    return iconArray
+  }
+
   private closeHelp() {
     this.shouldShowHelp = false
   }
@@ -161,8 +185,8 @@ i.v-icon {
   font-weight: normal;
 }
 .navigation-menu__v-icon--dropdown {
-  font-size: 10px!important;
-  margin-top: 4px!important;
+  font-size: 10px !important;
+  margin-top: 4px !important;
 }
 .navigation-menu__v-list-tile--font a div {
   font-size: 13px;

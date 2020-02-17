@@ -10,8 +10,10 @@
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
       <span v-if="index === 0 && rowToDisplay.isExpandable">
-        <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i>
-        <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i>
+        <font-awesome-icon v-if="rowToDisplay.isExpanded" class="data-row-renderer__icon" :icon="['fal', 'chevron-up']" />
+        <!-- <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i> -->
+        <font-awesome-icon v-if="!rowToDisplay.isExpanded" class="data-row-renderer__icon" :icon="['fal', 'chevron-right']" />
+        <!-- <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i> -->
         <cell-renderer :key="rowToDisplay.id" :cell="cell"></cell-renderer>
       </span>
       <span v-else>
@@ -65,8 +67,12 @@ export default class DataRowRenderer extends ComponentBase {
 }
 </script>
 
-<style scoped>
-.material-icons {
-  margin-left: -7px;
+<style>
+.data-row-renderer__icon {
+  /* color: rgba(0, 0, 0, 0.87); */
+  margin-right: 4px;
+  margin-bottom: 1px;
+  font-size: 9px;
+  width: 0.875em!important;
 }
 </style>
