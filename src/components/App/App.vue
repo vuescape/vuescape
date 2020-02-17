@@ -1,15 +1,11 @@
 <template>
   <div>
+    <resize-observer @notify="handleResize"></resize-observer>
     <v-app>
       <transition name="app__component--transition" mode="out-in">
         <the-header ref="theHeader"></the-header>
       </transition>
       <v-content class="app__content--height">
-        <resize-observer
-          ref="contentResizeObserver"
-          id="contentResizeObserver"
-          @notify="handleResize"
-        ></resize-observer>
         <div class="app__container--scroll" ref="appContainer">
           <v-container fluid>
             <v-alert
