@@ -63,9 +63,6 @@ export default class SlidingPanes extends ComponentBase {
     }
   })
 
-  // Height of panes.  Gets set dynamically on resize.
-  private height = 100
-
   private resizeTimer: any
 
   // Saved vuex watchers so we can destroy watchers when component is destroyed
@@ -144,7 +141,7 @@ export default class SlidingPanes extends ComponentBase {
 
   //#region render functions
   public render(h: CreateElement) {
-    const rootNode = h('div', [this.createResizeObserver(h), this.createSplitPanes(h)])
+    const rootNode = h('div', [this.createSplitPanes(h)])
 
     // After creating root node hide unnecessary splitters
     this.setSplitterDisplays()
@@ -194,18 +191,6 @@ export default class SlidingPanes extends ComponentBase {
     })
   }
 
-  // Watch for resize events so we can adjust the height of the panes
-  private createResizeObserver(h: CreateElement) {
-    const self = this
-    return h('resize-observer', {
-      on: {
-        notify(event: any) {
-          self.handleResize()
-        },
-      },
-    })
-  }
-
   private createSplitPanes(h: CreateElement) {
     const self = this
     const splitpanes = h(
@@ -240,7 +225,7 @@ export default class SlidingPanes extends ComponentBase {
     )
 
     // Wrap the splitpanes and set the div to the correct height to allow 100% to fill parent div
-    const wrapperDiv = h('div', { style: { height: `${this.height}px` } }, [splitpanes])
+    const wrapperDiv = h('div', { style: { height: '100%' } }, [splitpanes])
     return wrapperDiv
   }
 
@@ -372,13 +357,6 @@ export default class SlidingPanes extends ComponentBase {
     }
   }
 
-  private getMainHeight() {
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-    const mainHeight = windowHeight - this.windowHeightAdjustmentPx
-    console.log('mainheight = ' + mainHeight)
-    return mainHeight
-  }
-
   private async created() {
     const self = this
     // Set up all the Vuex watchers. Save for later so we can destroy
@@ -415,24 +393,10 @@ export default class SlidingPanes extends ComponentBase {
     this.vuexWatchers.forEach(watcher => watcher())
   }
 
-  private async mounted() {
-    this.height = this.getMainHeight()
-    await this.handleResize()
-  }
-
-  private async handleResize() {
-    // TODO: Use vuex?
-    const newheight = this.getMainHeight()
-    if (newheight !== this.height) {
-      this.height = newheight
-    }
-  }
-
   private async onResize(event: Array<{ width: number }>) {
     const self = this
     if (!self.resizeTimer) {
       this.resizeTimer = setTimeout(() => {
-        console.info('resize fired')
         self.setAvailableHeight([self.availableHeight[0]])
 
         self.resizeTimer = undefined
@@ -472,7 +436,8 @@ export default class SlidingPanes extends ComponentBase {
 </script>
 <style>
 .splitpanes__pane {
-  overflow-y: auto !important;
+  /* setting height to 100% so since resize should happen outside of pane no need to scroll */
+  overflow-y: hidden !important;
   overflow-x: auto !important;
 }
 .splitpanes.default-theme .splitpanes__pane {
