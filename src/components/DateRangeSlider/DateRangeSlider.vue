@@ -169,6 +169,14 @@ export default class DateRangeSlider extends Vue {
     }
 
     this.slider.noUiSlider.set(this.startingHandlePositions)
+
+    const pipsScale = document.querySelector('div.noUi-pips.noUi-pips-horizontal')
+    if (pipsScale) {
+      const lastPipMarker = document.createElement('div')
+      lastPipMarker.setAttribute('class', 'noUi-marker noUi-marker-horizontal noUi-marker-large')
+      lastPipMarker.setAttribute('style', 'left: 100%;')
+      pipsScale.appendChild(lastPipMarker)
+    }
   }
 
   private onSliderChanged(values: any, handle: any, unencoded: any, tap: any, positions: any) {
