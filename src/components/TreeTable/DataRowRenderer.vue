@@ -30,7 +30,6 @@ import { Prop } from 'vue-property-decorator'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import TreeTable from '.'
-import { TreeTableHeaderRow } from './TreeTableHeaderRow'
 import { TreeTableItem } from './TreeTableItem'
 import { TreeTableRow } from './TreeTableRow'
 

@@ -13,6 +13,14 @@
         <tr>
           <th v-for="header in headersToDisplay" :class="header.cssClasses" :key="header.id" :colspan="header.colspan">
             {{ header.text }}
+            <span v-if="header.isSortable" @click="toggleSort(header)"
+              >&nbsp;
+              <font-awesome-icon
+                :icon="getIconArray(header.sortDirection)"
+                class=""
+                style="color: #FFF; font-size: 16px; vertical-align: middle; cursor: hand;"
+              />
+            </span>
           </th>
         </tr>
       </template>
@@ -30,7 +38,8 @@ import VueScrollingTable from 'vue-scrolling-table'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import RowRenderer from './RowRenderer.vue'
-import { TreeTableHeaderRow } from './TreeTableHeaderRow'
+import { SortDirection } from './SortDirection'
+import { TreeTableHeaderItem } from './TreeTableHeaderItem'
 import { TreeTableItem } from './TreeTableItem'
 import { TreeTableRow } from './TreeTableRow'
 
@@ -39,11 +48,9 @@ import { TreeTableRow } from './TreeTableRow'
 })
 export default class TreeTable extends ComponentBase {
   @Prop({ type: Array, required: true })
-  private headers: Array<TreeTableHeaderRow>
-
+  private headers: Array<TreeTableHeaderItem>
   @Prop({ type: Array, required: true })
   private rows: Array<TreeTableRow>
-
   @Prop({ type: Boolean, required: false, default: true })
   private scrollVertical: boolean
   @Prop({ type: Boolean, required: false, default: true })
@@ -62,6 +69,13 @@ export default class TreeTable extends ComponentBase {
   private maxRows: number
   @Prop({ type: String, required: false, default: '' })
   private cssStyle: string
+  @Prop({ type: Function, required: false })
+  private propertySortFactory?: (
+    propertyName: string,
+    sortDirection: SortDirection,
+  ) => (left: any, right: any) => -1 | 0 | 1
+  
+  private rowsToDisplay: Array<TreeTableRow> = []
 
   private get cssStyleValue() {
     return this.cssStyle
@@ -70,6 +84,33 @@ export default class TreeTable extends ComponentBase {
   @Watch('rows')
   private rowsWatcher(val: Array<TreeTableRow>, oldVal: Array<TreeTableRow>) {
     this.rows = val
+    this.setRowsToDisplay()
+  }
+
+  private getIconArray(sortDirection: SortDirection = SortDirection.None) {
+    if (sortDirection === SortDirection.None) {
+      return ['fad', 'sort']
+    }
+    if (sortDirection === SortDirection.Ascending) {
+      return ['fad', 'sort-up']
+    }
+    if (sortDirection === SortDirection.Descending) {
+      return ['fad', 'sort-down']
+    }
+  }
+
+  private toggleSort(header: TreeTableHeaderItem) {
+    let newSortDirection = SortDirection.Ascending
+    if (header.sortDirection === undefined || header.sortDirection === SortDirection.None) {
+      newSortDirection = SortDirection.Ascending
+    } else if (header.sortDirection === SortDirection.Ascending || header.sortDirection === SortDirection.Descending) {
+      newSortDirection = header.sortDirection * -1
+    } else {
+      throw new Error('Unsupported SortDirection: ' + header.sortDirection)
+    }
+    this.headers.forEach(_ => (_.sortDirection = SortDirection.None))
+    header.sortDirection = newSortDirection
+    this.setRowsToDisplay()
   }
 
   private toggleExpanded(row?: TreeTableRow) {
@@ -90,8 +131,18 @@ export default class TreeTable extends ComponentBase {
     return this.headers
   }
 
-  private get rowsToDisplay() {
-    return this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
+  private setRowsToDisplay() {
+    const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
+    if (this.propertySortFactory) {
+      const sortHeader = this.headers.filter(_ => _.isSortable && _.sortDirection)
+      if (sortHeader.length > 0) {
+        this.rowsToDisplay = rows.sort(
+          this.propertySortFactory(sortHeader[0].sortProperty!, sortHeader[0].sortDirection!),
+        )
+        return
+      }
+    }
+    this.rowsToDisplay = rows
   }
 }
 // https://stackoverflow.com/questions/41882616/why-border-is-not-visible-with-position-sticky-when-background-color-exists
