@@ -1,41 +1,17 @@
 <template>
   <div>
-    <v-btn
-      :disabled="isButtonDisabled"
-      Depressed
-      @click="click"
-      :color="color"
-      :data="data"
-    >
+    <vuescape-button :icons="icons" :disabled="isButtonDisabled" Depressed @click="click" :color="color" :data="data">
       <slot>
         Download CSV
       </slot>
-    </v-btn>
-    <v-snackbar
-      :timeout="10000"
-      bottom
-      right
-      v-model="shouldShowDownloadCompleted"
-    >
-      <v-icon dark>check_circle</v-icon>&nbsp;&nbsp; Your file is downloading.
-      <v-btn
-        flat
-        color="primary"
-        @click="shouldShowDownloadCompleted = false"
-      >Close</v-btn>
+    </vuescape-button>
+    <v-snackbar color="primary" :timeout="10000" bottom right v-model="shouldShowDownloadCompleted">
+      <font-awesome-icon :icon="['fad', 'check-circle']"></font-awesome-icon>&nbsp;&nbsp; Your file is downloading
+      <v-btn flat color="primary" @click="shouldShowDownloadCompleted = false">Close</v-btn>
     </v-snackbar>
-    <v-snackbar
-      :timeout="10000"
-      :bottom="true"
-      :right="true"
-      v-model="shouldShowDownloadCsvMessage"
-    >
+    <v-snackbar :timeout="10000" :bottom="true" :right="true" v-model="shouldShowDownloadCsvMessage">
       Your file is being prepared for download.
-      <v-btn
-        flat
-        color="primary"
-        @click="shouldShowDownloadCsvMessage = false"
-      >Close</v-btn>
+      <v-btn flat color="primary" @click="shouldShowDownloadCsvMessage = false">Close</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -47,7 +23,12 @@ import { Action, State } from 'vuex-class'
 
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-@Component
+const VuescapeButton = () =>
+  import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
+
+@Component({
+  components: { VuescapeButton },
+})
 export default class DownloadFileButton extends Vue {
   @Prop({ default: false })
   private isBase64EncodedBinary: boolean
@@ -69,6 +50,8 @@ export default class DownloadFileButton extends Vue {
   private shouldShowDownloadCsvMessage: boolean
   @Prop({ default: 'download' })
   private filenamePrefix: string
+  @Prop({ type: Array, required: false })
+  private icons: Array<string>
 
   private isButtonDisabled = this.isDisabled
   private shouldShowDownloadCompleted = false
