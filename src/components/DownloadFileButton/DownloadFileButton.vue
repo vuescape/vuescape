@@ -17,11 +17,12 @@
 </template>
 
 <script lang="ts">
-import FileSaver from 'file-saver'
 import Vue from 'vue'
 import { Action, State } from 'vuex-class'
 
 import { Component, Prop, Watch } from 'vue-property-decorator'
+
+import { downloadFile } from '@vuescape/infrastructure'
 
 const VuescapeButton = () =>
   import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
@@ -77,26 +78,14 @@ export default class DownloadFileButton extends Vue {
     // If not uses Vuex and updating data in the onClick function then will need
     // to call nextTick to allow changes to the data property to propagate.
     await this.$nextTick()
-    if (this.data) {
-      let downloadedData: Uint8Array | string = this.data + '\n\n'
-      if (this.isBase64EncodedBinary) {
-        const byteCharacters = atob(this.data)
-        const byteNumbers = new Array(byteCharacters.length)
-        for (let i = 0; i < byteCharacters.length; i++) {
-          byteNumbers[i] = byteCharacters.charCodeAt(i)
-        }
-        const byteArray = new Uint8Array(byteNumbers)
-        downloadedData = new Uint8Array(byteArray)
-      }
-      const blob = new Blob([downloadedData], { type: 'application/octet-stream; charset=utf-8' })
-      FileSaver.saveAs(blob, this.createFilename())
 
-      if (this.shouldShowCompletedMessage) {
-        const component = this
-        setTimeout(() => {
-          component.shouldShowDownloadCompleted = true
-        }, 200)
-      }
+    downloadFile(this.data, this.isBase64EncodedBinary, this.createFilename())
+
+    if (this.shouldShowCompletedMessage) {
+      const component = this
+      setTimeout(() => {
+        component.shouldShowDownloadCompleted = true
+      }, 200)
     }
   }
 }
