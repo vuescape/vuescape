@@ -230,7 +230,7 @@ export default class DateRangeSlider extends Vue {
 .noUi-value {
   font-weight: 400;
   font-size: 12px;
-  margin-top: -5px !important;
+  margin-top: -7px !important;
   color: rgba(0, 0, 0, 0.87) !important;
 }
 .noUi-horizontal {
