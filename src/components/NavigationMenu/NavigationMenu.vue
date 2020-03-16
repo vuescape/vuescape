@@ -178,6 +178,11 @@ export default class NavigationMenu extends Vue {
 </script>
 
 <style>
+div.navigation-menu__v-list--alignment a.v-list__tile {
+  height: 36px;
+  max-height: 36px;
+}
+
 i.v-icon {
   font-weight: normal;
 }
