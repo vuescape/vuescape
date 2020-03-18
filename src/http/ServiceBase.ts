@@ -16,7 +16,7 @@ export class ServiceBase<T> {
     baseUrl?: string,
     shouldUseCache?: boolean,
     asyncAction?: (httpMethod: HttpMethod, endPoint: string, baseUrl?: string) => AsyncAction<T> | HttpAsyncAction<T>,
-    restPayloadStrategy? : RestPayloadStrategy,
+    restPayloadStrategy?: RestPayloadStrategy,
   ) {
     this.baseUrl = baseUrl
     this.endpoint = endpoint
@@ -26,7 +26,9 @@ export class ServiceBase<T> {
   }
 
   protected createAction(httpMethod: HttpMethod) {
-    const action = usingRetryFor(makeHttpAsyncAction<T>(httpMethod, this.endpoint, this.baseUrl, this.shouldUseCache))
+    const action = usingRetryFor(
+      makeHttpAsyncAction<T>(httpMethod, this.endpoint, this.baseUrl, this.shouldUseCache, this.restPayloadStrategy),
+    )
     return action as AsyncAction<T> | HttpAsyncAction<T>
   }
 }
