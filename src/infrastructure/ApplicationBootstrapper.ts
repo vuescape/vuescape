@@ -21,7 +21,7 @@ import 'vuetify/src/stylus/app.styl'
 
 export class ApplicationBootstrapper {
   private iconfont: string
-  private iconLoader: () => void
+  private iconLoaders: Array<() => void>
   private vuetifyTheme = {}
   private errorHandler: ErrorHandler
   private storeModules = {}
@@ -103,8 +103,8 @@ export class ApplicationBootstrapper {
     return this
   }
 
-  public withIconLoader(iconLoader : () => void) {
-    this.iconLoader = iconLoader
+  public withIconLoaders(...iconLoaders : Array<() => void>) {
+    this.iconLoaders = iconLoaders
     return this
   }
 
@@ -133,8 +133,8 @@ export class ApplicationBootstrapper {
     Vue.use(VueResize)
     Vue.use(ElLoading)
 
-    if (this.iconLoader) {
-      this.iconLoader()
+    if (this.iconLoaders && this.iconLoaders.length) {
+      this.iconLoaders.forEach(loadIcons => loadIcons())
     }
     const vuetifyOptions: any = { theme: this.vuetifyTheme }
     if (this.iconfont) {
