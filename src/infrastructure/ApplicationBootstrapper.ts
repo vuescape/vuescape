@@ -3,6 +3,8 @@ import Vue, { VueConstructor } from 'vue'
 import VueRouter from 'vue-router'
 import { Store } from 'vuex'
 
+import defaultIconFont from './IconLoader'
+
 import { Axios, CacheOptions } from '@vuescape/http'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
@@ -19,6 +21,7 @@ import 'vuetify/src/stylus/app.styl'
 
 export class ApplicationBootstrapper {
   private iconfont: string
+  private iconLoader: () => void
   private vuetifyTheme = {}
   private errorHandler: ErrorHandler
   private storeModules = {}
@@ -100,6 +103,11 @@ export class ApplicationBootstrapper {
     return this
   }
 
+  public withIconLoader(iconLoader : () => void) {
+    this.iconLoader = iconLoader
+    return this
+  }
+
   public withTheme(theme: Partial<VuetifyTheme>) {
     this.vuetifyTheme = theme
     return this
@@ -125,9 +133,14 @@ export class ApplicationBootstrapper {
     Vue.use(VueResize)
     Vue.use(ElLoading)
 
+    if (this.iconLoader) {
+      this.iconLoader()
+    }
     const vuetifyOptions: any = { theme: this.vuetifyTheme }
     if (this.iconfont) {
       vuetifyOptions.iconfont = this.iconfont
+    } else {
+      vuetifyOptions.iconfont = defaultIconFont
     }
     Vue.use(Vuetify, vuetifyOptions)
 
