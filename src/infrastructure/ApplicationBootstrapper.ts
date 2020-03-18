@@ -3,8 +3,6 @@ import Vue, { VueConstructor } from 'vue'
 import VueRouter from 'vue-router'
 import { Store } from 'vuex'
 
-import defaultIconFont from './IconLoader'
-
 import { Axios, CacheOptions } from '@vuescape/http'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
@@ -140,7 +138,7 @@ export class ApplicationBootstrapper {
     if (this.iconfont) {
       vuetifyOptions.iconfont = this.iconfont
     } else {
-      vuetifyOptions.iconfont = defaultIconFont
+      vuetifyOptions.iconfont = 'faSvg'
     }
     Vue.use(Vuetify, vuetifyOptions)
 

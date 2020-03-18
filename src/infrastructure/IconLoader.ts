@@ -50,6 +50,3 @@ export function loadIcons() {
 
   dom.watch()
 }
-
-
-export default 'faSvg'
