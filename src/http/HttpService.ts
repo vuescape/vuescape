@@ -33,8 +33,8 @@ export class HttpService {
   public get<T>(endpoint: string, args?: any): AxiosPromise<T> {
     let queryString = ''
     let formattedEndpoint = endpoint
-    const formattedArgs : any = JSON.parse(JSON.stringify(args))
-    if (formattedArgs) {
+    if (args) {
+      const formattedArgs: any = JSON.parse(JSON.stringify(args))
       if (
         // tslint:disable-next-line: no-bitwise
         (this.restPayloadStrategy & RestPayloadStrategy.Url) ===
@@ -43,8 +43,8 @@ export class HttpService {
         const keys = Object.keys(formattedArgs)
         for (const key of keys) {
           if (formattedEndpoint.includes(`{:${key}}`)) {
-            formattedEndpoint = formattedEndpoint.replace(`{:${key}}`, formattedArgs[key]) 
-            delete formattedArgs[key]           
+            formattedEndpoint = formattedEndpoint.replace(`{:${key}}`, formattedArgs[key])
+            delete formattedArgs[key]
           }
         }
       }
