@@ -1,4 +1,5 @@
 import { AsyncAction, HttpAsyncAction, HttpMethod } from '.'
+import { RestPayloadStrategy } from './RestPayloadStrategy'
 import { ServiceBase } from './ServiceBase'
 
 export class RestService<T> extends ServiceBase<T> {
@@ -7,8 +8,9 @@ export class RestService<T> extends ServiceBase<T> {
     baseUrl?: string,
     shouldUseCache?: boolean,
     asyncAction?: (httpMethod: HttpMethod, endPoint: string, baseUrl?: string) => AsyncAction<T> | HttpAsyncAction<T>,
+    restPayloadStrategy?: RestPayloadStrategy,
   ) {
-    super(endpoint, baseUrl, shouldUseCache, asyncAction)
+    super(endpoint, baseUrl, shouldUseCache, asyncAction, restPayloadStrategy)
     this.shouldUseCache = shouldUseCache || false
   }
 

@@ -5,16 +5,19 @@ import { Axios } from '.'
 import qs from 'qs'
 
 import { HttpMethod } from './HttpMethod'
+import { RestPayloadStrategy } from './RestPayloadStrategy'
 
 export class HttpService {
   private baseUrl = ''
   private shouldUseCache: boolean
+  private restPayloadStrategy: RestPayloadStrategy
 
-  public constructor(baseUrl?: string, shouldUseCache = false) {
+  public constructor(baseUrl?: string, shouldUseCache = false, restPayloadStrategy = RestPayloadStrategy.None) {
     if (baseUrl) {
       this.baseUrl = baseUrl
     }
     this.shouldUseCache = shouldUseCache
+    this.restPayloadStrategy = restPayloadStrategy
   }
 
   public invoke<T>(httpMethod: HttpMethod, endpoint: string, args?: {}) {
@@ -28,18 +31,42 @@ export class HttpService {
   }
 
   public get<T>(endpoint: string, args?: any): AxiosPromise<T> {
-    let formattedArgs = ''
+    let queryString = ''
+    let formattedEndpoint = endpoint
+    const formattedArgs : any = args
     if (args) {
-      formattedArgs = '?' + qs.stringify(args)
+      if (
+        // tslint:disable-next-line: no-bitwise
+        (this.restPayloadStrategy & RestPayloadStrategy.Url) ===
+        RestPayloadStrategy.Url
+      ) {
+        const keys = Object.keys(args)
+        for (const key of keys) {
+          if (formattedEndpoint.includes(`{:${key}}`)) {
+            formattedEndpoint = formattedEndpoint.replace(`{:${key}}`, args[key]) 
+            formattedArgs.delete(key)           
+          }
+        }
+      }
+
+      if (
+        this.restPayloadStrategy === RestPayloadStrategy.None ||
+        // tslint:disable-next-line: no-bitwise
+        (this.restPayloadStrategy & RestPayloadStrategy.QueryString) === RestPayloadStrategy.QueryString
+      ) {
+        queryString = '?' + qs.stringify(formattedArgs)
+      }
     }
+
     const axiosConfig = {
       baseURL: this.baseUrl,
       shouldCache: this.shouldUseCache,
     }
-    return Axios.instance.get<T>(endpoint + formattedArgs, axiosConfig)
+    return Axios.instance.get<T>(formattedEndpoint + queryString, axiosConfig)
   }
 
   public post<T>(endpoint: string, args?: any): AxiosPromise<T> {
+    // TODO: Handle
     const formattedArgs = qs.stringify(args)
     const axiosConfig = {
       baseURL: this.baseUrl,

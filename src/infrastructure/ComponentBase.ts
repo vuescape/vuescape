@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { Dictionary } from 'vuex'
 
-import { AsyncAction, HttpAsyncAction, HttpMethod, RestService } from '@vuescape/http'
+import { AsyncAction, HttpAsyncAction, HttpMethod, RestPayloadStrategy, RestService } from '@vuescape/http'
 import {
   IsEmptyFunction,
   makeStoreModule,
@@ -54,8 +54,10 @@ export default class ComponentBase extends Vue {
     mapper?: ValueMapper<T>,
     isEmpty?: IsEmptyFunction<T>,
     props?: P,
+    restPayloadStrategy = RestPayloadStrategy.QueryString,
   ) {
-    const service = (new RestService<T>(endpoint, baseUrl, shouldUseCache) as any)[httpMethod]()
+    const restService = new RestService<T>(endpoint, baseUrl, shouldUseCache, undefined, restPayloadStrategy) as any 
+    const service = restService[httpMethod]()
     const asyncActions = { [endpoint]: service }
     // TODO: Figure out type issue with initialValue and remove as any
     // Argument of type 'T' is not assignable to parameter of type 'AxiosResponse<T>'.
