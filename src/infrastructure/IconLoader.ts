@@ -28,25 +28,28 @@ import {
 import { faChevronDown, faChevronRight } from '@fortawesome/pro-light-svg-icons'
 import { faInfo } from '@fortawesome/pro-solid-svg-icons'
 
-library.add(
-  faCheckCircle,
-  faCloudDownloadAlt,
-  faSignOutAlt,
-  faChevronDown,
-  faChevronRight,
-  faFileDownload,
-  faCaretDown,
-  faMinus,
-  faPlus,
-  faFilePdf,
-  faFileImage,
-  faInfo,
-  faTable,
-  faSort,
-  faSortUp,
-  faSortDown,
-)
+export function loadIcons() {
+  library.add(
+    faCheckCircle,
+    faCloudDownloadAlt,
+    faSignOutAlt,
+    faChevronDown,
+    faChevronRight,
+    faFileDownload,
+    faCaretDown,
+    faMinus,
+    faPlus,
+    faFilePdf,
+    faFileImage,
+    faInfo,
+    faTable,
+    faSort,
+    faSortUp,
+    faSortDown,
+  )  
 
-dom.watch()
+  dom.watch()
+}
+
 
 export default 'faSvg'
