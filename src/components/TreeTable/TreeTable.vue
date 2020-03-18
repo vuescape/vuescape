@@ -74,7 +74,7 @@ export default class TreeTable extends ComponentBase {
     propertyName: string,
     sortDirection: SortDirection,
   ) => (left: any, right: any) => -1 | 0 | 1
-  
+
   private rowsToDisplay: Array<TreeTableRow> = []
 
   private get cssStyleValue() {
