@@ -162,6 +162,15 @@ export const presentationFormatMap: Dictionary<(value: any, places: number, empt
   mmcurrency: toMMCurrencyDisplay,
 }
 
+export const presentationFormatKindToSymbolMap = new Map<presentationFormatKind, string>([
+  ['currency', '$'],
+  ['percentage', '%'],
+  ['number', '#'],
+  ['ratio', '/'],
+  ['accounting', '$'],
+  ['mmcurrency', '$'],
+])
+
 export function round(value: number, places: number = 0) {
   let p = places || 0
   p = p < 0 ? 0 : p
