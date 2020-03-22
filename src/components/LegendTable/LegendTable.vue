@@ -53,8 +53,8 @@ export default class LegendTable extends Vue {}
 }
 .legend-table__font-awesome-icon--style {
   color: #bbbbbb;
-  font-size: 12px;
-  margin-right: -1px;
+  font-size: 14px;
+  margin-right: 0px;
 }
 
 .legend-table__v-btn--style {
