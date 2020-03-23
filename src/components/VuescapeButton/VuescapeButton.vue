@@ -1,9 +1,14 @@
 <template>
-  <v-btn @click="$emit('click', $event)" small outline depressed color="primary" class="vuescape-button__v-btn--style" :value="value"
-    >
-    <font-awesome-icon :icon="icons" class="vuescape-button__v-icon--font" :style="{ color: '#555'}" />
-
-    <!-- <v-icon v-if="icons" class="vuescape-button__v-icon--font">{{ icons }}</v-icon> -->
+  <v-btn
+    @click="$emit('click', $event)"
+    small
+    outline
+    depressed
+    color="primary"
+    class="vuescape-button__v-btn--style"
+    :value="value"
+  >
+    <font-awesome-icon :icon="icons" class="vuescape-button__v-icon--font" :style="{ color: '#555' }"/>
     <slot></slot
   ></v-btn>
 </template>
@@ -37,9 +42,5 @@ export default class VuescapeButton extends Vue {
 }
 .vuescape-button__v-icon--font {
   font-size: 15px;
-  /* margin-top: -1px; */
 }
-/* button.vuescape-button__v-btn--style .v-btn__content svg {
-
-} */
 </style>
