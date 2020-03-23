@@ -1,6 +1,7 @@
 // tslint:disable: member-ordering
 import Vue, { VueConstructor } from 'vue'
 import VueRouter from 'vue-router'
+import { ErrorHandler } from 'vue-router/types/router'
 import { Store } from 'vuex'
 
 import { Axios, CacheOptions } from '@vuescape/http'
@@ -9,9 +10,7 @@ import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
 import { RootState } from '@vuescape/store/RootState'
 import { Dictionary } from '@vuescape/types'
 
-import 'element-theme-chalk/lib/loading.css'
 import 'vue-resize/dist/vue-resize.css'
-import { ErrorHandler } from 'vue-router/types/router'
 
 import { VuetifyTheme } from 'vuetify'
 import Vuetify from 'vuetify/lib'
@@ -125,11 +124,8 @@ export class ApplicationBootstrapper {
     this.validate()
 
     const VueResize: any = (await import('vue-resize')).default
-    const ElLoading: any = (await import('element-loading')).default
-    // const Vuetify = (await import('vuetify')).default
 
     Vue.use(VueResize)
-    Vue.use(ElLoading)
 
     if (this.iconLoaders && this.iconLoaders.length) {
       this.iconLoaders.forEach(loadIcons => loadIcons())
