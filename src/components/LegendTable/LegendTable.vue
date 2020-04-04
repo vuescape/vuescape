@@ -15,13 +15,15 @@
       </template>
 
       <div class="legend-table__div--spaced">
-        <table class="legend-table__table--legend benchmarking">
-          <thead>
-            <tr>
-              <td>&nbsp;</td>
-              <td>Legend</td>
-            </tr>
-          </thead>
+        <table class="legend-table__table--legend">
+          <slot name="header">
+            <thead>
+              <tr>
+                <td>&nbsp;</td>
+                <td>Legend</td>
+              </tr>
+            </thead>
+          </slot>
           <tbody>
             <slot></slot>
           </tbody>
@@ -43,20 +45,11 @@ export default class LegendTable extends Vue {}
   background: white;
   padding: 10px;
 }
-.coscore__span--icon-button {
-  border: 1px solid #dddddd;
-  color: #dddddd;
-  border-radius: 5px;
-  height: 24px;
-  margin-top: 6px;
-  margin-right: 6px;
-}
 .legend-table__font-awesome-icon--style {
   color: #bbbbbb;
   font-size: 14px;
   margin-right: 0px;
 }
-
 .legend-table__v-btn--style {
   border: 1px solid #dddddd !important;
   border-radius: 5px;
@@ -67,7 +60,6 @@ export default class LegendTable extends Vue {}
   margin-top: 6px;
   margin-right: 6px;
 }
-
 table.legend-table__table--legend thead td {
   border: 0px;
   background-color: #16a5c6 !important;
