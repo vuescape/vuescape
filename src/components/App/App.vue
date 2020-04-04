@@ -104,6 +104,12 @@ export default class App extends ComponentBase {
 </script>
 
 <style>
+.v-tab { 
+  text-transform: none;
+}
+.v-btn {
+  text-transform: none;
+}
 .v-content {
   flex: unset;
 }
