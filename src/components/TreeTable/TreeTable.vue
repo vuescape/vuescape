@@ -10,17 +10,9 @@
       :class="{ freezeFirstColumn: freezeFirstColumn }"
     >
       <template slot="thead">
-        <tr>
-          <th v-for="header in headersToDisplay" :class="header.cssClasses" :key="header.id" :colspan="header.colspan">
-            {{ header.text }}
-            <span v-if="header.isSortable" @click="toggleSort(header)"
-              >&nbsp;
-              <font-awesome-icon
-                :icon="getIconArray(header.sortDirection)"
-                class=""
-                style="color: #FFF; font-size: 16px; vertical-align: middle; cursor: hand;"
-              />
-            </span>
+        <tr v-for="headerRow in headersToDisplay" :class="headerRow.cssClasses" :key="headerRow.id">
+          <th v-for="header in headerRow.items" :class="header.cssClasses" :key="header.id" :colspan="header.colspan">
+            <component :is="header.renderer || 'DefaultHeaderCellRenderer'" :header="header" @toggle-sort="toggleSort($event)"></component>
           </th>
         </tr>
       </template>
@@ -37,18 +29,20 @@ import VueScrollingTable from 'vue-scrolling-table'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
+import DefaultHeaderCellRenderer from './DefaultHeaderCellRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 import { SortDirection } from './SortDirection'
 import { TreeTableHeaderItem } from './TreeTableHeaderItem'
+import { TreeTableHeaderRow } from './TreeTableHeaderRow'
 import { TreeTableItem } from './TreeTableItem'
 import { TreeTableRow } from './TreeTableRow'
 
 @Component({
-  components: { RowRenderer, VueScrollingTable },
+  components: { DefaultHeaderCellRenderer, RowRenderer, VueScrollingTable },
 })
 export default class TreeTable extends ComponentBase {
   @Prop({ type: Array, required: true })
-  private headers: Array<TreeTableHeaderItem>
+  private headers: Array<TreeTableHeaderRow>
   @Prop({ type: Array, required: true })
   private rows: Array<TreeTableRow>
   @Prop({ type: Boolean, required: false, default: true })
@@ -87,17 +81,6 @@ export default class TreeTable extends ComponentBase {
     this.setRowsToDisplay()
   }
 
-  private getIconArray(sortDirection: SortDirection = SortDirection.None) {
-    if (sortDirection === SortDirection.None) {
-      return ['fad', 'sort']
-    }
-    if (sortDirection === SortDirection.Ascending) {
-      return ['fad', 'sort-up']
-    }
-    if (sortDirection === SortDirection.Descending) {
-      return ['fad', 'sort-down']
-    }
-  }
 
   private toggleSort(header: TreeTableHeaderItem) {
     let newSortDirection = SortDirection.Ascending
@@ -108,7 +91,7 @@ export default class TreeTable extends ComponentBase {
     } else {
       throw new Error('Unsupported SortDirection: ' + header.sortDirection)
     }
-    this.headers.forEach(_ => (_.sortDirection = SortDirection.None))
+    this.headers.forEach(_ => _.items.forEach(col => (col.sortDirection = SortDirection.None)))
     header.sortDirection = newSortDirection
     this.setRowsToDisplay()
   }
@@ -134,7 +117,7 @@ export default class TreeTable extends ComponentBase {
   private setRowsToDisplay() {
     const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
     if (this.propertySortFactory) {
-      const sortHeader = this.headers.filter(_ => _.isSortable && _.sortDirection)
+      const sortHeader = this.headers.flatMap(_ => _.items).filter(_ => _.isSortable && _.sortDirection)
       if (sortHeader.length > 0) {
         this.rowsToDisplay = rows.sort(
           this.propertySortFactory(sortHeader[0].sortProperty!, sortHeader[0].sortDirection!),
