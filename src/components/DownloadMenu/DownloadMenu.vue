@@ -48,6 +48,18 @@
           <v-list-tile-title>PDF</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
+      <v-list-tile v-if="shouldDisplayZip" @click="clickHandlers.clickZip">
+        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
+          <font-awesome-icon
+            :icon="['fad', 'file-archive']"
+            class="vuescape-button__v-icon--font"
+            :style="{ color: '#555' }"
+          />
+        </v-list-tile-action>
+        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
+          <v-list-tile-title>{{ zipText || 'Zip' }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
     </v-list>
   </v-menu>
 </template>
@@ -63,8 +75,12 @@ export default class DownloadMenu extends Vue {
   private shouldDisplayPdf: boolean
   @Prop({ type: Boolean, default: true })
   private shouldDisplayChart: boolean
+  @Prop({ type: Boolean, default: false })
+  private shouldDisplayZip: boolean
+  @Prop({ type: String, default: '' })
+  private zipText: string
   @Prop({ type: Object, required: true })
-  private clickHandlers: { clickChart?: () => void; clickCsv?: () => void; clickPdf?: () => void }
+  private clickHandlers: { clickChart?: () => void; clickCsv?: () => void; clickPdf?: () => void; clickZip?: () => void }
 }
 </script>
 
