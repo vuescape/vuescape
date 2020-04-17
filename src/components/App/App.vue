@@ -129,6 +129,9 @@ export default class App extends ComponentBase {
   padding: 0 !important;
   overflow: hidden;
 }
+.theme--light.application {
+  background-color: white;
+}
 .application {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
