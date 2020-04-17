@@ -3,7 +3,6 @@ import { RouteConfig } from 'vue-router'
 const route: RouteConfig = {
   path: '/site-maintenance',
   name: '/site-maintenance',
-  meta: { requiresAuth: false },
   component: () =>
     import(/* webpackChunkName: 'site-maintenance' */
     '@vuescape/components/SiteMaintenance').then(m => m.default),
