@@ -125,14 +125,14 @@ export default class App extends ComponentBase {
   margin-right: 0px;
   margin-left: 10px;
 }
-.container.fluid {
+div.container.fluid {
   padding: 0 !important;
   overflow: hidden;
 }
-.theme--light.application {
+div.theme--light.application {
   background-color: white;
 }
-.application {
+div.application {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .app__v-alert--margin {
@@ -162,7 +162,7 @@ export default class App extends ComponentBase {
 /* Set margin left so that container class does not cause page header to be indented.
    Vuetify seems to add a <div class="container"> when including a template
 */
-.container {
+div.container {
   margin-left: 0;
 }
 /* Vuetify Datatables are setting overflow which breaks keeping the main content within the viewport (and causes) scrolling so 
