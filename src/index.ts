@@ -1,5 +1,6 @@
 export * from './components'
 export * from './http'
 export * from './infrastructure'
+export * from './router'
 export * from './store'
 export * from './types'
