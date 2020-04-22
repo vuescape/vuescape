@@ -104,7 +104,7 @@ export default class App extends ComponentBase {
 </script>
 
 <style>
-.v-tab { 
+.v-tab {
   text-transform: none;
 }
 .v-btn {
@@ -237,9 +237,6 @@ table td.very-negative {
   color: darkred !important;
 }
 
-.el-loading-mask {
-  background-color: rgba(255, 255, 255, 0);
-}
 i.material-icons {
   font-size: 16px;
 }
@@ -267,11 +264,14 @@ i.material-icons {
     width: auto;
   }
 }
-.el-loading-spinner .el-loading-text {
-  color: #5f6768 !important;
+.app__container--scroll .el-loading-mask {
+  background-color: rgba(255, 255, 255, 0);
 }
-.el-loading-spinner .path {
-  stroke: #5f6768 !important;
+.app__container--scroll .el-loading-spinner .el-loading-text {
+  color: #5f6768;
+}
+.app__container--scroll .el-loading-spinner .path {
+  stroke: #5f6768;
 }
 .v-toolbar__items {
   font-size: 13px;
