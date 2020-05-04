@@ -29,6 +29,7 @@ export default class ComponentBase extends Vue {
     mapper?: ValueMapper<T>,
     isEmpty?: IsEmptyFunction<T>,
     props?: P,
+    shouldUseGlobalNotifications = true,
   ) {
     const moduleOptions = new StoreModuleOptions<T, P>({
       asyncActions,
@@ -37,7 +38,7 @@ export default class ComponentBase extends Vue {
       initialValue,
       props,
       spinnerDelay: 300,
-      shouldUseGlobalNotifications: true,
+      shouldUseGlobalNotifications,
       shouldUseGlobalSpinner: true,
     })
     const module = () => new StoreModule<T, ModuleState<T>, RootState>(moduleOptions)
