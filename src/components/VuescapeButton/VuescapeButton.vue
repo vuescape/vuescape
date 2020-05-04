@@ -8,7 +8,7 @@
     class="vuescape-button__v-btn--style"
     :value="value"
   >
-    <font-awesome-icon :icon="icons" class="vuescape-button__v-icon--font" :style="{ color: '#555' }"/>
+    <font-awesome-icon v-if="icons.length" :icon="icons" class="vuescape-button__v-icon--font" :style="{ color: '#555' }"/>
     <slot></slot
   ></v-btn>
 </template>
@@ -19,7 +19,7 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class VuescapeButton extends Vue {
-  @Prop({ type: Array })
+  @Prop({ type: Array, default: () => [] })
   private icons: Array<string>
 
   @Prop({ type: String })

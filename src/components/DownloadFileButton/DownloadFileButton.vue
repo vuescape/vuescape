@@ -51,7 +51,7 @@ export default class DownloadFileButton extends Vue {
   private shouldShowDownloadCsvMessage: boolean
   @Prop({ default: 'download' })
   private filenamePrefix: string
-  @Prop({ type: Array, required: false })
+  @Prop({ type: Array, required: false, default: () => [] })
   private icons: Array<string>
 
   private isButtonDisabled = this.isDisabled
