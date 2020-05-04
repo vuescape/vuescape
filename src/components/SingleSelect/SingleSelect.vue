@@ -1,7 +1,7 @@
 <template>
   <div ref="multiselectDiv" :id="id" style="display:inline-block;">
     <multiselect
-      :style="`--custom-font-size: ${customFontSize};`"
+      :style="`--custom-font-size: ${customFontSize}; --border-style: ${borderStyle}`"
       :placeholder="placeholderVal"
       :value="valueVal"
       :options="optionsVal"
@@ -54,6 +54,11 @@ export default class SingleSelect extends Vue {
   @Prop({ type: String, required: false, default: '' })
   private customFontSize: string
 
+  // Current default of '0' is no border
+  // Multiselect default is '1px solid #e8e8e8;'
+  @Prop({ type: String, required: false, default: '0' })
+  private borderStyle: string
+
   @Prop({ type: String, required: false, default: 'name' })
   private label: string
 
@@ -66,7 +71,7 @@ export default class SingleSelect extends Vue {
   @Prop({ type: Boolean, default: false })
   private shouldAllowEmpty: string
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: [Object, Number, String], required: true })
   private value: string
 
   @Prop({ type: Array, required: false, default: [] })
@@ -147,7 +152,7 @@ export default class SingleSelect extends Vue {
   color: unset;
 }
 .multiselect__tags {
-  border: 0;
+  border: var(--border-style);
 }
 .multiselect__single {
   font-size: var(--custom-font-size);
