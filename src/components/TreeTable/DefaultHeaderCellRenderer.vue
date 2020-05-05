@@ -26,11 +26,7 @@ export default class DefaultHeaderCellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private header: TreeTableHeaderItem
 
-  private get headerToDisplay() {
-    return this.header
-  }
-
-    private getIconArray(sortDirection: SortDirection = SortDirection.None) {
+  private getIconArray(sortDirection: SortDirection = SortDirection.None) {
     if (sortDirection === SortDirection.None) {
       return ['fad', 'sort']
     }
