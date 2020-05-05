@@ -310,5 +310,6 @@ div.noUi-pips.noUi-pips-horizontal {
 }
 .date-range-slider__div--margin {
   margin-right: 5px;
+  margin-left: 5px;
 }
 </style>
