@@ -22,7 +22,9 @@ import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { TreeTableRow } from './TreeTableRow'
 
-@Component({})
+@Component({
+  name: 'row-renderer',
+})
 export default class RowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
