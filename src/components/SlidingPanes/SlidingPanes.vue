@@ -201,6 +201,7 @@ export default class SlidingPanes extends ComponentBase {
         attrs: {
           'watch-slots': self.areSlotsReactive,
           'dbl-click-splitter': false,
+          'circularReferencePropertyExclusions': '_routerRoot',
           // 'push-other-panes': false
         },
         on: {
