@@ -48,10 +48,7 @@ export default class DataRowRenderer extends ComponentBase {
 
   private getCellClasses(cell: TreeTableItem, row: TreeTableRow, index: number) {
     const cssClasses = {} as any
-    cssClasses['tree-table-item__td--clickable'] =
-      index === 0
-        ? row.isExpandable && typeof cell.onclick === typeof Function
-        : typeof cell.onclick === typeof Function
+    cssClasses['tree-table-item__td--clickable'] = typeof cell.onclick === typeof Function 
     cssClasses['selected-metric'] = row.isSelected
     cssClasses['selected-metric-left'] = row.isSelected && index === 0
     cssClasses['selected-metric-interior'] = row.isSelected && index !== 0 && index !== row.items.length - 1
