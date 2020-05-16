@@ -245,13 +245,6 @@ table.scrolling {
   margin-right: auto;
   overflow: hidden;
 }
-/* @font-face {
-	font-family: FontAwesome;
-	src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff);
-}
-.fa {
-	font-family: FontAwesome;
-} */
 table.scrolling.scrollx tbody {
   overflow-x: auto !important;
 }

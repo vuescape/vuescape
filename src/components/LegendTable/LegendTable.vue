@@ -80,7 +80,7 @@ table.legend-table__table--legend tbody td {
 }
 table.legend-table__table--legend {
   border-collapse: collapse;
-  font-family: 'Segoe UI';
+  /* font-family: 'Segoe UI'; */
   padding: 10px;
 }
 table.legend-table__table--legend tr {
