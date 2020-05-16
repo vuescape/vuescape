@@ -132,8 +132,12 @@ div.container.fluid {
 div.theme--light.application {
   background-color: white;
 }
+.v-select__selections {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif!important;
+  font-size: 16.8px !important;
+}
 div.application {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .app__v-alert--margin {
   margin-top: 1em;
