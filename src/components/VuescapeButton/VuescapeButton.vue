@@ -6,24 +6,53 @@
     depressed
     color="primary"
     class="vuescape-button__v-btn--style"
+    :disabled="isButtonDisabled"
     :value="value"
   >
-    <font-awesome-icon v-if="icons.length" :icon="icons" class="vuescape-button__v-icon--font" :style="{ color: '#555' }"/>
-    <slot></slot
-  ></v-btn>
+    <font-awesome-icon
+      v-if="icons.length && iconPosition === 'before'"
+      :icon="icons"
+      class="vuescape-button__v-icon--font"
+      :style="isButtonDisabled ? { color: 'rgb(85, 85, 85, 0.26)' } : { color: 'rgb(85, 85, 85)' }"
+    />
+    <slot></slot>
+    <font-awesome-icon
+      v-if="icons.length && iconPosition === 'after'"
+      :icon="icons"
+      class="vuescape-button__v-icon--font"
+      :style="isButtonDisabled ? { color: 'rgb(85, 85, 85, 0.26)' } : { color: 'rgb(85, 85, 85)' }"
+    />
+  </v-btn>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component
 export default class VuescapeButton extends Vue {
+  private isButtonDisabled = false
+
   @Prop({ type: Array, default: () => [] })
   private icons: Array<string>
 
   @Prop({ type: String })
   private value: string
+
+  @Prop({ type: String, default: 'before' })
+  private iconPosition: 'before' | 'after'
+
+  @Prop({ type: Boolean, default: false })
+  private isDisabled: boolean
+
+  @Watch('isDisabled')
+  private isDisabledWatcher(val: boolean, oldVal: boolean) {
+    this.isButtonDisabled = val
+  }
+
+  private created() {
+    this.isButtonDisabled = this.isDisabled
+  }
 }
 </script>
 
