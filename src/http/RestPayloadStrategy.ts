@@ -4,4 +4,5 @@ export enum RestPayloadStrategy {
   Url = 2,
   PostJson = 4,
   PostFormEncoded = 8,
+  MultipartFormData = 16,
 }

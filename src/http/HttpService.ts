@@ -67,9 +67,13 @@ export class HttpService {
 
   public post<T>(endpoint: string, args?: any): AxiosPromise<T> {
     // TODO: Handle
-    const formattedArgs = qs.stringify(args)
+    let formattedArgs = qs.stringify(args) as any
     const axiosConfig = {
       baseURL: this.baseUrl,
+    } as any
+    if (this.restPayloadStrategy === RestPayloadStrategy.MultipartFormData) {
+      axiosConfig.headers = { 'Content-Type': 'multipart/form-data' }
+      formattedArgs = args
     }
     return Axios.instance.post<T>(endpoint, formattedArgs, axiosConfig)
   }
