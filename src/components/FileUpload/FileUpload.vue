@@ -86,7 +86,6 @@ export default class FileUpload extends Vue {
   }
 
   private dropFiles(e: any) {
-    debugger
     const droppedFiles = e.dataTransfer.files
     if (!droppedFiles) {
       return
