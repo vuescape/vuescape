@@ -1,6 +1,6 @@
 <template>
   <div class="step-wizard__stepper-box">
-    <div v-show="shouldShowProgressBar" class="top">
+    <div v-if="shouldShowProgressBarValue" class="top">
       <div class="steps-wrapper">
         <template v-if="shouldShowTopButtons">
           <div v-if="currentStepIndex > 0" class="stepper-button-top previous" @click="backStep()">
@@ -32,6 +32,7 @@
         </div>
       </div>
     </div>
+    <div v-else style="height: 63.66px;"></div>
     <div class="content">
       <transition :name="enterAnimation" mode="out-in">
         <!--If keep alive-->
@@ -59,24 +60,31 @@
       <!-- only-next -->
       <div class="stepper-button previous">
         <vuescape-button
-          :isDisabled="currentStepIndex == 0"
+          v-if="currentStepIndex !== 0"
           :icons="['fad', 'arrow-alt-circle-left']"
           :disabled="false"
           Depressed
           @click="backStep()"
         >
-          &nbsp;back
+          &nbsp;Back
+        </vuescape-button>
+        <span v-if="cancelRouteOrCallback" style="margin-top: 7px;">
+          <v-btn class="cancel" flat @click="cancel">Cancel</v-btn>
+          <!-- <a class="cancel" @click="cancel">Cancel</a> -->
+        </span>
+      </div>
+      <div class="stepper-button next">
+        <vuescape-button
+          :isDisabled="!canContinue"
+          :icons="isFinalStep ? [] : ['fad', 'arrow-alt-circle-right']"
+          Depressed
+          @click="nextStep()"
+          iconPosition="after"
+          :class="{ finalStep: isFinalStep }"
+        >
+          {{ isFinalStep ? finalStepButtonText : 'Next' }}&nbsp;
         </vuescape-button>
       </div>
-      <vuescape-button
-        :isDisabled="!canContinue"
-        :icons="['fad', 'arrow-alt-circle-right']"
-        Depressed
-        @click="nextStep()"
-        iconPosition="after"
-      >
-        {{ isFinalStep ? 'finish' : 'next' }}&nbsp;
-      </vuescape-button>
     </div>
   </div>
 </template>
@@ -97,20 +105,27 @@ export default class StepWizard extends Vue {
   private shouldShowTopButtons: boolean
   @Prop({ type: Boolean, default: true })
   private shouldShowProgressBar: boolean
+  @Prop({ type: String, default: 'Finish' })
+  private finalStepButtonText: boolean
   @Prop({ type: Array, required: false, default: () => [] })
-  private steps: Array<Step>
+  private wizardSteps: Array<Step>
+  @Prop({ type: [String, Function], required: false })
+  private cancelRouteOrCallback: any
+
+  private shouldShowProgressBarValue = true
 
   private currentStepIndex: number = 0
   private previousStepIndex: number = 0
   private nextButton: Array<boolean> = []
   private canContinue = false
+  private steps: Array<Step> = []
 
   private get isFinalStep() {
     if (!this.steps || this.steps.length === 0) {
       return false
     }
 
-    const result = this.steps.length === this.currentStepIndex
+    const result = this.steps.length === this.currentStepIndex + 1
     return result
   }
 
@@ -132,6 +147,18 @@ export default class StepWizard extends Vue {
     }
   }
 
+  @Watch('shouldShowProgressBar')
+  private onShouldShowProgressBarChanged(newValue: boolean, oldValue: boolean) {
+    this.shouldShowProgressBarValue = newValue
+  }
+
+  @Watch('wizardSteps')
+  private onStepsChanged(newValue: Array<Step>, oldValue: Array<Step>) {
+    this.canContinue = false
+    this.steps = newValue
+    this.activateStep(0)
+  }
+
   private getStepStatus(index: number, step: number) {
     if (this.currentStepIndex === index) {
       return 'activated'
@@ -151,6 +178,16 @@ export default class StepWizard extends Vue {
       }
     }
     this.$emit('active-step', this.currentStepIndex)
+  }
+
+  private cancel() {
+    if (this.cancelRouteOrCallback) {
+      if (typeof this.cancelRouteOrCallback === 'function') {
+        this.cancelRouteOrCallback()
+        return
+      }
+      this.$router.push(this.cancelRouteOrCallback)
+    }
   }
 
   private nextStepAction() {
@@ -198,8 +235,9 @@ export default class StepWizard extends Vue {
 
   private init() {
     // Initiate stepper
+    this.shouldShowProgressBarValue = this.shouldShowProgressBar
+    this.steps = this.wizardSteps
     this.activateStep(0)
-    this.steps.map((step: Step, index: number) => false)
   }
 
   private created() {
@@ -212,10 +250,12 @@ export default class StepWizard extends Vue {
 .v-btn {
   min-width: 0;
 }
-.step-wizard__animation-enter-active, .step-wizard__animation-leave-active {
-  transition: opacity .3s ease;
+.step-wizard__animation-enter-active,
+.step-wizard__animation-leave-active {
+  transition: opacity 0.3s ease;
 }
-.step-wizard__animation-enter, .step-wizard__animation-leave-to {
+.step-wizard__animation-enter,
+.step-wizard__animation-leave-to {
   opacity: 0;
 }
 /* .step-wizard__animation-slide-in {
@@ -225,8 +265,8 @@ export default class StepWizard extends Vue {
 */
 .step-wizard__animation-slide-out {
   transition: opacity 0.3s ease-out;
-} */
-.step-wizard__stepper-box {
+}
+*/ .step-wizard__stepper-box {
   background-color: white;
   /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
   min-height: 200px;
@@ -385,10 +425,9 @@ export default class StepWizard extends Vue {
   align-items: center;
   justify-content: space-between;
 }
-.step-wizard__stepper-box .bottom .stepper-button.next {
+/* .step-wizard__stepper-box .bottom .stepper-button.next {
   background-color: #16a5c6;
   color: white;
-  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
 }
 .step-wizard__stepper-box .bottom .stepper-button.next.deactivated {
   background-color: #ccc !important;
@@ -396,5 +435,43 @@ export default class StepWizard extends Vue {
 }
 .step-wizard__stepper-box .bottom .stepper-button.previous {
   color: #333;
+} */
+.step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
+  height: 40px;
+  font-size: 16px;
+}
+.step-wizard__stepper-box .bottom .cancel {
+  text-decoration: underline;
+  font-size: 16px;
+  height: 40px;
+}
+.step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
+  border-color: #ade3ef !important;
+  /*  background-color: #16a5c6 !important;
+  color: white !important; */
+}
+.step-wizard__stepper-box .bottom .next .vuescape-button__v-btn--style.v-btn--disabled {
+  color: unset !important;
+  background-color: unset !important;
+  /* border-color: #16a5c6 !important;
+  background-color: unset !important;
+  color: unset!important; */
+}
+.step-wizard__stepper-box .bottom .next .vuescape-button__v-btn--style {
+  border-color: #ade3ef !important;
+  background-color: #16a5c6 !important;
+  color: white !important;
+  /* background-color: unset !important;
+  color: unset!important; */
+}
+
+.step-wizard__stepper-box .bottom .vuescape-button__v-btn--style svg {
+  font-size: 20px;
+}
+.step-wizard__stepper-box .bottom .next .vuescape-button__v-btn--style svg[style] {
+  color: white !important;
+}
+.step-wizard__stepper-box .bottom .next .vuescape-button__v-btn--style.v-btn--disabled svg[style] {
+  color: unset !important;
 }
 </style>
