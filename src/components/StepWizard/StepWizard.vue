@@ -33,7 +33,7 @@
       </div>
     </div>
     <div v-else style="height: 63.66px;"></div>
-    <div class="content">
+    <div class="content" v-loading="isSpinning">
       <transition :name="enterAnimation" mode="out-in">
         <!--If keep alive-->
         <keep-alive v-if="steps[currentStepIndex].shouldKeepComponentAlive">
@@ -41,6 +41,7 @@
             :is="steps[currentStepIndex].component"
             :clickedNext="nextButton[currentStepIndex]"
             @can-continue="proceed"
+            @component-activated="componentActivated"
             @change-next="changeNextBtnValue"
             :current-step="steps[currentStepIndex]"
           ></component>
@@ -76,13 +77,13 @@
       <div class="stepper-button next">
         <vuescape-button
           :isDisabled="!canContinue"
-          :icons="isFinalStep ? [] : ['fad', 'arrow-alt-circle-right']"
+          :icons="isFinalStep ? ['fad', 'arrow-alt-circle-right'] : ['fad', 'arrow-alt-circle-right']"
           Depressed
           @click="nextStep()"
           iconPosition="after"
           :class="{ finalStep: isFinalStep }"
         >
-          {{ isFinalStep ? finalStepButtonText : 'Next' }}&nbsp;
+          {{ isFinalStep ? finalStepButtonTextValue : 'Next' }}&nbsp;
         </vuescape-button>
       </div>
     </div>
@@ -101,18 +102,20 @@ import { Step } from './Step'
   components: { VuescapeButton },
 })
 export default class StepWizard extends Vue {
+  private isSpinning = false
   @Prop({ type: Boolean, default: true })
   private shouldShowTopButtons: boolean
   @Prop({ type: Boolean, default: true })
   private shouldShowProgressBar: boolean
   @Prop({ type: String, default: 'Finish' })
-  private finalStepButtonText: boolean
+  private finalStepButtonText: string
   @Prop({ type: Array, required: false, default: () => [] })
   private wizardSteps: Array<Step>
   @Prop({ type: [String, Function], required: false })
   private cancelRouteOrCallback: any
 
   private shouldShowProgressBarValue = true
+  private finalStepButtonTextValue = ''
 
   private currentStepIndex: number = 0
   private previousStepIndex: number = 0
@@ -150,6 +153,11 @@ export default class StepWizard extends Vue {
   @Watch('shouldShowProgressBar')
   private onShouldShowProgressBarChanged(newValue: boolean, oldValue: boolean) {
     this.shouldShowProgressBarValue = newValue
+  }
+
+  @Watch('finalStepButtonText')
+  private onFinalStepButtonTextChanged(newValue: string, oldValue: string) {
+    this.finalStepButtonTextValue = newValue
   }
 
   @Watch('wizardSteps')
@@ -224,6 +232,10 @@ export default class StepWizard extends Vue {
     }
   }
 
+  private componentActivated() {
+    this.isSpinning = false
+  }
+
   private proceed(payload: any) {
     this.canContinue = payload.value
   }
@@ -235,6 +247,7 @@ export default class StepWizard extends Vue {
 
   private init() {
     // Initiate stepper
+    this.finalStepButtonTextValue = this.finalStepButtonText
     this.shouldShowProgressBarValue = this.shouldShowProgressBar
     this.steps = this.wizardSteps
     this.activateStep(0)
