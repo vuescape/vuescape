@@ -162,6 +162,9 @@ export default class StepWizard extends Vue {
 
   @Watch('wizardSteps')
   private onStepsChanged(newValue: Array<Step>, oldValue: Array<Step>) {
+    this.nextButton = []
+    this.currentStepIndex = 0
+    this.previousStepIndex = 0
     this.canContinue = false
     this.steps = newValue
     this.activateStep(0)
@@ -198,17 +201,21 @@ export default class StepWizard extends Vue {
     }
   }
 
-  private nextStepAction() {
+  private async nextStepAction() {
     this.canContinue = true
     this.nextButton[this.currentStepIndex] = true
     if (this.canContinue) {
+      if (this.steps[this.currentStepIndex].shouldDisplayLoadingOnNext) {
+        this.isSpinning = true
+      }
+
       if (this.isFinalStep) {
         this.$emit('stepper-finished', this.currentStepIndex)
       }
       this.activateStep(this.currentStepIndex + 1)
+      await this.$nextTick()
     }
     this.canContinue = false
-    this.$forceUpdate()
   }
 
   private nextStep() {
