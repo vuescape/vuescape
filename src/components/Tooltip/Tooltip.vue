@@ -12,13 +12,13 @@
           <span class="tooltop__title--font">{{ title }}</span
           ><v-spacer></v-spacer>
           <span class="tooltip__title--close">
-          <font-awesome-icon
-            :icon="['fal', 'times']"
-            style="cursor: pointer; font-size: 18px;"
-            @click="
-              stopVideo()
-              shouldShowDialog = false
-            "
+            <font-awesome-icon
+              :icon="['fal', 'times']"
+              style="cursor: pointer; font-size: 18px;"
+              @click="
+                stopVideo()
+                shouldShowDialog = false
+              "
           /></span>
           <!-- <span @click="shouldShowDialog = false">X</span> -->
         </v-card-title>
@@ -230,10 +230,11 @@ table.legend-table__table--legend tbody td {
   font-size: 13px;
 }
 .tooltop__title--font {
-  width: 90%!important;
+  width: 90% !important;
 }
 .tooltip__title--close {
-  align-self: baseline;
-  margin-top: 3px;
-} 
+  position: absolute;
+  right: 8px;
+  top: 4px;
+}
 </style>
