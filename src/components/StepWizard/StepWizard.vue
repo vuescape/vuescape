@@ -57,36 +57,47 @@
         ></component>
       </transition>
     </div>
-    <div :class="['bottom', currentStepIndex > 0 ? '' : '']">
-      <!-- only-next -->
-      <div class="stepper-button previous">
-        <vuescape-button
-          v-if="currentStepIndex !== 0"
-          :icons="['fad', 'arrow-alt-circle-left']"
-          :disabled="false"
-          Depressed
-          @click="backStep()"
-        >
-          &nbsp;Back
-        </vuescape-button>
-        <span v-if="cancelRouteOrCallback" style="margin-top: 7px;">
-          <v-btn class="cancel" flat @click="cancel">Cancel</v-btn>
-          <!-- <a class="cancel" @click="cancel">Cancel</a> -->
-        </span>
-      </div>
-      <div class="stepper-button next">
-        <vuescape-button
-          :isDisabled="!canContinue"
-          :icons="isFinalStep ? ['fad', 'arrow-alt-circle-right'] : ['fad', 'arrow-alt-circle-right']"
-          Depressed
-          @click="nextStep()"
-          iconPosition="after"
-          :class="{ finalStep: isFinalStep }"
-        >
-          {{ isFinalStep ? finalStepButtonTextValue : 'Next' }}&nbsp;
-        </vuescape-button>
-      </div>
-    </div>
+    <v-layout justify-center>
+      <v-container fluid grid-list-md>
+        <v-layout row justify-center>
+          <v-flex xs1></v-flex>
+          <v-flex xs10 style="text-align: center; font-size: 22px; font-weight: 500;"
+            >Select Your Excel Survey
+            <div :class="['bottom', currentStepIndex > 0 ? '' : '']">
+              <!-- only-next -->
+              <div class="stepper-button previous">
+                <vuescape-button
+                  v-if="currentStepIndex !== 0"
+                  :icons="['fad', 'arrow-alt-circle-left']"
+                  :disabled="false"
+                  Depressed
+                  @click="backStep()"
+                >
+                  &nbsp;Back
+                </vuescape-button>
+                <span v-if="cancelRouteOrCallback" style="margin-top: 7px;">
+                  <v-btn class="cancel" flat @click="cancel">Cancel</v-btn>
+                  <!-- <a class="cancel" @click="cancel">Cancel</a> -->
+                </span>
+              </div>
+              <div class="stepper-button next">
+                <vuescape-button
+                  :isDisabled="!canContinue"
+                  :icons="isFinalStep ? ['fad', 'arrow-alt-circle-right'] : ['fad', 'arrow-alt-circle-right']"
+                  Depressed
+                  @click="nextStep()"
+                  iconPosition="after"
+                  :class="{ finalStep: isFinalStep }"
+                >
+                  {{ isFinalStep ? finalStepButtonTextValue : 'Next' }}&nbsp;
+                </vuescape-button>
+              </div>
+            </div>
+          </v-flex>
+          <v-flex xs1></v-flex>
+        </v-layout>
+      </v-container>
+    </v-layout>
   </div>
 </template>
 <script lang="ts">
@@ -355,7 +366,7 @@ export default class StepWizard extends Vue {
   position: relative;
   width: 95%;
   left: 0;
-  padding: 2% 4%;
+  padding: 2% 0%;
 }
 .step-wizard__stepper-box .top .steps-wrapper .step {
   position: relative;
@@ -432,30 +443,37 @@ export default class StepWizard extends Vue {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem;
+  padding-top: 2rem;
+  padding-top: 2rem;
+  padding-right: 0;
+  padding-left: 0;
   /* border-top: 1px solid #ccc; */
 }
 .step-wizard__stepper-box .bottom.only-next {
   justify-content: flex-end;
 }
 .step-wizard__stepper-box .bottom .stepper-button {
-  padding: 0.5rem 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0;
+  padding-right: 0;
   /* cursor: pointer; */
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-/* .step-wizard__stepper-box .bottom .stepper-button.next {
-  background-color: #16a5c6;
-  color: white;
+.step-wizard__stepper-box .bottom .stepper-button.next {
+  margin-right: -8px;
 }
+/*
 .step-wizard__stepper-box .bottom .stepper-button.next.deactivated {
   background-color: #ccc !important;
   cursor: not-allowed !important;
 }
+*/
 .step-wizard__stepper-box .bottom .stepper-button.previous {
-  color: #333;
-} */
+  margin-left: -8px;
+}
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
   height: 40px;
   font-size: 16px;
