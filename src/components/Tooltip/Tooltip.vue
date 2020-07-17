@@ -9,8 +9,9 @@
     <v-dialog :hide-overlay="true" v-model="shouldShowDialog" max-width="400" @input="v => v || stopVideo()">
       <v-card flat class="fixed-cell-renderer__card--hover">
         <v-card-title class="tooltip__v-card--title">
-          <span class="title font-weight-light">{{ title }}</span
+          <span class="tooltop__title--font">{{ title }}</span
           ><v-spacer></v-spacer>
+          <span class="tooltip__title--close">
           <font-awesome-icon
             :icon="['fal', 'times']"
             style="cursor: pointer; font-size: 18px;"
@@ -18,7 +19,7 @@
               stopVideo()
               shouldShowDialog = false
             "
-          />
+          /></span>
           <!-- <span @click="shouldShowDialog = false">X</span> -->
         </v-card-title>
         <v-card-text>
@@ -154,7 +155,9 @@ export default class Tooltip extends ComponentBase {
   /* background-color: #16a5c6 !important;
   color: #ffffff; */
   font-size: 17px;
-  font-weight: 300;
+  font-weight: 400;
+  padding-right: 8px;
+  align-content: baseline;
 }
 .legend-table__div--spaced {
   background: white;
@@ -226,4 +229,11 @@ table.legend-table__table--legend tbody td {
   padding-right: 10px;
   font-size: 13px;
 }
+.tooltop__title--font {
+  width: 90%!important;
+}
+.tooltip__title--close {
+  align-self: baseline;
+  margin-top: 3px;
+} 
 </style>
