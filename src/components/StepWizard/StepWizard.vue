@@ -61,8 +61,7 @@
       <v-container fluid grid-list-md>
         <v-layout row justify-center>
           <v-flex xs1></v-flex>
-          <v-flex xs10 style="text-align: center; font-size: 22px; font-weight: 500;"
-            >Select Your Excel Survey
+          <v-flex xs10 style="text-align: center; font-size: 22px; font-weight: 500;">
             <div :class="['bottom', currentStepIndex > 0 ? '' : '']">
               <!-- only-next -->
               <div class="stepper-button previous">
