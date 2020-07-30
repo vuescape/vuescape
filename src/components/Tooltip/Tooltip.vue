@@ -1,6 +1,7 @@
 <template>
   <span class="tooltip__container">
     <font-awesome-icon
+      v-if="isHoveringImpl"
       :icon="['fal', 'info-circle']"
       style="font-size: 14px; color: #16a5c6; cursor: pointer;"
       class="legend-table__font-awesome-icon--style"
@@ -41,8 +42,6 @@ import { ModuleState, ns, StoreOperation } from '@vuescape/store/modules'
 @Component({})
 export default class Tooltip extends ComponentBase {
   private shouldShowDialog = false
-  private clientX: string = '50%'
-  private clientY: string = '50%'
 
   @State('tooltipSingleton')
   private tooltipSingleton: ModuleState<Array<boolean>>
@@ -56,20 +55,20 @@ export default class Tooltip extends ComponentBase {
   @Prop({ type: Object, required: true })
   private cell: TreeTableItem
 
-  @Prop({ type: String, required: true })
-  private x: string
+  @Prop({ type: Boolean, default: false })
+  private isHovering: boolean
 
-  @Prop({ type: String, required: true })
-  private y: string
+  @Prop({ type: String, default: '50%' })
+  private clientX: string
 
-  @Watch('x')
-  private onxChanged(newValue: string, oldValue: string) {
-    this.clientX = newValue
-  }
+  @Prop({ type: String, default: '50%' })
+  private clientY: string
 
-  @Watch('y')
-  private onyChanged(newValue: string, oldValue: string) {
-    this.clientY = newValue
+  private isHoveringImpl = false
+
+  @Watch('isHovering')
+  private onHoveringChanged(newValue: boolean, oldValue: boolean) {
+    this.isHoveringImpl = newValue
   }
 
   @Watch('tooltipSingletonValue')
@@ -104,11 +103,9 @@ export default class Tooltip extends ComponentBase {
   }
 
   private positionDialog() {
-    debugger
     const dialogs = document.querySelectorAll('.v-dialog')
     const dialogArray = [...dialogs]
     const dialog = dialogArray.filter(_ => {
-      debugger
       if (_.children[0] && _.children[0].children[0] && _.children[0].children[0].children[0]) {
         const title = _.children[0].children[0].children[0] as any
         return title.innerText === this.cell.value
@@ -135,8 +132,7 @@ export default class Tooltip extends ComponentBase {
   }
 
   private created() {
-    this.clientX = this.x
-    this.clientY = this.y
+    this.isHoveringImpl = this.isHovering
 
     if (!this.tooltipSingleton) {
       this.registerStoreModuleWithInitialValue<Array<boolean>>('tooltipSingleton', [false])
@@ -158,76 +154,6 @@ export default class Tooltip extends ComponentBase {
   font-weight: 400;
   padding-right: 8px;
   align-content: baseline;
-}
-.legend-table__div--spaced {
-  background: white;
-  padding: 10px;
-}
-.legend-table__font-awesome-icon--style {
-  color: #bbbbbb;
-  font-size: 14px;
-  margin-right: 0px;
-}
-.legend-table__v-btn--style {
-  border: 1px solid #dddddd !important;
-  border-radius: 5px;
-  height: 24px;
-  width: 24px;
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-top: 6px;
-  margin-right: 6px;
-}
-table.legend-table__table--legend thead td {
-  border: 0px;
-  background-color: #16a5c6 !important;
-  color: #ffffff;
-  text-align: center;
-  height: 32px;
-  font-size: 13px;
-  font-weight: 500;
-  padding-right: 20px;
-  padding-left: 20px;
-  border-bottom-color: rgb(85, 85, 85);
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-}
-table.legend-table__table--legend tbody td {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-table.legend-table__table--legend {
-  border-collapse: collapse;
-  /* font-family: 'Segoe UI'; */
-  padding: 10px;
-}
-table.legend-table__table--legend tr {
-  height: 28px;
-  min-width: 100px;
-}
-table.legend-table__table--legend tr:last-child {
-  border-bottom-color: rgb(85, 85, 85);
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-}
-table.legend-table__table--legend thead td {
-  font-size: 13px;
-  border: 0px;
-  background-color: #16a5c6 !important;
-  color: #ffffff;
-  text-align: center;
-  height: 32px;
-  font-weight: 500;
-  padding-right: 20px;
-  padding-left: 20px;
-  border-bottom-color: rgb(85, 85, 85);
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-}
-table.legend-table__table--legend tbody td {
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 13px;
 }
 .tooltop__title--font {
   width: 90% !important;
