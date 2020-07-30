@@ -3,6 +3,7 @@
     :key="cellToDisplay.id"
     :is="cellToDisplay.renderer || 'DefaultCellRenderer'"
     :cell="cellToDisplay"
+    :isHovering="isHovering"
   ></component>
 </template>
 
@@ -23,6 +24,9 @@ import FixedCellRenderer from './FixedCellRenderer.vue'
 export default class CellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private cell: TreeTableItem
+
+  @Prop({ type: Boolean, default: false })
+  private isHovering: boolean
 
   private get cellToDisplay() {
     return this.cell
