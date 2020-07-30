@@ -4,9 +4,9 @@ import { TreeTableRow } from './TreeTableRow'
 import { SortStrategy } from '../../infrastructure'
 
 export function makeTreeTableItemPropertyCompare(
-  sortOnProperty: string,
-  sortStrategy: SortStrategy = SortStrategy.Default,
+  sortOnCell: string,
   sortDirection: SortDirection,
+  sortStrategy: SortStrategy = SortStrategy.Default,
 ) {
   if (sortDirection === SortDirection.None) {
     throw new Error('Cannot perform a sort with a SortDirection value of None.')
@@ -23,8 +23,8 @@ export function makeTreeTableItemPropertyCompare(
       return 1
     }
 
-    const leftItem = (left as TreeTableRow).items.filter(_ => _.id === sortOnProperty)
-    const rightItem = (right as TreeTableRow).items.filter(_ => _.id === sortOnProperty)
+    const leftItem = (left as TreeTableRow).items.filter(_ => _.id === sortOnCell)
+    const rightItem = (right as TreeTableRow).items.filter(_ => _.id === sortOnCell)
 
     if (leftItem.length === 0 && rightItem.length === 0) {
       return 0
@@ -38,8 +38,8 @@ export function makeTreeTableItemPropertyCompare(
       return 1
     }
 
-    let leftItemValue = leftItem[0].value
-    let rightItemValue = rightItem[0].value
+    let leftItemValue = leftItem[0].value || leftItem[0].displayValue
+    let rightItemValue = rightItem[0].value || rightItem[0].value
 
     if (sortStrategy === SortStrategy.StringCaseInsensitive) {
       leftItemValue = (leftItemValue || '').toUpperCase()
@@ -47,7 +47,7 @@ export function makeTreeTableItemPropertyCompare(
     }
 
     if (leftItemValue < rightItemValue) {
-      return 1 * sortDirection 
+      return 1 * sortDirection
     }
     if (leftItemValue > rightItemValue) {
       return -1 * sortDirection

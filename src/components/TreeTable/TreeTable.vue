@@ -12,7 +12,11 @@
       <template slot="thead">
         <tr v-for="headerRow in headersToDisplay" :class="headerRow.cssClasses" :key="headerRow.id">
           <th v-for="header in headerRow.items" :class="header.cssClasses" :key="header.id" :colspan="header.colspan">
-            <component :is="header.renderer || 'DefaultHeaderCellRenderer'" :header="header" @toggle-sort="toggleSort($event)"></component>
+            <component
+              :is="header.renderer || 'DefaultHeaderCellRenderer'"
+              :header="header"
+              @toggle-sort="toggleSort($event)"
+            ></component>
           </th>
         </tr>
       </template>
@@ -68,6 +72,18 @@ export default class TreeTable extends ComponentBase {
     propertyName: string,
     sortDirection: SortDirection,
   ) => (left: any, right: any) => -1 | 0 | 1
+  @Prop({ type: Function, required: false })
+  private treeTableSorter?: (
+    rows: Array<TreeTableRow>,
+    headers: Array<TreeTableHeaderRow>,
+    propertySortFactory: (propertyName: string, sortDirection: SortDirection) => (left: any, right: any) => -1 | 0 | 1,
+  ) => Array<TreeTableRow>
+
+  private treeTableSorterImpl: (
+    rows: Array<TreeTableRow>,
+    headers: Array<TreeTableHeaderRow>,
+    propertySortFactory: (propertyName: string, sortDirection: SortDirection) => (left: any, right: any) => -1 | 0 | 1,
+  ) => Array<TreeTableRow> = this.defaultTreeTableSorter
 
   private rowsToDisplay: Array<TreeTableRow> = []
 
@@ -80,7 +96,6 @@ export default class TreeTable extends ComponentBase {
     this.rows = val
     this.setRowsToDisplay()
   }
-
 
   private toggleSort(header: TreeTableHeaderItem) {
     let newSortDirection = SortDirection.Ascending
@@ -114,18 +129,35 @@ export default class TreeTable extends ComponentBase {
     return this.headers
   }
 
-  private setRowsToDisplay() {
-    const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
-    if (this.propertySortFactory) {
-      const sortHeader = this.headers.flatMap(_ => _.items).filter(_ => _.isSortable && _.sortDirection)
+  private defaultTreeTableSorter(
+    rows: Array<TreeTableRow>,
+    headers: Array<TreeTableHeaderRow>,
+    propertySortFactory: (propertyName: string, sortDirection: SortDirection) => (left: any, right: any) => -1 | 0 | 1,
+  ) {
+    if (propertySortFactory) {
+      const sortHeader = headers.flatMap(_ => _.items).filter(_ => _.isSortable && _.sortDirection)
       if (sortHeader.length > 0) {
-        this.rowsToDisplay = rows.sort(
-          this.propertySortFactory(sortHeader[0].sortProperty!, sortHeader[0].sortDirection!),
-        )
-        return
+        return rows.sort(propertySortFactory(sortHeader[0].sortProperty!, sortHeader[0].sortDirection!))
       }
     }
-    this.rowsToDisplay = rows
+    return rows
+  }
+
+  private async setRowsToDisplay() {
+    const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
+    this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headers, this.propertySortFactory!)
+    const tableBody = document.querySelector('table.scrolling tbody') as { scrollTop: number }
+    if (tableBody) {
+      const scrollTop = tableBody.scrollTop
+      await this.$nextTick()
+      tableBody.scrollTop = scrollTop
+    }
+  }
+
+  private created() {
+    if (this.treeTableSorter) {
+      this.treeTableSorterImpl = this.treeTableSorter
+    }
   }
 }
 // tslint:disable-next-line:max-line-length

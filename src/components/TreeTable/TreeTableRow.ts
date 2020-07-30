@@ -15,10 +15,11 @@ export interface TreeTableRow {
   onclick?: () => void
   onmouseenter?: () => void
   onmousexit?: () => void
-  // or maybe property is row type?
-  // I like renderer because it's extensible and you can add your own renderers for arbitrary data rows
-  renderer?: string // typically 'sectionHeader' or 'data'
+  // can be a string or an object
+  renderer?: any 
   // Dependencies are an array of strings.  The string values are ids of other items in the tree
   dependencies?: Array<TreeTableItemDependency>
   children?: Array<TreeTableRow>
+  // Any value that contains the object representation of the 
+  value? : any
 }
