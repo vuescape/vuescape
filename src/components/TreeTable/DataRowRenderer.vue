@@ -1,6 +1,8 @@
 <template>
   <tr :class="rowToDisplay.cssClasses" :key="rowToDisplay.id">
     <td
+      @mouseleave="onMouseLeave(cell)"
+      @mouseover="onMouseEnter(cell)"
       v-for="(cell, index) in rowToDisplay.items"
       :style="getIndentStyle(rowToDisplay.depth, index, cell)"
       class="cell--border"
@@ -10,14 +12,26 @@
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
       <span v-if="index === 0 && rowToDisplay.isExpandable">
-        <font-awesome-icon v-if="rowToDisplay.isExpanded" class="data-row-renderer__icon" :icon="['fal', 'chevron-down']" />
+        <font-awesome-icon
+          v-if="rowToDisplay.isExpanded"
+          class="data-row-renderer__icon"
+          :icon="['fal', 'chevron-down']"
+        />
         <!-- <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i> -->
-        <font-awesome-icon v-if="!rowToDisplay.isExpanded" class="data-row-renderer__icon" :icon="['fal', 'chevron-right']" />
+        <font-awesome-icon
+          v-if="!rowToDisplay.isExpanded"
+          class="data-row-renderer__icon"
+          :icon="['fal', 'chevron-right']"
+        />
         <!-- <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i> -->
-        <cell-renderer :key="rowToDisplay.id" :cell="cell"></cell-renderer>
       </span>
-      <span v-else>
-        <cell-renderer :key="rowToDisplay.id" :cell="cell"></cell-renderer>
+      <span>
+        <cell-renderer :key="rowToDisplay.id" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
+        <span v-if="cell.hover"
+          >&nbsp;<transition name="data-row-renderer__animation" mode="out-in">
+            <tooltip style="vertical-align: text-top;" :cell="cell" :isHovering="isHovering"></tooltip>
+          </transition>
+        </span>
       </span>
     </td>
   </tr>
@@ -35,20 +49,35 @@ import { TreeTableRow } from './TreeTableRow'
 
 import CellRenderer from './CellRenderer.vue'
 
+const Tooltip = () => import(/* webpackChunkName: 'tool-tip' */ '@vuescape/components/Tooltip/').then(m => m.default)
+
 @Component({
-  components: { CellRenderer, TreeTable },
+  components: { CellRenderer, Tooltip, TreeTable },
 })
 export default class DataRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
 
+  private isHovering = false
+
   private get rowToDisplay() {
     return this.row
   }
 
+  private onMouseEnter(cell: any) {
+    if (cell.hover) {
+      this.isHovering = true
+    }
+  }
+  private onMouseLeave(cell: any) {
+    if (cell.hover) {
+      this.isHovering = false
+    }
+  }
+
   private getCellClasses(cell: TreeTableItem, row: TreeTableRow, index: number) {
     const cssClasses = {} as any
-    cssClasses['tree-table-item__td--clickable'] = typeof cell.onclick === typeof Function 
+    cssClasses['tree-table-item__td--clickable'] = typeof cell.onclick === typeof Function
     cssClasses['selected-metric'] = row.isSelected
     cssClasses['selected-metric-left'] = row.isSelected && index === 0
     cssClasses['selected-metric-interior'] = row.isSelected && index !== 0 && index !== row.items.length - 1
@@ -69,6 +98,16 @@ export default class DataRowRenderer extends ComponentBase {
   margin-right: 4px;
   margin-bottom: 1px;
   font-size: 9px;
-  width: 0.875em!important;
+  width: 0.875em !important;
+}
+.data-row-renderer__animation-enter-active,
+.data-row-renderer__animation-leave-active {
+  transition: opacity 4.3s;
+}
+.data-row-renderer__animation-enter,
+.data-row-renderer__animation-leave-to {
+  opacity: 0;
 }
 </style>
+
+<style></style>
