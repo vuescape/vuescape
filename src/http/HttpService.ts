@@ -61,7 +61,9 @@ export class HttpService {
     const axiosConfig = {
       baseURL: this.baseUrl,
       shouldCache: this.shouldUseCache,
-    }
+    } as any
+    axiosConfig.headers = { 'Content-Type': 'application/json' }
+    axiosConfig.data = {}
     return Axios.instance.get<T>(formattedEndpoint + queryString, axiosConfig)
   }
 
