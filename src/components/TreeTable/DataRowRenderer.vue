@@ -27,9 +27,14 @@
       </span>
       <span>
         <cell-renderer :key="rowToDisplay.id" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
-        <span v-if="cell.hover"
+        <span v-if="cell.hover && cell.hover.component"
           >&nbsp;<transition name="data-row-renderer__animation" mode="out-in">
-            <tooltip style="vertical-align: text-top;" :cell="cell" :isHovering="isHovering"></tooltip>
+            <component
+              :is="cell.hover.component"
+              :cell="cell"
+              :isHovering="isHovering"
+              style="vertical-align: text-top;"
+            ></component>
           </transition>
         </span>
       </span>

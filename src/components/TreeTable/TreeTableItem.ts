@@ -4,7 +4,7 @@ export interface TreeTableItem {
   id: string
   value: any
   displayValue?: string
-  hover?: { title?: string; text?: string; html?: string }
+  hover?: { component?: any, title?: string; text?: string; html?: string }
   renderer?: any
   cssClasses?: string
   colspan?: number
