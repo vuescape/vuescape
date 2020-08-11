@@ -6,4 +6,5 @@ export interface Menu {
   icon?: string
   path: string
   items?: Array<Menu>
+  isDivider?: boolean
 }

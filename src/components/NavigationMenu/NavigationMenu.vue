@@ -1,7 +1,8 @@
 <template>
   <v-toolbar-items>
     <v-toolbar-items v-for="menu in menus" :key="menu.id">
-      <v-menu v-if="menu.items" auto open-on-click offset-y :disabled="isSiteInMaintenanceMode">
+      <v-divider v-if="menu.isDivider" class="mx-3" inset vertical></v-divider>
+      <v-menu v-if="!menu.isDivider && menu.items" auto open-on-click offset-y :disabled="isSiteInMaintenanceMode">
         <v-btn
           :aria-label="menu.title"
           flat
@@ -9,16 +10,14 @@
           :class="{ 'v-btn--active': isSubItemActive(menu.path), 'navigation-menu__v-btn--style': true }"
           :disabled="isSiteInMaintenanceMode"
         >
+          <span v-if="menu.prefixHtml" v-html="menu.prefixHtml"></span>
           <!-- <font-awesome-icon v-if="menu.icon" :icon="menu.icon.split(' ')" class="navigation-menu__v-icon--layout" :style="{ color: '#555' }" /> -->
           <font-awesome-icon
             v-if="menu.icon"
             :icon="getIconArray(menu.icon)"
             class="navigation-menu__v-icon--layout"
             :style="{ color: '#555' }"
-          />
-
-          <!-- <v-icon v-if="menu.icon" small color="#555" class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon> -->
-          &nbsp;{{ menu.title }} &nbsp;
+          />&nbsp;{{ menu.title }} &nbsp;
           <v-icon v-if="menu.icon" small color="#555" class="navigation-menu__v-icon--dropdown"
             >fas fa-caret-down</v-icon
           ></v-btn
@@ -26,21 +25,23 @@
         <v-list class="navigation-menu__v-list--alignment" v-if="menu.items" light>
           <v-list-tile
             class="navigation-menu__v-list-tile--font"
-            :aria-label="menuItem.title"
+            :aria-label="menuItem.ariaLabel || menuItem.title"
             v-for="menuItem in menu.items"
             :key="menuItem.id"
             :to="{ path: menuItem.path }"
           >
-            <v-list-tile-title :aria-label="menuItem.title">{{ menuItem.title }}</v-list-tile-title>
+            <v-list-tile-title :aria-label="menuItem.ariaLabel || menuItem.title">{{
+              menuItem.title
+            }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
       <v-btn
-        v-else
+        v-if="!menu.isDivider && !menu.items"
         flat
         class="navigation-menu__v-btn--style"
         :title="menu.icon ? menu.title : ''"
-        :aria-label="menu.ariaLabel"
+        :aria-label="menu.ariaLabel || menu.title"
         :to="{ path: menu.path }"
         :disabled="isSiteInMaintenanceMode"
       >
@@ -54,7 +55,7 @@
         &nbsp;{{ menu.title }}
       </v-btn>
     </v-toolbar-items>
-    <v-toolbar-items v-if="isAuthenticated">
+    <v-toolbar-items class="navigation-menu__v-toolbar-items--sign-out" v-if="isAuthenticated">
       <v-divider class="mx-3" inset vertical></v-divider>
       <v-btn
         class="navigation-menu__v-btn--style"
@@ -87,7 +88,14 @@
         <v-icon small>help</v-icon>
       </v-btn>
     </v-toolbar-items>
-    <v-dialog v-model="shouldShowHelp" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+    <v-dialog
+      v-if="isHelpAvailable"
+      v-model="shouldShowHelp"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+      scrollable
+    >
       <v-card tile>
         <v-toolbar card dark>
           <v-toolbar-title aria-label="Help">Help</v-toolbar-title>
@@ -178,6 +186,9 @@ export default class NavigationMenu extends Vue {
 </script>
 
 <style>
+.navigation-menu__v-toolbar-items--sign-out {
+  margin-left: 50px;
+}
 div.navigation-menu__v-list--alignment a.v-list__tile {
   height: 36px;
   max-height: 36px;
