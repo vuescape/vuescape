@@ -1,7 +1,7 @@
 <template>
   <span class="tooltip__container">
     <font-awesome-icon
-      v-if="isHoveringImpl"
+      v-show="isHoveringImpl"
       :icon="['fal', 'info-circle']"
       style="font-size: 14px; color: #16a5c6; cursor: pointer;"
       class="legend-table__font-awesome-icon--style"
