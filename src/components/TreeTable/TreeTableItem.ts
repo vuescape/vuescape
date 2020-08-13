@@ -5,6 +5,7 @@ export interface TreeTableItem {
   value: any
   displayValue?: string
   hover?: { component?: any, title?: string; text?: string; html?: string }
+  triggerHoverInCells?: Array<string> 
   renderer?: any
   cssClasses?: string
   colspan?: number

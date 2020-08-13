@@ -13,8 +13,6 @@ export interface TreeTableRow {
   depth: number
   cssClasses?: string
   onclick?: () => void
-  onmouseenter?: () => void
-  onmousexit?: () => void
   // can be a string or an object
   renderer?: any 
   // Dependencies are an array of strings.  The string values are ids of other items in the tree

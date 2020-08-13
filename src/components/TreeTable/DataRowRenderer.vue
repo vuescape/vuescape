@@ -7,7 +7,7 @@
       :style="getIndentStyle(rowToDisplay.depth, index, cell)"
       class="cell--border"
       :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"
-      :key="cell.id"
+      :key="createKey(cell)"
       :colspan="cell.colspan"
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
@@ -33,7 +33,8 @@
               :is="cell.hover.component"
               :cell="cell"
               :isHovering="isHovering"
-              style="vertical-align: text-top;"
+              v-bind="{ ...cell.hover.props }"
+              style="vertical-align: text-top; pointer-events: none;"
             ></component>
           </transition>
         </span>
@@ -70,13 +71,24 @@ export default class DataRowRenderer extends ComponentBase {
   }
 
   private onMouseEnter(cell: any) {
-    if (cell.hover) {
-      this.isHovering = true
-    }
+    this.setIsHovering(cell, true)
   }
-  private onMouseLeave(cell: any) {
+  private onMouseLeave(cell: any, e: any) {
+    this.setIsHovering(cell, false)
+  }
+  
+  private setIsHovering(cell: any, isHovering: boolean) {
     if (cell.hover) {
-      this.isHovering = false
+      this.isHovering = isHovering
+    }
+    if (cell.triggerHoverInCells && cell.triggerHoverInCells.length) {
+      const matches = this.row.items
+        .filter(_ => cell.triggerHoverInCells.includes(_.id))
+        .forEach(_ => {
+          if (_.hover) {
+            this.isHovering = isHovering
+          }
+        })
     }
   }
 
@@ -88,6 +100,11 @@ export default class DataRowRenderer extends ComponentBase {
     cssClasses['selected-metric-interior'] = row.isSelected && index !== 0 && index !== row.items.length - 1
     cssClasses['selected-metric-right'] = row.isSelected && index === row.items.length - 1
     return cssClasses
+  }
+
+  private createKey(cell: any) {
+    const key = `${this.row.id}-${cell.id}-${cell.hover ? `-${this.isHovering.toString()}` : ''}`
+    return key
   }
 
   private getIndentStyle(depth: number, index: number, cell: any) {
