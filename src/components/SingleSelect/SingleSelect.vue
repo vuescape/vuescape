@@ -1,33 +1,41 @@
 <template>
-  <div ref="multiselectDiv" :id="id" style="display:inline-block;">
-    <multiselect
-      :style="`--custom-font-size: ${customFontSize}; --border-style: ${borderStyle}`"
-      :placeholder="placeholderVal"
-      :value="valueVal"
-      :options="optionsVal"
-      @input="itemChanged"
-      @open="onMultiselectOpen"
-      @close="onMultiselectClose"
-      :searchable="isSearchable"
-      :allow-empty="shouldAllowEmpty"
-      :label="label"
-      :track-by="trackBy"
-      selectLabel=""
-      deselectLabel=""
-      selectedLabel=""
-      :optionsLimit="10000"
-    >
-      <!-- https://stackoverflow.com/questions/50891858/vue-how-to-pass-down-slots-inside-wrapper-component -->
-      <!-- Pass on all named slots -->
-      <template slot="noResult">
-        {{ noSearchResults }}
-      </template>
-      <slot v-for="slot in Object.keys($slots)" :name="slot" :slot="slot" />
-      <!-- Pass on all scoped slots -->
-      <template v-for="slot in Object.keys($scopedSlots)" :slot="slot" slot-scope="scope"
-        ><slot :name="slot" v-bind="scope"
-      /></template>
-    </multiselect>
+  <div>
+    <span
+      v-if="prefixText"
+      class="multiselect__tags single-select__span--prefix"
+      :style="`--custom-font-size: ${customFontSize};`"
+      >{{ prefixText }}
+    </span>
+    <div ref="multiselectDiv" :id="id" style="display:inline-block;">
+      <multiselect
+        :style="`--custom-font-size: ${customFontSize}; --border-style: ${borderStyle}`"
+        :placeholder="placeholderVal"
+        :value="valueVal"
+        :options="optionsVal"
+        @input="itemChanged"
+        @open="onMultiselectOpen"
+        @close="onMultiselectClose"
+        :searchable="isSearchable"
+        :allow-empty="shouldAllowEmpty"
+        :label="label"
+        :track-by="trackBy"
+        selectLabel=""
+        deselectLabel=""
+        selectedLabel=""
+        :optionsLimit="10000"
+      >
+        <!-- https://stackoverflow.com/questions/50891858/vue-how-to-pass-down-slots-inside-wrapper-component -->
+        <!-- Pass on all named slots -->
+        <template slot="noResult">
+          {{ noSearchResults }}
+        </template>
+        <slot v-for="slot in Object.keys($slots)" :name="slot" :slot="slot" />
+        <!-- Pass on all scoped slots -->
+        <template v-for="slot in Object.keys($scopedSlots)" :slot="slot" slot-scope="scope"
+          ><slot :name="slot" v-bind="scope"
+        /></template>
+      </multiselect>
+    </div>
   </div>
 </template>
 
@@ -54,6 +62,9 @@ export default class SingleSelect extends Vue {
 
   @Prop({ type: String, required: false, default: '' })
   private customFontSize: string
+
+  @Prop({ type: String, required: false, default: '' })
+  private prefixText: string
 
   // Current default of '0' is no border
   // Multiselect default is '1px solid #e8e8e8;'
@@ -126,6 +137,13 @@ export default class SingleSelect extends Vue {
 </script>
 
 <style>
+.single-select__span--prefix {
+  vertical-align: top;
+  padding-right: 0;
+  font-weight: 500;
+  display: inline-block;
+  line-height: 20px;
+}
 .multiselect__content-wrapper {
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14),
     0px 3px 14px 2px rgba(0, 0, 0, 0.12);
@@ -154,6 +172,7 @@ export default class SingleSelect extends Vue {
 }
 .multiselect__tags {
   border: var(--border-style);
+  padding-left: 0;
 }
 .multiselect__single {
   font-size: var(--custom-font-size);
