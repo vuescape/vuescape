@@ -11,7 +11,7 @@
     <input accept=".xlsx" ref="fileInput" style="display: none;" type="file" multiple @change="filesChanged" />
     <div v-if="files.length === 0" @drop.prevent="dropFiles" @dragover.prevent>
       <v-card-title style="display: inline-block;">
-        <span class="title font-weight-light">Drag and drop or click to choose your Excel survey file.</span>
+        <span class="file-upload__span--title">Drag and drop or click to choose your Excel survey file.</span>
       </v-card-title>
       <v-card-text>
         <font-awesome-icon
@@ -115,5 +115,16 @@ export default class FileUpload extends Vue {
 <style>
 .file-upload__close:hover {
   background-color: #f5f5f5;
+}
+.file-upload__span--title {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1 !important;
+  letter-spacing: 0.02em !important;
+}
+.v-list__tile:hover {
+  background-color: rgb(235, 248, 240);
+  padding-left: 16px;
+  padding-right: 16px;
 }
 </style>
