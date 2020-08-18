@@ -30,6 +30,7 @@
         <span v-if="cell.hover && cell.hover.component"
           >&nbsp;<transition name="data-row-renderer__animation" mode="out-in">
             <component
+              @hovering-changed="propogateEvent"
               :is="cell.hover.component"
               :cell="cell"
               :isHovering="isHovering"
@@ -73,23 +74,24 @@ export default class DataRowRenderer extends ComponentBase {
   private onMouseEnter(cell: any) {
     this.setIsHovering(cell, true)
   }
+
   private onMouseLeave(cell: any, e: any) {
     this.setIsHovering(cell, false)
   }
-  
+
   private setIsHovering(cell: any, isHovering: boolean) {
-    if (cell.hover) {
-      this.isHovering = isHovering
-    }
-    if (cell.triggerHoverInCells && cell.triggerHoverInCells.length) {
-      const matches = this.row.items
-        .filter(_ => cell.triggerHoverInCells.includes(_.id))
-        .forEach(_ => {
-          if (_.hover) {
-            this.isHovering = isHovering
-          }
-        })
-    }
+    // if (cell.hover) {
+    //   this.isHovering = isHovering
+    // }
+    // if (cell.triggerHoverInCells && cell.triggerHoverInCells.length) {
+    //   const matches = this.row.items
+    //     .filter(_ => cell.triggerHoverInCells.includes(_.id))
+    //     .forEach(_ => {
+    //       if (_.hover) {
+    //         this.isHovering = isHovering
+    //       }
+    //     })
+    // }
   }
 
   private getCellClasses(cell: TreeTableItem, row: TreeTableRow, index: number) {
