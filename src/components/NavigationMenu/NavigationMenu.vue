@@ -55,7 +55,7 @@
         &nbsp;{{ menu.title }}
       </v-btn>
     </v-toolbar-items>
-    <v-toolbar-items class="navigation-menu__v-toolbar-items--sign-out" v-if="isAuthenticated">
+    <v-toolbar-items v-if="isAuthenticated">
       <v-divider class="mx-3" inset vertical></v-divider>
       <v-btn
         class="navigation-menu__v-btn--style"
@@ -186,9 +186,6 @@ export default class NavigationMenu extends Vue {
 </script>
 
 <style>
-.navigation-menu__v-toolbar-items--sign-out {
-  margin-left: 50px;
-}
 div.navigation-menu__v-list--alignment a.v-list__tile {
   height: 36px;
   max-height: 36px;
