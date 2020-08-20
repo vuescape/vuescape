@@ -17,7 +17,7 @@
       <navigation-menu
         v-if="shouldDisplayHeader"
         :isHelpAvailable="theHeaderProps.shouldDisplayHelp"
-        :menus="menus"
+        :menus="consolidatedMenus"
         :helpComponent="theHeaderProps.helpComponent"
       ></navigation-menu>
     </v-toolbar>
@@ -27,7 +27,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import { Action, namespace, State } from 'vuex-class'
+import { Action, Getter, namespace, State } from 'vuex-class'
 
 import { AuthenticationModuleName, AuthenticationOperation } from '@vuescape/store/modules/Authentication'
 import { ns } from '@vuescape/store/modules/types'
@@ -65,7 +65,20 @@ export default class TheHeader extends Vue {
     }
     return []
   }))
-  private menus: Array<Menu>
+  private menuConfiguration: Array<Menu>
+
+  @Getter(ns('userProfile', 'Menus'))
+  private userProfileMenus: Array<Menu>
+
+  private get consolidatedMenus() {
+    if (this.menuConfiguration.length) {
+      return this.menuConfiguration
+    }
+    if (this.userProfileMenus) {
+      return this.userProfileMenus
+    }
+    return []
+  }
 }
 </script>
 <style>
