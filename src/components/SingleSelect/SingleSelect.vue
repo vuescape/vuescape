@@ -98,6 +98,9 @@ export default class SingleSelect extends Vue {
   @Prop({ type: Function, required: false })
   private itemChanged: (value: any, id: string) => void
 
+  @Prop({ type: Boolean, default: false })
+  private shouldAlignRight: boolean
+
   @Watch('value')
   private onValueChanged(val: any, oldVal: any) {
     this.valueVal = val
@@ -119,11 +122,20 @@ export default class SingleSelect extends Vue {
     // TODO : Get padding
     child.style.width = ''
   }
-  private onMultiselectOpen(id: any) {
+  private async onMultiselectOpen(id: any) {  
     const el = (this.$refs.multiselectDiv as unknown) as any
     const child = el.children[0]
     const rect = child.getBoundingClientRect()
     child.style.width = rect.width + 'px'
+    if (this.shouldAlignRight) {
+      const dropDownElement = document.getElementsByClassName('multiselect__content-wrapper')[0] as any
+      dropDownElement.style.display = 'block'
+      // TODO: for redraw?
+      // await this.$nextTick()
+      const selectRect = dropDownElement.getBoundingClientRect()
+      const adjustment = (selectRect.width - rect.width)
+      dropDownElement.style.marginLeft = `-${adjustment}px`
+    }
   }
 
   private created() {
