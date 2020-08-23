@@ -15,6 +15,7 @@
         @input="itemChanged"
         @open="onMultiselectOpen"
         @close="onMultiselectClose"
+        @search-change="onSearchChange"
         :searchable="isSearchable"
         :allow-empty="shouldAllowEmpty"
         :label="label"
@@ -122,22 +123,38 @@ export default class SingleSelect extends Vue {
     // TODO : Get padding
     child.style.width = ''
   }
-  private async onMultiselectOpen(id: any) {  
+  private onMultiselectOpen(id: any) {
     const el = (this.$refs.multiselectDiv as unknown) as any
     const child = el.children[0]
     const rect = child.getBoundingClientRect()
     child.style.width = rect.width + 'px'
+    this.alignSelect(false, rect)
+  }
+  private onSearchChange() {
+    this.alignSelect(true)
+  }
+  private alignSelect(shouldUpdateAsync: boolean, rect?: any) {
+    debugger
     if (this.shouldAlignRight) {
-      const dropDownElement = document.getElementsByClassName('multiselect__content-wrapper')[0] as any
-      dropDownElement.style.display = 'block'
-      // TODO: for redraw?
-      // await this.$nextTick()
-      const selectRect = dropDownElement.getBoundingClientRect()
-      const adjustment = (selectRect.width - rect.width)
-      dropDownElement.style.marginLeft = `-${adjustment}px`
+      if (!rect) {
+        const el = (this.$refs.multiselectDiv as unknown) as any
+        const child = el.children[0]
+        rect = child.getBoundingClientRect()
+      }
+      const updateAlignment = () => {
+        const dropDownElement = document.getElementsByClassName('multiselect__content-wrapper')[0] as any
+        dropDownElement.style.display = 'block'
+        const selectRect = dropDownElement.getBoundingClientRect()
+        const adjustment = -1 * (selectRect.width - rect.width)
+        dropDownElement.style.marginLeft = `${adjustment}px`
+      }
+      if (shouldUpdateAsync) {
+        setTimeout(updateAlignment, 100)
+      } else {
+        updateAlignment()
+      }
     }
   }
-
   private created() {
     this.id = Guid.newGuid()
 
