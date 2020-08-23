@@ -99,8 +99,8 @@ export default class SingleSelect extends Vue {
   @Prop({ type: Function, required: false })
   private itemChanged: (value: any, id: string) => void
 
-  @Prop({ type: Boolean, default: false })
-  private shouldAlignRight: boolean
+  @Prop({ type: String, default: 'left' })
+  private alignment: 'left' | 'right' | 'center'
 
   @Watch('value')
   private onValueChanged(val: any, oldVal: any) {
@@ -134,8 +134,7 @@ export default class SingleSelect extends Vue {
     this.alignSelect(true)
   }
   private alignSelect(shouldUpdateAsync: boolean, rect?: any) {
-    debugger
-    if (this.shouldAlignRight) {
+    if (this.alignment !== 'left') {
       if (!rect) {
         const el = (this.$refs.multiselectDiv as unknown) as any
         const child = el.children[0]
@@ -143,10 +142,19 @@ export default class SingleSelect extends Vue {
       }
       const updateAlignment = () => {
         const dropDownElement = document.getElementsByClassName('multiselect__content-wrapper')[0] as any
-        dropDownElement.style.display = 'block'
+        if (!shouldUpdateAsync) {
+          dropDownElement.style.left = '-99999px'
+          dropDownElement.style.display = ''
+        }
         const selectRect = dropDownElement.getBoundingClientRect()
-        const adjustment = -1 * (selectRect.width - rect.width)
-        dropDownElement.style.marginLeft = `${adjustment}px`
+        let adjustment = -1 * (selectRect.width - rect.width)
+        if (this.alignment === 'center') {
+          adjustment = adjustment / 2.0
+        }
+        if (!shouldUpdateAsync) {
+          dropDownElement.style.display = 'none'
+        }
+        dropDownElement.style.left = `${adjustment}px`
       }
       if (shouldUpdateAsync) {
         setTimeout(updateAlignment, 100)
