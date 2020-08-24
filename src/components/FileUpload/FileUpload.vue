@@ -1,10 +1,8 @@
 <template>
   <v-card
-    active-class="card--selected"
     flat
     hover
-    style="border: 2px solid #ade3ef; text-align: center; height: 500px; text-align: center;"
-    class="card-grid__resource-card--full-height"
+    style="border: 2px dashed #ade3ef; text-align: center; height: 100%; text-align: center;"
     :style="files.length === 0 ? 'cursor: pointer;' : 'cursor : unset;'"
     @click="files.length === 0 && $refs.fileInput.click()"
   >
