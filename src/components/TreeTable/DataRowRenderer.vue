@@ -7,7 +7,7 @@
       :style="getIndentStyle(rowToDisplay.depth, index, cell)"
       class="cell--border"
       :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"
-      :key="createKey(cell)"
+      :key="cell.id"
       :colspan="cell.colspan"
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
@@ -30,12 +30,10 @@
         <span v-if="cell.hover && cell.hover.component"
           >&nbsp;<transition name="data-row-renderer__animation" mode="out-in">
             <component
-              @hovering-changed="propogateEvent"
               :is="cell.hover.component"
               :cell="cell"
               :isHovering="isHovering"
-              v-bind="{ ...cell.hover.props }"
-              style="vertical-align: text-top; pointer-events: none;"
+              style="vertical-align: text-top;"
             ></component>
           </transition>
         </span>
@@ -72,26 +70,14 @@ export default class DataRowRenderer extends ComponentBase {
   }
 
   private onMouseEnter(cell: any) {
-    this.setIsHovering(cell, true)
+    if (cell.hover) {
+      this.isHovering = true
+    }
   }
-
-  private onMouseLeave(cell: any, e: any) {
-    this.setIsHovering(cell, false)
-  }
-
-  private setIsHovering(cell: any, isHovering: boolean) {
-    // if (cell.hover) {
-    //   this.isHovering = isHovering
-    // }
-    // if (cell.triggerHoverInCells && cell.triggerHoverInCells.length) {
-    //   const matches = this.row.items
-    //     .filter(_ => cell.triggerHoverInCells.includes(_.id))
-    //     .forEach(_ => {
-    //       if (_.hover) {
-    //         this.isHovering = isHovering
-    //       }
-    //     })
-    // }
+  private onMouseLeave(cell: any) {
+    if (cell.hover) {
+      this.isHovering = false
+    }
   }
 
   private getCellClasses(cell: TreeTableItem, row: TreeTableRow, index: number) {
@@ -102,11 +88,6 @@ export default class DataRowRenderer extends ComponentBase {
     cssClasses['selected-metric-interior'] = row.isSelected && index !== 0 && index !== row.items.length - 1
     cssClasses['selected-metric-right'] = row.isSelected && index === row.items.length - 1
     return cssClasses
-  }
-
-  private createKey(cell: any) {
-    const key = `${this.row.id}-${cell.id}-${cell.hover ? `-${this.isHovering.toString()}` : ''}`
-    return key
   }
 
   private getIndentStyle(depth: number, index: number, cell: any) {
