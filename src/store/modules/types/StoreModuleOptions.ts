@@ -12,7 +12,12 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
   private static defaultIsEmpty<T>(value: T) {
     if (value !== null && value !== undefined && (value as any).length === 0) {
       return true
-    } else if (value && Object.keys(value).length === 0 && (value as any).constructor === Object ) {
+    } else if (
+      typeof value !== 'string' &&
+      value &&
+      Object.keys(value).length === 0 &&
+      (value as any).constructor === Object
+    ) {
       // Empty object {} is also empty
       return true
     } else if (value) {
@@ -74,8 +79,8 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
       this.asyncActions = asyncActions
     }
 
-    this.isEmpty = isEmpty ? isEmpty : StoreModuleOptions.defaultIsEmpty
-    this.mapToValue = mapToValue ? mapToValue : StoreModuleOptions.identityMapper
+    this.isEmpty = isEmpty || StoreModuleOptions.defaultIsEmpty
+    this.mapToValue = mapToValue || StoreModuleOptions.identityMapper
     this.initialValue = initialValue
     this.isNamespaced = isNamespaced
     this.shouldUseGlobalNotifications = shouldUseGlobalNotifications
