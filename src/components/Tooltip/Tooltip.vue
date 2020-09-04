@@ -7,7 +7,7 @@
       class="legend-table__font-awesome-icon--style"
       @click.stop="enableTooltip"
     />
-    <v-dialog :hide-overlay="true" v-model="shouldShowDialog" max-width="400" @input="v => v || stopVideo()">
+    <v-dialog :hide-overlay="true" v-model="shouldShowDialog" max-width="50%" @input="v => v || stopVideo()">
       <v-card flat class="fixed-cell-renderer__card--hover">
         <v-card-title class="tooltip__v-card--title">
           <span class="tooltop__title--font">{{ title }}</span
@@ -156,6 +156,7 @@ export default class Tooltip extends ComponentBase {
   align-content: baseline;
 }
 .tooltop__title--font {
+  font-weight: 500;
   width: 90% !important;
 }
 .tooltip__title--close {
