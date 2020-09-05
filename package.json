@@ -30,7 +30,7 @@
     "highcharts": "^7.2.2",
     "mdi-vue": "^1.4.3",
     "nouislider": "^13.1.4",
-    "papaparse": "^4.6.3",
+    "papaparse": "^5.2.0",
     "qs": "^6.6.0",
     "splitpanes": "^1.14.1",
     "vue": "^2.5.22",
