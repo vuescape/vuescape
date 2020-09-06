@@ -177,7 +177,6 @@ export default class NavigationMenu extends Vue {
     this.shouldShowHelp = false
   }
 
-  // TODO: Use app config  signOutRedirectUri
   private async redirectAndSignOut() {
     await this.signOut()
     window.location.href = '/sign-in'
