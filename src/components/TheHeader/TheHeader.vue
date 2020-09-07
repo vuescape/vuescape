@@ -44,6 +44,9 @@ export default class TheHeader extends Vue {
 
   @State
   private isAuthenticated: boolean
+  
+  @State
+  private hasExternalSessionsInitialized: boolean
 
   @(namespace('theHeader/configuration').State(state => {
     if (state && state.value) {
@@ -56,7 +59,7 @@ export default class TheHeader extends Vue {
   private theHeaderProps: any
 
   private get shouldDisplayHeader() {
-    return this.isAuthenticated || this.theHeaderProps.shouldShowHeader
+    return (this.isAuthenticated && this.hasExternalSessionsInitialized) || this.theHeaderProps.shouldShowHeader
   }
 
   @(namespace('menu/configuration').State(state => {
