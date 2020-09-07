@@ -6,6 +6,7 @@ export class StoreAction {
   public static readonly SIGN_IN_WITH_CREDENTIALS = 'signInWithCredentials'
   public static readonly SIGN_IN_WITH_TOKEN = 'signInWithToken'
   public static readonly TRY_RESIGN_IN = 'tryReSignIn'
+  public static readonly SETUP_FROM_PROVIDER = 'setupFromProvider'
 }
 
 // Use namespace to simulate inner class on StoreAction to make NotificationActions easy to find
