@@ -19,7 +19,10 @@ const actions: ActionTree<RootState, RootState> = {
 
 Object.assign(actions, notificationOperation.actions())
 
-const mutations: MutationTree<RootState> = {
+const mutations: MutationTree<RootState> = {  
+  [StoreMutation.HAS_EXTERNAL_SESSIONS_INITIALIZED](currentState, hasExternalSessionsInitialized: boolean) {
+    currentState.hasExternalSessionsInitialized = hasExternalSessionsInitialized
+  },
   [StoreMutation.IS_AUTHENTICATED](currentState, isAuthenticated: boolean) {
     currentState.isAuthenticated = isAuthenticated
   },
@@ -58,6 +61,7 @@ export const rootStoreOptions: StoreOptions<RootState> = {
   mutations,
   plugins: [],
   state: {
+    hasExternalSessionsInitialized: false,
     isAuthenticated: false,
     notifications: [],
     isSpinning: false,
