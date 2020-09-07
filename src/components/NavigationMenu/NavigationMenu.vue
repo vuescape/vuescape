@@ -148,9 +148,6 @@ export default class NavigationMenu extends Vue {
   }))
   private firstName: string
 
-  @Action(ns(AuthenticationModuleName, AuthenticationOperation.Action.SIGN_OUT))
-  private signOut: any
-
   @Getter(ns(AppInfoModuleName, AppInfoOperation.Getter.IsSiteInMaintenanceMode))
   private isSiteInMaintenanceMode: boolean
 
@@ -178,8 +175,7 @@ export default class NavigationMenu extends Vue {
   }
 
   private async redirectAndSignOut() {
-    await this.signOut()
-    window.location.href = '/sign-in'
+    this.$router.push('/sign-out')
   }
 }
 </script>
