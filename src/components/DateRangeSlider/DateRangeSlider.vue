@@ -169,13 +169,16 @@ export default class DateRangeSlider extends Vue {
     }
 
     this.slider.noUiSlider.set(this.startingHandlePositions)
-
     const pipsScale = document.querySelector('div.noUi-pips.noUi-pips-horizontal')
     if (pipsScale) {
       const lastPipMarker = document.createElement('div')
       lastPipMarker.setAttribute('class', 'noUi-marker noUi-marker-horizontal noUi-marker-large')
-      lastPipMarker.setAttribute('style', 'left: 100%;')
+      lastPipMarker.setAttribute('style', 'left: 100%; width: 1px')
       pipsScale.appendChild(lastPipMarker)
+    }
+    const firstPip = document.querySelector('.noUi-marker-horizontal.noUi-marker')
+    if (firstPip) {
+      firstPip.setAttribute('style', 'width: 1px; margin-left: 0.5px;')
     }
   }
 
@@ -267,14 +270,15 @@ div.noUi-pips.noUi-pips-horizontal {
 }
 .noUi-marker-horizontal.noUi-marker {
   height: 5.5px;
-  width: 1px;
+  width: 0px;
   margin-left: -0.5px;
 }
 .noUi-handle-left {
-  right: -3px !important;
+  right: -6px !important;
 }
 .noUi-handle-right {
-  right: -3px !important;
+  right: 0px !important;
+  margin-right: 0.5px;
 }
 .noUi-handle-0 {
   /* background-color: #e7eaf6; rgba(135,0,188, .2); */
