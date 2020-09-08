@@ -262,10 +262,10 @@ export default class DateRangeSlider extends Vue {
   opacity: 0.25;
 }
 div.noUi-pips.noUi-pips-horizontal {
-  height: 50px;
+  padding: 0;
 }
 .noUi-pips-horizontal {
-  margin-top: -33px;
+  margin-top: -23px;
   font-size: x-small;
 }
 .noUi-marker-horizontal.noUi-marker {
