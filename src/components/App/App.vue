@@ -27,7 +27,7 @@
         </div>
       </v-content>
       <v-footer fixed app ref="theFooter" :height="36" class="v-footer__layout--border">
-        <the-footer></the-footer>
+        <component :is="footerComponent" />
       </v-footer>
     </v-app>
     <app-info-poller></app-info-poller>
@@ -42,7 +42,7 @@ import { Action, namespace, State } from 'vuex-class'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { RootOperation } from '@vuescape/store/modules/Root'
-import { NotificationMessage, ns, StoreOperation } from '@vuescape/store/modules/types'
+import { ModuleState, NotificationMessage, ns, StoreOperation } from '@vuescape/store/modules/types'
 import { Menu } from '@vuescape/types'
 
 import AppInfoHandler from '@vuescape/components/AppInfoHandler'
@@ -65,7 +65,17 @@ export default class App extends ComponentBase {
   @(namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE))
   private setAvailableHeight: (availableHeight: Array<number>) => void
 
+  @State('theFooter/configuration') 
+  private footerConfiguration: ModuleState<any>
+  
   @State private isAuthenticated: boolean
+
+  private get footerComponent() {
+    if (this.footerConfiguration && this.footerConfiguration.value && this.footerConfiguration.value.footerComponentOverride) {
+      return this.footerConfiguration.value.footerComponentOverride
+    }
+    return 'the-footer'
+  }
 
   @Watch('isAuthenticated')
   private async onIsAuthenticatedChanged(val: any, oldVal: any) {
