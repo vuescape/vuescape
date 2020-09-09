@@ -107,13 +107,13 @@ export default class TheFooter extends Vue {
     display: inline;
   }
 
-  the-footer__copyright,
-  the-footer__links {
+  .the-footer__copyright,
+  .the-footer__links {
     margin-left: 1.5em;
     margin-right: 1.5em;
   }
 
-  the-footer__links a {
+  .the-footer__links a {
     margin-left: 2em;
   }
 }
