@@ -11,19 +11,15 @@
       :colspan="cell.colspan"
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
-      <span v-if="index === 0 && rowToDisplay.isExpandable">
-        <font-awesome-icon
-          v-if="rowToDisplay.isExpanded"
-          class="data-row-renderer__icon"
-          :icon="['fal', 'chevron-down']"
-        />
-        <!-- <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i> -->
-        <font-awesome-icon
-          v-if="!rowToDisplay.isExpanded"
-          class="data-row-renderer__icon"
-          :icon="['fal', 'chevron-right']"
-        />
-        <!-- <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i> -->
+      <span v-if="index === 0">
+        <span v-if="rowToDisplay.isExpandable">
+          <font-awesome-icon
+            v-if="rowToDisplay.isExpanded"
+            class="data-row-renderer__icon"
+            :icon="['fal', 'chevron-down']"
+          />
+          <font-awesome-icon v-else class="data-row-renderer__icon" :icon="['fal', 'chevron-right']" />
+        </span>
       </span>
       <span>
         <cell-renderer :key="rowToDisplay.id" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
@@ -91,7 +87,8 @@ export default class DataRowRenderer extends ComponentBase {
   }
 
   private getIndentStyle(depth: number, index: number, cell: any) {
-    const indentation = index === 0 ? { 'padding-left': `${++depth * 1.4}em` } : '{}'
+    const amountToIndent = 8 + (++depth * 8) + (this.rowToDisplay.isExpandable ? 0 : 11.875)
+    const indentation = index === 0 ? { 'padding-left': `${amountToIndent}px` } : '{}'
     return indentation
   }
 }
