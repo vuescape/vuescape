@@ -216,6 +216,9 @@ table.scrolling thead th {
 table.scrolling td.cell--value--raw.subheader {
   border-left: 0 !important;
 }
+table.scrolling td.cell--value--grid-line { 
+  border-bottom: 1px solid #ddd!important;
+}
 table.scrolling td.cell--value--raw {
   width: 13em;
   max-width: 13em;
