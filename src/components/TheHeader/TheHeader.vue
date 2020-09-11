@@ -10,8 +10,11 @@
       <img
         id="home-logo"
         class="the-header__img--layout"
+        :class="getCssClass"
         :src="theHeaderProps.logoUrl"
         :alt="theHeaderProps.logoAltText"
+        :title="theHeaderProps.logoAltText"
+        @click="clickLogo"
       />
       <v-spacer></v-spacer>
       <navigation-menu
@@ -73,6 +76,21 @@ export default class TheHeader extends Vue {
   @Getter(ns('userProfile', 'Menus'))
   private userProfileMenus: Array<Menu>
 
+  private get getCssClass() {
+    if (this.theHeaderProps.logoHref || this.theHeaderProps.logoNavigationRoute) {
+      return 'the-header__img--clickable'
+    }
+  }
+
+  private clickLogo() {
+    if (this.theHeaderProps.logoHref) {
+      document.location.href = this.theHeaderProps.logoHref
+    }
+    if (this.theHeaderProps.logoNavigationRoute) {
+      this.$router.push(this.theHeaderProps.logoNavigationRoute)
+    }
+  }
+
   private get consolidatedMenus() {
     if (this.menuConfiguration.length) {
       return this.menuConfiguration
@@ -93,5 +111,8 @@ export default class TheHeader extends Vue {
   vertical-align: middle;
   max-height: 20px;
   max-width: 92px;
+}
+.the-header__img--clickable {
+  cursor: pointer;
 }
 </style>
