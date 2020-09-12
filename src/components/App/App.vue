@@ -9,16 +9,17 @@
         <div class="app__container--scroll" ref="appContainer">
           <v-container fluid>
             <v-alert
-              v-if="notifications && notifications.length > 0"
+              v-for="notification in notifications"
+              :key="notification.key"
               class="app__v-alert--margin caption"
               transition="fade-transition"
-              :value="notifications.length > 0"
-              :type="notifications[0].type"
+              :value="notification"
+              :type="notification.type"
               outline
               dismissible
-              @click="notificationClosed(notifications[0].key)"
+              @click="notificationClosed(notification.key)"
             >
-              {{ notifications[0].message }}
+              {{ notification.message }}
             </v-alert>
             <transition name="app__component--transition" mode="out-in">
               <router-view></router-view>
@@ -65,13 +66,17 @@ export default class App extends ComponentBase {
   @(namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE))
   private setAvailableHeight: (availableHeight: Array<number>) => void
 
-  @State('theFooter/configuration') 
+  @State('theFooter/configuration')
   private footerConfiguration: ModuleState<any>
-  
+
   @State private isAuthenticated: boolean
 
   private get footerComponent() {
-    if (this.footerConfiguration && this.footerConfiguration.value && this.footerConfiguration.value.footerComponentOverride) {
+    if (
+      this.footerConfiguration &&
+      this.footerConfiguration.value &&
+      this.footerConfiguration.value.footerComponentOverride
+    ) {
       return this.footerConfiguration.value.footerComponentOverride
     }
     return 'the-footer'
@@ -143,14 +148,15 @@ div.theme--light.application {
   background-color: white;
 }
 .v-select__selections {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif!important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-size: 16.8px !important;
 }
 div.application {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .app__v-alert--margin {
   margin-top: 1em;
+  margin-right: 10px;
 }
 .app__content--height {
   max-height: 100vh !important;
