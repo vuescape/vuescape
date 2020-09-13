@@ -22,8 +22,6 @@ export const makeNavigationGuard = (
       }
       next(false)
     }
-
-    return isAuthorizedNavigationGuard
   }
 
   return isAuthorizedNavigationGuard
