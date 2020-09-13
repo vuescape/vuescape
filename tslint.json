@@ -24,7 +24,7 @@
     "quotemark": [true, "single", "avoid-escape", "avoid-template"],
     "indent": [true, "spaces", 2],
     "arrow-parens": [true, "ban-single-arg-parens"],
-    "interface-name": [true, "never-prefix"],
+    "interface-name": [false, "never-prefix"],
     "object-literal-sort-keys": [false, "match-declaration-order", "shorthand-first"],
     "no-console": false, // allow console but we will remove console.log in production builds
     "no-debugger": true
