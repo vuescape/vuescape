@@ -12,4 +12,5 @@ export interface TreeTableItem {
   // Use this for clicking expand/collapse
   onclick?: (row?: TreeTableRow, item?: TreeTableItem) => void
   extendedProperties?: any
+  isVisible? : boolean
 }

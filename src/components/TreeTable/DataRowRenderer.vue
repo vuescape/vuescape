@@ -3,7 +3,7 @@
     <td
       @mouseleave="onMouseLeave(cell)"
       @mouseover="onMouseEnter(cell)"
-      v-for="(cell, index) in rowToDisplay.items"
+      v-for="(cell, index) in rowToDisplay.items.filter(_ => _.isVisible !== false)"
       :style="getIndentStyle(rowToDisplay.depth, index, cell)"
       class="cell--border"
       :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"
@@ -81,13 +81,15 @@ export default class DataRowRenderer extends ComponentBase {
     cssClasses['tree-table-item__td--clickable'] = typeof cell.onclick === typeof Function
     cssClasses['selected-metric'] = row.isSelected
     cssClasses['selected-metric-left'] = row.isSelected && index === 0
-    cssClasses['selected-metric-interior'] = row.isSelected && index !== 0 && index !== row.items.length - 1
-    cssClasses['selected-metric-right'] = row.isSelected && index === row.items.length - 1
+    cssClasses['selected-metric-interior'] =
+      row.isSelected && index !== 0 && index !== row.items.filter(_ => _.isVisible !== false).length - 1
+    cssClasses['selected-metric-right'] =
+      row.isSelected && index === row.items.filter(_ => _.isVisible !== false).length - 1
     return cssClasses
   }
 
   private getIndentStyle(depth: number, index: number, cell: any) {
-    const amountToIndent = 8 + (++depth * 8) + (this.rowToDisplay.isExpandable ? 0 : 11.875)
+    const amountToIndent = 8 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
     const indentation = index === 0 ? { 'padding-left': `${amountToIndent}px` } : '{}'
     return indentation
   }

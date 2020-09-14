@@ -1,7 +1,7 @@
 <template>
   <tr :class="rowToDisplay.cssClasses" :key="rowToDisplay.id">
     <td
-      v-for="(cell, index) in rowToDisplay.items"
+      v-for="(cell, index) in rowToDisplay.items.filter(_ => _.isVisible !== false)"
       :class="[
         { 'tree-table-item__td--clickable': index === 0 ? rowToDisplay.isExpandable && cell.onclick : cell.onclick },
         cell.cssClasses,
@@ -63,6 +63,6 @@ export default class SectionHeaderRowRenderer extends ComponentBase {
   /* margin-left: -2px; */
   font-size: 9px;
   margin-bottom: 1px;
-  width: 0.875em!important;
+  width: 0.875em !important;
 }
 </style>
