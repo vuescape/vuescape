@@ -22,7 +22,7 @@
         </span>
       </span>
       <span>
-        <cell-renderer :key="rowToDisplay.id" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
+        <cell-renderer :key="cellKey(cell)" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
         <span v-if="cell.hover && cell.hover.component"
           >&nbsp;<transition name="data-row-renderer__animation" mode="out-in">
             <component
@@ -44,16 +44,13 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import TreeTable from '.'
 import { TreeTableItem } from './TreeTableItem'
 import { TreeTableRow } from './TreeTableRow'
 
 import CellRenderer from './CellRenderer.vue'
 
-const Tooltip = () => import(/* webpackChunkName: 'tool-tip' */ '@vuescape/components/Tooltip/').then(m => m.default)
-
 @Component({
-  components: { CellRenderer, Tooltip, TreeTable },
+  components: { CellRenderer },
 })
 export default class DataRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
@@ -65,12 +62,16 @@ export default class DataRowRenderer extends ComponentBase {
     return this.row
   }
 
-  private onMouseEnter(cell: any) {
+  private cellKey(cell: TreeTableItem) {
+    return cell.id + '_' + (cell.renderer ? cell.renderer.name : 'DefaultCellRenderer')
+  }
+
+  private onMouseEnter(cell: TreeTableItem) {
     if (cell.hover) {
       this.isHovering = true
     }
   }
-  private onMouseLeave(cell: any) {
+  private onMouseLeave(cell: TreeTableItem) {
     if (cell.hover) {
       this.isHovering = false
     }
