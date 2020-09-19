@@ -127,7 +127,7 @@ export default class Tooltip extends ComponentBase {
     this.shouldShowDialog = true
   }
 
-  private beforeDestory() {
+  private beforeDestroy() {
     this.stopVideo()
   }
 
