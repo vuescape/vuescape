@@ -24,14 +24,13 @@
       <span>
         <cell-renderer :key="cellKey(cell)" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
         <span v-if="cell.hover && cell.hover.component"
-          >&nbsp;<transition name="data-row-renderer__animation" mode="out-in">
-            <component
-              :is="cell.hover.component"
-              :cell="cell"
-              :isHovering="isHovering"
-              style="vertical-align: text-top;"
-            ></component>
-          </transition>
+          >&nbsp;
+          <component
+            :is="cell.hover.component"
+            :cell="cell"
+            :isHovering="isHovering"
+            style="vertical-align: text-top;"
+          ></component>
         </span>
       </span>
     </td>
