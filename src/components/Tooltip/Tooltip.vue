@@ -14,7 +14,6 @@
       :hide-overlay="true"
       v-model="shouldShowDialog"
       max-width="500px"
-      width="25%"
       @input="v => v || stopVideo()"
     >
       <v-card flat class="fixed-cell-renderer__card--hover">
