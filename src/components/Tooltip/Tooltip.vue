@@ -1,13 +1,22 @@
 <template>
   <span class="tooltip__container">
     <font-awesome-icon
-      v-if="isHoveringImpl"
-      :icon="['fal', 'info-circle']"
+      v-show="isHoveringImpl"
+      :icon="['far', 'question-circle']"
       style="font-size: 14px; color: #16a5c6; cursor: pointer;"
-      class="legend-table__font-awesome-icon--style"
       @click.stop="enableTooltip"
     />
-    <v-dialog :hide-overlay="true" v-model="shouldShowDialog" max-width="50%" @input="v => v || stopVideo()">
+    <span style="width: 14px; display: inline-block;" v-show="!isHoveringImpl"></span>
+    <v-dialog
+      persistent
+      origin="left center"
+      :content-class="`tooltip__dialog--${cell.id}`"
+      :hide-overlay="true"
+      v-model="shouldShowDialog"
+      max-width="500px"
+      width="25%"
+      @input="v => v || stopVideo()"
+    >
       <v-card flat class="fixed-cell-renderer__card--hover">
         <v-card-title class="tooltip__v-card--title">
           <span class="tooltop__title--font">{{ title }}</span
