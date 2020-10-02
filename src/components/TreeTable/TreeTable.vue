@@ -203,7 +203,7 @@ table.scrolling td {
 }
 table.scrolling thead.scrollsync {
   background-color: white !important;
-  overflow-y: auto !important;
+  /* overflow-y: auto !important; Pushes header over scrollbar which causes misalignment of header and body when scroll bar is visible at the far right */
 }
 table.scrolling thead th {
   border: 0px;
