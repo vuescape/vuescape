@@ -113,5 +113,3 @@ export default class DataRowRenderer extends ComponentBase {
   opacity: 0;
 }
 </style>
-
-<style></style>
