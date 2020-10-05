@@ -3,7 +3,7 @@
     <v-toolbar-items class="hidden-sm-and-down">
       <v-toolbar-items v-for="menu in menus" :key="menu.id">
         <v-divider v-if="menu.isDivider" class="mx-3" inset vertical></v-divider>
-        <v-menu v-if="!menu.isDivider && menu.items" auto open-on-click offset-y :disabled="isSiteInMaintenanceMode">
+        <v-menu content-class="navigation-menu__content" v-if="!menu.isDivider && menu.items" auto open-on-click offset-y :disabled="isSiteInMaintenanceMode">
           <v-btn
             :aria-label="menu.title"
             flat
@@ -226,7 +226,7 @@ i.v-icon {
   padding-top: 0;
   padding-bottom: 0;
 }
-.menuable__content__active {
+.navigation-menu__content.menuable__content__active {
   max-height: 500px !important;
 }
 </style>
