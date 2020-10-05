@@ -226,12 +226,12 @@ body {
   color: dodgerblue;
 }
 .status-passed {
-  background-color: #c6efce;
-  color: #006100;
+  background-color: #b7eebc;
+  color: darkgreen !important;
 }
 .status-failed {
-  background-color: #ffc7ce;
-  color: #9c2d75;
+  background-color: #ffbbc0;
+  color: darkred !important;
 }
 table td.very-positive {
   background-color: #6ed071 !important;
