@@ -1,22 +1,28 @@
 <template>
   <span class="tooltip__container">
-    <font-awesome-icon
-      v-show="isHoveringImpl"
-      :icon="['far', 'question-circle']"
-      style="font-size: 14px; color: #16a5c6; cursor: pointer;"
-      @click.stop="enableTooltip"
-    />
     <span style="width: 14px; display: inline-block;" v-show="!isHoveringImpl"></span>
-    <v-dialog
-      persistent
-      origin="left center"
-      :content-class="`tooltip__dialog--${cell.id}`"
-      :hide-overlay="true"
+    <v-menu
+      :content-class="cell.id"
       v-model="shouldShowDialog"
-      max-width="500px"
-      width="calc(50% - 75px)"
-      @input="v => v || stopVideo()"
+      :close-on-content-click="false"
+      top
+      right
+      :nudge-top="30"
+      :nudge-right="10"
+      max-width="500"
+      transition="scale-transition"
+      origin="bottom left"
     >
+      <template v-slot:activator="{ on }">
+        <font-awesome-icon
+          v-show="isHoveringImpl"
+          :icon="['far', 'question-circle']"
+          style="font-size: 14px; color: #16a5c6; cursor: pointer;"
+          @click.stop="enableTooltip"
+          v-on="on"
+        />
+      </template>
+
       <v-card flat class="fixed-cell-renderer__card--hover">
         <v-card-title class="tooltip__v-card--title">
           <span class="tooltop__title--font">{{ title }}</span
@@ -37,7 +43,7 @@
           <span v-else v-html="html" ref="hoverHtml"></span>
         </v-card-text>
       </v-card>
-    </v-dialog>
+    </v-menu>
   </span>
 </template>
 <script lang="ts">
