@@ -23,7 +23,7 @@
         />
       </template>
 
-      <v-card flat class="fixed-cell-renderer__card--hover">
+      <v-card flat>
         <v-card-title class="tooltip__v-card--title">
           <span class="tooltop__title--font">{{ title }}</span
           ><v-spacer></v-spacer>
