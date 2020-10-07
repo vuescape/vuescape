@@ -186,6 +186,9 @@ table.scrolling td.subheader {
   height: 33px;
   vertical-align: middle;
 }
+table.scrolling tr.data-row td.focused-metric {
+  background-color: rgb(235, 248, 240) !important;
+}
 table.scrolling tr.data-row:hover td {
   background-color: rgb(235, 248, 240) !important;
 }

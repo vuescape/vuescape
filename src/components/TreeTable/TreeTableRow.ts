@@ -10,6 +10,7 @@ export interface TreeTableRow {
   isExpanded: boolean
   isVisible: boolean
   isSelected: boolean
+  isFocused?: boolean
   depth: number
   cssClasses?: string
   onclick?: () => void

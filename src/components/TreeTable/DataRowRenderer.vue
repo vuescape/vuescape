@@ -28,6 +28,7 @@
           <component
             :is="cell.hover.component"
             :cell="cell"
+            :row="rowToDisplay"
             :isHovering="isHovering"
             style="vertical-align: text-top;"
           ></component>
@@ -85,6 +86,7 @@ export default class DataRowRenderer extends ComponentBase {
       row.isSelected && index !== 0 && index !== row.items.filter(_ => _.isVisible !== false).length - 1
     cssClasses['selected-metric-right'] =
       row.isSelected && index === row.items.filter(_ => _.isVisible !== false).length - 1
+    cssClasses['focused-metric'] = row.isFocused === true
     return cssClasses
   }
 
