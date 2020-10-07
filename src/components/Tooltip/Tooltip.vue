@@ -51,7 +51,7 @@ import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Action, namespace, State } from 'vuex-class'
 
-import { ComponentBase, TreeTableItem } from '@vuescape/index'
+import { ComponentBase, TreeTableItem, TreeTableRow } from '@vuescape/index'
 import { ModuleState, ns, StoreOperation } from '@vuescape/store/modules'
 
 @Component({})
@@ -70,16 +70,21 @@ export default class Tooltip extends ComponentBase {
   @Prop({ type: Object, required: true })
   private cell: TreeTableItem
 
+  @Prop({ type: Object, required: true })
+  private row: TreeTableRow
+
   @Prop({ type: Boolean, default: false })
   private isHovering: boolean
 
-  @Prop({ type: String, default: '50%' })
-  private clientX: string
-
-  @Prop({ type: String, default: '50%' })
-  private clientY: string
-
   private isHoveringImpl = false
+  private hasOpened = false
+
+  @Watch('shouldShowDialog')
+  private async onShouldShowDialogChanged(newValue: boolean, oldValue: boolean) {
+    if (this.hasOpened) {
+      this.row.isFocused = newValue
+    }
+  }
 
   @Watch('isHovering')
   private onHoveringChanged(newValue: boolean, oldValue: boolean) {
@@ -117,28 +122,9 @@ export default class Tooltip extends ComponentBase {
     return this.cell.hover ? this.cell.hover.html : ''
   }
 
-  private positionDialog() {
-    const dialogs = document.querySelectorAll('.v-dialog')
-    const dialogArray = [...dialogs]
-    const dialog = dialogArray.filter(_ => {
-      if (_.children[0] && _.children[0].children[0] && _.children[0].children[0].children[0]) {
-        const title = _.children[0].children[0].children[0] as any
-        return title.innerText === this.cell.value
-      }
-      return false
-    })
-    if (dialog.length) {
-      const dialogToChange = dialog[0] as any
-      dialogToChange.style.position = 'absolute'
-      dialogToChange.style.left = this.clientX
-      dialogToChange.style.top = this.clientY
-    }
-  }
-
   private async enableTooltip() {
     this.setTooltipSingleton([false])
-    await this.$nextTick()
-    // this.positionDialog()
+    this.hasOpened = true
     this.shouldShowDialog = true
   }
 
