@@ -2,7 +2,7 @@
   <span class="tooltip__container">
     <span style="width: 14px; display: inline-block;" v-show="!isHoveringImpl"></span>
     <v-menu
-      :content-class="cell.id"
+      :content-class="`tooltip__menu--${cell.id}`"
       v-model="shouldShowDialog"
       :close-on-content-click="false"
       top
