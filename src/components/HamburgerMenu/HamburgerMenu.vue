@@ -62,7 +62,7 @@ import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 import { Guid, Menu } from '@vuescape/types'
 
 @Component
-export default class NavigationMenu extends Vue {
+export default class HamburgerMenu extends Vue {
   private hamburgerMenu = false
   private expansionPanelIndex = null
 
