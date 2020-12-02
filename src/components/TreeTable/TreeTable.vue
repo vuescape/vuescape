@@ -180,7 +180,7 @@ table.scrolling tr.subheader {
 table.scrolling td.subheader {
   background-color: #f8f8f8 !important;
   border-bottom: 1px solid #555555 !important;
-  border-top: 1px solid #555555 !important;
+border-top: 1px solid #555555 !important;
   font-weight: 500;
   padding-left: 0.4em;
   height: 33px;
