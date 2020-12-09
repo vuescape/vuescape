@@ -4,11 +4,10 @@ import VueRouter from 'vue-router'
 import { ErrorHandler } from 'vue-router/types/router'
 import { Store } from 'vuex'
 
-import { Axios, CacheOptions } from '@vuescape/http'
+import { Axios, CacheOptions, Dictionary, HubSpotTrackingProvider, TrackingProvider } from '@vuescape/index'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
 import { RootState } from '@vuescape/store/RootState'
-import { Dictionary } from '@vuescape/types'
 
 import 'vue-resize/dist/vue-resize.css'
 
@@ -25,6 +24,8 @@ export class ApplicationBootstrapper {
   private vuexStore: Store<any>
   private router: VueRouter
   private rootComponentOptions: { el: string; componentName: string; rootComponent: VueConstructor<Vue>; props: any }
+  private trackingProvider: TrackingProvider
+
   private initFunction = async () => {
     return
   }
@@ -100,7 +101,7 @@ export class ApplicationBootstrapper {
     return this
   }
 
-  public withIconLoaders(...iconLoaders : Array<() => void>) {
+  public withIconLoaders(...iconLoaders: Array<() => void>) {
     this.iconLoaders = iconLoaders
     return this
   }
@@ -112,6 +113,11 @@ export class ApplicationBootstrapper {
 
   public withRouter(router: VueRouter) {
     this.router = router
+    return this
+  }
+
+  public withTrackingProvider(trackingProvider: TrackingProvider) {
+    this.trackingProvider = trackingProvider
     return this
   }
 
@@ -155,6 +161,9 @@ export class ApplicationBootstrapper {
       await this.initFunction()
       // tslint:disable-next-line:no-unused-expression
       new Vue({
+        provide: () => ({
+          trackingProvider: this.trackingProvider,
+        }),
         el: this.rootComponentOptions.el,
         store: this.vuexStore,
         router: this.router,
