@@ -38,13 +38,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Inject, Prop, Watch } from 'vue-property-decorator'
+import { Route } from 'vue-router'
 import { Action, namespace, State } from 'vuex-class'
 
+import { UserProfile } from '@core/types'
+
+import { Menu, TrackingProvider } from '@vuescape/index'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { RootOperation } from '@vuescape/store/modules/Root'
 import { ModuleState, NotificationMessage, ns, StoreOperation } from '@vuescape/store/modules/types'
-import { Menu } from '@vuescape/types'
+import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 
 import AppInfoHandler from '@vuescape/components/AppInfoHandler'
 import AppInfoPoller from '@vuescape/components/AppInfoPoller'
@@ -55,6 +59,9 @@ import TheHeader from '@vuescape/components/TheHeader'
   components: { AppInfoHandler, AppInfoPoller, TheHeader, TheFooter },
 })
 export default class App extends ComponentBase {
+  @Inject('trackingProvider')
+  private trackingProvider: TrackingProvider
+
   @Prop({ type: String, default: '/site-maintenance' })
   private siteMaintenanceRoutePath: string
 
@@ -71,6 +78,14 @@ export default class App extends ComponentBase {
 
   @State private isAuthenticated: boolean
 
+  @State(
+    (state: ModuleState<UserProfile>) => {
+      return state.value ? state.value.email : undefined
+    },
+    { namespace: UserProfileModuleName },
+  )
+  private userProfileEmail: string
+
   private get footerComponent() {
     if (
       this.footerConfiguration &&
@@ -82,9 +97,48 @@ export default class App extends ComponentBase {
     return 'the-footer'
   }
 
+  @Watch('$route')
+  private onRouteChanged(to: Route, from: Route) {
+    if (this.trackingProvider) {
+      // get the fragment
+      const toPath = this.normalizeRoutePath(to)
+      const fromPath = this.normalizeRoutePath(from)
+      // If required, exclude other paths here e.g. '/sign-in'
+      if (toPath !== fromPath) {
+        // Don't track if paths are different but first path part is the same
+        const firstToPathParts = toPath.split('/')
+        const firstFomPathParts = fromPath.split('/')
+        if (
+          firstToPathParts.length > 2 &&
+          firstToPathParts.length === firstFomPathParts.length &&
+          firstToPathParts[1] === firstFomPathParts[1]
+        ) {
+          return
+        }
+        this.trackingProvider.trackPageView(toPath)
+      }
+    }
+  }
+
+  @Watch('userProfileEmail')
+  private onUserProfileEmailChanged(to?: string, from?: string) {
+    if (this.trackingProvider && to && !from) {
+      this.trackingProvider.identify(to)
+    }
+  }
+
   @Watch('isAuthenticated')
   private async onIsAuthenticatedChanged(val: any, oldVal: any) {
     await this.handleResize()
+  }
+
+  private normalizeRoutePath(route: Route) {
+    // Assume that entityId will only occur once in string
+    // TODO: find better location for this logic. Don't like entityId here.
+    if (route.params.entityId) {
+      return route.path.replace('/' + route.params.entityId, '')
+    }
+    return route.path
   }
 
   private async notificationClosed(notificationKey: string) {
@@ -98,6 +152,17 @@ export default class App extends ComponentBase {
   private async mounted() {
     const availableHeight = await this.getAvailableHeight()
     this.registerStoreModuleWithInitialValue<Array<number>>('window/availableHeight', [availableHeight])
+    // If mounted and user profile exists and tracking provider then identify user
+    // This is required because watch of userProfileEmail does not fire if email address was already set so we need to
+    // identify/init here as well as in the watcher
+    if (this.trackingProvider) {
+      if (this.userProfileEmail) {
+        this.trackingProvider.identify(this.userProfileEmail)
+      } else {
+        // Even if no user email init so that any functionality will be available to users even if not signed in (with an email)
+        this.trackingProvider.init()
+      }
+    }
   }
   private async getAvailableHeight() {
     await this.$nextTick()
