@@ -1,3 +1,4 @@
+export * from './analytics'
 export * from './components'
 export * from './http'
 export * from './infrastructure'
