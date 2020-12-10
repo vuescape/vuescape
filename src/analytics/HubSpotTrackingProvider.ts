@@ -8,6 +8,10 @@ export class HubSpotTrackingProvider implements TrackingProvider {
     this.hubId = hubId
   }
 
+  public get name() {
+    return 'hubspot-tracking'
+  }
+
   public identify(user: string): void {
     if (!this.isInitialized) {
       this.getHsq().push([

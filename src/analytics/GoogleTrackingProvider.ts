@@ -8,6 +8,10 @@ export class GoogleTrackingProvider implements TrackingProvider {
     this.trackingId = trackingId
   }
 
+  public get name() {
+    return 'google-analytics'
+  }
+  
   public identify(user: string): void {
     throw new Error('Method not implemented.')
   }

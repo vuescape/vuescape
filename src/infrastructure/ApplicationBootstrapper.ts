@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import { ErrorHandler } from 'vue-router/types/router'
 import { Store } from 'vuex'
 
-import { Axios, CacheOptions, Dictionary, HubSpotTrackingProvider, TrackingProvider } from '@vuescape/index'
+import { Axios, CacheOptions, Dictionary, TrackingService } from '@vuescape/index'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
 import { RootState } from '@vuescape/store/RootState'
@@ -24,7 +24,7 @@ export class ApplicationBootstrapper {
   private vuexStore: Store<any>
   private router: VueRouter
   private rootComponentOptions: { el: string; componentName: string; rootComponent: VueConstructor<Vue>; props: any }
-  private trackingProvider: TrackingProvider
+  private trackingService: TrackingService
 
   private initFunction = async () => {
     return
@@ -116,8 +116,8 @@ export class ApplicationBootstrapper {
     return this
   }
 
-  public withTrackingProvider(trackingProvider: TrackingProvider) {
-    this.trackingProvider = trackingProvider
+  public withTrackingService(trackingService: TrackingService) {
+    this.trackingService = trackingService
     return this
   }
 
@@ -162,7 +162,7 @@ export class ApplicationBootstrapper {
       // tslint:disable-next-line:no-unused-expression
       new Vue({
         provide: () => ({
-          trackingProvider: this.trackingProvider,
+          trackingService: this.trackingService,
         }),
         el: this.rootComponentOptions.el,
         store: this.vuexStore,

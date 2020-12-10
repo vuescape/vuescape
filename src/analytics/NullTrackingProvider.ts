@@ -4,6 +4,10 @@ export class NullTrackingProvider implements TrackingProvider {
   public identify(user: string): void {
     // no-op
   }
+  
+  public get name() {
+    return 'NullTrackingProvider'
+  }
 
   public init(): void {
     // no-op
