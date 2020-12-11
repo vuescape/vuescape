@@ -44,6 +44,6 @@ export class GoogleTrackingProvider implements TrackingProvider {
   }
 
   public sendEvent(eventName: string, payload: any): void {
-    throw new Error('Method not implemented.')
+    ga('send', eventName, ...payload)
   }
 }

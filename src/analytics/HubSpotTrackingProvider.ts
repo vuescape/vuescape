@@ -50,7 +50,7 @@ export class HubSpotTrackingProvider implements TrackingProvider {
   }
 
   public sendEvent(eventName: string, payload: any): void {
-    throw new Error('Method not implemented.')
+    // no-op
   }
 
   private getHsq(): Array<any> {
