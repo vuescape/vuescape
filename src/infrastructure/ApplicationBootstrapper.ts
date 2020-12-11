@@ -4,10 +4,12 @@ import VueRouter from 'vue-router'
 import { ErrorHandler } from 'vue-router/types/router'
 import { Store } from 'vuex'
 
-import { Axios, CacheOptions, Dictionary, TrackingService } from '@vuescape/index'
+import { TrackingService } from '@vuescape/analytics'
+import { Axios, CacheOptions } from '@vuescape/http'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
 import { RootState } from '@vuescape/store/RootState'
+import { Dictionary } from '@vuescape/types'
 
 import 'vue-resize/dist/vue-resize.css'
 

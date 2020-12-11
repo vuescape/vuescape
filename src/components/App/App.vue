@@ -42,11 +42,12 @@ import { Component, Inject, Prop, Watch } from 'vue-property-decorator'
 import { Route } from 'vue-router'
 import { Action, namespace, State } from 'vuex-class'
 
-import { Menu, TrackingService } from '@vuescape/index'
+import { TrackingService } from '@vuescape/analytics' 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { RootOperation } from '@vuescape/store/modules/Root'
 import { ModuleState, NotificationMessage, ns, StoreOperation } from '@vuescape/store/modules/types'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
+import { Menu } from '@vuescape/types'
 
 import AppInfoHandler from '@vuescape/components/AppInfoHandler'
 import AppInfoPoller from '@vuescape/components/AppInfoPoller'
@@ -102,6 +103,7 @@ export default class App extends ComponentBase {
 
   @Watch('userProfileModuleValue')
   private onUserProfileModuleValueChanged(to?: string, from?: string) {
+    // if !from then there was no user profile previously so this is the first time having it loaded
     if (to && !from) {
       this.trackingService.identifyUser(to)
     }
