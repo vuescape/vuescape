@@ -42,7 +42,7 @@ import { Component, Inject, Prop, Watch } from 'vue-property-decorator'
 import { Route } from 'vue-router'
 import { Action, namespace, State } from 'vuex-class'
 
-import { TrackingService } from '@vuescape/analytics' 
+import { TrackingService } from '@vuescape/analytics'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { RootOperation } from '@vuescape/store/modules/Root'
 import { ModuleState, NotificationMessage, ns, StoreOperation } from '@vuescape/store/modules/types'
@@ -58,6 +58,8 @@ import TheHeader from '@vuescape/components/TheHeader'
   components: { AppInfoHandler, AppInfoPoller, TheHeader, TheFooter },
 })
 export default class App extends ComponentBase {
+  // private headerHeight = 0
+
   @Inject('trackingService')
   private trackingService: TrackingService
 
@@ -71,6 +73,9 @@ export default class App extends ComponentBase {
 
   @(namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE))
   private setAvailableHeight: (availableHeight: Array<number>) => void
+
+  // @(namespace('window/availableHeight').State(state => state.value))
+  // private availableHeight: Array<number>
 
   @State('theFooter/configuration')
   private footerConfiguration: ModuleState<any>
@@ -122,7 +127,20 @@ export default class App extends ComponentBase {
     const availableHeight = await this.getAvailableHeight()
     this.setAvailableHeight([availableHeight])
   }
-  
+
+  // private updated() {
+  //   // If there is no header height then check to see if there is a header height and adjust the available height.
+  //   // This is being done because the header does not render until after the available height
+  //   if (!this.headerHeight) {
+  //     const theHeader = this.$refs.theHeader as any
+  //     const theHeaderHeight = theHeader.$el.getBoundingClientRect().height as number
+  //     if (theHeaderHeight) {
+  //       this.headerHeight = theHeaderHeight
+  //       this.setAvailableHeight([this.availableHeight[0] - theHeaderHeight])
+  //     }
+  //   }
+  // }
+
   private async mounted() {
     const availableHeight = await this.getAvailableHeight()
     this.registerStoreModuleWithInitialValue<Array<number>>('window/availableHeight', [availableHeight])
@@ -146,8 +164,12 @@ export default class App extends ComponentBase {
     if (!theHeader.$el.getBoundingClientRect || !theFooter.$el.getBoundingClientRect) {
       return windowHeight
     }
-    const theHeaderHeight = theHeader.$el.getBoundingClientRect().height as number
-    const theFooterHeight = theFooter.$el.getBoundingClientRect().height as number
+    // A bit of hack here to default these values if no height found.
+    // This avoids having to hook into the updated lifecycle event because that fires multiple times while 
+    // rendering pages.
+    // The reason 0 height could be returned because the elements are not fully rendered yet.
+    const theHeaderHeight = theHeader.$el.getBoundingClientRect().height as number || 37
+    const theFooterHeight = theFooter.$el.getBoundingClientRect().height as number || 36
     const contentPane = document.querySelector('main') as Element
     const paddingTop = Number.parseFloat(window.getComputedStyle(contentPane, null).getPropertyValue('padding-top'))
     const availableHeight = windowHeight - theHeaderHeight - theFooterHeight - paddingTop
