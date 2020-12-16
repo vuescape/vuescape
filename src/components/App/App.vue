@@ -11,7 +11,7 @@
             <v-alert
               v-for="notification in notifications"
               :key="notification.key"
-              class="app__v-alert--margin caption"
+              class="app__v-alert--margin"
               transition="fade-transition"
               :value="notification"
               :type="notification.type"
