@@ -254,7 +254,7 @@ div.container {
   overflow-y: inherit !important;
 }
 .v-footer__layout--border {
-  border-top: 1px solid #ade3ef;
+  border-top: 1px solid #9BDDDB;
 }
 html {
   overflow-y: hidden;

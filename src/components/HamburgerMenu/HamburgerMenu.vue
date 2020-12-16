@@ -110,7 +110,7 @@ export default class HamburgerMenu extends Vue {
 
 <style>
 .hamburger-menu__v-menu--size .v-expansion-panel .v-expansion-panel__container {
-  border-top: 1px solid #ade3ef;
+  border-top: 1px solid #9BDDDB;
   /* height: 36px; */
   font-size: 13px;
 }

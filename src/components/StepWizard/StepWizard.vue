@@ -483,7 +483,7 @@ export default class StepWizard extends Vue {
   height: 40px;
 }
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
-  border-color: #ade3ef !important;
+  border-color: #9BDDDB !important;
   /*  background-color: #16a5c6 !important;
   color: white !important; */
 }
@@ -495,7 +495,7 @@ export default class StepWizard extends Vue {
   color: unset!important; */
 }
 .step-wizard__stepper-box .bottom .next .vuescape-button__v-btn--style {
-  border-color: #ade3ef !important;
+  border-color: #9BDDDB !important;
   background-color: #16a5c6 !important;
   color: white !important;
   /* background-color: unset !important;
