@@ -60,10 +60,15 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
         })
       }
     } else {
+      // We couldn't connect to the server to get a status code. Typically seen as a CORS issue
+      // or if the server is down or potentially a client side network issue.
+      // Add a message here instead of error.message being 'Network Error'
       const errorMessage: NotificationMessage = {
         key: Guid.newGuid(),
         type: NotificationType.Error,
-        message: error.message,
+        message:
+          'Sorry, there was temporary problem connecting over the network. ' +
+          'Please verify you are connected to the internet and try again.',
       }
       this.context.commit(StoreOperation.Mutation.NotificationMutations.ADD, errorMessage, {
         root: this.shouldUseGlobalNotifications,
