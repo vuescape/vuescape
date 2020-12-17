@@ -37,9 +37,9 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
           root: true,
         })
         // Instead of routing to sign-in do an entire app reload from the current URL.
-        // This will cause the sign-in page to load with the current URL location as param since 
+        // This will cause the sign-in page to load with the current URL location as param since
         // there is no token to automatically sign in.
-        document.location.reload(true)
+        document.location.reload()
       } else if (status === 400) {
         const errorMessage: NotificationMessage = {
           key: Guid.newGuid(),
