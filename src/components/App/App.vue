@@ -218,6 +218,7 @@ div.application {
 .app__v-alert--margin {
   margin-top: 1em;
   margin-right: 10px;
+  font-weight: 500;
 }
 .app__content--height {
   max-height: 100vh !important;
