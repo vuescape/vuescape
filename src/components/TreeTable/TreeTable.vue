@@ -47,31 +47,43 @@ import { TreeTableRow } from './TreeTableRow'
 export default class TreeTable extends ComponentBase {
   @Prop({ type: Array, required: true })
   private headers: Array<TreeTableHeaderRow>
+
   @Prop({ type: Array, required: true })
   private rows: Array<TreeTableRow>
+  
   @Prop({ type: Boolean, required: false, default: true })
   private scrollVertical: boolean
+  
   @Prop({ type: Boolean, required: false, default: true })
   private scrollHorizontal = true
+  
   @Prop({ type: Boolean, required: false, default: true })
   private syncHeaderScroll = true
+  
   @Prop({ type: Boolean, required: false, default: true })
   private syncFooterScroll = true
+  
   @Prop({ type: Boolean, required: false, default: false })
   private includeFooter = false
+  
   @Prop({ type: String, required: false, default: '#FFFFFF' })
   private deadAreaColor: string
+  
   @Prop({ type: Boolean, required: false, default: true })
   private freezeFirstColumn: boolean
+  
   @Prop({ type: Number, required: false, default: 100000 })
   private maxRows: number
+  
   @Prop({ type: String, required: false, default: '' })
   private cssStyle: string
+  
   @Prop({ type: Function, required: false })
   private propertySortFactory?: (
     propertyName: string,
     sortDirection: SortDirection,
   ) => (left: any, right: any) => -1 | 0 | 1
+  
   @Prop({ type: Function, required: false })
   private treeTableSorter?: (
     rows: Array<TreeTableRow>,
