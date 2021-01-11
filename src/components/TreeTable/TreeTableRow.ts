@@ -2,8 +2,8 @@ import { TreeTableItem } from './TreeTableItem'
 import { TreeTableItemDependency } from './TreeTableItemDependency'
 
 export interface TreeTableRow {
-  id: string // id will be the path e.g. 'Income Statement| Gross Profit' for gross profit
-  // Could be value instead of text property name
+  // unique identifier for this row.  This will be used as a key for updating the DOM.
+  id: string
   name: string
   items: Array<TreeTableItem>
   isExpandable: boolean
@@ -15,10 +15,11 @@ export interface TreeTableRow {
   cssClasses?: string
   onclick?: () => void
   // can be a string or an object
-  renderer?: any 
-  // Dependencies are an array of strings.  The string values are ids of other items in the tree
+  renderer?: any
+  // Dependencies are used to track dependencies (could be between rows or something else) for a row
+  // The specific implementation of when and how to handle those dependencies is up to the author.
   dependencies?: Array<TreeTableItemDependency>
   children?: Array<TreeTableRow>
-  // Any value that contains the object representation of the 
-  value? : any
+  // Any value
+  value?: any
 }
