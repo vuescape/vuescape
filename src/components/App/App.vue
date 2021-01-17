@@ -2,11 +2,17 @@
   <div>
     <resize-observer @notify="handleResize"></resize-observer>
     <v-app>
-      <transition name="app__component--transition" mode="out-in">
+      <transition
+        name="app__component--transition"
+        mode="out-in"
+      >
         <the-header ref="theHeader"></the-header>
       </transition>
       <v-content class="app__content--height">
-        <div class="app__container--scroll" ref="appContainer">
+        <div
+          class="app__container--scroll"
+          ref="appContainer"
+        >
           <v-container fluid>
             <v-alert
               v-for="notification in notifications"
@@ -21,13 +27,22 @@
             >
               {{ notification.message }}
             </v-alert>
-            <transition name="app__component--transition" mode="out-in">
+            <transition
+              name="app__component--transition"
+              mode="out-in"
+            >
               <router-view></router-view>
             </transition>
           </v-container>
         </div>
       </v-content>
-      <v-footer fixed app ref="theFooter" :height="36" class="v-footer__layout--border">
+      <v-footer
+        fixed
+        app
+        ref="theFooter"
+        :height="36"
+        class="v-footer__layout--border"
+      >
         <component :is="footerComponent" />
       </v-footer>
     </v-app>
@@ -165,11 +180,11 @@ export default class App extends ComponentBase {
       return windowHeight
     }
     // A bit of hack here to default these values if no height found.
-    // This avoids having to hook into the updated lifecycle event because that fires multiple times while 
+    // This avoids having to hook into the updated lifecycle event because that fires multiple times while
     // rendering pages.
     // The reason 0 height could be returned because the elements are not fully rendered yet.
-    const theHeaderHeight = theHeader.$el.getBoundingClientRect().height as number || 37
-    const theFooterHeight = theFooter.$el.getBoundingClientRect().height as number || 36
+    const theHeaderHeight = (theHeader.$el.getBoundingClientRect().height as number) || 37
+    const theFooterHeight = (theFooter.$el.getBoundingClientRect().height as number) || 36
     const contentPane = document.querySelector('main') as Element
     const paddingTop = Number.parseFloat(window.getComputedStyle(contentPane, null).getPropertyValue('padding-top'))
     const availableHeight = windowHeight - theHeaderHeight - theFooterHeight - paddingTop
@@ -255,7 +270,7 @@ div.container {
   overflow-y: inherit !important;
 }
 .v-footer__layout--border {
-  border-top: 1px solid #9BDDDB;
+  border-top: 1px solid #9bdddb;
 }
 html {
   overflow-y: hidden;
@@ -345,6 +360,16 @@ i.material-icons {
   .app__sliding-pane--multiple {
     width: auto;
   }
+}
+.app__container--scroll .el-loading-mask svg.circular {
+  display: none;
+}
+.app__container--scroll .el-loading-mask div.el-loading-spinner {
+  content: url('./thin-broken-ring-335.gif');
+  width: 42px;
+  position: absolute;
+  left: 49%;
+  top: 49%;
 }
 .app__container--scroll .el-loading-mask {
   background-color: rgba(255, 255, 255, 0);
