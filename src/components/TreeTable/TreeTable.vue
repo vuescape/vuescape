@@ -198,7 +198,7 @@ border-top: 1px solid #555555 !important;
   height: 33px;
   vertical-align: middle;
 }
-table.scrolling tr.data-row td.focused-metric {
+table.scrolling tr td.focused-metric {
   background-color: rgb(235, 248, 240) !important;
 }
 table.scrolling tr.data-row:hover td {
