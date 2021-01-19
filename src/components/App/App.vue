@@ -368,8 +368,8 @@ i.material-icons {
   content: url('./thin-broken-ring-335.gif');
   width: 42px;
   position: absolute;
-  left: 49%;
-  top: 49%;
+  left: calc(50% - 21px);
+  top: 50%;
 }
 .app__container--scroll .el-loading-mask {
   background-color: rgba(255, 255, 255, 0);
