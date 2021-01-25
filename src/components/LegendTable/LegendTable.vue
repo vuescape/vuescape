@@ -3,13 +3,22 @@
     <v-menu
       :close-on-content-click="false"
       offset-x
-      nudge-left="315"
+      :nudge-left="nudgeLeft"
       origin="center right"
       transition="scale-transition"
     >
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" outline depressed v-on="on" class="legend-table__v-btn--style">
-          <font-awesome-icon :icon="['fas', 'info']" class="legend-table__font-awesome-icon--style" />
+        <v-btn
+          color="primary"
+          outline
+          depressed
+          v-on="on"
+          class="legend-table__v-btn--style"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'info']"
+            class="legend-table__font-awesome-icon--style"
+          />
           <!-- <v-icon>fas fa-info</v-icon> -->
         </v-btn>
       </template>
@@ -34,10 +43,13 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 
 @Component({})
-export default class LegendTable extends Vue {}
+export default class LegendTable extends Vue {
+  @Prop({ type: Number, default: 315 })
+  private nudgeLeft: number
+}
 </script>
 
 <style>
