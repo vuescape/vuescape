@@ -28,8 +28,7 @@
           <slot name="header">
             <thead>
               <tr>
-                <td>&nbsp;</td>
-                <td>Legend</td>
+                <td colspan="2">Legend</td>
               </tr>
             </thead>
           </slot>
