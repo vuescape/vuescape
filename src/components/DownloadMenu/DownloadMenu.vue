@@ -1,10 +1,10 @@
 <template>
   <v-menu offset-y>
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on" small outline depressed color="primary" class="vuescape-button__v-btn--style">
+      <v-btn v-on="on" small outline depressed color="primary" class="download-button__v-btn--style">
         <font-awesome-icon
           :icon="['fad', 'cloud-download-alt']"
-          class="vuescape-button__v-icon--font"
+          class="download-button__v-icon--font"
           :style="{ color: '#555', marginRight: '7px;' }"
         />&nbsp; download &nbsp;
         <v-icon small class="download-menu__v-icon--dropdown">fas fa-caret-down</v-icon>
@@ -15,7 +15,7 @@
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <font-awesome-icon
             :icon="['fad', 'file-image']"
-            class="vuescape-button__v-icon--font"
+            class="download-button__v-icon--font"
             :style="{ color: '#555' }"
           />
         </v-list-tile-action>
@@ -27,7 +27,7 @@
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <font-awesome-icon
             :icon="['fad', 'file-download']"
-            class="vuescape-button__v-icon--font"
+            class="download-button__v-icon--font"
             :style="{ color: '#555' }"
           />
         </v-list-tile-action>
@@ -40,7 +40,7 @@
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <font-awesome-icon
             :icon="['fad', 'file-pdf']"
-            class="vuescape-button__v-icon--font"
+            class="download-button__v-icon--font"
             :style="{ color: '#555' }"
           />
         </v-list-tile-action>
@@ -52,7 +52,7 @@
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <font-awesome-icon
             :icon="['fad', 'file-archive']"
-            class="vuescape-button__v-icon--font"
+            class="download-button__v-icon--font"
             :style="{ color: '#555' }"
           />
         </v-list-tile-action>
@@ -85,7 +85,7 @@ export default class DownloadMenu extends Vue {
 </script>
 
 <style>
-.vuescape-button__v-btn--style {
+.download-button__v-btn--style {
   margin-bottom: 0;
   font-size: 11px;
   border-color: #dddddd !important;
@@ -93,7 +93,7 @@ export default class DownloadMenu extends Vue {
   border-radius: 5px;
   height: 24px;
 }
-.vuescape-button__v-icon--font {
+.download-button__v-icon--font {
   font-size: 15px;
   /* margin-top: -1px; */
 }
