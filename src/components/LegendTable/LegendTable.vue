@@ -64,8 +64,8 @@ export default class LegendTable extends Vue {
 .legend-table__v-btn--style {
   border: 1px solid #dddddd !important;
   border-radius: 5px;
-  height: 26px;
-  width: 26px;
+  height: 24px;
+  width: 24px;
   padding-left: 8px;
   padding-right: 8px;
   margin-top: 6px;
