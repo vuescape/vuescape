@@ -1,5 +1,8 @@
 <template>
-  <span :class="cell.cssClasses">{{ cell.value }}</span>
+  <span
+    :title="cell.value"
+    :class="cell.cssClasses"
+  >{{ cell.value }}</span>
 </template>
 
 <script lang="ts">
