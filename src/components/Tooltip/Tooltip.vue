@@ -1,49 +1,60 @@
 <template>
   <span class="tooltip__container">
-    <span style="width: 14px; display: inline-block;" v-show="!isHoveringImpl"></span>
-    <v-menu
-      :content-class="`tooltip__menu--${cell.id}`"
-      v-model="shouldShowDialog"
-      :close-on-content-click="false"
-      top
-      right
-      :nudge-top="30"
-      :nudge-right="10"
-      max-width="500"
-      transition="scale-transition"
-      origin="bottom left"
-    >
-      <template v-slot:activator="{ on }">
-        <font-awesome-icon
-          v-show="isHoveringImpl"
-          :icon="['far', 'question-circle']"
-          style="font-size: 14px; color: #16a5c6; cursor: pointer;"
-          @click.stop="enableTooltip"
-          v-on="on"
-        />
-      </template>
+    <span
+      v-show="!isHoveringImpl"
+      style="margin-left: -18px; width: 14px;display: inline-block;"
+    >&nbsp;
+    </span>
+    <span v-show="isHoveringImpl">
+      <v-menu
+        :content-class="`tooltip__menu--${cell.id}`"
+        v-model="shouldShowDialog"
+        :close-on-content-click="false"
+        top
+        right
+        :nudge-top="30"
+        :nudge-right="20"
+        max-width="500"
+        transition="scale-transition"
+        origin="bottom left"
+      >
+        <template v-slot:activator="{ on }">
+          <font-awesome-icon
+            :icon="['far', 'question-circle']"
+            style="margin-left: -18px; font-size: 14px; color: #16a5c6; cursor: pointer; display: inline-block;"
+            @click.stop="enableTooltip"
+            v-on="on"
+          />
+        </template>
 
-      <v-card flat>
-        <v-card-title class="tooltip__v-card--title">
-          <span class="tooltop__title--font">{{ title }}</span
-          ><v-spacer></v-spacer>
-          <span class="tooltip__title--close">
-            <font-awesome-icon
-              :icon="['fal', 'times']"
-              style="cursor: pointer; font-size: 18px;"
-              @click="
+        <v-card flat>
+          <v-card-title class="tooltip__v-card--title">
+            <span class="tooltop__title--font">{{ title }}</span>
+            <v-spacer></v-spacer>
+            <span class="tooltip__title--close">
+              <font-awesome-icon
+                :icon="['fal', 'times']"
+                style="cursor: pointer; font-size: 18px;"
+                @click="
                 stopVideo()
                 shouldShowDialog = false
               "
-          /></span>
-          <!-- <span @click="shouldShowDialog = false">X</span> -->
-        </v-card-title>
-        <v-card-text>
-          <span v-if="text">{{ text }} </span>
-          <span v-else v-html="html" ref="hoverHtml"></span>
-        </v-card-text>
-      </v-card>
-    </v-menu>
+              />
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <span v-if="text">{{ text }} </span>
+            <span
+              v-else
+              v-html="html"
+              ref="hoverHtml"
+            ></span>
+          </v-card-text>
+        </v-card>
+      </v-menu>
+    </span>
+    <span style="width: 4px; min-width: 4px; max-width: 4px; display: inline-block;">
+    </span>
   </span>
 </template>
 <script lang="ts">
@@ -143,14 +154,7 @@ export default class Tooltip extends ComponentBase {
 </script>
 
 <style>
-/* .v-dialog {
-  position: absolute;
-  left: 0;
-  top: 0;
-} */
 .tooltip__v-card--title {
-  /* background-color: #16a5c6 !important;
-  color: #ffffff; */
   font-size: 17px;
   font-weight: 400;
   padding-right: 8px;
