@@ -1,5 +1,8 @@
 <template>
-  <tr :class="rowToDisplay.cssClasses" :key="rowToDisplay.id">
+  <tr
+    :class="rowToDisplay.cssClasses"
+    :key="rowToDisplay.id"
+  >
     <td
       @mouseleave="onMouseLeave(cell)"
       @mouseover="onMouseEnter(cell)"
@@ -12,27 +15,35 @@
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
       <span v-if="index === 0">
+        <span v-if="cell.hover && cell.hover.component">
+          <!-- style="position: relative;" -->
+          <component
+            :is="cell.hover.component"
+            :cell="cell"
+            :row="rowToDisplay"
+            :isHovering="isHovering"
+          ></component>
+          <!-- style="vertical-align: text-top;margin-right: 4px;position: absolute; right: 0;" -->
+        </span>
         <span v-if="rowToDisplay.isExpandable">
           <font-awesome-icon
             v-if="rowToDisplay.isExpanded"
             class="data-row-renderer__icon"
             :icon="['fal', 'chevron-down']"
           />
-          <font-awesome-icon v-else class="data-row-renderer__icon" :icon="['fal', 'chevron-right']" />
+          <font-awesome-icon
+            v-else
+            class="data-row-renderer__icon"
+            :icon="['fal', 'chevron-right']"
+          />
         </span>
       </span>
       <span>
-        <cell-renderer :key="cellKey(cell)" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
-        <span v-if="cell.hover && cell.hover.component"
-          >&nbsp;
-          <component
-            :is="cell.hover.component"
-            :cell="cell"
-            :row="rowToDisplay"
-            :isHovering="isHovering"
-            style="vertical-align: text-top;"
-          ></component>
-        </span>
+        <cell-renderer
+          :key="cellKey(cell)"
+          :cell="cell"
+          :isHovering="cell.hover && isHovering"
+        ></cell-renderer>
       </span>
     </td>
   </tr>
