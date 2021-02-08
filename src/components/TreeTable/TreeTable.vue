@@ -188,12 +188,14 @@ table.scrolling tr {
 /* TODO: fix this so that we don't get double lines*/
 table.scrolling tr.subheader {
   /* margin: -1px 0; */
+  border-bottom: 1px solid #555555 !important;
+  border-top: 1px solid #555555 !important;
 }
 table.scrolling td.subheader {
   background-color: #f8f8f8 !important;
-  border-bottom: 1px solid #555555 !important;
-border-top: 1px solid #555555 !important;
-  font-weight: 500;
+  /* border-bottom: 1px solid #555555 !important;
+  border-top: 1px solid #555555 !important;
+  font-weight: 500; */
   padding-left: 0.4em;
   height: 33px;
   vertical-align: middle;
@@ -231,8 +233,11 @@ table.scrolling thead th {
 table.scrolling td.cell--value--raw.subheader {
   border-left: 0 !important;
 }
-table.scrolling td.cell--value--grid-line { 
+table.scrolling tr.cell--value--grid-line { 
   border-bottom: 1px solid #ddd!important;
+}
+table.scrolling td.cell--value--grid-line { 
+  /* border-bottom: 1px solid #ddd!important; */
 }
 table.scrolling td.cell--value--raw {
   width: 13em;
