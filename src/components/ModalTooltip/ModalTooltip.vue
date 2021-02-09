@@ -1,41 +1,50 @@
 <template>
   <span class="modal-tooltip__container">
-    <font-awesome-icon
-      v-show="isHoveringImpl"
-      :icon="['far', 'question-circle']"
-      style="font-size: 14px; color: #16a5c6; cursor: pointer;"
-      @click.stop="enableTooltip"
-    />
-    <span style="width: 14px; display: inline-block;" v-show="!isHoveringImpl"></span>
-    <v-dialog      
-      origin="left center"
-      :content-class="`modal-tooltip__dialog--${cell.id}`"
-      :hide-overlay="true"
-      v-model="shouldShowDialog"
-      max-width="500px"
-      width="50%"
-      @input="v => v || stopVideo()"
-    >
-      <v-card flat>
-        <v-card-title class="modal-tooltip__v-card--title">
-          <span class="modal-tooltop__title--font">{{ title }}</span
-          ><v-spacer></v-spacer>
-          <span class="modal-tooltip__title--close">
-            <font-awesome-icon
-              :icon="['fal', 'times']"
-              style="cursor: pointer; font-size: 18px;"
-              @click="
+    <span
+      style="width: 14px; display: inline-block;"
+      v-show="!isHoveringImpl"
+    ></span>
+    <span v-show="isHoveringImpl" style="display: inline-block;">
+      <font-awesome-icon
+        :icon="['far', 'question-circle']"
+        style="font-size: 14px; color: #16a5c6; cursor: pointer;"
+        @click.stop="enableTooltip"
+      />
+      <v-dialog
+        origin="left center"
+        :content-class="`modal-tooltip__dialog--${cell.id}`"
+        :hide-overlay="true"
+        v-model="shouldShowDialog"
+        max-width="500px"
+        width="50%"
+        @input="v => v || stopVideo()"
+      >
+        <v-card flat>
+          <v-card-title class="modal-tooltip__v-card--title">
+            <span class="modal-tooltop__title--font">{{ title }}</span>
+            <v-spacer></v-spacer>
+            <span class="modal-tooltip__title--close">
+              <font-awesome-icon
+                :icon="['fal', 'times']"
+                style="cursor: pointer; font-size: 18px;"
+                @click="
                 stopVideo()
                 shouldShowDialog = false
               "
-          /></span>
-        </v-card-title>
-        <v-card-text>
-          <span v-if="text">{{ text }} </span>
-          <span v-else v-html="html" ref="hoverHtml"></span>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+              />
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <span v-if="text">{{ text }} </span>
+            <span
+              v-else
+              v-html="html"
+              ref="hoverHtml"
+            ></span>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </span>
   </span>
 </template>
 <script lang="ts">
