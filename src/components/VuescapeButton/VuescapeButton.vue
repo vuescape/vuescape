@@ -67,7 +67,7 @@ export default class VuescapeButton extends Vue {
   border-color: #dddddd !important;
   /* margin-top: -4px; */
   border-radius: 5px;
-  height: 26px;
+  height: 24px;
 }
 .vuescape-button__v-icon--font {
   font-size: 15px;
