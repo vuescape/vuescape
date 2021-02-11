@@ -287,6 +287,8 @@ table.freezeFirstColumn tbody th:first-child {
   position: sticky;
   position: -webkit-sticky;
   left: 0;
+  /* Need so that firefox will render border */
+  background-clip: padding-box;
 }
 
 table.scrolling {
