@@ -1,17 +1,29 @@
 <template>
-  <div class="tree-table__div--box" :style="cssStyleValue">
+  <div
+    class="tree-table__div--box"
+    :style="cssStyleValue"
+  >
     <vue-scrolling-table
-      :scroll-horizontal="scrollHorizontal"
-      :scroll-vertical="scrollVertical"
-      :sync-header-scroll="syncHeaderScroll"
-      :sync-footer-scroll="syncFooterScroll"
-      :include-footer="includeFooter"
+      :scroll-horizontal="shouldScrollHorizontal"
+      :scroll-vertical="shouldScrollVertical"
+      :sync-header-scroll="shouldSyncHeaderScroll"
+      :sync-footer-scroll="shouldSyncFooterScroll"
+      :include-footer="shouldIncludeFooter"
       :dead-area-color="deadAreaColor"
-      :class="{ freezeFirstColumn: freezeFirstColumn }"
+      :class="{ freezeFirstColumn: shouldFreezeFirstColumn }"
     >
       <template slot="thead">
-        <tr v-for="headerRow in headersToDisplay" :class="headerRow.cssClasses" :key="headerRow.id">
-          <th v-for="header in headerRow.items" :class="header.cssClasses" :key="header.id" :colspan="header.colspan">
+        <tr
+          v-for="headerRow in headersToDisplay"
+          :class="headerRow.cssClasses"
+          :key="headerRow.id"
+        >
+          <th
+            v-for="header in headerRow.items"
+            :class="header.cssClasses"
+            :key="header.id"
+            :colspan="header.colspan"
+          >
             <component
               :is="header.renderer || 'DefaultHeaderCellRenderer'"
               :header="header"
@@ -21,7 +33,11 @@
         </tr>
       </template>
       <template slot="tbody">
-        <row-renderer v-for="row in rowsToDisplay" :key="row.id" :row="row"></row-renderer>
+        <row-renderer
+          v-for="row in rowsToDisplay"
+          :key="row.id"
+          :row="row"
+        ></row-renderer>
       </template>
     </vue-scrolling-table>
   </div>
@@ -50,40 +66,40 @@ export default class TreeTable extends ComponentBase {
 
   @Prop({ type: Array, required: true })
   private rows: Array<TreeTableRow>
-  
+
   @Prop({ type: Boolean, required: false, default: true })
-  private scrollVertical: boolean
-  
+  private shouldScrollVertical: boolean
+
   @Prop({ type: Boolean, required: false, default: true })
-  private scrollHorizontal = true
-  
+  private shouldScrollHorizontal = true
+
   @Prop({ type: Boolean, required: false, default: true })
-  private syncHeaderScroll = true
-  
+  private shouldSyncHeaderScroll = true
+
   @Prop({ type: Boolean, required: false, default: true })
-  private syncFooterScroll = true
-  
+  private shouldSyncFooterScroll = true
+
   @Prop({ type: Boolean, required: false, default: false })
-  private includeFooter = false
-  
+  private shouldIncludeFooter = false
+
+  @Prop({ type: Boolean, required: false, default: true })
+  private shouldFreezeFirstColumn: boolean
+
   @Prop({ type: String, required: false, default: '#FFFFFF' })
   private deadAreaColor: string
-  
-  @Prop({ type: Boolean, required: false, default: true })
-  private freezeFirstColumn: boolean
-  
+
   @Prop({ type: Number, required: false, default: 100000 })
   private maxRows: number
-  
+
   @Prop({ type: String, required: false, default: '' })
   private cssStyle: string
-  
+
   @Prop({ type: Function, required: false })
   private propertySortFactory?: (
     propertyName: string,
     sortDirection: SortDirection,
   ) => (left: any, right: any) => -1 | 0 | 1
-  
+
   @Prop({ type: Function, required: false })
   private treeTableSorter?: (
     rows: Array<TreeTableRow>,
@@ -233,10 +249,10 @@ table.scrolling thead th {
 table.scrolling td.cell--value--raw.subheader {
   border-left: 0 !important;
 }
-table.scrolling tr.cell--value--grid-line { 
-  border-bottom: 1px solid #ddd!important;
+table.scrolling tr.cell--value--grid-line {
+  border-bottom: 1px solid #ddd !important;
 }
-table.scrolling td.cell--value--grid-line { 
+table.scrolling td.cell--value--grid-line {
   /* border-bottom: 1px solid #ddd!important; */
 }
 table.scrolling td.cell--value--raw {
