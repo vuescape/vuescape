@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import { ErrorHandler } from 'vue-router/types/router'
 import { Store } from 'vuex'
 
-import { TrackingService } from '@vuescape/analytics'
+import { NullTrackingService, TrackingService } from '@vuescape/analytics'
 import { Axios, CacheOptions } from '@vuescape/http'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
@@ -26,7 +26,7 @@ export class ApplicationBootstrapper {
   private vuexStore: Store<any>
   private router: VueRouter
   private rootComponentOptions: { el: string; componentName: string; rootComponent: VueConstructor<Vue>; props: any }
-  private trackingService: TrackingService
+  private trackingService: TrackingService = new NullTrackingService()
 
   private initFunction = async () => {
     return
