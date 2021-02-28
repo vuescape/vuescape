@@ -102,7 +102,7 @@ export default class HamburgerMenu extends Vue {
   }
 
   private getIconArray(iconString: string) {
-    const iconArray = iconString.split(' ')
+    const iconArray = iconString ? iconString.split(' ') : ''
     return iconArray
   }
 }

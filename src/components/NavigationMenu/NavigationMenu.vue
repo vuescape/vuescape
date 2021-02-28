@@ -191,7 +191,7 @@ export default class NavigationMenu extends Vue {
   }
 
   private getIconArray(iconString: string) {
-    const iconArray = iconString.split(' ')
+    const iconArray = iconString ? iconString.split(' ') : ''
     return iconArray
   }
 
