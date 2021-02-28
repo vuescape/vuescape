@@ -21,7 +21,7 @@
                 class="hamburger-menu__hamburger-menu__icon"
               />
               <font-awesome-icon
-                v-if="!menu.items || (!menu.items.length && menu.icon)"
+                v-if="!(menu.items && menu.items.length) && menu.icon"
                 :icon="getIconArray(menu.icon)"
               />
             </template>
