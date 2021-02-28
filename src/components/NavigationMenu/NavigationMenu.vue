@@ -26,7 +26,7 @@
               class="navigation-menu__v-icon--layout"
               :style="{ color: '#555' }"
             />&nbsp;{{ menu.title }} &nbsp;
-            <v-icon v-if="menu.icon" small color="#555" class="navigation-menu__v-icon--dropdown"
+            <v-icon v-if="menu.items && menu.items.length" small color="#555" class="navigation-menu__v-icon--dropdown"
               >fas fa-caret-down</v-icon
             ></v-btn
           >
