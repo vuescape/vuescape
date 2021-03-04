@@ -198,6 +198,9 @@ export default class SingleSelect extends Vue {
   width: 100%;
   font-size: var(--custom-font-size);
 }
+.single-select__span--prefix {
+  font-size: var(--custom-font-size);
+}
 .multiselect__option--selected.multiselect__option--highlight {
   background: rgba(0, 0, 0, 0.03);
   color: unset;
