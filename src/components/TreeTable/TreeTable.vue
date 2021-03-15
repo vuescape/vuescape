@@ -4,13 +4,13 @@
     :style="cssStyleValue"
   >
     <vue-scrolling-table
-      :scroll-horizontal="shouldScrollHorizontal"
-      :scroll-vertical="shouldScrollVertical"
-      :sync-header-scroll="shouldSyncHeaderScroll"
-      :sync-footer-scroll="shouldSyncFooterScroll"
-      :include-footer="shouldIncludeFooter"
-      :dead-area-color="deadAreaColor"
-      :class="{ freezeFirstColumn: shouldFreezeFirstColumn }"
+      :scroll-horizontal="shouldScrollHorizontalValue"
+      :scroll-vertical="shouldScrollVerticalValue"
+      :sync-header-scroll="shouldSyncHeaderScrollValue"
+      :sync-footer-scroll="shouldSyncFooterScrollValue"
+      :include-footer="shouldIncludeFooterValue"
+      :dead-area-color="deadAreaColorValue"
+      :class="{ freezeFirstColumn: shouldFreezeFirstColumnValue }"
     >
       <template slot="thead">
         <tr
@@ -71,16 +71,16 @@ export default class TreeTable extends ComponentBase {
   private shouldScrollVertical: boolean
 
   @Prop({ type: Boolean, required: false, default: true })
-  private shouldScrollHorizontal = true
+  private shouldScrollHorizontal : boolean
 
   @Prop({ type: Boolean, required: false, default: true })
-  private shouldSyncHeaderScroll = true
+  private shouldSyncHeaderScroll : boolean
 
   @Prop({ type: Boolean, required: false, default: true })
-  private shouldSyncFooterScroll = true
+  private shouldSyncFooterScroll : boolean
 
   @Prop({ type: Boolean, required: false, default: false })
-  private shouldIncludeFooter = false
+  private shouldIncludeFooter : boolean
 
   @Prop({ type: Boolean, required: false, default: true })
   private shouldFreezeFirstColumn: boolean
@@ -119,6 +119,35 @@ export default class TreeTable extends ComponentBase {
     return this.cssStyle
   }
 
+  private get headersToDisplay() {
+    return this.headers
+  }
+
+  private get shouldScrollVerticalValue() {
+    return this.shouldScrollVertical
+  }
+  private get shouldScrollHorizontalValue() {
+    return this.shouldScrollHorizontal
+  }
+  private get shouldSyncHeaderScrollValue() {
+    return this.shouldSyncFooterScroll
+  }
+  private get shouldSyncFooterScrollValue() {
+    return this.shouldSyncFooterScroll
+  }
+  private get shouldIncludeFooterValue() {
+    return this.shouldIncludeFooter
+  }
+  private get deadAreaColorValue() {
+    return this.deadAreaColor
+  }
+  private get maxRowsValue() {
+    return this.maxRows
+  }
+  private get shouldFreezeFirstColumnValue() {
+    return this.shouldFreezeFirstColumn
+  }
+
   @Watch('rows')
   private rowsWatcher(val: Array<TreeTableRow>, oldVal: Array<TreeTableRow>) {
     this.rows = val
@@ -151,10 +180,6 @@ export default class TreeTable extends ComponentBase {
       }
       row.isExpanded = isRowExanded
     }
-  }
-
-  private get headersToDisplay() {
-    return this.headers
   }
 
   private defaultTreeTableSorter(
