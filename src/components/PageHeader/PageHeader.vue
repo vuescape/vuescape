@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout v-if="title" row justify-space-between class="page-header__header--separation">
-      <v-flex md8 display-1>
+      <v-flex md8>
         <span>{{title}}</span>
       </v-flex>
     </v-layout>
@@ -23,6 +23,7 @@ export default class PageHeader extends Vue {
 <style>
 .page-header__header--separation {
   margin-bottom: 10px;
+  font-size: 24px;
 }
 </style>
 
