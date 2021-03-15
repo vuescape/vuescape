@@ -1,5 +1,5 @@
 export interface TreeTableItemDependency {
   targetId: string
-  type: string
+  dependencyTypeName: string
   payload: any
 }
