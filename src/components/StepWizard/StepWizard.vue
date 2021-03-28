@@ -438,31 +438,31 @@ export default class StepWizard extends Vue {
   margin: 2rem 0;
 }
 .step-wizard__stepper-box .bottom {
-  position: relative;
-  display: flex;
+  position: fixed;
+  bottom: 40px;
   justify-content: space-between;
   align-items: center;
   padding-top: 2rem;
   padding-top: 2rem;
   padding-right: 0;
   padding-left: 0;
-  /* border-top: 1px solid #ccc; */
 }
 .step-wizard__stepper-box .bottom.only-next {
-  justify-content: flex-end;
+  right: calc(10vh)
 }
 .step-wizard__stepper-box .bottom .stepper-button {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 0;
   padding-right: 0;
-  /* cursor: pointer; */
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .step-wizard__stepper-box .bottom .stepper-button.next {
-  margin-right: -8px;
+  right: calc(10vh);
+  position: fixed;
+  bottom: 40px;
 }
 /*
 .step-wizard__stepper-box .bottom .stepper-button.next.deactivated {
@@ -471,7 +471,9 @@ export default class StepWizard extends Vue {
 }
 */
 .step-wizard__stepper-box .bottom .stepper-button.previous {
-  margin-left: -8px;
+  position: fixed;
+  bottom: 40px;
+  left: calc(10vh)
 }
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
   height: 40px;
@@ -481,6 +483,9 @@ export default class StepWizard extends Vue {
   text-decoration: underline;
   font-size: 16px;
   height: 40px;
+  left: calc(100% / 2 - 50px);
+  position: fixed;
+  bottom: 40px;
 }
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
   border-color: #9BDDDB !important;
