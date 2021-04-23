@@ -38,8 +38,8 @@ export function makeTreeTableItemPropertyCompare(
       return 1
     }
 
-    let leftItemValue = leftItem[0].value || leftItem[0].displayValue
-    let rightItemValue = rightItem[0].value || rightItem[0].value
+    let leftItemValue = leftItem[0].value != null ? leftItem[0].value : leftItem[0].displayValue 
+    let rightItemValue = rightItem[0].value != null ? rightItem[0].value : rightItem[0].displayValue
 
     if (sortStrategy === SortStrategy.StringCaseInsensitive) {
       leftItemValue = (leftItemValue || '').toUpperCase()
