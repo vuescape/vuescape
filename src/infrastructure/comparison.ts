@@ -22,7 +22,27 @@ export function makePropertyComparer(sortOnProperty: string, sortStrategy: SortS
     }
   }
 
-  // TODO: Can use localeCompare instead of 
+  if (sortStrategy === SortStrategy.StringOrdinal) {
+    return (left: any, right: any) => {
+      if (!left && !right) {
+        return 0
+      }
+      if (!left && right) {
+        return -1
+      }
+      if (left && !right) {
+        return 1
+      }
+      if (left[sortOnProperty].toString() < right[sortOnProperty].toString()) {
+        return -1
+      }
+      if (left[sortOnProperty].toString() > right[sortOnProperty].toString()) {
+        return 1
+      }
+      return 0
+    }
+  }
+
   if (sortStrategy === SortStrategy.Default) {
     return (left: any, right: any) => {
       if (!left && !right) {
