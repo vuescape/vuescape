@@ -27,7 +27,7 @@
     "element-loading": "^2.0.0",
     "element-theme-chalk": "^2.4.11",
     "file-saver": "^2.0.0",
-    "highcharts": "^7.2.2",
+    "highcharts": "^9.1.0",
     "mdi-vue": "^1.4.3",
     "nouislider": "^13.1.4",
     "papaparse": "^5.2.0",
