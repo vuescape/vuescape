@@ -1,13 +1,12 @@
+import { ColumnSorter } from './ColumnSorter';
 import { SortDirection } from './SortDirection'
 
 export interface TreeTableHeaderItem {
   id: string
   value: string
-  isSortable: boolean
   cssClasses?: string
   colspan?: number
-  sortDirection?: SortDirection
-  sortProperty?: string
+  columnSorter? : ColumnSorter
   renderer?: string  
   // TODO: do we want to support explicit Handlers?  What other event handlers do we want?
   // Also, do we want to support args (e.g. MouseEvent)

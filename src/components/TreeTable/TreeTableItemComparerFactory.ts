@@ -1,12 +1,12 @@
 import { SortDirection } from './SortDirection'
 import { TreeTableRow } from './TreeTableRow'
 
-import { SortStrategy } from '../../infrastructure'
+import { SortComparisonStrategy } from '../../infrastructure'
 
 export function makeTreeTableItemPropertyCompare(
   sortOnCell: string,
   sortDirection: SortDirection,
-  sortStrategy: SortStrategy = SortStrategy.Default,
+  sortComparisonStrategy: SortComparisonStrategy = SortComparisonStrategy.Default,
 ) {
   if (sortDirection === SortDirection.None) {
     throw new Error('Cannot perform a sort with a SortDirection value of None.')
@@ -41,7 +41,7 @@ export function makeTreeTableItemPropertyCompare(
     let leftItemValue = leftItem[0].value != null ? leftItem[0].value : leftItem[0].displayValue 
     let rightItemValue = rightItem[0].value != null ? rightItem[0].value : rightItem[0].displayValue
 
-    if (sortStrategy === SortStrategy.StringCaseInsensitive) {
+    if (sortComparisonStrategy === SortComparisonStrategy.StringCaseInsensitive) {
       leftItemValue = (leftItemValue || '').toUpperCase()
       rightItemValue = (rightItemValue || '').toUpperCase()
     }

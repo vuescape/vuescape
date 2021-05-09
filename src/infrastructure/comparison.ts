@@ -1,7 +1,7 @@
-import { SortStrategy } from './SortStrategy'
+import { SortComparisonStrategy } from './SortComparisonStrategy'
 
-export function makePropertyComparer(sortOnProperty: string, sortStrategy: SortStrategy = SortStrategy.Default) {
-  if (sortStrategy === SortStrategy.StringCaseInsensitive) {
+export function makePropertyComparer(sortOnProperty: string, sortComparisonStrategy: SortComparisonStrategy = SortComparisonStrategy.Default) {
+  if (sortComparisonStrategy === SortComparisonStrategy.StringCaseInsensitive) {
     return (left: any, right: any) => {
       if (!left && !right) {
         return 0
@@ -22,7 +22,7 @@ export function makePropertyComparer(sortOnProperty: string, sortStrategy: SortS
     }
   }
 
-  if (sortStrategy === SortStrategy.StringOrdinal) {
+  if (sortComparisonStrategy === SortComparisonStrategy.StringOrdinal) {
     return (left: any, right: any) => {
       if (!left && !right) {
         return 0
@@ -43,7 +43,7 @@ export function makePropertyComparer(sortOnProperty: string, sortStrategy: SortS
     }
   }
 
-  if (sortStrategy === SortStrategy.Default) {
+  if (sortComparisonStrategy === SortComparisonStrategy.Default) {
     return (left: any, right: any) => {
       if (!left && !right) {
         return 0
@@ -64,5 +64,5 @@ export function makePropertyComparer(sortOnProperty: string, sortStrategy: SortS
     }
   }
 
-  throw new Error('Unsupported SortStrategy: ' + sortStrategy)
+  throw new Error('Unsupported SortComparisonStrategy: ' + SortComparisonStrategy)
 }

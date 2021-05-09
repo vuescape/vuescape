@@ -1,10 +1,10 @@
 <template>
   <span>
     {{ header.value }}
-    <span v-if="header.isSortable" @click="$emit('toggle-sort', header)"
+    <span v-if="header.columnSorter" @click="$emit('toggle-sort', header)"
       >&nbsp;
       <font-awesome-icon
-        :icon="getIconArray(header.sortDirection)"
+        :icon="getIconArray(header.columnSorter.sortDirection)"
         class=""
         style="color: #FFF; font-size: 16px; vertical-align: middle; cursor: hand;"
       />

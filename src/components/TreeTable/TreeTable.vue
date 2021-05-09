@@ -49,12 +49,14 @@ import VueScrollingTable from 'vue-scrolling-table'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
+import { ColumnSorter } from './ColumnSorter'
 import DefaultHeaderCellRenderer from './DefaultHeaderCellRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 import { SortDirection } from './SortDirection'
 import { TreeTableHeaderItem } from './TreeTableHeaderItem'
 import { TreeTableHeaderRow } from './TreeTableHeaderRow'
 import { TreeTableItem } from './TreeTableItem'
+import { makeTreeTableItemPropertyCompare } from './TreeTableItemComparerFactory'
 import { TreeTableRow } from './TreeTableRow'
 
 @Component({
@@ -71,16 +73,16 @@ export default class TreeTable extends ComponentBase {
   private shouldScrollVertical: boolean
 
   @Prop({ type: Boolean, required: false, default: true })
-  private shouldScrollHorizontal : boolean
+  private shouldScrollHorizontal: boolean
 
   @Prop({ type: Boolean, required: false, default: true })
-  private shouldSyncHeaderScroll : boolean
+  private shouldSyncHeaderScroll: boolean
 
   @Prop({ type: Boolean, required: false, default: true })
-  private shouldSyncFooterScroll : boolean
+  private shouldSyncFooterScroll: boolean
 
   @Prop({ type: Boolean, required: false, default: false })
-  private shouldIncludeFooter : boolean
+  private shouldIncludeFooter: boolean
 
   @Prop({ type: Boolean, required: false, default: true })
   private shouldFreezeFirstColumn: boolean
@@ -95,22 +97,11 @@ export default class TreeTable extends ComponentBase {
   private cssStyle: string
 
   @Prop({ type: Function, required: false })
-  private propertySortFactory?: (
-    propertyName: string,
-    sortDirection: SortDirection,
-  ) => (left: any, right: any) => -1 | 0 | 1
-
-  @Prop({ type: Function, required: false })
-  private treeTableSorter?: (
-    rows: Array<TreeTableRow>,
-    headers: Array<TreeTableHeaderRow>,
-    propertySortFactory: (propertyName: string, sortDirection: SortDirection) => (left: any, right: any) => -1 | 0 | 1,
-  ) => Array<TreeTableRow>
+  private treeTableSorter?: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow>
 
   private treeTableSorterImpl: (
     rows: Array<TreeTableRow>,
     headers: Array<TreeTableHeaderRow>,
-    propertySortFactory: (propertyName: string, sortDirection: SortDirection) => (left: any, right: any) => -1 | 0 | 1,
   ) => Array<TreeTableRow> = this.defaultTreeTableSorter
 
   private rowsToDisplay: Array<TreeTableRow> = []
@@ -155,17 +146,24 @@ export default class TreeTable extends ComponentBase {
   }
 
   private toggleSort(header: TreeTableHeaderItem) {
-    let newSortDirection = SortDirection.Ascending
-    if (header.sortDirection === undefined || header.sortDirection === SortDirection.None) {
-      newSortDirection = SortDirection.Ascending
-    } else if (header.sortDirection === SortDirection.Ascending || header.sortDirection === SortDirection.Descending) {
-      newSortDirection = header.sortDirection * -1
-    } else {
-      throw new Error('Unsupported SortDirection: ' + header.sortDirection)
+    if (header.columnSorter) {
+      let newSortDirection = SortDirection.Ascending
+      if (header.columnSorter.sortDirection === undefined || header.columnSorter.sortDirection === SortDirection.None) {
+        newSortDirection = SortDirection.Ascending
+      } else if (
+        header.columnSorter.sortDirection === SortDirection.Ascending ||
+        header.columnSorter.sortDirection === SortDirection.Descending
+      ) {
+        newSortDirection = header.columnSorter.sortDirection * -1
+      } else {
+        throw new Error('Unsupported SortDirection: ' + header.columnSorter.sortDirection)
+      }
+      this.headers.forEach(_ =>
+        _.items.forEach(col => (col.columnSorter ? (col.columnSorter.sortDirection = SortDirection.None) : undefined)),
+      )
+      header.columnSorter.sortDirection = newSortDirection
+      this.setRowsToDisplay()
     }
-    this.headers.forEach(_ => _.items.forEach(col => (col.sortDirection = SortDirection.None)))
-    header.sortDirection = newSortDirection
-    this.setRowsToDisplay()
   }
 
   private toggleExpanded(row?: TreeTableRow) {
@@ -182,23 +180,23 @@ export default class TreeTable extends ComponentBase {
     }
   }
 
-  private defaultTreeTableSorter(
-    rows: Array<TreeTableRow>,
-    headers: Array<TreeTableHeaderRow>,
-    propertySortFactory: (propertyName: string, sortDirection: SortDirection) => (left: any, right: any) => -1 | 0 | 1,
-  ) {
-    if (propertySortFactory) {
-      const sortHeader = headers.flatMap(_ => _.items).filter(_ => _.isSortable && _.sortDirection)
-      if (sortHeader.length > 0) {
-        return rows.sort(propertySortFactory(sortHeader[0].sortProperty!, sortHeader[0].sortDirection!))
-      }
+  private defaultTreeTableSorter(rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) {
+    const sortHeader = headers.flatMap(_ => _.items).filter(_ => _.columnSorter && _.columnSorter.sortDirection)
+    if (sortHeader.length > 0) {
+      return rows.sort(
+        makeTreeTableItemPropertyCompare(
+          sortHeader[0].columnSorter!.sortByCellId,
+          sortHeader[0].columnSorter!.sortDirection,
+          sortHeader[0].columnSorter!.sortComparisonStrategy,
+        ),
+      )
     }
     return rows
   }
 
   private async setRowsToDisplay() {
     const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
-    this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headers, this.propertySortFactory!)
+    this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headers)
     const tableBody = document.querySelector('table.scrolling tbody') as { scrollTop: number }
     if (tableBody) {
       const scrollTop = tableBody.scrollTop

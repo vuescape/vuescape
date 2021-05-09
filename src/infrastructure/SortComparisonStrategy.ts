@@ -1,5 +1,5 @@
 /** Represents a Sort Strategy to use when sorting. */
-export enum SortStrategy {
+export enum SortComparisonStrategy {
   /** None  */
   None = 0,
   /** Sort using ordinal comparison */
