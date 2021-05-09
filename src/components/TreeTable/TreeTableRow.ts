@@ -1,5 +1,5 @@
 import { TreeTableItem } from './TreeTableItem'
-import { TreeTableItemDependency } from './TreeTableItemDependency'
+import { TreeTableRowDependency } from './TreeTableRowDependency'
 
 export interface TreeTableRow {
   // unique identifier for this row.  This will be used as a key for updating the DOM.
@@ -18,7 +18,7 @@ export interface TreeTableRow {
   renderer?: any
   // Dependencies are used to track dependencies (could be between rows or something else) for a row
   // The specific implementation of when and how to handle those dependencies is up to the author.
-  dependencies?: Array<TreeTableItemDependency>
+  dependencies?: Array<TreeTableRowDependency>
   children?: Array<TreeTableRow>
   // Any value
   value?: any
