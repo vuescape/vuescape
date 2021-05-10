@@ -1,7 +1,7 @@
-import { TreeTableHeaderItem } from './TreeTableHeaderItem'
+import { TreeTableHeaderCell } from './TreeTableHeaderCell'
 
 export interface TreeTableHeaderRow {
   id: string 
-  items: Array<TreeTableHeaderItem>
+  cells: Array<TreeTableHeaderCell>
   cssClasses?: string
 }

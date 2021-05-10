@@ -52,7 +52,7 @@ import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Action, namespace, State } from 'vuex-class'
 
-import { ComponentBase, TreeTableItem } from '@vuescape/index'
+import { ComponentBase, TreeTableCell } from '@vuescape/index'
 import { ModuleState, ns, StoreOperation } from '@vuescape/store/modules'
 
 @Component({})
@@ -69,7 +69,7 @@ export default class Tooltip extends ComponentBase {
   private setTooltipSingleton: (val: Array<boolean>) => void
 
   @Prop({ type: Object, required: true })
-  private cell: TreeTableItem
+  private cell: TreeTableCell
 
   @Prop({ type: Boolean, default: false })
   private isHovering: boolean

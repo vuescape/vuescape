@@ -1,7 +1,7 @@
 <template>
   <tr :class="rowToDisplay.cssClasses" :key="rowToDisplay.id">
     <td
-      v-for="(cell, index) in rowToDisplay.items.filter(_ => _.isVisible !== false)"
+      v-for="(cell, index) in rowToDisplay.cells.filter(_ => _.isVisible !== false)"
       :class="[
         { 'tree-table-item__td--clickable': index === 0 ? rowToDisplay.isExpandable && cell.onclick : cell.onclick },
         cell.cssClasses,
@@ -39,7 +39,7 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableItem } from './TreeTableItem'
+import { TreeTableCell } from './TreeTableCell'
 import { TreeTableRow } from './TreeTableRow'
 
 @Component({})

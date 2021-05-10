@@ -13,7 +13,7 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableItem } from './TreeTableItem'
+import { TreeTableCell } from './TreeTableCell'
 
 import DefaultCellRenderer from './DefaultCellRenderer.vue'
 import FixedCellRenderer from './FixedCellRenderer.vue'
@@ -23,7 +23,7 @@ import FixedCellRenderer from './FixedCellRenderer.vue'
 })
 export default class CellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
-  private cell: TreeTableItem
+  private cell: TreeTableCell
 
   @Prop({ type: Boolean, default: false })
   private isHovering: boolean

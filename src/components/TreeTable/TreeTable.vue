@@ -19,7 +19,7 @@
           :key="headerRow.id"
         >
           <th
-            v-for="header in headerRow.items"
+            v-for="header in headerRow.cells"
             :class="header.cssClasses"
             :key="header.id"
             :colspan="header.colspan"
@@ -53,10 +53,9 @@ import { ColumnSorter } from './ColumnSorter'
 import DefaultHeaderCellRenderer from './DefaultHeaderCellRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 import { SortDirection } from './SortDirection'
-import { TreeTableHeaderItem } from './TreeTableHeaderItem'
+import { makeTreeTableCellPropertyCompare } from './TreeTableCellComparerFactory'
+import { TreeTableHeaderCell } from './TreeTableHeaderCell'
 import { TreeTableHeaderRow } from './TreeTableHeaderRow'
-import { TreeTableItem } from './TreeTableItem'
-import { makeTreeTableItemPropertyCompare } from './TreeTableItemComparerFactory'
 import { TreeTableRow } from './TreeTableRow'
 
 @Component({
@@ -145,7 +144,7 @@ export default class TreeTable extends ComponentBase {
     this.setRowsToDisplay()
   }
 
-  private toggleSort(header: TreeTableHeaderItem) {
+  private toggleSort(header: TreeTableHeaderCell) {
     if (header.columnSorter) {
       let newSortDirection = SortDirection.Ascending
       if (header.columnSorter.sortDirection === undefined || header.columnSorter.sortDirection === SortDirection.None) {
@@ -159,7 +158,7 @@ export default class TreeTable extends ComponentBase {
         throw new Error('Unsupported SortDirection: ' + header.columnSorter.sortDirection)
       }
       this.headers.forEach(_ =>
-        _.items.forEach(col => (col.columnSorter ? (col.columnSorter.sortDirection = SortDirection.None) : undefined)),
+        _.cells.forEach(col => (col.columnSorter ? (col.columnSorter.sortDirection = SortDirection.None) : undefined)),
       )
       header.columnSorter.sortDirection = newSortDirection
       this.setRowsToDisplay()
@@ -181,10 +180,10 @@ export default class TreeTable extends ComponentBase {
   }
 
   private defaultTreeTableSorter(rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) {
-    const sortHeader = headers.flatMap(_ => _.items).filter(_ => _.columnSorter && _.columnSorter.sortDirection)
+    const sortHeader = headers.flatMap(_ => _.cells).filter(_ => _.columnSorter && _.columnSorter.sortDirection)
     if (sortHeader.length > 0) {
       return rows.sort(
-        makeTreeTableItemPropertyCompare(
+        makeTreeTableCellPropertyCompare(
           sortHeader[0].columnSorter!.sortByCellId,
           sortHeader[0].columnSorter!.sortDirection,
           sortHeader[0].columnSorter!.sortComparisonStrategy,

@@ -8,12 +8,12 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableItem } from './TreeTableItem'
+import { TreeTableCell } from './TreeTableCell'
 
 @Component({})
 export default class DefaultCellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
-  private cell: TreeTableItem
+  private cell: TreeTableCell
 
   @Prop({ type: Boolean, default: false })
   private isHovering: boolean

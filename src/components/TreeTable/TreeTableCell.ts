@@ -1,6 +1,6 @@
 import { TreeTableRow } from './TreeTableRow'
 
-export interface TreeTableItem {
+export interface TreeTableCell {
   id: string
   value: any
   displayValue?: string
@@ -10,7 +10,7 @@ export interface TreeTableItem {
   cssClasses?: string
   colspan?: number
   // Use this for clicking expand/collapse
-  onclick?: (row?: TreeTableRow, item?: TreeTableItem) => void
+  onclick?: (row?: TreeTableRow, item?: TreeTableCell) => void
   extendedProperties?: any
   isVisible? : boolean
 }

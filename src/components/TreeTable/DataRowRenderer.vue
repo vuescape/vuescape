@@ -6,7 +6,7 @@
     <td
       @mouseleave="onMouseLeave(cell)"
       @mouseover="onMouseEnter(cell)"
-      v-for="(cell, index) in rowToDisplay.items.filter(_ => _.isVisible !== false)"
+      v-for="(cell, index) in rowToDisplay.cells.filter(_ => _.isVisible !== false)"
       :style="getIndentStyle(rowToDisplay.depth, index, cell)"
       class="cell--border"
       :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"
@@ -55,7 +55,7 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableItem } from './TreeTableItem'
+import { TreeTableCell } from './TreeTableCell'
 import { TreeTableRow } from './TreeTableRow'
 
 import CellRenderer from './CellRenderer.vue'
@@ -73,30 +73,30 @@ export default class DataRowRenderer extends ComponentBase {
     return this.row
   }
 
-  private cellKey(cell: TreeTableItem) {
+  private cellKey(cell: TreeTableCell) {
     return cell.id + '_' + (cell.renderer ? cell.renderer.name : 'DefaultCellRenderer')
   }
 
-  private onMouseEnter(cell: TreeTableItem) {
+  private onMouseEnter(cell: TreeTableCell) {
     if (cell.hover) {
       this.isHovering = true
     }
   }
-  private onMouseLeave(cell: TreeTableItem) {
+  private onMouseLeave(cell: TreeTableCell) {
     if (cell.hover) {
       this.isHovering = false
     }
   }
 
-  private getCellClasses(cell: TreeTableItem, row: TreeTableRow, index: number) {
+  private getCellClasses(cell: TreeTableCell, row: TreeTableRow, index: number) {
     const cssClasses = {} as any
     cssClasses['tree-table-item__td--clickable'] = typeof cell.onclick === typeof Function
     cssClasses['selected-metric'] = row.isSelected
     cssClasses['selected-metric-left'] = row.isSelected && index === 0
     cssClasses['selected-metric-interior'] =
-      row.isSelected && index !== 0 && index !== row.items.filter(_ => _.isVisible !== false).length - 1
+      row.isSelected && index !== 0 && index !== row.cells.filter(_ => _.isVisible !== false).length - 1
     cssClasses['selected-metric-right'] =
-      row.isSelected && index === row.items.filter(_ => _.isVisible !== false).length - 1
+      row.isSelected && index === row.cells.filter(_ => _.isVisible !== false).length - 1
     cssClasses['focused-metric'] = row.isFocused === true
     return cssClasses
   }

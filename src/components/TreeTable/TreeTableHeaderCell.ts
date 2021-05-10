@@ -1,9 +1,9 @@
 import { ColumnSorter } from './ColumnSorter';
 import { SortDirection } from './SortDirection'
 
-export interface TreeTableHeaderItem {
+export interface TreeTableHeaderCell {
   id: string
-  value: string
+  displayValue: string
   cssClasses?: string
   colspan?: number
   columnSorter? : ColumnSorter

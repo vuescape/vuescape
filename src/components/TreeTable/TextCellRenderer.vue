@@ -1,24 +1,25 @@
 <template>
-  <span
-    :title="cell.value"
-    :class="cell.cssClasses"
-  >{{ cell.value }}</span>
+  <span :class="cell.cssClasses">{{ cellValue }}</span>
 </template>
 
-<script lang="ts">
+<script <script lang="ts">
 import Component from 'vue-class-component'
-import { Prop, Watch } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { TreeTableCell } from './TreeTableCell'
 
-@Component({ components: {} })
-export default class FixedCellRenderer extends ComponentBase {
+@Component({})
+export default class TextCellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private cell: TreeTableCell
 
   @Prop({ type: Boolean, default: false })
   private isHovering: boolean
+
+  private get cellValue() {
+    return this.cell.displayValue ? this.cell.displayValue : this.cell.value
+  }
 }
 </script>

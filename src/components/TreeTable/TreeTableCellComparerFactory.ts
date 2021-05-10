@@ -3,7 +3,7 @@ import { TreeTableRow } from './TreeTableRow'
 
 import { SortComparisonStrategy } from '../../infrastructure'
 
-export function makeTreeTableItemPropertyCompare(
+export function makeTreeTableCellPropertyCompare(
   sortOnCell: string,
   sortDirection: SortDirection,
   sortComparisonStrategy: SortComparisonStrategy = SortComparisonStrategy.Default,
@@ -23,8 +23,8 @@ export function makeTreeTableItemPropertyCompare(
       return 1
     }
 
-    const leftItem = (left as TreeTableRow).items.filter(_ => _.id === sortOnCell)
-    const rightItem = (right as TreeTableRow).items.filter(_ => _.id === sortOnCell)
+    const leftItem = (left as TreeTableRow).cells.filter(_ => _.id === sortOnCell)
+    const rightItem = (right as TreeTableRow).cells.filter(_ => _.id === sortOnCell)
 
     if (leftItem.length === 0 && rightItem.length === 0) {
       return 0

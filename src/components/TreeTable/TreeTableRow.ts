@@ -1,11 +1,11 @@
-import { TreeTableItem } from './TreeTableItem'
+import { TreeTableCell } from './TreeTableCell'
 import { TreeTableRowDependency } from './TreeTableRowDependency'
 
 export interface TreeTableRow {
   // unique identifier for this row.  This will be used as a key for updating the DOM.
   id: string
   name: string
-  items: Array<TreeTableItem>
+  cells: Array<TreeTableCell>
   isExpandable: boolean
   isExpanded: boolean
   isVisible: boolean

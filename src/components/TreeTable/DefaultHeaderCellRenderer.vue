@@ -1,6 +1,6 @@
 <template>
   <span>
-    {{ header.value }}
+    {{ header.displayValue }}
     <span v-if="header.columnSorter" @click="$emit('toggle-sort', header)"
       >&nbsp;
       <font-awesome-icon
@@ -19,12 +19,12 @@ import { Prop } from 'vue-property-decorator'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { SortDirection } from './SortDirection'
-import { TreeTableHeaderItem } from './TreeTableHeaderItem'
+import { TreeTableHeaderCell } from './TreeTableHeaderCell'
 
 @Component({})
 export default class DefaultHeaderCellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
-  private header: TreeTableHeaderItem
+  private header: TreeTableHeaderCell
 
   private getIconArray(sortDirection: SortDirection = SortDirection.None) {
     if (sortDirection === SortDirection.None) {
