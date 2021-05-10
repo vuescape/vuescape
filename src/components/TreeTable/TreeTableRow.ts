@@ -1,6 +1,8 @@
 import { TreeTableCell } from './TreeTableCell'
 import { TreeTableRowDependency } from './TreeTableRowDependency'
 
+import { Dictionary, Link } from '@vuescape/index'
+
 export interface TreeTableRow {
   // unique identifier for this row.  This will be used as a key for updating the DOM.
   id: string
@@ -22,4 +24,6 @@ export interface TreeTableRow {
   children?: Array<TreeTableRow>
   // Any value
   value?: any
+  links? : Dictionary<Array<Link>> 
+
 }

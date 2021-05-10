@@ -1,5 +1,7 @@
 import { TreeTableRow } from './TreeTableRow'
 
+import { Dictionary, Link } from '@vuescape/index'
+
 export interface TreeTableCell {
   id: string
   value: any
@@ -13,4 +15,5 @@ export interface TreeTableCell {
   onclick?: (row?: TreeTableRow, item?: TreeTableCell) => void
   extendedProperties?: any
   isVisible? : boolean
+  links? : Dictionary<Array<Link>> 
 }
