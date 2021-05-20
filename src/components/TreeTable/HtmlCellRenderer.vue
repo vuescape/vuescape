@@ -16,7 +16,7 @@ export default class HtmlCellRenderer extends ComponentBase {
   private cell: TreeTableCell
 
   private get cellValue() {
-    return this.cell.displayValue ? this.cell.displayValue : this.cell.value
+    return this.cell.displayValue != null ? this.cell.displayValue : this.cell.value
   }
 }
 </script>

@@ -19,7 +19,7 @@ export default class DefaultCellRenderer extends ComponentBase {
   private isHovering: boolean
 
   private get cellValue() {
-    return this.cell.displayValue ? this.cell.displayValue : this.cell.value
+    return this.cell.displayValue != null ? this.cell.displayValue : this.cell.value
   }
 }
 </script>
