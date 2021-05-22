@@ -8,7 +8,7 @@ export interface TreeTableCell {
   value: any
   hover?: Hover
   triggerHoverInCells?: Array<string> 
-  renderer?: any
+  renderer?: string | (() => Promise<any>)
   cssClasses?: string
   colspan?: number
   // Use this for clicking expand/collapse

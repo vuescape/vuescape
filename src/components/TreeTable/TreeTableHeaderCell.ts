@@ -8,7 +8,7 @@ export interface TreeTableHeaderCell {
   cssClasses?: string
   colspan?: number
   columnSorter?: ColumnSorter
-  renderer?: string
+  renderer?: string | (() => Promise<any>)
   hover?: Hover
 
   // TODO: do we want to support explicit Handlers?  What other event handlers do we want?
