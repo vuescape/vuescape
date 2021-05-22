@@ -1,13 +1,16 @@
-import { ColumnSorter } from './ColumnSorter';
-import { SortDirection } from './SortDirection'
+import { Hover } from '@vuescape/index'
+
+import { ColumnSorter } from './ColumnSorter'
 
 export interface TreeTableHeaderCell {
   id: string
   displayValue: string
   cssClasses?: string
   colspan?: number
-  columnSorter? : ColumnSorter
-  renderer?: string  
+  columnSorter?: ColumnSorter
+  renderer?: string
+  hover?: Hover
+
   // TODO: do we want to support explicit Handlers?  What other event handlers do we want?
   // Also, do we want to support args (e.g. MouseEvent)
   // Also, use lower case onclick since that is correct HTML but perhaps not strictly correct for naming

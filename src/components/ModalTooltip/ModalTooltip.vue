@@ -35,10 +35,10 @@
             </span>
           </v-card-title>
           <v-card-text>
-            <span v-if="text">{{ text }} </span>
+            <span v-if="contentKind === plainTextContentKind">{{ content }} </span>
             <span
               v-else
-              v-html="html"
+              v-html="content"
               ref="hoverHtml"
             ></span>
           </v-card-text>
@@ -52,7 +52,7 @@ import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Action, namespace, State } from 'vuex-class'
 
-import { ComponentBase, TreeTableCell } from '@vuescape/index'
+import { ComponentBase, ContentKind, TreeTableCell } from '@vuescape/index'
 import { ModuleState, ns, StoreOperation } from '@vuescape/store/modules'
 
 @Component({})
@@ -104,12 +104,16 @@ export default class Tooltip extends ComponentBase {
     return this.cell.hover ? this.cell.hover.title : ''
   }
 
-  private get text() {
-    return this.cell.hover ? this.cell.hover.text : ''
+  private get content() {
+    return this.cell.hover ? this.cell.hover.content : ''
   }
 
-  private get html() {
-    return this.cell.hover ? this.cell.hover.html : ''
+  private get contentKind() {
+    return this.cell.hover ? this.cell.hover.contentKind : ContentKind.None
+  }
+
+  private get plainTextContentKind() {
+    return ContentKind.PlainText
   }
 
   private async enableTooltip() {

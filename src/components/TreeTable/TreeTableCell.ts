@@ -1,12 +1,12 @@
 import { TreeTableRow } from './TreeTableRow'
 
-import { Dictionary, Link } from '@vuescape/index'
+import { Dictionary, Hover, Link } from '@vuescape/index'
 
 export interface TreeTableCell {
   id: string
-  value: any
   displayValue?: string
-  hover?: { component?: any, title?: string; text?: string; html?: string }
+  value: any
+  hover?: Hover
   triggerHoverInCells?: Array<string> 
   renderer?: any
   cssClasses?: string
