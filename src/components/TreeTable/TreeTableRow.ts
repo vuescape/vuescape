@@ -6,7 +6,6 @@ import { Dictionary, Link } from '@vuescape/index'
 export interface TreeTableRow {
   // unique identifier for this row.  This will be used as a key for updating the DOM.
   id: string
-  name: string
   cells: Array<TreeTableCell>
   isExpandable: boolean
   isExpanded: boolean
