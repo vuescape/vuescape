@@ -7,13 +7,11 @@ export interface TreeTableCell {
   displayValue?: string
   value: any
   hover?: Hover
-  triggerHoverInCells?: Array<string> 
   renderer?: string | any
   cssClasses?: string
   colspan?: number
   // Use this for clicking expand/collapse
   onclick?: (row?: TreeTableRow, item?: TreeTableCell) => void
-  extendedProperties?: any
-  isVisible? : boolean
-  links? : Dictionary<Array<Link>> 
+  isVisible?: boolean
+  links?: Dictionary<Link>
 }
