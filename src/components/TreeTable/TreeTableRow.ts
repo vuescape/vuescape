@@ -16,7 +16,7 @@ export interface TreeTableRow {
   cssClasses?: string
   onclick?: () => void
   // can be a string or an object
-  renderer?: string | (() => Promise<any>)
+  renderer?: string | any
   // Dependencies are used to track dependencies (could be between rows or something else) for a row
   // The specific implementation of when and how to handle those dependencies is up to the author.
   dependencies?: Array<TreeTableRowDependency>
