@@ -50,7 +50,7 @@ import VueScrollingTable from 'vue-scrolling-table'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { ColumnSorter } from './ColumnSorter'
-import DefaultHeaderCellRenderer from './DefaultHeaderCellRenderer.vue'
+import DefaultHeaderCellRenderer from './HeaderCellRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 import { SortDirection } from './SortDirection'
 import { makeTreeTableCellPropertyCompare } from './TreeTableCellComparerFactory'

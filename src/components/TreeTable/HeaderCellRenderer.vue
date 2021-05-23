@@ -1,8 +1,10 @@
 <template>
   <span>
-    {{ header.displayValue }}
-    <span v-if="header.columnSorter" @click="$emit('toggle-sort', header)"
-      >&nbsp;
+    {{ valueToDisplay  }}
+    <span
+      v-if="header.columnSorter"
+      @click="$emit('toggle-sort', header)"
+    >&nbsp;
       <font-awesome-icon
         :icon="getIconArray(header.columnSorter.sortDirection)"
         class=""
@@ -36,6 +38,14 @@ export default class DefaultHeaderCellRenderer extends ComponentBase {
     if (sortDirection === SortDirection.Descending) {
       return ['fad', 'sort-down']
     }
+  }
+
+  private get valueToDisplay() {
+    if (this.header.displayValue != null) {
+      return this.header.displayValue
+    }
+
+    return this.header.value
   }
 }
 </script>
