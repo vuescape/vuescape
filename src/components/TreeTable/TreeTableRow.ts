@@ -23,6 +23,5 @@ export interface TreeTableRow {
   children?: Array<TreeTableRow>
   // Any value
   value?: any
-  links? : Dictionary<Array<Link>> 
-
+  links?: Dictionary<Array<Link>>
 }
