@@ -35,7 +35,7 @@
             </span>
           </v-card-title>
           <v-card-text>
-            <span v-if="contentKind === plainTextContentKind">{{ content }} </span>
+            <span v-if="contentKind === plaintextContentKind">{{ content }} </span>
             <span
               v-else
               v-html="content"
@@ -112,8 +112,8 @@ export default class Tooltip extends ComponentBase {
     return this.cell.hover ? this.cell.hover.contentKind : ContentKind.None
   }
 
-  private get plainTextContentKind() {
-    return ContentKind.PlainText
+  private get plaintextContentKind() {
+    return ContentKind.Plaintext
   }
 
   private async enableTooltip() {
