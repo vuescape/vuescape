@@ -20,8 +20,7 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { SortDirection } from './SortDirection'
-import { TreeTableHeaderCell } from './TreeTableHeaderCell'
+import { SortDirection, TreeTableHeaderCell } from '@vuescape/index'
 
 @Component({})
 export default class DefaultHeaderCellRenderer extends ComponentBase {

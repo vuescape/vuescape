@@ -53,10 +53,7 @@
 import Component from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 
-import ComponentBase from '@vuescape/infrastructure/ComponentBase'
-
-import { TreeTableCell } from './TreeTableCell'
-import { TreeTableRow } from './TreeTableRow'
+import { ComponentBase, TreeTableCell, TreeTableRow } from '@vuescape/index'
 
 import CellRenderer from './CellRenderer.vue'
 

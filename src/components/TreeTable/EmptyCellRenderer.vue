@@ -6,8 +6,9 @@
 import Component from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 
-import { TreeTableCell } from '@vuescape/components/TreeTable'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
+
+import { TreeTableCell } from '@vuescape/index'
 
 @Component({})
 export default class EmptyCellRenderer extends ComponentBase {

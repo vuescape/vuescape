@@ -1,8 +1,1 @@
 export { default } from './TreeTable.vue'
-export { makeTreeTableCellPropertyCompare } from './TreeTableCellComparerFactory'
-export { SortDirection } from './SortDirection'
-export { TreeTableHeaderCell } from './TreeTableHeaderCell'
-export { TreeTableHeaderRow } from './TreeTableHeaderRow'
-export { TreeTableCell } from './TreeTableCell'
-export { TreeTableRow } from './TreeTableRow'
-export { TreeTableRowDependency } from './TreeTableRowDependency'

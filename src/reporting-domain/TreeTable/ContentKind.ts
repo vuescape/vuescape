@@ -3,8 +3,8 @@ export enum ContentKind {
   /** None. */
   None = 0,
 
-  /** PlainText */
-  PlainText,
+  /** Plaintext */
+  Plaintext,
 
   /** Html */
   Html,

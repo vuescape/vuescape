@@ -13,7 +13,7 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableCell } from './TreeTableCell'
+import { TreeTableCell } from '@vuescape/index'
 
 import DefaultCellRenderer from './DefaultCellRenderer.vue'
 import FixedCellRenderer from './FixedCellRenderer.vue'

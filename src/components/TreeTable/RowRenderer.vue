@@ -20,7 +20,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableRow } from './TreeTableRow'
+import { TreeTableRow } from '@vuescape/index'
 
 @Component({
   name: 'row-renderer',

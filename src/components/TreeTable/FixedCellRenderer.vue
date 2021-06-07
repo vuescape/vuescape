@@ -11,7 +11,7 @@ import { Prop, Watch } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableCell } from './TreeTableCell'
+import { TreeTableCell } from '@vuescape/index'
 
 @Component({ components: {} })
 export default class FixedCellRenderer extends ComponentBase {

@@ -1,5 +1,8 @@
 <template>
-  <tr :class="rowToDisplay.cssClasses" :key="rowToDisplay.id">
+  <tr
+    :class="rowToDisplay.cssClasses"
+    :key="rowToDisplay.id"
+  >
     <td
       v-for="(cell, index) in rowToDisplay.cells.filter(_ => _.isVisible !== false)"
       :class="[
@@ -25,7 +28,10 @@
         <!-- <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i> -->
       </span>
       <span :style="getIndentStyle(rowToDisplay.depth)">
-        <span v-if="index === 0" :class="cell.cssClasses">
+        <span
+          v-if="index === 0"
+          :class="cell.cssClasses"
+        >
           {{ cell.value }}
         </span>
       </span>
@@ -39,8 +45,7 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableCell } from './TreeTableCell'
-import { TreeTableRow } from './TreeTableRow'
+import { TreeTableCell, TreeTableRow } from '@vuescape/index'
 
 @Component({})
 export default class SectionHeaderRowRenderer extends ComponentBase {
