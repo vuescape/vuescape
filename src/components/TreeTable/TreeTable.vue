@@ -218,6 +218,9 @@ export default class TreeTable extends ComponentBase {
     if (this.treeTableSorter) {
       this.treeTableSorterImpl = this.treeTableSorter
     }
+    if (this.rows && this.rows.length) {
+      this.setRowsToDisplay()
+    }
   }
 }
 // tslint:disable-next-line:max-line-length
