@@ -1,5 +1,6 @@
 <template>
   <div
+    :key="id"
     class="tree-table__div--box"
     :style="cssStyleValue"
   >
@@ -50,6 +51,7 @@ import VueScrollingTable from 'vue-scrolling-table'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import {
+  Guid,
   makeTreeTableCellPropertyCompare,
   SortDirection,
   TreeTableHeaderCell,
@@ -64,6 +66,9 @@ import RowRenderer from './RowRenderer.vue'
   components: { DefaultHeaderCellRenderer, RowRenderer, VueScrollingTable },
 })
 export default class TreeTable extends ComponentBase {
+  @Prop({ type: String, default: false })
+  private id: string
+
   @Prop({ type: Array, required: true })
   private headers: Array<TreeTableHeaderRow>
 
@@ -207,6 +212,9 @@ export default class TreeTable extends ComponentBase {
   }
 
   private created() {
+    if (!this.id) {
+      this.id = Guid.newGuid.toString()
+    }
     if (this.treeTableSorter) {
       this.treeTableSorterImpl = this.treeTableSorter
     }
