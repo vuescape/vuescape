@@ -1,0 +1,1 @@
+export { getSortedHeaderCellWithIndex } from './TreeTableHeaderRowHelpers'

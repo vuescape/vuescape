@@ -51,6 +51,7 @@ import VueScrollingTable from 'vue-scrolling-table'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import {
+  getSortedHeaderCellWithIndex,
   Guid,
   makeTreeTableCellPropertyCompare,
   SortDirection,
@@ -187,16 +188,17 @@ export default class TreeTable extends ComponentBase {
   }
 
   private defaultTreeTableSorter(rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) {
-    const sortHeader = headers.flatMap(_ => _.cells).filter(_ => _.columnSorter && _.columnSorter.sortDirection)
-    if (sortHeader.length > 0) {
+    const sortHeader = getSortedHeaderCellWithIndex(headers)
+    if (sortHeader) {
       return rows.sort(
         makeTreeTableCellPropertyCompare(
-          sortHeader[0].columnSorter!.sortByCellId,
-          sortHeader[0].columnSorter!.sortDirection,
-          sortHeader[0].columnSorter!.sortComparisonStrategy,
+          sortHeader.index,
+          sortHeader.cell.columnSorter!.sortDirection,
+          sortHeader.cell.columnSorter!.sortComparisonStrategy,
         ),
       )
     }
+
     return rows
   }
 
