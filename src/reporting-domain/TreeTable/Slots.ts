@@ -1,8 +1,7 @@
-import { Dictionary } from "@vuescape/index";
+import { Dictionary, UiObject } from '@vuescape/index'
 
-import { UiObject } from "../UiObject/UiObject";
-
-export interface Slots { 
-  defaultSlot: string
+export interface Slots {
+  activeSlotName: string
+  defaultSlotName: string
   slotNameToUiObjectMap: Dictionary<UiObject>
 }
