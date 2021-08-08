@@ -1,6 +1,4 @@
-import { TreeTableCell } from '@vuescape/index'
-
-import { ColumnSorter } from './ColumnSorter'
+import { ColumnSorter, TreeTableCell } from '@vuescape/index'
 
 export interface TreeTableHeaderCell extends TreeTableCell {
   columnSorter?: ColumnSorter
