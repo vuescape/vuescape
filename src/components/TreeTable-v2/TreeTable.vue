@@ -63,6 +63,8 @@ import {
   TreeTableRow,
 } from '@vuescape/index'
 
+import { ColumnDefinition, ColumnWidthBehavior, ColumnWrapBehavior } from '@vuescape/reporting-domain'
+import { UnitOfMeasure } from '@vuescape/reporting-domain/UnitOfMeasure'
 import DefaultHeaderCellRenderer from './HeaderCellRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 
@@ -74,6 +76,9 @@ export default class TreeTable extends ComponentBase {
 
   @Prop({ type: String, required: false })
   private id: string
+
+  @Prop({ type: Array, required: true })
+  private columnDefinitions: Array<ColumnDefinition>
 
   @Prop({ type: Array, required: true })
   private headers: Array<TreeTableHeaderRow>
@@ -155,6 +160,15 @@ export default class TreeTable extends ComponentBase {
   private rowsWatcher(val: Array<TreeTableRow>, oldVal: Array<TreeTableRow>) {
     this.rows = val
     this.setRowsToDisplay()
+  }
+
+  private getColumnDefinition(columnDefinitionIndex?: number) {
+    if (columnDefinitionIndex == null) {
+      return
+    }
+
+    const result = this.columnDefinitions[columnDefinitionIndex]
+    return result
   }
 
   private toggleSort(header: TreeTableHeaderCell) {
