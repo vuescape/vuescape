@@ -7,6 +7,7 @@
       @mouseleave="onMouseLeave(cell)"
       @mouseover="onMouseEnter(cell)"
       v-for="(cell, index) in rowToDisplay.cells.filter(_ => _.isVisible !== false)"
+      :data-column-index="index"
       :style="getIndentStyle(rowToDisplay.depth, index, cell)"
       class="cell--border"
       :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"

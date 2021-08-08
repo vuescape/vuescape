@@ -9,6 +9,7 @@
         { 'tree-table-cell__td--clickable': index === 0 ? rowToDisplay.isExpandable && cell.onclick : cell.onclick },
         cell.cssClasses,
       ]"
+      :data-column-index="index"
       :key="cell.id"
       :colspan="cell.colspan"
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
