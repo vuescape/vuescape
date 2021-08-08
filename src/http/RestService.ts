@@ -14,12 +14,12 @@ export class RestService<T> extends ServiceBase<T> {
     this.shouldUseCache = shouldUseCache || false
   }
 
-  public get() {
+  public get getAction() {
     const action = this.createAction(HttpMethod.Get)
     return action
   }
 
-  public post() {
+  public get postAction() {
     const action = this.createAction(HttpMethod.Post)
     return action
   }
