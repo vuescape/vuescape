@@ -38,7 +38,7 @@
           />
         </span>
       </span>
-      <span>
+      <span class="tree-table__rendered-cell">
         <cell-renderer
           :key="cellKey(cell)"
           :cell="cell"

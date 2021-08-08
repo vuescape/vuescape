@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span class="tree-table__rendered-cell">
     {{ valueToDisplay  }}
     <span
       v-if="header.columnSorter"

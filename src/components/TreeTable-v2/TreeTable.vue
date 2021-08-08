@@ -229,6 +229,21 @@ export default class TreeTable extends ComponentBase {
 // https://stackoverflow.com/questions/41882616/why-border-is-not-visible-with-position-sticky-when-background-color-exists
 </script>
 <style>
+.tree-table-cell__td {
+  text-align: center;
+}
+.tree-table-cell__td--nowrap-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tree-table-cell__td--nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tree-table-cell__td--wrap {
+  white-space: initial;
+}
 div.tree-table__div--box .fixed-column {
   text-align: unset;
 }
@@ -388,5 +403,8 @@ div.tree-table__div--box .tree-table-cell__th {
 }
 div.tree-table__div--box .tree-table-row__tr {
   /* nothing for now */
+}
+.tree-table__display--none {
+  display: none;
 }
 </style>
