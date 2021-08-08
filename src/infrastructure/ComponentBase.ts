@@ -25,7 +25,7 @@ export default class ComponentBase extends Vue {
   protected registerStoreModuleWithAsyncActions<T, P = {}>(
     namespace: string,
     asyncActions: Dictionary<AsyncAction<T> | HttpAsyncAction<T>>,
-    initialValue: T,
+    initialValue?: T,
     mapper?: ValueMapper<T>,
     isEmpty?: IsEmptyFunction<T>,
     props?: P,
