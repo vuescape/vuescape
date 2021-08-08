@@ -57,6 +57,7 @@ import {
   getSortedHeaderCellWithIndex,
   Guid,
   makeTreeTableCellPropertyCompare,
+  ScrollBarDimension,
   SortDirection,
   TreeTableHeaderCell,
   TreeTableHeaderRow,
@@ -224,12 +225,246 @@ export default class TreeTable extends ComponentBase {
   private async setRowsToDisplay() {
     const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
     this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headers)
-    const tableBody = document.querySelector('table.scrolling tbody') as { scrollTop: number }
+    const tableBody = document.querySelector(`div[id='${this.uniqueId}'] table.scrolling tbody`) as {
+      scrollTop: number,
+    }
     if (tableBody) {
       const scrollTop = tableBody.scrollTop
       await this.$nextTick()
       tableBody.scrollTop = scrollTop
+      this.adjustTreeTableSizingForTable()
     }
+  }
+
+  private adjustTreeTableSizingForTable() {
+    debugger
+    const table = document.querySelector(`div[id='${this.uniqueId}'] table.scrolling`) as HTMLTableElement
+    this.adjustTreeTableSizing(table)
+  }
+
+  private setCellWidth(cell: HTMLTableCellElement, columnDefinition?: ColumnDefinition, tableX?: number) {
+    if (!columnDefinition) {
+      return
+    }
+
+    if (
+      columnDefinition.columnWidthBehavior === ColumnWidthBehavior.UseSpecifiedWidth &&
+      columnDefinition.width !== undefined
+    ) {
+      const width = columnDefinition.width
+      const suffix = this.getUnitOfMeasureSuffix(columnDefinition.widthUnitOfMeasure)
+      this.setCellWidthValues(cell, width, suffix)
+      if (columnDefinition.columnWrapBehavior === ColumnWrapBehavior.NoWrapAndDisplayEllipsis) {
+        cell.classList.add('tree-table-cell__td--nowrap')
+      }
+      if (columnDefinition.columnWrapBehavior === ColumnWrapBehavior.NoWrapAndTruncate) {
+        cell.classList.add('tree-table-cell__td--nowrap-truncate')
+      }
+      if (columnDefinition.columnWrapBehavior === ColumnWrapBehavior.Wrap) {
+        cell.classList.add('tree-table-cell__td--wrap')
+      }
+
+      return
+    }
+
+    if (columnDefinition.columnWidthBehavior === ColumnWidthBehavior.DynamicallySizeToContent) {
+      const els = cell.querySelectorAll('span') as any
+      for (const el of els) {
+        if (el.nodeName === 'SPAN') {
+          const rect = el.getBoundingClientRect()
+          const tableXValue = tableX || 0
+          const width = rect.x - tableXValue + rect.width
+          this.setCellWidthValues(cell, width, 'px')
+          return
+        }
+      }
+    }
+  }
+
+  private setCellWidthValues(cell: HTMLTableCellElement, width: number, suffix: string) {
+    cell.style.width = width + suffix
+    cell.style.minWidth = width + suffix
+    cell.style.maxWidth = width + suffix
+  }
+
+  private getUnitOfMeasureSuffix(unitOfMeasure?: UnitOfMeasure) {
+    if (!unitOfMeasure) {
+      return ''
+    }
+
+    if (unitOfMeasure === UnitOfMeasure.Percent) {
+      return '%'
+    }
+    if (unitOfMeasure === UnitOfMeasure.Pixel) {
+      return 'px'
+    }
+    if (unitOfMeasure === UnitOfMeasure.Em) {
+      return 'em'
+    }
+    return ''
+  }
+
+  private setElementWidth(element: HTMLTableCellElement, width: string) {
+    element.style.width = width
+    element.style.minWidth = width
+    element.style.maxWidth = width
+  }
+
+  private setColumnWidth(
+    table: HTMLTableElement,
+    columnIndex: number,
+    widths: Array<string>,
+    columnDefinitions: Array<ColumnDefinition>,
+  ) {
+    const cells = table.querySelectorAll(
+      `th[data-column-index='${columnIndex}'], td[data-column-index='${columnIndex}']`,
+    )
+    debugger
+    for (const cell of cells) {
+      const tableCell = cell as HTMLTableCellElement
+      if (tableCell.colSpan === 1) {
+        this.setElementWidth(tableCell, widths[columnIndex])
+      } else {
+        const colspan = tableCell.colSpan
+        let cellWidth = 0
+        let unitOfMeasure = ''
+        for (let i = 0; i < tableCell.colSpan; i++) {
+          const widthAndUnitOfMeasureString = this.getWidthAndUnitOfMeasureString(widths[columnIndex + i])
+          unitOfMeasure = widthAndUnitOfMeasureString.unitOfMeasure
+          cellWidth += widthAndUnitOfMeasureString.width
+        }
+        this.setElementWidth(tableCell, cellWidth + unitOfMeasure)
+      }
+    }
+  }
+
+  private getColumnWidth(
+    table: HTMLTableElement,
+    tableX: number,
+    columnIndex: number,
+    columnDefinitions: Array<ColumnDefinition>,
+  ) {
+    const columnDefinition = columnDefinitions[columnIndex]
+    if (columnDefinition.columnWidthBehavior === ColumnWidthBehavior.UseSpecifiedWidth) {
+      const unitOfMeasureSuffix = this.getUnitOfMeasureSuffix(columnDefinition.widthUnitOfMeasure)
+      return columnDefinition.width! + unitOfMeasureSuffix
+    }
+
+    // NOTE: Not autosizing header width
+
+    const columnCells = table.querySelectorAll(`td[data-column-index='${columnIndex}'] span.tree-table__rendered-cell`)
+    let maxWidth = 0
+    for (const columnCell of columnCells) {
+      const tableCell = columnCell.parentElement as HTMLTableCellElement
+      if (tableCell.colSpan === 1) {
+        const cellWidth = this.getWidthOfCell(columnCell, tableX, maxWidth)
+        if (cellWidth > maxWidth) {
+          maxWidth = cellWidth
+        }
+      }
+    }
+    return maxWidth + 'px'
+  }
+
+  private getWidthOfCell(cell: Element, tableX: number, maxWidth: number) {
+    let columnWidth = 0
+    cell.childNodes.forEach((_: any) => {
+      if (_.nodeName === 'SPAN') {
+        const rect = _.getBoundingClientRect()
+        // const width = rect.x - tableX + rect.width
+        columnWidth += rect.width
+        if (columnWidth > maxWidth) {
+          maxWidth = columnWidth
+        }
+      }
+    })
+
+    if (cell.parentElement && cell.parentElement.style && cell.parentElement.style.paddingLeft) {
+      const paddingLeft = this.getWidthAndUnitOfMeasureString(cell.parentElement.style.paddingLeft)
+      columnWidth += paddingLeft.width
+    }
+
+    return columnWidth
+  }
+
+  private getWidthAndUnitOfMeasureString(widthString: string) {
+    const unitOfMeasure = widthString.slice(widthString.length - 2)
+    const width = Number(widthString.slice(0, widthString.length - 2))
+    return { width, unitOfMeasure }
+  }
+
+  private adjustColumnWidthsForColspan(
+    table: HTMLTableElement,
+    tableX: number,
+    columnIndex: number,
+    columnDefinition: ColumnDefinition,
+    columnWidths: Array<string>,
+  ) {
+    if (columnDefinition.columnWidthBehavior !== ColumnWidthBehavior.DynamicallySizeToContent) {
+      return
+    }
+
+    const columnCells = table.querySelectorAll(`td[data-column-index='${columnIndex}'] span.tree-table__rendered-cell`)
+
+    for (const columnCell of columnCells) {
+      const tableCell = columnCell.parentElement as HTMLTableCellElement
+      if (tableCell.colSpan > 1) {
+        const cellWidth = this.getWidthOfCell(columnCell, tableX, 0)
+        let colspanWidth = 0
+        const numberOfLoops = columnIndex + tableCell.colSpan
+        let unitOfMeasure = ''
+        for (let i = columnIndex; i < numberOfLoops; i++) {
+          const widthAndUnitOfMeasureString = this.getWidthAndUnitOfMeasureString(columnWidths[columnIndex + i])
+          unitOfMeasure = widthAndUnitOfMeasureString.unitOfMeasure
+          colspanWidth += widthAndUnitOfMeasureString.width
+        }
+        if (cellWidth > colspanWidth) {
+          const lastColumnWidth = this.getWidthAndUnitOfMeasureString(columnWidths[numberOfLoops - 1]).width
+          columnWidths[numberOfLoops - 1] = lastColumnWidth + cellWidth - colspanWidth + unitOfMeasure
+        }
+      }
+    }
+  }
+
+  private adjustTreeTableSizing(table: HTMLTableElement | null, defaultFirstColumnWidth = 0) {
+    if (!table) {
+      return
+    }
+
+    debugger
+    const tableDOMRect = table.getBoundingClientRect() as DOMRect
+    const tableX = tableDOMRect.x
+
+    // const scrollBarWidth = new ScrollBarDimension().width
+    const columnWidths = []
+    for (let columnIndex = 0; columnIndex < this.columnDefinitions.length; columnIndex++) {
+      columnWidths.push(this.getColumnWidth(table, tableX, columnIndex, this.columnDefinitions))
+    }
+
+    for (let columnIndex = 0; columnIndex < columnWidths.length; columnIndex++) {
+      this.adjustColumnWidthsForColspan(table, tableX, columnIndex, this.columnDefinitions[columnIndex], columnWidths)
+    }
+
+    for (let columnIndex = 0; columnIndex < this.columnDefinitions.length; columnIndex++) {
+      this.setColumnWidth(table, columnIndex, columnWidths, this.columnDefinitions)
+    }
+
+    //
+    // const numberOfHeaderColumns = this.headersToDisplay[0].cells.length
+    // for (let columnIndex = 0; columnIndex < this.headersToDisplay.length; columnIndex++) {
+    //   this.setColumnWidth(table, tableX, columnIndex, this.headersToDisplay[0].cells[columnIndex])
+    // }
+    // for (const row of table.querySelectorAll('thead tr') as NodeListOf<HTMLTableRowElement>) {
+    //   for (let j = 0; j < row.cells.length; j++) {
+    //     this.setCellWidth(row.cells[j], this.headersToDisplay[0].cells[j].cellWidth, tableX)
+    //   }
+    // }
+
+    // for (const row of table.querySelectorAll('tbody tr') as NodeListOf<HTMLTableRowElement>) {
+    //   for (let j = 0; j < row.cells.length; j++) {
+    //     this.setCellWidth(row.cells[j], this.headersToDisplay[0].cells[j].cellWidth, tableX)
+    //   }
+    // }
   }
 
   private created() {
