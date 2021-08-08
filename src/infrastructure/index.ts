@@ -1,6 +1,6 @@
 export { ApplicationBootstrapper } from './ApplicationBootstrapper'
 export { makePropertyComparer } from './comparison'
-export { toEnum } from './converters'
+export { toEnum, tryToEnum } from './converters'
 export { default as ComponentBase } from './ComponentBase'
 export { formatUtcDateTimeString } from './dateTimeUtility'
 export { selectElementContents } from './dom'
