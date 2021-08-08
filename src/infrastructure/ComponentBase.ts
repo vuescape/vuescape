@@ -57,11 +57,20 @@ export default class ComponentBase extends Vue {
     props?: P,
     restPayloadStrategy = RestPayloadStrategy.QueryString,
   ) {
-    const restService = new RestService<T>(endpoint, baseUrl, shouldUseCache, undefined, restPayloadStrategy) as any 
-    const service = restService[httpMethod]()
+    const restService = new RestService<T>(endpoint, baseUrl, shouldUseCache, undefined, restPayloadStrategy)
+
+    let service
+    switch (httpMethod) {
+      case HttpMethod.Get:
+        service = restService.getAction
+        break
+      case HttpMethod.Post:
+        service = restService.postAction
+        break
+      default:
+        throw new Error('Unsupported HttpMethod: ' + httpMethod)
+    }
     const asyncActions = { [endpoint]: service }
-    // TODO: Figure out type issue with initialValue and remove as any
-    // Argument of type 'T' is not assignable to parameter of type 'AxiosResponse<T>'.
     this.registerStoreModuleWithAsyncActions(namespace, asyncActions, initialValue as any, mapper, isEmpty, props)
   }
 }
