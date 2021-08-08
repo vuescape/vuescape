@@ -1,6 +1,8 @@
 <template>
   <div
-    :key="id"
+    :id="uniqueId"
+    :ref="uniqueId"
+    :key="uniqueId"
     class="tree-table__div--box"
     :style="cssStyleValue"
   >
@@ -20,7 +22,8 @@
           :key="headerRow.id"
         >
           <th
-            v-for="header in headerRow.cells"
+            v-for="(header, index) in headerRow.cells.filter(_ => _.isVisible !== false)"
+            :data-column-index="index"
             :class="header.cssClasses"
             :key="header.id"
             :colspan="header.colspan"
@@ -67,7 +70,9 @@ import RowRenderer from './RowRenderer.vue'
   components: { DefaultHeaderCellRenderer, RowRenderer, VueScrollingTable },
 })
 export default class TreeTable extends ComponentBase {
-  @Prop({ type: String, default: false })
+  private uniqueId: string
+
+  @Prop({ type: String, required: false })
   private id: string
 
   @Prop({ type: Array, required: true })
@@ -215,7 +220,9 @@ export default class TreeTable extends ComponentBase {
 
   private created() {
     if (!this.id) {
-      this.id = Guid.newGuid.toString()
+      this.uniqueId = Guid.newGuid.toString()
+    } else {
+      this.uniqueId = this.id
     }
     if (this.treeTableSorter) {
       this.treeTableSorterImpl = this.treeTableSorter
