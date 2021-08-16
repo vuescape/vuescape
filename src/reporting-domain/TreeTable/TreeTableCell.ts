@@ -1,4 +1,5 @@
 
+import { CellFormat } from './CellFormat'
 import { Slots } from './Slots'
 import { TreeTableRow } from './TreeTableRow'
 
@@ -17,4 +18,5 @@ export interface TreeTableCell {
   isVisible?: boolean
   links?: Dictionary<Link>
   slots?: Slots
+  cellFormat?: CellFormat
 }
