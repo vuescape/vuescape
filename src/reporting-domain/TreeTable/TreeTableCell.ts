@@ -12,6 +12,7 @@ export interface TreeTableCell {
   hover?: Hover
   renderer?: string | any
   cssClasses?: string
+  cssStyles?: Dictionary<string>
   colspan?: number
   // Use this for clicking expand/collapse
   onclick?: (row?: TreeTableRow, item?: TreeTableCell) => void
