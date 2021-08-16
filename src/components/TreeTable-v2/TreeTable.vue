@@ -50,6 +50,7 @@
 <script <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import VueScrollingTable from 'vue-scrolling-table'
+import { Action, namespace, State } from 'vuex-class'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
@@ -117,6 +118,8 @@ export default class TreeTable extends ComponentBase {
   @Prop({ type: Function, required: false })
   private treeTableSorter?: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow>
 
+  @(namespace('window/availableHeight').State(state => state.value))
+  private availableHeight: Array<number>
   private treeTableSorterImpl: (
     rows: Array<TreeTableRow>,
     headers: Array<TreeTableHeaderRow>,
@@ -155,6 +158,13 @@ export default class TreeTable extends ComponentBase {
   }
   private get shouldFreezeFirstColumnValue() {
     return this.shouldFreezeFirstColumn
+  }
+
+  @Watch('availableHeight')
+  private availableHeightWatcher(val: any, oldVal: any) {
+    // TODO: If setting tree table height then do it here or in function
+    // this.treeTableStyle = this.getTreeTableStyle()
+    this.adjustTreeTableSizingForTable()
   }
 
   @Watch('rows')
