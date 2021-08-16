@@ -486,6 +486,25 @@ export default class TreeTable extends ComponentBase {
 </script>
 <style>
 .tree-table-cell__td {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.tree-table-cell__td.font-weight__bold {
+  font-weight: 500;
+}
+.tree-table-cell__td.font-style__italic {
+  font-style: italic;
+}
+.tree-table-cell__td.text-decoration__underline {
+  text-decoration: underline;
+}
+.tree-table-cell__td.text-align__left {
+  text-align: left;
+}
+.tree-table-cell__td.text-align__right {
+  text-align: right;
+}
+.tree-table-cell__td.text-align__center {
   text-align: center;
 }
 .tree-table-cell__td--nowrap-truncate {
