@@ -99,7 +99,10 @@ export default class DataRowRenderer extends ComponentBase {
     return cssClasses
   }
 
-  private getIndentStyle(depth: number, index: number, cell: any) {
+  private getIndentStyle(depth: number | undefined, index: number, cell: any) {
+    if (depth == null) {
+      return
+    }
     const amountToIndent = 8 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
     const indentation = index === 0 ? { 'padding-left': `${amountToIndent}px` } : '{}'
     return indentation
