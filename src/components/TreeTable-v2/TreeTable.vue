@@ -4,7 +4,7 @@
     :ref="uniqueId"
     :key="uniqueId"
     class="tree-table__div--box"
-    :style="cssStyleValue"
+    :style="cssStyleObject"
   >
     <vue-scrolling-table
       :scroll-horizontal="shouldScrollHorizontalValue"
@@ -55,6 +55,7 @@ import { Action, namespace, State } from 'vuex-class'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import {
+  Dictionary,
   getSortedHeaderCellWithIndex,
   Guid,
   makeTreeTableCellPropertyCompare,
@@ -112,14 +113,15 @@ export default class TreeTable extends ComponentBase {
   @Prop({ type: Number, required: false, default: 100000 })
   private maxRows: number
 
-  @Prop({ type: String, required: false, default: '' })
-  private cssStyle: string
+  @Prop({ type: Object, required: false, default: {} })
+  private cssStyles: Dictionary<string>
 
   @Prop({ type: Function, required: false })
   private treeTableSorter?: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow>
 
   @(namespace('window/availableHeight').State(state => state.value))
   private availableHeight: Array<number>
+
   private treeTableSorterImpl: (
     rows: Array<TreeTableRow>,
     headers: Array<TreeTableHeaderRow>,
@@ -127,8 +129,13 @@ export default class TreeTable extends ComponentBase {
 
   private rowsToDisplay: Array<TreeTableRow> = []
 
-  private get cssStyleValue() {
-    return this.cssStyle
+  private get cssStyleObject() {
+    const result: any = {}
+    const cssProperties = Object.keys(this.cssStyles)
+    for (const cssProperty of cssProperties) {
+      result[cssProperty] = this.cssStyles[cssProperty]
+    }
+    return result
   }
 
   private get headersToDisplay() {
