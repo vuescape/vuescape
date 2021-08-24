@@ -15,10 +15,13 @@
             :aria-label="menu.title"
             flat
             slot="activator"
-            :class="{ 'v-btn--active': isSubItemActive(menu.path), 'navigation-menu__v-btn--style': true }"
+            :class="[ { 'v-btn--active': isSubItemActive(menu.path) }, 'navigation-menu__v-btn--style' ]"
             :disabled="isSiteInMaintenanceMode"
           >
-            <span v-if="menu.prefixHtml" v-html="menu.prefixHtml"></span>
+            <span
+              v-if="menu.prefixHtml"
+              v-html="menu.prefixHtml"
+            ></span>
             <!-- <font-awesome-icon v-if="menu.icon" :icon="getIconArray(menu.icon)" class="navigation-menu__v-icon--layout" :style="{ color: '#555' }" /> -->
             <font-awesome-icon
               v-if="menu.icon"
@@ -47,7 +50,7 @@
         <v-btn
           v-if="!menu.isDivider && !menu.items"
           flat
-          class="navigation-menu__v-btn--style"
+          :class="[ 'navigation-menu__v-btn--style', menu.cssClass ]"
           :title="menu.icon ? menu.title : ''"
           :aria-label="menu.ariaLabel || menu.title"
           :to="{ path: menu.path }"
