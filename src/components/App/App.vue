@@ -46,6 +46,7 @@
         <component :is="footerComponent" />
       </v-footer>
     </v-app>
+    <component :is="appConfig.value.initializationComponent" />
     <app-info-poller></app-info-poller>
     <app-info-handler :siteMaintenanceRoutePath="siteMaintenanceRoutePath"></app-info-handler>
   </div>
@@ -91,6 +92,9 @@ export default class App extends ComponentBase {
 
   // @(namespace('window/availableHeight').State(state => state.value))
   // private availableHeight: Array<number>
+
+  @State('appConfig/configuration')
+  private appConfig: ModuleState<any>
 
   @State('theFooter/configuration')
   private footerConfiguration: ModuleState<any>
