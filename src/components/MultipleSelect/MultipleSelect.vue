@@ -306,6 +306,7 @@ export default class MultipleSelect extends Vue {
 }
 .multiselect__single {
   font-size: var(--custom-font-size);
+  font-weight: 500;
 }
 .multiselect__input {
   font-size: var(--custom-font-size);
