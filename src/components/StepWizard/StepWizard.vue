@@ -38,6 +38,7 @@
         <!--If keep alive-->
         <keep-alive v-if="steps[currentStepIndex].shouldKeepComponentAlive">
           <component
+            :key="steps[currentStepIndex].name + currentStepIndex"
             :is="steps[currentStepIndex].component"
             :clickedNext="nextButton[currentStepIndex]"
             @can-continue="proceed"
@@ -49,6 +50,7 @@
         <!--If not show component and destroy it in each step change-->
         <component
           v-else
+          :key="steps[currentStepIndex].name + currentStepIndex"
           :is="steps[currentStepIndex].component"
           :clickedNext="nextButton[currentStepIndex]"
           @can-continue="proceed"
