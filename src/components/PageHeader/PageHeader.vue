@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-layout v-if="title" row justify-space-between class="page-header__header--separation">
+    <v-layout
+      v-if="title"
+      row
+      justify-space-between
+      class="page-header__header--separation"
+    >
       <v-flex md8>
         <span>{{title}}</span>
       </v-flex>

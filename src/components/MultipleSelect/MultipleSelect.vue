@@ -209,6 +209,7 @@ export default class MultipleSelect extends Vue {
     }
     this.clearMultiselectSize()
   }
+  
   private onMultiselectOpen(id: any) {
     if (this.canSelectMultiple) {
       this.oldPlaceholderVal = this.placeholderVal
@@ -220,9 +221,11 @@ export default class MultipleSelect extends Vue {
     child.style.width = rect.width + 'px'
     this.alignSelect(false, rect)
   }
+
   private onSearchChange() {
     this.alignSelect(true)
   }
+
   private alignSelect(shouldUpdateAsync: boolean, rect?: any) {
     if (this.alignment !== 'left') {
       if (!rect) {
@@ -253,6 +256,7 @@ export default class MultipleSelect extends Vue {
       }
     }
   }
+
   private created() {
     this.id = Guid.newGuid()
 

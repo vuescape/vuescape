@@ -1,17 +1,21 @@
-export function tryToEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirstCharacter = true): T[keyof T] | undefined {
+export function tryToEnum<T>(
+  enumType: T,
+  enumString: string,
+  shouldCapitalizeFirstCharacter = true,
+): T[keyof T] | undefined {
   if (enumString == null) {
     return
   }
 
   return toEnum(enumType, enumString, shouldCapitalizeFirstCharacter)
 }
-  export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirstCharacter = true): T[keyof T] {
+export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirstCharacter = true): T[keyof T] {
   // Split to handle flags
   const enumStrings = enumString
     .split('|')
-    .map(_ => shouldCapitalizeFirstCharacter ? _.replace(/^\w/, c => c.toUpperCase()) : _)
-  
-    let result: T[keyof T] | null = null
+    .map(_ => (shouldCapitalizeFirstCharacter ? _.replace(/^\w/, c => c.toUpperCase()) : _))
+
+  let result: T[keyof T] | null = null
 
   for (const enumStringKey of enumStrings) {
     const enumKey = enumStringKey as keyof T

@@ -1,6 +1,9 @@
 import { SortComparisonStrategy } from './SortComparisonStrategy'
 
-export function makePropertyComparer(sortOnProperty: string, sortComparisonStrategy: SortComparisonStrategy = SortComparisonStrategy.Default) {
+export function makePropertyComparer(
+  sortOnProperty: string,
+  sortComparisonStrategy: SortComparisonStrategy = SortComparisonStrategy.Default,
+) {
   if (sortComparisonStrategy === SortComparisonStrategy.StringCaseInsensitive) {
     return (left: any, right: any) => {
       if (!left && !right) {
@@ -44,7 +47,7 @@ export function makePropertyComparer(sortOnProperty: string, sortComparisonStrat
   }
 
   if (sortComparisonStrategy === SortComparisonStrategy.Default) {
-    return (left: any, right: any) => {
+    return (left: any, right: any) => {      
       if (!left && !right) {
         return 0
       }
