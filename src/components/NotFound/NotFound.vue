@@ -14,7 +14,7 @@
   >
   </div>
   <div v-else>
-    The requested page was not found. Click here to go to the home page.
+    The requested page was not found.
   </div>
 </template>
 
@@ -25,15 +25,13 @@ import { namespace, State } from 'vuex-class'
 
 @Component
 export default class NotFound extends Vue {
-  @(namespace('notFound/configuration').State(
-    state => {
-      if (state && state.value) {
-        const notFoundConfiguration: any = state.value
-        return notFoundConfiguration || {}
-      }
-      return {}
-    },
-  ))
+  @(namespace('notFound/configuration').State(state => {
+    if (state && state.value) {
+      const notFoundConfiguration: any = state.value
+      return notFoundConfiguration || {}
+    }
+    return {}
+  }))
   private notFoundConfiguration: any
 }
 </script>
