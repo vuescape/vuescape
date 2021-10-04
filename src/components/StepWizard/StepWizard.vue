@@ -1,15 +1,29 @@
 <template>
   <div class="step-wizard__stepper-box">
-    <div v-if="shouldShowProgressBarValue" class="top">
+    <div
+      v-if="shouldShowProgressBarValue"
+      class="top"
+    >
       <div class="steps-wrapper">
         <template v-if="shouldShowTopButtons">
-          <div v-if="currentStepIndex > 0" class="stepper-button-top previous" @click="backStep()">
+          <div
+            v-if="currentStepIndex > 0"
+            class="stepper-button-top previous"
+            @click="backStep()"
+          >
             <font-awesome-icon :icon="['fad', 'arrow-alt-circle-left']" />
           </div>
         </template>
         <template v-for="(step, index) in steps">
-          <div :class="['step', getStepStatus(index, step)]" :key="index" :style="{ width: `${100 / steps.length}%` }">
-            <div class="circle" :class="{ 'divider-line': index !== steps.length - 1 }">
+          <div
+            :class="['step', getStepStatus(index, step)]"
+            :key="index"
+            :style="{ width: `${100 / steps.length}%` }"
+          >
+            <div
+              class="circle"
+              :class="{ 'divider-line': index !== steps.length - 1 }"
+            >
               <!-- <div class="divider-line" :style="{ width: `${(100 / steps.length) * (steps.length - 1) - 10}%` }"></div> -->
               <!-- TODO: -->
               <!-- <font-awesome-icon :icon="['fal', 'chevron-down']" /> -->
@@ -32,9 +46,18 @@
         </div>
       </div>
     </div>
-    <div v-else style="height: 63.66px;"></div>
-    <div class="content" v-loading="isSpinning">
-      <transition :name="enterAnimation" mode="out-in">
+    <div
+      v-else
+      style="height: 63.66px;"
+    ></div>
+    <div
+      class="content"
+      v-loading="isSpinning"
+    >
+      <transition
+        :name="enterAnimation"
+        mode="out-in"
+      >
         <!--If keep alive-->
         <keep-alive v-if="steps[currentStepIndex].shouldKeepComponentAlive">
           <component
@@ -45,6 +68,7 @@
             @component-activated="componentActivated"
             @change-next="changeNextBtnValue"
             :current-step="steps[currentStepIndex]"
+            v-bind="steps[currentStepIndex].props"
           ></component>
         </keep-alive>
         <!--If not show component and destroy it in each step change-->
@@ -56,14 +80,24 @@
           @can-continue="proceed"
           @change-next="changeNextBtnValue"
           :current-step="steps[currentStepIndex]"
+          v-bind="steps[currentStepIndex].props"
         ></component>
       </transition>
     </div>
     <v-layout justify-center>
-      <v-container fluid grid-list-md>
-        <v-layout row justify-center>
+      <v-container
+        fluid
+        grid-list-md
+      >
+        <v-layout
+          row
+          justify-center
+        >
           <v-flex xs1></v-flex>
-          <v-flex xs10 style="text-align: center; font-size: 22px; font-weight: 500;">
+          <v-flex
+            xs10
+            style="text-align: center; font-size: 22px; font-weight: 500;"
+          >
             <div :class="['bottom', currentStepIndex > 0 ? '' : '']">
               <!-- only-next -->
               <div class="stepper-button previous">
@@ -76,8 +110,15 @@
                 >
                   &nbsp;Back
                 </vuescape-button>
-                <span v-if="cancelRouteOrCallback" style="margin-top: 7px;">
-                  <v-btn class="cancel" flat @click="cancel">Cancel</v-btn>
+                <span
+                  v-if="cancelRouteOrCallback"
+                  style="margin-top: 7px;"
+                >
+                  <v-btn
+                    class="cancel"
+                    flat
+                    @click="cancel"
+                  >Cancel</v-btn>
                   <!-- <a class="cancel" @click="cancel">Cancel</a> -->
                 </span>
               </div>
@@ -134,6 +175,11 @@ export default class StepWizard extends Vue {
   private nextButton: Array<boolean> = []
   private canContinue = false
   private steps: Array<Step> = []
+
+  private get activeStep() {
+    const result = this.steps.filter((_: Step, index: number) => index === this.currentStepIndex)
+    return result
+  }
 
   private get isFinalStep() {
     if (!this.steps || this.steps.length === 0) {
@@ -244,9 +290,9 @@ export default class StepWizard extends Vue {
   }
 
   private backStep() {
-    this.$emit('clicking-back')
     const currentIndex = this.currentStepIndex - 1
     if (currentIndex >= 0) {
+      this.$emit('clicking-back', currentIndex)
       this.activateStep(currentIndex, true)
     }
   }
@@ -450,7 +496,7 @@ export default class StepWizard extends Vue {
   padding-left: 0;
 }
 .step-wizard__stepper-box .bottom.only-next {
-  right: calc(10vh)
+  right: calc(10vh);
 }
 .step-wizard__stepper-box .bottom .stepper-button {
   padding-top: 0.5rem;
@@ -475,7 +521,7 @@ export default class StepWizard extends Vue {
 .step-wizard__stepper-box .bottom .stepper-button.previous {
   position: fixed;
   bottom: 40px;
-  left: calc(10vh)
+  left: calc(10vh);
 }
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
   height: 40px;
@@ -490,7 +536,7 @@ export default class StepWizard extends Vue {
   bottom: 40px;
 }
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
-  border-color: #9BDDDB !important;
+  border-color: #9bdddb !important;
   /*  background-color: #16a5c6 !important;
   color: white !important; */
 }
@@ -502,7 +548,7 @@ export default class StepWizard extends Vue {
   color: unset!important; */
 }
 .step-wizard__stepper-box .bottom .next .vuescape-button__v-btn--style {
-  border-color: #9BDDDB !important;
+  border-color: #9bdddb !important;
   background-color: #16a5c6 !important;
   color: white !important;
   /* background-color: unset !important;

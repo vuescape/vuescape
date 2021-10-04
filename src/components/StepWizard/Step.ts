@@ -1,3 +1,5 @@
+import { Dictionary } from "@vuescape/types";
+
 export interface Step {
   component: object | (() => {})
   shouldKeepComponentAlive: boolean
@@ -6,4 +8,5 @@ export interface Step {
   title?: string
   subtitle?: string
   shouldDisplayLoadingOnNext?: boolean
+  props?: Dictionary<any>
 }
