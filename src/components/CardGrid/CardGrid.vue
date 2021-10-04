@@ -65,7 +65,7 @@ import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 @Component
 export default class CardGrid extends ComponentBase {
   @Prop({ type: Array, required: true })
-  public cards: Array<any>
+  private cards: Array<any>
 }
 </script>
 
