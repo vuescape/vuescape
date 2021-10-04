@@ -254,7 +254,6 @@ export default class TreeTable extends ComponentBase {
   }
 
   private adjustTreeTableSizingForTable() {
-    debugger
     const table = document.querySelector(`div[id='${this.uniqueId}'] table.scrolling`) as HTMLTableElement
     this.adjustTreeTableSizing(table)
   }
@@ -336,7 +335,6 @@ export default class TreeTable extends ComponentBase {
     const cells = table.querySelectorAll(
       `th[data-column-index='${columnIndex}'], td[data-column-index='${columnIndex}']`,
     )
-    debugger
     for (const cell of cells) {
       const tableCell = cell as HTMLTableCellElement
       if (tableCell.colSpan === 1) {
@@ -448,7 +446,6 @@ export default class TreeTable extends ComponentBase {
       return
     }
 
-    debugger
     const tableDOMRect = table.getBoundingClientRect() as DOMRect
     const tableX = tableDOMRect.x
 
