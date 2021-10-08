@@ -68,8 +68,13 @@ export class HttpService {
   }
 
   public post<T>(endpoint: string, args?: any): AxiosPromise<T> {
-    // TODO: Handle
-    let formattedArgs = qs.stringify(args) as any
+    let formattedArgs: any
+    // tslint:disable-next-line: no-bitwise
+    if ((this.restPayloadStrategy & RestPayloadStrategy.PostJson) === RestPayloadStrategy.PostJson) {
+      formattedArgs = args
+    } else {
+      formattedArgs = qs.stringify(args) as any
+    }
     const axiosConfig = {
       baseURL: this.baseUrl,
     } as any
