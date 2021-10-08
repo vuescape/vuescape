@@ -11,7 +11,7 @@ import {
   StoreModuleOptions,
   ValueMapper,
 } from '@vuescape/store/modules/types'
-import { registerDynamicModule } from '@vuescape/store/registerDynamicModule'
+import { isModuleDefined, registerDynamicModule } from '@vuescape/store/registerDynamicModule'
 import { RootState } from '@vuescape/store/RootState'
 
 @Component
@@ -20,6 +20,34 @@ export default class ComponentBase extends Vue {
   protected registerStoreModuleWithInitialValue<S>(namespace: string, initialValue: S) {
     const module = makeStoreModule(initialValue)
     registerDynamicModule(namespace, module, this.$store)
+  }
+
+  protected registerStoreModuleWithInitialValueIfNotExists<S>(namespace: string, initialValue: S) {
+    if (!isModuleDefined(namespace, this.$store)) {
+      this.registerStoreModuleWithInitialValue(namespace, initialValue)
+    }
+  }
+
+  protected registerStoreModuleWithAsyncActionsIfNotExists<T, P = {}>(
+    namespace: string,
+    asyncActions: Dictionary<AsyncAction<T> | HttpAsyncAction<T>>,
+    initialValue?: T,
+    mapper?: ValueMapper<T>,
+    isEmpty?: IsEmptyFunction<T>,
+    props?: P,
+    shouldUseGlobalNotifications = true,
+  ) {
+    if (!isModuleDefined(namespace, this.$store)) {
+      this.registerStoreModuleWithAsyncActions(
+        namespace,
+        asyncActions,
+        initialValue,
+        mapper,
+        isEmpty,
+        props,
+        shouldUseGlobalNotifications,
+      )
+    }
   }
 
   protected registerStoreModuleWithAsyncActions<T, P = {}>(
@@ -43,6 +71,34 @@ export default class ComponentBase extends Vue {
     })
     const module = () => new StoreModule<T, ModuleState<T>, RootState>(moduleOptions)
     registerDynamicModule(namespace, module, this.$store)
+  }
+
+  protected registerStoreModuleIfNotExists<T, P = {}>(
+    namespace: string,
+    httpMethod: HttpMethod,
+    endpoint: string,
+    baseUrl?: string,
+    shouldUseCache = true,
+    initialValue?: T,
+    mapper?: ValueMapper<T>,
+    isEmpty?: IsEmptyFunction<T>,
+    props?: P,
+    restPayloadStrategy = RestPayloadStrategy.QueryString,
+  ) {
+    if (!isModuleDefined(namespace, this.$store)) {
+      this.registerStoreModule(
+        namespace,
+        httpMethod,
+        endpoint,
+        baseUrl,
+        shouldUseCache,
+        initialValue,
+        mapper,
+        isEmpty,
+        props,
+        restPayloadStrategy,
+      )
+    }
   }
 
   protected registerStoreModule<T, P = {}>(
