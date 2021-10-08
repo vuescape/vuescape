@@ -1,5 +1,10 @@
 import { Module, Store } from 'vuex'
 
+export const isModuleDefined = (namespace: string, store: Store<any>) => {
+  const result = store && store.state && (store.state as any)[namespace]
+  return result
+}
+
 export const registerDynamicModule = <S, R>(
   namespace: string,
   module: () => Module<S, R>,
