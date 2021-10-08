@@ -50,10 +50,10 @@ export function makeTreeTableCellPropertyCompare(
       rightItemValue = (rightItemValue || '').toUpperCase()
     }
 
-    if (leftItemValue < rightItemValue) {
+    if (leftItemValue.valueOf() < rightItemValue.valueOf()) {
       return 1 * sortDirection
     }
-    if (leftItemValue > rightItemValue) {
+    if (leftItemValue.valueOf() > rightItemValue.valueOf()) {
       return -1 * sortDirection
     }
     return 0
