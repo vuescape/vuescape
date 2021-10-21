@@ -9,7 +9,7 @@ export const DEFAULT_EMPTY_DISPLAY = '-'
  */
 
 /**
- * Validates data and converts it into a number, then calls formatResult with the number to get the formated result.
+ * Validates data and converts it into a number, then calls formatResult with the number to get the formatted result.
  * @param value - The value to attempt to convert into a number.
  * @param {formatResult} formatResult - The function that will format the result for valid numbers.
  * @param emptyDisplay - The value to return if the input value is empty.
