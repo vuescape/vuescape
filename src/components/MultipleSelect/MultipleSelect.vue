@@ -32,6 +32,7 @@
         deselectLabel=""
         selectedLabel=""
         :optionsLimit="10000"
+        :disabled="shouldSingleItemSelectBeDisabled && options && options.length === 1"
       >
         <span
           v-if="canSelectMultiple"
@@ -99,9 +100,12 @@ export default class MultipleSelect extends Vue {
   private areWatchersEnabled = false
   private valueVal: any = {}
   private optionsVal: Array<any> = []
-  
+
   private placeholderVal: string = ''
   private oldPlaceholderVal: string = ''
+
+  @Prop({ type: Boolean, default: false })
+  private shouldSingleItemSelectBeDisabled: boolean
 
   @Prop({ type: String, required: false, default: '' })
   private customFontSize: string
@@ -209,7 +213,7 @@ export default class MultipleSelect extends Vue {
     }
     this.clearMultiselectSize()
   }
-  
+
   private onMultiselectOpen(id: any) {
     if (this.canSelectMultiple) {
       this.oldPlaceholderVal = this.placeholderVal
