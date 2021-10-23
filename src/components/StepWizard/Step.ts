@@ -9,4 +9,5 @@ export interface Step {
   subtitle?: string
   shouldDisplayLoadingOnNext?: boolean
   props?: Dictionary<any>
+  beforeNextStep?: (currentStepIndex: number, nextStepAction: (next: boolean) => void) => void
 }

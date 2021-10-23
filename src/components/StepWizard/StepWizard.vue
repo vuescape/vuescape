@@ -282,8 +282,8 @@ export default class StepWizard extends Vue {
     }
     this.canContinue = false
     this.$emit('before-next-step', this.currentStepIndex, (next: boolean = true) => {
-      this.canContinue = true
       if (next) {
+        this.canContinue = true
         this.nextStepAction()
       }
     })
