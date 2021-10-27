@@ -139,6 +139,11 @@ export default class NumericTextField extends Vue {
     return result
   }
 
+  @Watch('errorMessages')
+  private onErrorMessagesChanged(newVal: Array<string>, oldVal: Array<string>) {
+    this.errorMessagesVal = newVal
+  }
+
   private setFormattedValue(formattedValue: string) {
     // convert
     formattedValue = this.toNumber(formattedValue)
