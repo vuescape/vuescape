@@ -20,6 +20,7 @@
       @keypress="onKeyPress"
       @update:error="onErrorUpdate"
       @input="onInput"
+      :maxlength="maxLength"
     ></v-text-field>
   </div>
 </template>
@@ -47,6 +48,9 @@ export default class NumericTextField extends Vue {
 
   @Prop({ type: String, default: '' })
   private label: string
+
+  @Prop({ type: Number, default: 15 })
+  private maxLength: string
 
   @Prop({ type: String, default: undefined })
   private placeholder: string
