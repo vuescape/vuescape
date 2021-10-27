@@ -1,8 +1,9 @@
 <template>
   <div>
     <v-text-field
+      :key="key"
       :ref="uniqueId"
-      v-model="formattedValue"
+      :value="formattedValue"
       :label="label"
       :placeholder="placeholder"
       :readonly="readonly"
@@ -17,8 +18,8 @@
       :suffix="suffix"
       v-bind="additionalTextFieldProperties"
       @keypress="onKeyPress"
-      @blur="onBlur"
       @update:error="onErrorUpdate"
+      @input="onInput"
     ></v-text-field>
   </div>
 </template>
@@ -27,19 +28,21 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-import { presentationFormatKind } from '@vuescape/index'
+import { Guid, presentationFormatKind } from '@vuescape/index'
 import { formatValue } from '@vuescape/infrastructure/presentationFormatter'
-import { should } from 'chai'
 
 @Component({ components: {} })
-export default class FormattedTextField extends Vue {
+export default class NumericTextField extends Vue {
   private errorVal = false
   private errorMessagesVal: Array<string> = []
+  private rawValue: Array<number | string> = []
+
+  private key = Guid.newGuid()
 
   @Prop({ type: String, required: false })
   private uniqueId: string
 
-  @Prop({ type: [String, Number], default: '' })
+  @Prop({ type: String, default: '' })
   private value: string
 
   @Prop({ type: String, default: '' })
@@ -98,48 +101,78 @@ export default class FormattedTextField extends Vue {
       throw Error('Unsupported formatKind: ' + this.formatKind)
     }
 
-    const result = formatValue(
+    let value = this.rawValue[0]
+
+    // Used for any text to the right of a decimal.
+    // Will format the left portion and then append the
+    // decimal suffix
+    let valueSuffix = ''
+    if (value) {
+      const valueString = value.toString()
+      const decimalIndex = valueString.indexOf('.')
+      if (decimalIndex !== -1) {
+        value = valueString.substring(0, decimalIndex)
+        valueSuffix = valueString.substring(decimalIndex)
+      }
+    }
+
+    let result = formatValue(
       this.formatKind,
-      this.value ? this.value.toString() : '',
+      value ? value.toString() : '',
       this.formatOptions.numberOfDecimalPlaces,
       this.valueWhenEmpty,
     )
+
+    if (valueSuffix) {
+      result += valueSuffix
+    }
+
+    // Manually update the v-text-field lazy value to reflect the actual value
+    // This accounts for scenario where the value does not change but the formatted output
+    // is changed -- v-text-field was not rendering in that scenario
+    const component = this.$refs[this.uniqueId] as any
+    if (component) {
+      component.lazyValue = result
+    }
 
     this.repositionCursor(result)
     return result
   }
 
-  private set formattedValue(formattedValue: string) {
-    formattedValue = this.removeDecimalsEndingWithTwoZeroes(formattedValue)!
+  private setFormattedValue(formattedValue: string) {
     // convert
-    const valueAsNumber = this.toNumber(formattedValue)
-    this.validateTextField(valueAsNumber, this.rules)
-
-    // if (!this.errorVal) {
+    formattedValue = this.toNumber(formattedValue)
+    const valueAsNumber = this.removeDecimalsEndingWithAtLeastTwoZeroes(formattedValue)!
+    this.rawValue = [valueAsNumber]
     this.$emit('input', valueAsNumber)
-    // }
+    this.validateTextField(valueAsNumber, this.rules)
   }
 
-  private removeDecimalsEndingWithTwoZeroes(val: string | undefined) {
+  private removeDecimalsEndingWithAtLeastTwoZeroes(val: string | undefined) {
     if (typeof val === 'string' && !val) {
       return val
     }
-    val!.toString().endsWith('.00')
-    const decimalMatches = val!.toString().match(/\.00$/g)
+    const decimalMatches = val!.toString().match(/\.0{2,}$/g)
     if (decimalMatches && decimalMatches.length === 1) {
-      return val!.toString().replace('.00', '')
+      return val!.toString().replace(decimalMatches[0], '')
     }
 
     return val
   }
 
+  private onInput(val: any) {
+    this.setFormattedValue(val)
+  }
+
   private onKeyPress(e: any) {
+    const DECIMAL = 46
     const keyCode = e.keyCode ? e.keyCode : e.which
-    // 46 is dot
-    const shouldAllowDecimal = this.formatOptions && this.formatOptions.numberOfDecimalPlaces !== 0
-    if (shouldAllowDecimal && keyCode === 46) {
-      // allow .
+
+    const shouldAllowDecimal = this.formatOptions && this.formatOptions.shouldAllowDecimal
+    if (shouldAllowDecimal && keyCode === DECIMAL) {
+      // Allow decimal
     } else if (keyCode < 48 || keyCode > 57) {
+      // Disallow non-numeric
       e.preventDefault()
     }
   }
@@ -172,7 +205,9 @@ export default class FormattedTextField extends Vue {
 
     const currentPositionFromEnd = el.value.length - (el.selectionEnd || 0)
     const positionFromEnd = value.length - currentPositionFromEnd
-    this.setCursor(el, positionFromEnd)
+    const adjustedPositionFromEnd = positionFromEnd >= 0 ? positionFromEnd : 0
+
+    this.setCursor(el, adjustedPositionFromEnd)
   }
 
   private setCursor(el: any, position: number) {
@@ -195,37 +230,37 @@ export default class FormattedTextField extends Vue {
     this.$emit('error-messages-changed', this.errorMessagesVal)
   }
 
-  private onBlur(value: any) {
-    const valueAsNumber = this.toNumber(this.formattedValue)
-    this.validateTextField(valueAsNumber, this.rules)
-  }
-
   private toNumber(formattedValue: string) {
     if (formattedValue === '') {
       return this.valueWhenEmpty
     }
 
-    const characters = formattedValue
+    const characters = Array.from(formattedValue)
     let result = ''
     let hasFoundLeadingZero = false
     let index = 0
+
     for (const character of characters) {
       if (this.isInteger(character)) {
-        if (character === '0' && result.length === 0) {
+        // Leading 0 if the character is a 0 and we haven't found any other characters
+        // and the next character after is not a . (supports 0.01)
+        if (
+          character === '0' &&
+          result.length === 0 &&
+          characters.length >= index + 2 &&
+          characters[index + 1] !== '.'
+        ) {
           hasFoundLeadingZero = true
         } else {
           result += character
         }
       } else {
-        if ((character === '-' && index === 0) || (character === '+' && index === 0) || character === '.') {
+        // Allowed characters other than integers
+        if (character === '.' || (character === '-' && index === 0) || (character === '+' && index === 0)) {
           result += character
         }
       }
       index++
-    }
-
-    if (characters[0] === '(' && characters[characters.length - 1] === ')' && result) {
-      result = '-' + result
     }
 
     if (hasFoundLeadingZero && !result) {
@@ -241,8 +276,9 @@ export default class FormattedTextField extends Vue {
   }
 
   private created() {
+    this.rawValue = [this.value]
     this.errorVal = this.error
-    this.errorMessagesVal = this.errorMessagesVal
+    this.errorMessagesVal = this.errorMessages
   }
 }
 </script>
