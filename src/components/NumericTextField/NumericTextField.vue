@@ -111,7 +111,7 @@ export default class NumericTextField extends Vue {
     // Will format the left portion and then append the
     // decimal suffix
     let valueSuffix = ''
-    if (value) {
+    if (value != null) {
       const valueString = value.toString()
       const decimalIndex = valueString.indexOf('.')
       if (decimalIndex !== -1) {
@@ -122,7 +122,7 @@ export default class NumericTextField extends Vue {
 
     let result = formatValue(
       this.formatKind,
-      value ? value.toString() : '',
+      value?.toString() ?? '',
       this.formatOptions.numberOfDecimalPlaces,
       this.valueWhenEmpty,
     )
