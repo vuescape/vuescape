@@ -10,6 +10,8 @@ module.exports = function(api) {
       ],
     ],
     plugins: [
+      '@babel/plugin-proposal-nullish-coalescing-operator',
+      '@babel/plugin-proposal-optional-chaining',
       '@babel/plugin-syntax-dynamic-import',
       [
         '@babel/plugin-transform-runtime',
@@ -17,7 +19,7 @@ module.exports = function(api) {
           regenerator: true,
         },
       ],
-      ['transform-remove-console', { "exclude": [ "error", "warn", "info", "debug", "trace"] }],
+      ['transform-remove-console', { exclude: ['error', 'warn', 'info', 'debug', 'trace'] }],
     ],
     ignore: ['node_modules/*'],
   }
