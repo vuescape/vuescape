@@ -129,6 +129,7 @@ export default class NumericTextField extends Vue {
 
     if (valueSuffix) {
       result += valueSuffix
+      result = this.removeDecimalsEndingWithAtLeastTwoZeroes(result)!
     }
 
     // Manually update the v-text-field lazy value to reflect the actual value
@@ -158,15 +159,20 @@ export default class NumericTextField extends Vue {
   }
 
   private removeDecimalsEndingWithAtLeastTwoZeroes(val: string | undefined) {
-    if (typeof val === 'string' && !val) {
-      return val
-    }
-    const decimalMatches = val!.toString().match(/\.0{2,}$/g)
-    if (decimalMatches && decimalMatches.length === 1) {
-      return val!.toString().replace(decimalMatches[0], '')
+    let result = val
+    if (result == null || result === '') {
+      return result
     }
 
-    return val
+    const regex = RegExp(/\.0{2,}$/g)
+    let decimalMatches = result!.toString().match(regex)
+    
+    while (decimalMatches && decimalMatches.length === 1) {
+      result = result!.toString().replace(regex, '')
+      decimalMatches = result!.toString().match(regex)
+    }
+
+    return result
   }
 
   private onInput(val: any) {
