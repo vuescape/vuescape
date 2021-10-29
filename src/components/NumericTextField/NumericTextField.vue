@@ -29,10 +29,10 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-import { Guid, presentationFormatKind } from '@vuescape/index'
-import { formatValue } from '@vuescape/infrastructure/presentationFormatter'
+import { formatValue, presentationFormatKind } from '@vuescape/infrastructure/presentationFormatter'
+import { Guid } from '@vuescape/types/Guid'
 
-@Component({ components: {} })
+@Component
 export default class NumericTextField extends Vue {
   private errorVal = false
   private errorMessagesVal: Array<string> = []
