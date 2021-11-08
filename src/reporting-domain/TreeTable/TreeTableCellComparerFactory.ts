@@ -7,6 +7,7 @@ export function makeTreeTableCellPropertyCompare(
   sortOnIndex: number,
   sortDirection: SortDirection,
   sortComparisonStrategy: SortComparisonStrategy = SortComparisonStrategy.Default,
+  doNotSortValue?: any | undefined,
 ) {
   if (sortDirection === SortDirection.None) {
     throw new Error('Cannot perform a sort with a SortDirection value of None.')
@@ -45,6 +46,12 @@ export function makeTreeTableCellPropertyCompare(
     let leftItemValue = leftItem[0].value != null ? leftItem[0].value : leftItem[0].displayValue
     let rightItemValue = rightItem[0].value != null ? rightItem[0].value : rightItem[0].displayValue
 
+    if (doNotSortValue != null) {
+      if (leftItemValue === doNotSortValue || rightItemValue === doNotSortValue) {
+        return 0
+      }   
+    }
+    
     if (sortComparisonStrategy === SortComparisonStrategy.StringCaseInsensitive) {
       leftItemValue = (leftItemValue || '').toUpperCase()
       rightItemValue = (rightItemValue || '').toUpperCase()
