@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script <script lang="ts">
+<script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import VueScrollingTable from 'vue-scrolling-table'
 import { Action, namespace, State } from 'vuex-class'

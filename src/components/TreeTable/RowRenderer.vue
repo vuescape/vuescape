@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script <script lang='ts'>
+<script  lang='ts'>
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
