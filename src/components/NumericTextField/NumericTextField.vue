@@ -21,6 +21,8 @@
       @update:error="onErrorUpdate"
       @input="onInput"
       :maxlength="maxLength"
+      class="numeric-text-field__input--color"
+      :class="cssClass"
     ></v-text-field>
   </div>
 </template>
@@ -90,6 +92,9 @@ export default class NumericTextField extends Vue {
 
   @Prop({ type: String, default: '' }) // or '0' or null
   private valueWhenEmpty: string
+
+  @Prop({ type: String, default: '' })
+  private cssClass: string
 
   @Prop({ type: String, default: 'number' })
   private formatKind: presentationFormatKind
@@ -238,9 +243,9 @@ export default class NumericTextField extends Vue {
   private onErrorUpdate(isError: boolean) {
     const textField = (this.$refs[this.uniqueId] as unknown) as any
     if (isError) {
-      setTimeout(() => textField.$el.classList.add('formatted-text-field__shake'), 1)
+      setTimeout(() => textField.$el.classList.add('numeric-text-field__shake'), 1)
     } else {
-      setTimeout(() => textField.$el.classList.remove('formatted-text-field__shake'), 1)
+      setTimeout(() => textField.$el.classList.remove('numeric-text-field__shake'), 1)
     }
     this.$emit('error-messages-changed', this.errorMessagesVal)
   }
@@ -299,13 +304,16 @@ export default class NumericTextField extends Vue {
 </script>
 
 <style>
-.formatted-text-field__shake {
-  animation: formatted-text-field__shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+div.numeric-text-field__input--color div.v-input__control input {
+  color: unset;
+}
+.numeric-text-field__shake {
+  animation: numeric-text-field__shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
-@keyframes formatted-text-field__shake {
+@keyframes numeric-text-field__shake {
   10%,
   90% {
     transform: translate3d(-1px, 0, 0);
