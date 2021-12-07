@@ -1,4 +1,5 @@
 export interface CellFormat {
-  fontHexColor?: string,
-  fontSize?: string,
+  fontHexColor?: string
+  fontSizeInPixels?: string
+  backgroundHexColor?: string
 }
