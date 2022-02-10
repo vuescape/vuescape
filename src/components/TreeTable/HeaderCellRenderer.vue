@@ -23,7 +23,7 @@ import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { SortDirection, TreeTableHeaderCell } from '@vuescape/index'
 
 @Component({})
-export default class DefaultHeaderCellRenderer extends ComponentBase {
+export default class HeaderCellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private header: TreeTableHeaderCell
 

@@ -26,7 +26,7 @@
             :colspan="header.colspan"
           >
             <component
-              :is="header.renderer || 'DefaultHeaderCellRenderer'"
+              :is="header.renderer || 'HeaderCellRenderer'"
               :header="header"
               @toggle-sort="toggleSort($event)"
             ></component>
@@ -60,11 +60,11 @@ import {
   TreeTableRow,
 } from '@vuescape/index'
 
-import DefaultHeaderCellRenderer from './HeaderCellRenderer.vue'
+import HeaderCellRenderer from './HeaderCellRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 
 @Component({
-  components: { DefaultHeaderCellRenderer, RowRenderer, VueScrollingTable },
+  components: { HeaderCellRenderer, RowRenderer, VueScrollingTable },
 })
 export default class TreeTable extends ComponentBase {
   @Prop({ type: String, default: false })
