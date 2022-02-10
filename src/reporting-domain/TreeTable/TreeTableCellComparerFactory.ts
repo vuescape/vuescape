@@ -52,11 +52,12 @@ export function makeTreeTableCellPropertyCompare(
       }   
     }
     
+    leftItemValue = leftItemValue || ''
+    rightItemValue = rightItemValue || ''
     if (sortComparisonStrategy === SortComparisonStrategy.StringCaseInsensitive) {
-      leftItemValue = (leftItemValue || '').toUpperCase()
-      rightItemValue = (rightItemValue || '').toUpperCase()
+      leftItemValue = leftItemValue.toUpperCase()
+      rightItemValue = rightItemValue.toUpperCase()
     }
-
     if (leftItemValue.valueOf() < rightItemValue.valueOf()) {
       return 1 * sortDirection
     }

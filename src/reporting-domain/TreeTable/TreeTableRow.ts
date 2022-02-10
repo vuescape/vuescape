@@ -18,6 +18,10 @@ export interface TreeTableRow {
   // can be a string or an object
   links?: Dictionary<Array<Link>>
   children?: Array<TreeTableRow>
+  shouldDisplayChildren?: boolean
+  expandedSummaryRows?: Array<TreeTableRow>
+  collapsedSummaryRows?: Array<TreeTableRow>
+
   onclick?: () => void
   // Any value
   value?: any

@@ -8,8 +8,8 @@
       @mouseover="onMouseEnter(cell)"
       v-for="(cell, index) in rowToDisplay.cells.filter(_ => _.isVisible !== false)"
       :data-column-index="index"
-      :style="getIndentStyle(rowToDisplay.depth, index, cell)"
-      class="cell--border"
+      :style="[getCellStyle(rowToDisplay.depth, index, cell)]"
+      class="cell--border data-row__td"
       :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"
       :key="cell.id"
       :colspan="cell.colspan"
@@ -99,13 +99,22 @@ export default class DataRowRenderer extends ComponentBase {
     return cssClasses
   }
 
-  private getIndentStyle(depth: number | undefined, index: number, cell: any) {
-    if (depth == null) {
-      return
+  private getCellStyle(depth: number | undefined, index: number, cell: any) {
+    const result : any = {}
+    if (depth != null) {
+      const amountToIndent = 4 + (depth * 8) + (this.rowToDisplay.isExpandable ? 0 : 0)
+      if (index === 0) {
+        result['padding-left'] = `${amountToIndent}px`
+      }
     }
-    const amountToIndent = 8 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
-    const indentation = index === 0 ? { 'padding-left': `${amountToIndent}px` } : '{}'
-    return indentation
+
+    Object.assign(result, cell.cssStyles)
+    
+    if (cell?.cellFormat?.backgroundHexColor) {
+      result['--tree-table__cell--background-color'] = cell.cellFormat.backgroundHexColor
+    }
+
+    return result
   }
 }
 </script>
@@ -125,5 +134,8 @@ export default class DataRowRenderer extends ComponentBase {
 .data-row-renderer__animation-enter,
 .data-row-renderer__animation-leave-to {
   opacity: 0;
+}
+table.scrolling td.data-row__td {
+    background-color: var(--tree-table__cell--background-color);
 }
 </style>

@@ -1,5 +1,9 @@
 <template>
-  <span class="tree-table__rendered-cell">
+  <span
+    class="tree-table__rendered-cell"
+    :style="cssStyle"
+    :class="header.cssClasses"
+  >
     {{ valueToDisplay  }}
     <span
       v-if="header.columnSorter"
@@ -23,7 +27,7 @@ import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { SortDirection, TreeTableHeaderCell } from '@vuescape/index'
 
 @Component({})
-export default class DefaultHeaderCellRenderer extends ComponentBase {
+export default class HeaderCellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private header: TreeTableHeaderCell
 
@@ -37,6 +41,21 @@ export default class DefaultHeaderCellRenderer extends ComponentBase {
     if (sortDirection === SortDirection.Descending) {
       return ['fad', 'sort-down']
     }
+  }
+
+  private get cssStyle() {
+    const result: any = {
+      '--tree-table__cell--font-color': this.header.cellFormat ? this.header.cellFormat.fontHexColor : 'inherit',
+      '--tree-table__cell--font-size': this.header.cellFormat ? this.header.cellFormat.fontSizeInPixels : 'inherit',
+    }
+
+    if (this.header.cssStyles) {
+      const cssProperties = Object.keys(this.header.cssStyles)
+      for (const cssProperty of cssProperties) {
+        result[cssProperty] = this.header.cssStyles[cssProperty]
+      }
+    }
+    return result
   }
 
   private get valueToDisplay() {

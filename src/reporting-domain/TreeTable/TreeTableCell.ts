@@ -21,3 +21,4 @@ export interface TreeTableCell {
   slots?: Slots
   cellFormat?: CellFormat
 }
+

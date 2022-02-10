@@ -13,34 +13,28 @@
       :sync-footer-scroll="shouldSyncFooterScrollValue"
       :include-footer="shouldIncludeFooterValue"
       :dead-area-color="deadAreaColorValue"
-      :class="{ freezeFirstColumn: shouldFreezeFirstColumnValue }"
+      :class="[{ freezeFirstColumn: shouldFreezeFirstColumnValue }, cssClass]"
     >
       <template slot="thead">
-        <tr
+        <header-row-renderer
           v-for="headerRow in headersToDisplay"
-          :class="headerRow.cssClasses"
           :key="headerRow.id"
-        >
-          <th
-            v-for="(header, index) in headerRow.cells.filter(_ => _.isVisible !== false)"
-            :data-column-index="index"
-            :class="header.cssClasses"
-            :key="header.id"
-            :colspan="header.colspan"
-          >
-            <component
-              :is="header.renderer || 'DefaultHeaderCellRenderer'"
-              :header="header"
-              @toggle-sort="toggleSort($event)"
-            ></component>
-          </th>
-        </tr>
+          :row="headerRow"
+          @toggle-sort="toggleSort($event)"
+        ></header-row-renderer>
       </template>
       <template slot="tbody">
         <row-renderer
           v-for="row in rowsToDisplay"
           :key="row.id"
           :row="row"
+        ></row-renderer>
+      </template>
+      <template slot="tfoot">
+        <row-renderer
+          v-for="footer in footersToDisplay"
+          :key="footer.id"
+          :row="footer"
         ></row-renderer>
       </template>
     </vue-scrolling-table>
@@ -66,13 +60,13 @@ import {
   TreeTableRow,
 } from '@vuescape/index'
 
-import { ColumnDefinition, ColumnWidthBehavior, ColumnWrapBehavior } from '@vuescape/reporting-domain'
+import { ColumnDefinition, ColumnWidthBehavior, ColumnWrapBehavior, SortLevel } from '@vuescape/reporting-domain'
 import { UnitOfMeasure } from '@vuescape/reporting-domain/UnitOfMeasure'
-import DefaultHeaderCellRenderer from './HeaderCellRenderer.vue'
+import HeaderRowRenderer from './HeaderRowRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 
 @Component({
-  components: { DefaultHeaderCellRenderer, RowRenderer, VueScrollingTable },
+  components: { HeaderRowRenderer, RowRenderer, VueScrollingTable },
 })
 export default class TreeTable extends ComponentBase {
   private uniqueId: string
@@ -80,11 +74,14 @@ export default class TreeTable extends ComponentBase {
   @Prop({ type: String, required: false })
   private id: string
 
-  @Prop({ type: Array, required: true })
+  @Prop({ type: Array, required: false, default: () => [] })
   private columnDefinitions: Array<ColumnDefinition>
 
-  @Prop({ type: Array, required: true })
+  @Prop({ type: Array, required: false, default: () => [] })
   private headers: Array<TreeTableHeaderRow>
+
+  @Prop({ type: Array, required: false, default: () => [] })
+  private footers: Array<TreeTableRow>
 
   @Prop({ type: Array, required: true })
   private rows: Array<TreeTableRow>
@@ -113,8 +110,14 @@ export default class TreeTable extends ComponentBase {
   @Prop({ type: Number, required: false, default: 100000 })
   private maxRows: number
 
-  @Prop({ type: Object, required: false, default: {} })
+  @Prop({ type: Object, required: false })
   private cssStyles: Dictionary<string>
+
+  @Prop({ type: String, required: false })
+  private cssClass: string
+
+  @Prop({ type: Number, default: SortLevel.None })
+  private sortLevel: SortLevel
 
   @Prop({ type: Function, required: false })
   private treeTableSorter?: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow>
@@ -131,6 +134,10 @@ export default class TreeTable extends ComponentBase {
 
   private get cssStyleObject() {
     const result: any = {}
+    if (!this.cssStyles) {
+      return result
+    }
+
     const cssProperties = Object.keys(this.cssStyles)
     for (const cssProperty of cssProperties) {
       result[cssProperty] = this.cssStyles[cssProperty]
@@ -140,6 +147,10 @@ export default class TreeTable extends ComponentBase {
 
   private get headersToDisplay() {
     return this.headers
+  }
+
+  private get footersToDisplay() {
+    return this.footers
   }
 
   private get shouldScrollVerticalValue() {
@@ -226,21 +237,40 @@ export default class TreeTable extends ComponentBase {
 
   private defaultTreeTableSorter(rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) {
     const sortHeader = getSortedHeaderCellWithIndex(headers)
-    if (sortHeader) {
-      return rows.sort(
-        makeTreeTableCellPropertyCompare(
-          sortHeader.index,
-          sortHeader.cell.columnSorter!.sortDirection,
-          sortHeader.cell.columnSorter!.sortComparisonStrategy,
-        ),
-      )
+    if (this.sortLevel === SortLevel.None || !sortHeader) {
+      return rows
+    }
+
+    const propertySorter = makeTreeTableCellPropertyCompare(
+      sortHeader.index,
+      sortHeader.cell.columnSorter!.sortDirection,
+      sortHeader.cell.columnSorter!.sortComparisonStrategy,
+    )
+
+    const hasChildren = rows.filter(_ => _.children!.length > 0).length > 0
+    if (this.sortLevel === SortLevel.Children && !hasChildren) {
+      console.warn(`sortLevel set to ${SortLevel.Children.toString()} but there are no children.`)
+    }
+
+    if (this.sortLevel === SortLevel.Children) {
+      rows.forEach(_ => {
+        _.children = _.children!.sort(propertySorter)
+      })
+    }
+
+    if (this.sortLevel === SortLevel.Parent) {
+      return rows.sort(propertySorter)
     }
 
     return rows
   }
 
   private async setRowsToDisplay() {
-    const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
+    if (!document) {
+      return
+    }
+
+    const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible || row.shouldDisplayChildren)
     this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headers)
     const tableBody = document.querySelector(`div[id='${this.uniqueId}'] table.scrolling tbody`) as {
       scrollTop: number,
@@ -365,20 +395,36 @@ export default class TreeTable extends ComponentBase {
       return columnDefinition.width! + unitOfMeasureSuffix
     }
 
-    // NOTE: Not autosizing header width
-
-    const columnCells = table.querySelectorAll(`td[data-column-index='${columnIndex}'] span.tree-table__rendered-cell`)
-    let maxWidth = 0
-    for (const columnCell of columnCells) {
-      const tableCell = columnCell.parentElement as HTMLTableCellElement
-      if (tableCell.colSpan === 1) {
-        const cellWidth = this.getWidthOfCell(columnCell, tableX, maxWidth)
-        if (cellWidth > maxWidth) {
-          maxWidth = cellWidth
+    if (columnDefinition.columnWidthBehavior === ColumnWidthBehavior.DynamicallySizeToContent) {
+      const columnCells = table.querySelectorAll(
+        `td[data-column-index='${columnIndex}'] span.tree-table__rendered-cell`,
+      )
+      let maxWidth = 0
+      for (const columnCell of columnCells) {
+        const tableCell = columnCell.parentElement as HTMLTableCellElement
+        if (tableCell.colSpan === 1) {
+          const cellWidth = this.getWidthOfCell(columnCell, tableX, maxWidth) + 5 // some padding
+          if (cellWidth > maxWidth) {
+            maxWidth = cellWidth
+          }
         }
       }
+
+      const headerCells = table.querySelectorAll(`th[data-column-index='${columnIndex}']`)
+      for (const headerCell of headerCells) {
+        const header = headerCell as HTMLTableCellElement
+        if (!header.colSpan || header.colSpan === 1) {
+          const cellWidth = this.getWidthOfCell(header, tableX, maxWidth) + 5
+          if (cellWidth > maxWidth) {
+            maxWidth = cellWidth
+          }
+        }
+      }
+
+      return maxWidth + 'px'
     }
-    return maxWidth + 'px'
+
+    return ''
   }
 
   private getWidthOfCell(cell: Element, tableX: number, maxWidth: number) {
@@ -481,17 +527,20 @@ export default class TreeTable extends ComponentBase {
     // }
   }
 
+  private mounted() {
+    if (this.rows && this.rows.length) {
+      this.setRowsToDisplay()
+    }
+  }
+
   private created() {
     if (!this.id) {
-      this.uniqueId = Guid.newGuid.toString()
+      this.uniqueId = Guid.newGuid()
     } else {
       this.uniqueId = this.id
     }
     if (this.treeTableSorter) {
       this.treeTableSorterImpl = this.treeTableSorter
-    }
-    if (this.rows && this.rows.length) {
-      this.setRowsToDisplay()
     }
   }
 }
@@ -499,10 +548,6 @@ export default class TreeTable extends ComponentBase {
 // https://stackoverflow.com/questions/41882616/why-border-is-not-visible-with-position-sticky-when-background-color-exists
 </script>
 <style>
-.tree-table-cell__td {
-  padding-left: 4px;
-  padding-right: 4px;
-}
 .tree-table-cell__td.font-weight__bold {
   font-weight: 500;
 }
@@ -568,8 +613,11 @@ table.scrolling td i.material-icons {
 }
 div.tree-table__div--box table.scrolling td,
 div.tree-table__div--box table.scrolling th {
-  border: 0px solid #ddd !important;
+  /* border: 1px solid #ddd !important; */
   font-size: small;
+}
+.tree-table__border-top--on {
+  border-top: 1px solid #ddd !important;
 }
 div.tree-table__div--box table.scrolling td {
   height: 31px;
@@ -579,13 +627,17 @@ div.tree-table__div--box table.scrolling thead.scrollsync {
   background-color: white !important;
   /* overflow-y: auto !important; Pushes header over scrollbar which causes misalignment of header and body when scroll bar is visible at the far right */
 }
+div.tree-table__div--box table.scrolling thead {
+  --tree-table__cell--background-color: #16a5c6;
+}
 div.tree-table__div--box table.scrolling thead th {
   border: 0px;
-  background-color: #16a5c6 !important;
+  background-color: var(--tree-table__cell--background-color) !important;
   color: #ffffff;
   text-align: center;
   height: 32px;
   font-weight: 500;
+  white-space: nowrap;
 }
 div.tree-table__div--box table.scrolling td.cell__value--raw.tree-table-cell__td--subheader {
   border-left: 0 !important;
@@ -685,15 +737,22 @@ td.tree-table-cell__selected-metric {
 }
 /* Defined on the server side */
 div.tree-table__div--box .tree-table-cell__td {
-  /* nothing for now */
+  padding-left: 4px;
+  padding-right: 4px;
 }
-div.tree-table__div--box .tree-table-cell__th {
-  /* nothing for now */
+/* div.tree-table__div--box .tree-table-cell__th {
+  margin-left: 8px;
+  margin-right: 8px;
 }
 div.tree-table__div--box .tree-table-row__tr {
-  /* nothing for now */
-}
+  margin-left: 8px;
+  margin-right: 8px;
+} */
 .tree-table__display--none {
   display: none;
+}
+div.tree-table__div--box table.cell-border td,
+div.tree-table__div--box table.cell-border th {
+  border: 1px solid #ddd !important;
 }
 </style>
