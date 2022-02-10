@@ -1,17 +1,30 @@
 <template>
   <v-menu offset-y>
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on" small outline depressed color="primary" class="download-button__v-btn--style">
+      <v-btn
+        v-on="on"
+        small
+        outline
+        depressed
+        color="primary"
+        class="download-button__v-btn--style"
+      >
         <font-awesome-icon
           :icon="['fad', 'cloud-download-alt']"
           class="download-button__v-icon--font"
           :style="{ color: '#555', marginRight: '7px;' }"
         />&nbsp; download &nbsp;
-        <v-icon small class="download-menu__v-icon--dropdown">fas fa-caret-down</v-icon>
+        <v-icon
+          small
+          class="download-menu__v-icon--dropdown"
+        >fas fa-caret-down</v-icon>
       </v-btn>
     </template>
     <v-list class="download-menu__v-list--layout">
-      <v-list-tile v-if="shouldDisplayChart" @click="clickHandlers.clickChart">
+      <v-list-tile
+        v-if="shouldDisplayChart"
+        @click="clickHandlers.clickChart"
+      >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <font-awesome-icon
             :icon="['fad', 'file-image']"
@@ -23,7 +36,26 @@
           <v-list-tile-title>Chart</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile v-if="shouldDisplayCsv" @click="clickHandlers.clickCsv">
+      <v-list-tile
+        v-if="shouldDisplayExcel"
+        @click="clickHandlers.clickExcel"
+      >
+        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
+          <font-awesome-icon
+            :icon="['fad', 'file-excel']"
+            class="download-button__v-icon--font"
+            :style="{ color: '#555' }"
+          />
+        </v-list-tile-action>
+
+        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
+          <v-list-tile-title>Excel</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile
+        v-if="shouldDisplayCsv"
+        @click="clickHandlers.clickCsv"
+      >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <font-awesome-icon
             :icon="['fad', 'file-download']"
@@ -36,7 +68,10 @@
           <v-list-tile-title>CSV</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile v-if="shouldDisplayPdf" @click="clickHandlers.clickPdf">
+      <v-list-tile
+        v-if="shouldDisplayPdf"
+        @click="clickHandlers.clickPdf"
+      >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <font-awesome-icon
             :icon="['fad', 'file-pdf']"
@@ -48,7 +83,10 @@
           <v-list-tile-title>PDF</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile v-if="shouldDisplayZip" @click="clickHandlers.clickZip">
+      <v-list-tile
+        v-if="shouldDisplayZip"
+        @click="clickHandlers.clickZip"
+      >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <font-awesome-icon
             :icon="['fad', 'file-archive']"
@@ -69,6 +107,8 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component({})
 export default class DownloadMenu extends Vue {
+  @Prop({ type: Boolean, default: false })
+  private shouldDisplayExcel: boolean
   @Prop({ type: Boolean, default: true })
   private shouldDisplayCsv: boolean
   @Prop({ type: Boolean, default: true })
@@ -80,7 +120,13 @@ export default class DownloadMenu extends Vue {
   @Prop({ type: String, default: '' })
   private zipText: string
   @Prop({ type: Object, required: true })
-  private clickHandlers: { clickChart?: () => void; clickCsv?: () => void; clickPdf?: () => void; clickZip?: () => void }
+  private clickHandlers: {
+    clickChart?: () => void
+    clickCsv?: () => void
+    clickPdf?: () => void
+    clickZip?: () => void,
+    clickExcel?: () => void,
+  }
 }
 </script>
 

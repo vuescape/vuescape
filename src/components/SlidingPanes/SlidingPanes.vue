@@ -164,14 +164,17 @@ export default class SlidingPanes extends ComponentBase {
           pane,
         }
       })
-      .reduce((result, value, index, array) => {
-        const arr = array
-          .filter(v => v.pane.width !== 0)
-          .slice(index, index + 2)
-          .map(p => p.itemIndex)
-        result.push(arr)
-        return result
-      }, [] as Array<Array<number>>)
+      .reduce(
+        (result, value, index, array) => {
+          const arr = array
+            .filter(v => v.pane.width !== 0)
+            .slice(index, index + 2)
+            .map(p => p.itemIndex)
+          result.push(arr)
+          return result
+        },
+        [] as Array<Array<number>>,
+      )
       .filter(v => v.length === 2)
 
     // Hide all splitters
@@ -187,7 +190,9 @@ export default class SlidingPanes extends ComponentBase {
     visibleSplitterGroups.forEach((s, index) => {
       const splitterIndex = visibleSplitterGroups[index][0]
       const splitter = splitterArray[splitterIndex] as any
-      splitter.style.display = 'block'
+      if (splitter && splitter.style) {
+        splitter.style.display = 'block'
+      }
     })
   }
 
@@ -201,7 +206,7 @@ export default class SlidingPanes extends ComponentBase {
         attrs: {
           'watch-slots': self.areSlotsReactive,
           'dbl-click-splitter': false,
-          'circularReferencePropertyExclusions': ['_routerRoot'],
+          circularReferencePropertyExclusions: ['_routerRoot'],
           // 'push-other-panes': false
         },
         on: {
