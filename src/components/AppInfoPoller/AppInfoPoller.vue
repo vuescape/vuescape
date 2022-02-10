@@ -1,14 +1,11 @@
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Action, State } from 'vuex-class'
+import { Action } from 'vuex-class'
 
-import { HttpMethod, makeHttpAsyncAction } from '@vuescape/http'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { AppInfoModuleName, AppInfoOperation, AppInfoStore } from '@vuescape/store/modules/AppInfo'
-import { ModuleState, ns, StoreModule, StoreModuleOptions, StoreOperation } from '@vuescape/store/modules/types'
-import { registerDynamicModule } from '@vuescape/store/registerDynamicModule'
-import { RootState } from '@vuescape/store/RootState'
-import { AppInfo } from '@vuescape/types'
+import { ns } from '@vuescape/store/modules/types'
+import { registerDynamicModule } from '@vuescape/store/storeHelpers'
 
 @Component
 export default class AppInfoHandler extends ComponentBase {
@@ -20,7 +17,7 @@ export default class AppInfoHandler extends ComponentBase {
   private async created() {
     // capture this context for use in setInterval function
     const component = this
-    registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), this.$store)
+    registerDynamicModule(this.$store, AppInfoModuleName, () => new AppInfoStore())
 
     await component.fetchAppInfo({ q: new Date().getTime() })
 

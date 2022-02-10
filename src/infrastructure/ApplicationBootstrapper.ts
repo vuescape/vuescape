@@ -53,10 +53,10 @@ export class ApplicationBootstrapper {
     vuexStore: Store<any>,
     storeModulesToRegister: Dictionary<() => StoreModule<{}, ModuleState<{}, {}>, {}, {}>>,
   ) => {
-    const { registerDynamicModule } = await import('@vuescape/store/registerDynamicModule')
+    const { registerDynamicModule } = await import('@vuescape/store/storeHelpers')
     for (const key of Object.keys(storeModulesToRegister)) {
       console.log(key)
-      registerDynamicModule(key, storeModulesToRegister[key], vuexStore)
+      registerDynamicModule(vuexStore, key, storeModulesToRegister[key])
     }
   }
 

@@ -5,10 +5,8 @@ import Vuex from 'vuex'
 
 import { AppInfoModuleName, AppInfoOperation, AppInfoStore } from '@vuescape/store/modules/AppInfo'
 import { rootStoreOptions } from '@vuescape/store/modules/Root'
+import { registerDynamicModule } from '@vuescape/store/storeHelpers'
 import { makeStoreModule, ns } from '@vuescape/store/modules/types'
-import { registerDynamicModule } from '@vuescape/store/registerDynamicModule'
-
-import { withSuccessResponse } from '@vuescape/test/mockHttpClient'
 
 import TheFooter from '.'
 
@@ -43,7 +41,7 @@ describe('TheFooter.vue --', () => {
       localVue.use(Vuetify)
       localVue.use(Vuex)
       const store = new Vuex.Store(rootStoreOptions)
-      registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
+      registerDynamicModule(store, 'theFooter/configuration', makeStoreModule(theFooterConfiguration), false)
 
       // Act
       const wrapper = shallowMount(TheFooter, { store, localVue })
@@ -60,8 +58,8 @@ describe('TheFooter.vue --', () => {
       localVue.use(Vuetify)
       localVue.use(Vuex)
       const store = new Vuex.Store(rootStoreOptions)
-      registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), store, false)
-      registerDynamicModule('theFooter/configuration', makeStoreModule(theFooterConfiguration), store, false)
+      registerDynamicModule(store, AppInfoModuleName, () => new AppInfoStore(), false)
+      registerDynamicModule(store, 'theFooter/configuration', makeStoreModule(theFooterConfiguration), false)
 
       // Act
       const wrapper = shallowMount(TheFooter, { store, localVue })
