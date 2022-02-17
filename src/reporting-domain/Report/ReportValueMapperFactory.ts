@@ -1,5 +1,7 @@
 import { Store } from 'vuex'
 
+import { PaneKind } from '@vuescape/components/Reporting'
+
 import {
   ClientBehavior,
   ColumnWidthBehavior,
@@ -25,14 +27,12 @@ import {
 
 import { ValueMapper } from '@vuescape/store/modules/types'
 import {
-  dispatchActionAsync,
   dispatchAndAwaitAction,
-  getModuleStateByKey,
   registerStoreModule,
 } from '@vuescape/store/storeHelpers'
 
 import { Report, Section } from '.'
-import { ResourceKind, UiObjectType } from '..'
+import { HorizontalAlignment, ResourceKind, UiObjectType } from '..'
 
 export class ReportValueMapperFactory {
   private reportValueMapperInstance: ValueMapper<Report | undefined>
@@ -143,7 +143,7 @@ export class ReportValueMapperFactory {
           linkTarget: toEnum(LinkTarget, _.linkTarget),
           resourceKind: toEnum(ResourceKind, _.resourceKind),
           title: '',
-        }
+        }        
         return link
       })
       return mappedLinks
@@ -162,7 +162,11 @@ export class ReportValueMapperFactory {
     return [] as Array<Section>
   }
 
-  private processSection(section: any, clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void, isNavigation = false) {
+  private processSection(
+    section: any,
+    clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
+    isNavigation = false) {
+
     const result: Section = {
       id: section.id,
       title: section.title,
@@ -173,7 +177,10 @@ export class ReportValueMapperFactory {
     return result
   }
 
-  private processTreeTable(treeTable: any, clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void, isNavigation = false) {
+  private processTreeTable(
+    treeTable: any, 
+    clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void, 
+    isNavigation = false) {
     const result: any = {}
 
     const content = treeTable.content
@@ -194,9 +201,9 @@ export class ReportValueMapperFactory {
 
     content.sortLevel = toEnum(SortLevel, content.sortLevel)
 
-    debugger
-    if (content.cssClass && isNavigation) {
-      content.cssClass = content.cssClass.split(' ').filter((_ : string) => _ !== 'cell-border' && _ !== '').join(' ')
+    // Set default values for navigation reports
+    if (isNavigation) {      
+      content.cssClass += ' navigation-report'
     }
 
     result.content = content
@@ -267,9 +274,16 @@ export class ReportValueMapperFactory {
         // May need to pre-register?
         cell.hover.content = cell.hover.content || 'tooltip'
       }
-      // wire up a self link clickhandler
-      if (clickHandler) {
+
+      // wire up a clickhandler if there is a self link
+      // Note: in this case no click handlers will be wired up without a self link  
+      if (clickHandler && cell.links && cell.links[LinkName.Self]) {
         cell.onclick = clickHandler
+      }
+
+      if (cell?.cellFormat?.horizontalAlignment !== undefined) {
+        cell.cellFormat.horizontalAlignment = 
+          toEnum(HorizontalAlignment, cell.cellFormat.horizontalAlignment.toString())
       }
 
       if (cell.slots) {
