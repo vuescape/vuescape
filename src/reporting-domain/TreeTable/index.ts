@@ -1,6 +1,7 @@
 export { ClientBehavior } from './ClientBehavior'
 export { ColumnSorter } from './ColumnSorter'
 export { ContentKind } from './ContentKind'
+export { HorizontalAlignment } from './HorizontalAlignment'
 export { Hover } from './Hover'
 export { Slots } from './Slots'
 export { makeTreeTableCellPropertyCompare } from './TreeTableCellComparerFactory'

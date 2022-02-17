@@ -54,7 +54,7 @@
 import Component from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 
-import { ComponentBase, TreeTableCell, TreeTableRow } from '@vuescape/index'
+import { ComponentBase, HorizontalAlignment, TreeTableCell, TreeTableRow } from '@vuescape/index'
 
 import CellRenderer from './CellRenderer.vue'
 
@@ -88,7 +88,8 @@ export default class DataRowRenderer extends ComponentBase {
 
   private getCellClasses(cell: TreeTableCell, row: TreeTableRow, index: number) {
     const cssClasses = {} as any
-    cssClasses['tree-table-cell__td--clickable'] = typeof cell.onclick === typeof Function
+
+cssClasses['tree-table-cell__td--clickable'] = typeof cell.onclick === typeof Function
     cssClasses['tree-table-cell__selected-metric'] = row.isSelected
     cssClasses['tree-table-cell__selected-metric--left'] = row.isSelected && index === 0
     cssClasses['tree-table-cell__selected-metric--interior'] =
@@ -96,6 +97,13 @@ export default class DataRowRenderer extends ComponentBase {
     cssClasses['tree-table-cell__selected-metric--right'] =
       row.isSelected && index === row.cells.filter(_ => _.isVisible !== false).length - 1
     cssClasses['tree-table-cell__td--focused-metric'] = row.isFocused === true
+    cssClasses['tree-table-cell__td--align-center'] = 
+      cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Center
+    cssClasses['tree-table-cell__td--align-left'] = 
+      cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Left
+    cssClasses['tree-table-cell__td--align-right'] = 
+      cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Right
+    
     return cssClasses
   }
 
@@ -112,6 +120,9 @@ export default class DataRowRenderer extends ComponentBase {
     
     if (cell?.cellFormat?.backgroundHexColor) {
       result['--tree-table__cell--background-color'] = cell.cellFormat.backgroundHexColor
+    }
+    else {
+      result['--tree-table__cell--background-color'] = '#fff'
     }
 
     return result
@@ -136,6 +147,15 @@ export default class DataRowRenderer extends ComponentBase {
   opacity: 0;
 }
 table.scrolling td.data-row__td {
-    background-color: var(--tree-table__cell--background-color);
+  background-color: var(--tree-table__cell--background-color);
+}
+div.tree-table__div--box table.cell-border td.tree-table-cell__td--align-center {
+  text-align: center !important;
+}
+div.tree-table__div--box table.cell-border td.tree-table-cell__td--align-right {
+  text-align: right !important;
+}
+div.tree-table__div--box table.cell-border td.tree-table-cell__td--align-left {
+  text-align: left !important;
 }
 </style>
