@@ -1,17 +1,16 @@
 <template>
   <div
     :style="divStyle"
-    :key="reportNamespace"
+    :key="reportNamespaceValue"
     class="report-pane__container--layout"
   >
-
     <div :ref="reportHeaderRef">
       <v-layout
         align-start
         fill-height
         justify-start
         row
-        benchmarking-report__v-layout--margin
+        report-pane__v-layout--margin
       >
         <v-flex
           lg12
@@ -27,6 +26,7 @@
       <v-layout
         row
         style="white-space: nowrap;"
+        :ref="tabHeaderRow"
       >
         <v-flex xs11>
           <v-btn-toggle
@@ -52,15 +52,16 @@
           <download-menu
             v-if="shouldDisplayDownloadMenu"
             :shouldDisplayPdf="false"
+            :shouldDisplayCsv="false"
             :shouldDisplayChart="false"
-            :shouldDisplayCsv="shouldDisplayCsvDownload"
-            :clickHandlers="{ clickCsv: downloadCsv }"
+            :shouldDisplayExcel="shouldDisplayExcelDownload"
+            :clickHandlers="{ clickExcel: downloadExcel }"
           ></download-menu>
         </span>
       </v-layout>
     </div>
     <tree-table
-      v-if="selectedSection.id"
+      v-show="selectedSection.id"
       :id="selectedSection.treeTable.id"
       :ref="treeTableReference"
       :key="selectedSection.id"
@@ -71,20 +72,39 @@
       :shouldFreezeFirstColumn="selectedSection.treeTable.content.shouldFreezeFirstColumn"
       :shouldIncludeFooter="selectedSection.treeTable.content.shouldIncludeFooter"
       :sortLevel="selectedSection.treeTable.content.sortLevel"
-      :cssStyles="selectedSection.treeTable.content.cssStyles"
+      :cssStyles="cssStyles"
       :cssClass="selectedSection.treeTable.content.cssClass"
+      @columns-resized="rightAlignHeader"
     ></tree-table>
+    <v-alert
+      v-if="areNoResults"
+      class="report-pane__v-alert--layout"
+      :value="areNoResults"
+      transition="fade-transition"
+      type="info"
+      outline
+    >
+      No results found.
+    </v-alert>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+import {  } from 'vue'
 
-import { getModuleStateByKey, makeStateKey } from '@vuescape/store/storeHelpers'
+import { Component, Prop, Watch } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
+
+import { 
+  dispatchAndAwaitAction,
+  getModuleStateByKey,
+  registerStoreModule,
+} from '@vuescape/store/storeHelpers'
 
 import { SlidingPaneAction, SlidingPaneConfig, SlidingPaneEvent } from '@vuescape/components/SlidingPanes'
-import { ComponentBase, Section } from '@vuescape/index'
+import { ComponentBase, downloadFile, HttpMethod, Section } from '@vuescape/index'
 import { Link, ResourceKind } from '@vuescape/reporting-domain'
+import { Dictionary } from 'cypress/types/lodash'
 
 const DownloadMenu = () =>
   import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default)
@@ -95,10 +115,12 @@ const TreeTable = () =>
   components: { DownloadMenu, TreeTable },
 })
 export default class ReportPane extends ComponentBase {
-  private selectedSection = { id: '', title: '', name: '' }
+  private reportNamespaceValue = ''
+  private scrollPositionsValue: Dictionary<{ scrollLeft: number, scrollTop: number }> = { }
 
-  private shouldRender = true
-  private isDestroyed = false
+  private selectedSection : any = { id: ''   }
+  private treeTableHeight = 0
+
   // Props passed in on route
   @Prop({ type: String, required: true })
   private reportNamespace: string
@@ -106,32 +128,36 @@ export default class ReportPane extends ComponentBase {
   @Prop({ type: String, default: '' })
   private divStyle: string
 
+  @(namespace('window/availableHeight').State(state => state.value))
+  private availableHeight: Array<number>
+
   private get shouldDisplayDownloadMenu() {
     const result = this.report && this.report.downloadLinks && this.report.downloadLinks.length > 0
     return result
   }
 
+  private get tabHeaderRow() {
+    return this.reportHeaderRef + '-tabHeaderRow'
+  }
+
   private get reportHeaderRef() {
-    return 'reportPaneHeader-' + this.reportNamespace
-  }
-  // TODO: pass in value? or just lookup CSV?
-  private downloadCsv() {
-    if (!this.shouldDisplayCsvDownload) {
-      return
-    }
-
-    // make the call to get the data
-    // do the download thing
+    return 'reportPaneHeader-' + this.reportNamespaceValue
   }
 
-  private get shouldDisplayCsvDownload() {
+  private get cssStyles() {
+    const existingStyles = this.selectedSection.treeTable.content.cssStyles ?? {}
+    existingStyles.height = this.treeTableHeight + 'px'
+    return  existingStyles
+  }
+
+  private get shouldDisplayExcelDownload() {
     const result = this.shouldDisplayDownloadMenu && 
-                   this.report.downloadLinks.some((_ : Link) => _.resourceKind === ResourceKind.Csv)
+                   this.report.downloadLinks.some((_ : Link) => _.resourceKind === ResourceKind.Excel)
     return result
   }
 
   private get report() {
-    const state = getModuleStateByKey(this.reportNamespace, this.$store)
+    const state = getModuleStateByKey(this.reportNamespaceValue, this.$store)
     const result = state?.value
     return result
   }
@@ -146,32 +172,171 @@ export default class ReportPane extends ComponentBase {
   }
 
   private get treeTableReference() {
-    const result = `${this.reportNamespace}-${this.selectedSection.id}`
+    const result = `${this.reportNamespaceValue}-${this.selectedSection.id}`
     return result
   }
 
+  private get areNoResults() {
+    const result = this.report && 
+                   this.selectedSection?.treeTable?.content?.rows && 
+                   this.selectedSection?.treeTable?.content?.rows.length !== 0
+    
+    return !result
+  }
+
+  private get treeTableTbody() {
+    const treeTableReference = this.treeTableReference
+    const treeTable = this.$refs[treeTableReference] as { $el: Element }
+    if (!treeTable) {
+      return
+    }
+
+    const table = treeTable.$el
+    const tbody = table.querySelector('tbody')
+    return tbody
+  }
+
   private get selectedSectionId() {
-    const result = this.selectedSection?.id
+    const result = this.selectedSection?.id!
     return result
   }
 
   private set selectedSectionId(id: string) {
     if (this.report && this.report.sections && id) {
       const section = this.report.sections.find((_ : { id: string })  => _.id === id)
+      this.scrollPositionsValue[this.selectedSection.id] = this.calculateScrollBarPositions()!
       this.selectedSection = section
+      const self = this
+      setTimeout(() => self.positionScrollBars(), 1)      
+    }
+  }
+
+  @Watch('reportNamespace')
+  private reportNamespaceWatcher(val: string, oldVal: string) {
+    this.reportNamespaceValue = val
+  }
+
+  @Watch('availableHeight')
+  private availableHeightWatcher(val: any, oldVal: any) {
+    this.setTreeTableHeight()
+  }
+
+  private async downloadReport(resourceKind: ResourceKind) {
+    const downloadNamespace = this.reportNamespaceValue + '/download'
+    const link = this.report.downloadLinks.find((_ : Link) => _.resourceKind === resourceKind) as Link
+
+    const source = link.source 
+    registerStoreModule(
+      this.$store,
+      downloadNamespace,
+      HttpMethod.Get,
+      source,
+      undefined,
+      false)
+
+    await dispatchAndAwaitAction(downloadNamespace, source, this.$store)
+
+    const state = getModuleStateByKey(downloadNamespace, this.$store)
+    const data = state?.value
+
+    const now = new Date()
+    const fileDate = `_${now.getFullYear()}-${('0' + (now.getMonth() + 1)).slice(-2)}-${(
+      '0' + now.getDate()).slice(-2)}`
+    let filename = ''
+    if (resourceKind === ResourceKind.Excel) {
+      filename = `${this.report.title}${fileDate}.xlsx`
+    }
+
+    downloadFile(data, true, filename)
+  }
+
+  private downloadExcel() {
+    if (!this.shouldDisplayExcelDownload) {
+      return
+    }
+
+    this.downloadReport(ResourceKind.Excel)
+  }
+
+  // Set width to properly right align as of and download button
+  private rightAlignHeader() {
+    const treeTableReference = this.treeTableReference
+    const treeTable = this.$refs[treeTableReference] as { $el: Element }
+    if (!treeTable) {
+      return
+    }
+
+    const clientWidth = treeTable.$el.clientWidth
+    const row = treeTable.$el.querySelector('tr')
+    if (row) {
+      const rowWidth = row.clientWidth
+      let width = rowWidth
+      if (clientWidth < rowWidth) {
+        width = clientWidth
+      }
+
+        const tabHeaderRow = this.$refs[this.tabHeaderRow] as HTMLElement
+        if (tabHeaderRow) {
+          tabHeaderRow.style.width = width + 'px'
+        }
+    }
+  }
+
+  private setTreeTableHeight() {
+    const reportHeaderRef = this.reportHeaderRef
+    const reportHeader = this.$refs[reportHeaderRef] as any
+
+    if (!reportHeader || !this.availableHeight || this.availableHeight.length === 0) {
+      return
+    }
+
+    const thisElement = this.$el as any
+    const paddingTop = Number.parseFloat(
+      window.getComputedStyle(thisElement.firstChild, null).getPropertyValue('padding-top'),
+    )
+
+    const reportHeaderHeight = reportHeader.getBoundingClientRect().height as number
+    const treeTableHeight =
+      this.availableHeight[0] -
+      reportHeaderHeight -
+      paddingTop 
+      + 3 // Decrease padding to look better
+
+    this.treeTableHeight = treeTableHeight
+  }
+
+  private calculateScrollBarPositions() {
+    const tbody = this.treeTableTbody
+    if (tbody) {
+      const scrollLeft = tbody.scrollLeft
+      const scrollTop = tbody.scrollTop
+      return { scrollLeft, scrollTop }
+    }
+  }
+
+  private positionScrollBars() {
+    const tbody = this.treeTableTbody
+    if (tbody) {
+      const selectedSectionId = this.selectedSection.id!
+      const self = this
+      setTimeout(() => {
+        tbody.scrollLeft = self.scrollPositionsValue[selectedSectionId].scrollLeft
+        tbody.scrollTop = self.scrollPositionsValue[selectedSectionId].scrollTop
+      }, 1)
     }
   }
 
   private mounted() {
-    // debugger
-    // const tableRef = this.$refs[this.treeTableReference] 
-    // const tableElement = tableRef.el
-    // const tableDOMRect = table.getBoundingClientRect() as DOMRect
-    // const tableX = tableDOMRect.x
-
+    this.setTreeTableHeight()
+    this.positionScrollBars()
   }
+
   private created() {
+    this.reportNamespaceValue = this.reportNamespace
     if (this.report && this.report.sections) {
+      this.report.sections.forEach((_ : Section) => {
+        this.scrollPositionsValue[_.id!] = { scrollLeft: Number.MAX_SAFE_INTEGER, scrollTop: 0 }
+      })
       this.selectedSection = this.report.sections[0]
     }
   }
@@ -196,8 +361,10 @@ div.report-pane__container--layout div.v-btn-toggle button.v-btn:hover {
   background-color: rgba(22, 165, 198, 0.4);
 }
 .report-pane__container--layout {
-  padding-top: 18px;
+  padding-top: 10px;
   overflow: hidden;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 .report-pane__span--additional-info {
   font-size: 13px;
@@ -205,12 +372,17 @@ div.report-pane__container--layout div.v-btn-toggle button.v-btn:hover {
   color: rgb(136, 136, 136) !important;
 }
 .report-pane__header--title {
-  font-size: larger;
+  font-size: 18px;
   font-weight: 500;
   line-height: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
-.report-pane__span--menu {
-  margin-right: 20px;
+.report-pane__container--layout .info--text.report-pane__v-alert--layout {
+  border-color: #9bdddb !important;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 6px;
+  text-align: center;
 }
 </style>
