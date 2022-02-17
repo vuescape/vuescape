@@ -1,4 +1,3 @@
-
 import { CellFormat } from './CellFormat'
 import { Slots } from './Slots'
 import { TreeTableRow } from './TreeTableRow'
@@ -21,4 +20,3 @@ export interface TreeTableCell {
   slots?: Slots
   cellFormat?: CellFormat
 }
-
