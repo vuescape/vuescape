@@ -1,12 +1,14 @@
 <template>
   <SlidingPanes
+    v-if="shouldRender"
+    v-loading="isLoading"    
+    class="reportPanes__sliding-pane--scroll"
     :key="reportNamespace"
     :eventNamespace="reportNamespace"
     :ref="reportNamespace"
-    v-if="shouldRender"
-    class="reportPanes__sliding-pane--scroll"
     :slidingPaneConfig="reportPaneConfig"
     :slidingPaneActions="slidingPaneActions"
+    :shouldHandleResizeEvent="false"
   >
     <report-pane
       v-if="navigationReport"
@@ -131,6 +133,15 @@ export default class ReportPanes extends ComponentBase {
       },
     },
   ]
+
+  private get isLoading() {
+    const reportNamespace = this.reportNamespace + '/main'
+    const mainState = getModuleStateByKey(reportNamespace, this.$store)
+    const navigationState = getModuleStateByKey(reportNamespace, this.$store)
+
+    const result = mainState?.isPending || navigationState?.isPending
+    return result
+  }
 
   private get mainReport() {
     const reportNamespace = this.reportNamespace + '/main'
