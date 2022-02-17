@@ -53,6 +53,9 @@ export default class SlidingPanes extends ComponentBase {
   @Prop({ type: Boolean, default: true })
   public areSlotsReactive: boolean
 
+  @Prop({ type: Boolean, default: true })
+  public shouldHandleResizeEvent: boolean
+
   @Prop({ type: String, required: true })
   public eventNamespace: string
 
@@ -400,13 +403,15 @@ export default class SlidingPanes extends ComponentBase {
   }
 
   private async onResize(event: Array<{ width: number }>) {
-    const self = this
-    if (!self.resizeTimer) {
-      this.resizeTimer = setTimeout(() => {
-        self.setAvailableHeight([self.availableHeight[0]])
+    if (this.shouldHandleResizeEvent) {
+      const self = this
+      if (!self.resizeTimer) {
+        this.resizeTimer = setTimeout(() => {
+          self.setAvailableHeight([self.availableHeight[0]])
 
-        self.resizeTimer = undefined
-      }, 50)
+          self.resizeTimer = undefined
+        }, 50)
+      }
     }
   }
 
