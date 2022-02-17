@@ -1,7 +1,6 @@
 <template>
   <SlidingPanes
-    v-if="shouldRender"
-    v-loading="isLoading"    
+    v-loading="isLoading"
     class="reportPanes__sliding-pane--scroll"
     :key="reportNamespace"
     :eventNamespace="reportNamespace"
@@ -14,30 +13,30 @@
       v-if="navigationReport"
       v-loading="navigationReport.isPending"
       :style="divStyle"
-      :reportNamespace="reportNamespace + '/navigation'"
+      :reportNamespace="navigationNamespace"
     />
     <div v-else></div>
     <report-pane
       v-if="mainReport"
       v-loading="navigationReport.isPending"
       :style="divStyle"
-      :reportNamespace="reportNamespace + '/main'"
+      :reportNamespace="mainNamespace"
     />
     <div v-else></div>
   </SlidingPanes>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Route } from 'vue-router'
-import { Action, namespace, State } from 'vuex-class'
+import { namespace } from 'vuex-class'
 
 import { getModuleStateByKey, makeStateKey } from '@vuescape/store/storeHelpers'
 
-import { EventType, SlidingPaneAction, SlidingPaneConfig, SlidingPaneEvent } from '@vuescape/components/SlidingPanes'
-import { ComponentBase, HttpMethod, makePropertyComparer, SortComparisonStrategy, TreeTableRow } from '@vuescape/index'
-import { ModuleState, ns, StoreOperation } from '@vuescape/store/modules/types'
+import { SlidingPaneAction, SlidingPaneConfig, SlidingPaneEvent } from '@vuescape/components/SlidingPanes'
+import { ComponentBase } from '@vuescape/index'
+
+import { makeReportPaneNamespace, makeReportPaneNamespacePrefix, PaneKind } from '.'
 
 const ReportPane = () =>  
   import(/* webpackChunkName: 'report-pane' */ '@vuescape/components/Reporting/ReportPane.vue').then(m => m.default)
@@ -45,40 +44,10 @@ const ReportPane = () =>
 const SlidingPanes = () =>  
   import(/* webpackChunkName: 'sliding-panes' */ '@vuescape/components/SlidingPanes').then(m => m.default)
 
-// TODO: add props:  (use as key), pass in reportname/reportid and reportconfig as query (what to do with report config?)
-// TODO: accept config for sliding panes -- what panes are being used? What queries to run for each pane?
-
-// [
-//   {
-//     minWidth: 10,
-//     maxWidth: 40,
-//     initialWidth: 30,
-//     singlePaneCssClass: 'app__sliding-pane--single',
-//     multiplePaneCssClass: 'app__sliding-pane--multiple',
-//     postActionWidth: 30,
-//   },
-//   {
-//     minWidth: 10,
-//     maxWidth: 50,
-//     initialWidth: 0,
-//     postActionWidth: 70,
-//   },
-//   {
-//     minWidth: 10,
-//     maxWidth: 40,
-//     initialWidth: 0,
-//     singlePaneCssClass: 'app__sliding-pane--single',
-//     multiplePaneCssClass: 'app__sliding-pane--multiple',
-//     shouldShowMaximize: true,
-//     shouldShowClose: true,
-//   },
-// ]
 @Component({
   components: { ReportPane, SlidingPanes },
 })
 export default class ReportPanes extends ComponentBase {
-  private shouldRender = true
-  private isDestroyed = false
   // Props passed in on route
   @Prop({ type: String, required: true })
   private reportId: string
@@ -97,6 +66,20 @@ export default class ReportPanes extends ComponentBase {
     }
 
     return undefined
+  }
+
+  private get navigationNamespace() {
+    const result = makeReportPaneNamespace(this.reportId, PaneKind.Navigation)
+    return result
+  }
+
+  private get mainNamespace() {
+    const result = makeReportPaneNamespace(this.reportId, PaneKind.Main)
+    return result
+  }
+
+  private get reportNamespace() {
+    return makeReportPaneNamespacePrefix(this.reportId)
   }
 
   @(namespace('window/availableHeight').State(state => state.value))
@@ -135,32 +118,25 @@ export default class ReportPanes extends ComponentBase {
   ]
 
   private get isLoading() {
-    const reportNamespace = this.reportNamespace + '/main'
-    const mainState = getModuleStateByKey(reportNamespace, this.$store)
-    const navigationState = getModuleStateByKey(reportNamespace, this.$store)
+    const mainState = getModuleStateByKey(this.mainNamespace, this.$store)
+    const navigationState = getModuleStateByKey(this.navigationNamespace, this.$store)
 
     const result = mainState?.isPending || navigationState?.isPending
     return result
   }
 
   private get mainReport() {
-    const reportNamespace = this.reportNamespace + '/main'
-    const state = getModuleStateByKey(reportNamespace, this.$store)
+    const state = getModuleStateByKey(this.mainNamespace, this.$store)
     const result = state?.value
     return result
   }
 
   private get navigationReport() {
-    const reportNamespace = this.reportNamespace + '/navigation'
-    const state = getModuleStateByKey(reportNamespace, this.$store)
+    const state = getModuleStateByKey(this.navigationNamespace, this.$store)
     const result = state?.value
     return result
   }
 
-  private get reportNamespace() {
-    const result= makeStateKey(this.reportId ?? 'defaultReportId','reportPanes')    
-    return result
-  }
 
   // @Watch('slidingPaneEvent')
   // private onSlidingPaneEvent(to: SlidingPaneEvent, from: SlidingPaneEvent) {
@@ -190,15 +166,6 @@ export default class ReportPanes extends ComponentBase {
   // TODO: reset state as appropriate
   private async onPaneClosed(index: number) {
     console.info(index)
-  }
-
-  private beforeDestroy() {
-    this.isDestroyed = true
-  }
-
-  private async created() {
-    // Register applicable store modules
-    // this.registerStoreModuleWithInitialValue<string>('reportPanes/value', '')
   }
 }
 </script>

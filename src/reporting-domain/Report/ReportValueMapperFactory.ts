@@ -100,13 +100,13 @@ export class ReportValueMapperFactory {
       // TODO: ensure links exist and reference self
       let namespace = this.namespacePrefix
       if (selfLink.linkTarget === LinkTarget.CenterPane) {
-        namespace += '/main'
+        namespace +=  '/' + PaneKind[PaneKind.Main].toLowerCase()
       }
       else if (selfLink.linkTarget === LinkTarget.LeftPane) {
-        namespace += '/navigation'
+        namespace +=  '/' + PaneKind[PaneKind.Navigation].toLowerCase()
       }
       else if (selfLink.linkTarget === LinkTarget.RightPane) {
-        namespace += '/detail'
+        namespace +=  '/' + PaneKind[PaneKind.Detail].toLowerCase()
       }
       else {
         console.error('Unsupported LinkTarget: ' + selfLink.linkTarget.toString())
