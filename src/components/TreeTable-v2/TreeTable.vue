@@ -414,7 +414,7 @@ export default class TreeTable extends ComponentBase {
       for (const headerCell of headerCells) {
         const header = headerCell as HTMLTableCellElement
         if (!header.colSpan || header.colSpan === 1) {
-          const cellWidth = this.getWidthOfCell(header, tableX, maxWidth) + 5
+          const cellWidth = this.getWidthOfCell(header, tableX, maxWidth) + 5 + 6 + 6 // 5 for sorting and 7 padding on each side
           if (cellWidth > maxWidth) {
             maxWidth = cellWidth
           }
@@ -525,6 +525,7 @@ export default class TreeTable extends ComponentBase {
     //     this.setCellWidth(row.cells[j], this.headersToDisplay[0].cells[j].cellWidth, tableX)
     //   }
     // }
+    this.$emit('columns-resized')
   }
 
   private mounted() {
@@ -681,6 +682,12 @@ div.tree-table__div--box table.scrolling tfoot tr th {
   min-width: 130em;
   max-width: 130em;
 }
+div.tree-table__div--box table.freezeFirstColumn thead tr:first-child {
+  border-top: 0 !important;
+}
+div.tree-table__div--box table.freezeFirstColumn tfoot tr:first-child {
+  border-top: 0 !important;
+}
 div.tree-table__div--box table.freezeFirstColumn thead tr,
 div.tree-table__div--box table.freezeFirstColumn tbody tr {
   display: block;
@@ -689,6 +696,7 @@ div.tree-table__div--box table.freezeFirstColumn tbody tr {
 div.tree-table__div--box table.freezeFirstColumn thead td:first-child,
 div.tree-table__div--box table.freezeFirstColumn tbody td:first-child,
 div.tree-table__div--box table.freezeFirstColumn thead th:first-child,
+div.tree-table__div--box table.freezeFirstColumn tfoot td:first-child,
 div.tree-table__div--box table.freezeFirstColumn tbody th:first-child {
   position: sticky;
   position: -webkit-sticky;
@@ -710,6 +718,9 @@ div.tree-table__div--box table.scrolling {
 }
 div.tree-table__div--box table.scrolling.scrollx tbody {
   overflow-x: auto !important;
+}
+div.tree-table__div--box table.scrolling.scrollx tbody::-webkit-scrollbar {
+  height: 9px;
 }
 div.tree-table__div--box table.scrolling.scrolly tbody {
   overflow-y: auto !important;
@@ -754,5 +765,61 @@ div.tree-table__div--box .tree-table-row__tr {
 div.tree-table__div--box table.cell-border td,
 div.tree-table__div--box table.cell-border th {
   border: 1px solid #ddd !important;
+}
+div.tree-table__div--box table.cell-border td:first-child,
+div.tree-table__div--box table.cell-border th:first-child {
+  /* border-left: 0!important; */
+}
+div.tree-table__div--box table.cell-border td:last-child,
+div.tree-table__div--box table.cell-border th:last-child {
+  /* border-right: 0!important; */
+}
+div.tree-table__div--box table.cell-border thead tr td,
+div.tree-table__div--box table.cell-border thead tr th {
+  border-top: 0 !important;
+}
+div.tree-table__div--box table.cell-border tfoot tr td,
+div.tree-table__div--box table.cell-border tfoot tr th {
+  border-top: 0 !important;
+}
+div.tree-table__div--box table.cell-border tr:first-child td,
+div.tree-table__div--box table.cell-border tr:first-child th {
+  border-top: 0 !important;
+}
+div.tree-table__div--box table.cell-border tfoot tr:first-child td,
+div.tree-table__div--box table.cell-border tfoot tr:first-child th {
+  border: 1px solid #ddd !important;
+}
+
+div.tree-table__div--box table.navigation-report td {
+  font-size: 17px !important;
+  border: 0 !important;
+}
+div.tree-table__div--box table.navigation-report th {
+  font-size: 18px !important;
+  border: 0 !important;
+}
+div.tree-table__div--box table.navigation-report td.tree-table-cell__td--clickable {
+  text-decoration: underline;
+  color: blue !important; /* use default color for link */
+}
+div.tree-table__div--box table.cell-border td {
+  text-align: center;
+}
+div.tree-table__div--box table.cell-border td:last-child {
+  text-align: right;
+}
+div.tree-table__div--box table.cell-border td:first-child {
+  text-align: left;
+}
+/* Reserve space for scrollbar in footer but make the scrollbar transparent so it doesn't render */
+div.tree-table__div--box table.scrolling tfoot.scrollsync {
+  overflow-y: scroll;
+}
+div.tree-table__div--box table.scrolling tfoot.scrollsync::-webkit-scrollbar {
+  background-color: transparent;
+}
+div.tree-table__div--box table.scrolling tfoot.scrollsync::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 </style>
