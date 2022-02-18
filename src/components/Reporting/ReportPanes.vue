@@ -137,7 +137,6 @@ export default class ReportPanes extends ComponentBase {
     return result
   }
 
-
   // @Watch('slidingPaneEvent')
   // private onSlidingPaneEvent(to: SlidingPaneEvent, from: SlidingPaneEvent) {
   //   if (!to || to.eventType === EventType.None) {

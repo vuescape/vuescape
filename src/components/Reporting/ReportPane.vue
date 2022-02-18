@@ -18,7 +18,6 @@
           xs12
         >
           <div class="report-pane__header--title">
-
             {{ reportTitle }}
           </div>
         </v-flex>
@@ -101,7 +100,6 @@ import {
   registerStoreModule,
 } from '@vuescape/store/storeHelpers'
 
-import { SlidingPaneAction, SlidingPaneConfig, SlidingPaneEvent } from '@vuescape/components/SlidingPanes'
 import { ComponentBase, downloadFile, HttpMethod, Section } from '@vuescape/index'
 import { Link, ResourceKind } from '@vuescape/reporting-domain'
 import { Dictionary } from 'cypress/types/lodash'

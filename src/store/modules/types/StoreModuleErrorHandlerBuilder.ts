@@ -73,6 +73,7 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
       this.context.commit(StoreOperation.Mutation.NotificationMutations.ADD, errorMessage, {
         root: this.shouldUseGlobalNotifications,
       })
+      // Origin is Unreachable
       this.context.commit(StoreOperation.Mutation.SET_ASYNC_RESULT, {
         status: 523,
         statusText: error.message,
