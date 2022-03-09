@@ -9,7 +9,7 @@ import { Axios, CacheOptions } from '@vuescape/http'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
 import { RootState } from '@vuescape/store/RootState'
-import { Dictionary } from '@vuescape/types'
+import { Dictionary, FeatureService, NullFeatureService } from '@vuescape/types'
 
 import 'vue-resize/dist/vue-resize.css'
 
@@ -27,6 +27,7 @@ export class ApplicationBootstrapper {
   private router: VueRouter
   private rootComponentOptions: { el: string; componentName: string; rootComponent: VueConstructor<Vue>; props: any }
   private trackingService: TrackingService = new NullTrackingService()
+  private featureService: FeatureService = new NullFeatureService()
 
   private initFunction = async () => {
     return
@@ -123,6 +124,11 @@ export class ApplicationBootstrapper {
     return this
   }
 
+  public withFeatureService(featureService: FeatureService) {
+    this.featureService = featureService
+    return this
+  }
+
   public withRootComponent(el: string, componentName: string, rootComponent: VueConstructor<Vue>, props?: any) {
     this.rootComponentOptions = { el, componentName, rootComponent, props }
     return this
@@ -165,6 +171,7 @@ export class ApplicationBootstrapper {
       new Vue({
         provide: () => ({
           trackingService: this.trackingService,
+          featureService: this.featureService,
         }),
         el: this.rootComponentOptions.el,
         store: this.vuexStore,
