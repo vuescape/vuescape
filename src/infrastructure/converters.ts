@@ -1,6 +1,6 @@
 export function tryToEnum<T>(
   enumType: T,
-  enumString: string,
+  enumString: string | undefined,
   shouldCapitalizeFirstCharacter = true,
 ): T[keyof T] | undefined {
   if (enumString == null) {
