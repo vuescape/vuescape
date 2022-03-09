@@ -29,13 +29,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Inject, Prop } from 'vue-property-decorator'
 import { Action, Getter, namespace, State } from 'vuex-class'
 
 import { AuthenticationModuleName, AuthenticationOperation } from '@vuescape/store/modules/Authentication'
 import { ns } from '@vuescape/store/modules/types'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
-import { Guid, Menu } from '@vuescape/types'
+import { FeatureService, Guid, Menu } from '@vuescape/types'
 
 import NavigationMenu from '@vuescape/components/NavigationMenu'
 
@@ -47,7 +47,7 @@ export default class TheHeader extends Vue {
 
   @State
   private isAuthenticated: boolean
-  
+
   @State
   private hasExternalSessionsInitialized: boolean
 
@@ -76,6 +76,9 @@ export default class TheHeader extends Vue {
   @Getter(ns('userProfile', 'Menus'))
   private userProfileMenus: Array<Menu>
 
+  @Inject('featureService')
+  private featureService: FeatureService
+
   private get getCssClass() {
     if (this.theHeaderProps.logoHref || this.theHeaderProps.logoNavigationRoute) {
       return 'the-header__img--clickable'
@@ -92,13 +95,56 @@ export default class TheHeader extends Vue {
   }
 
   private get consolidatedMenus() {
+    let consolidatedMenus: Array<Menu> = []
     if (this.menuConfiguration.length) {
-      return this.menuConfiguration
+      consolidatedMenus = this.menuConfiguration
+    } else if (this.userProfileMenus) {
+      consolidatedMenus = this.userProfileMenus
     }
-    if (this.userProfileMenus) {
-      return this.userProfileMenus
+    const featureMenus = this.featureService.menus
+    featureMenus.forEach(_ => this.addFeatureMenu(_, consolidatedMenus, _.menuTitlePath.split('/').filter(s => s)))
+    return consolidatedMenus
+  }
+
+  private addFeatureMenu(
+    featureMenu: Menu & { menuTitlePath: string },
+    menus: Array<Menu>,
+    menuTitles: Array<string>,
+  ) {
+    // If no titles then add to the top level
+    if (menuTitles.length === 0) {
+      // Only add menu item if it doesn't exist
+      if (!menus.some(_ => _.id === featureMenu.id)) {
+        menus.push(featureMenu)
+      }
+      return
     }
-    return []
+    const isLastMenuTitle = menuTitles.length === 1
+    let matchingMenu = menus.find(_ => _.title.toLowerCase() === menuTitles[0].toLowerCase())
+    // If there was no match for the title then add a placeholder menu
+    if (!matchingMenu) {
+      matchingMenu = { id: Guid.newGuid(), title: menuTitles[0], path: '', items: [] }
+      menus.push(matchingMenu)
+    }
+    // If this is the last menu title then add to the items or create items array
+    // if it doesn't exist
+    if (isLastMenuTitle) {
+      if (matchingMenu.items && matchingMenu.items.length !== 0) {
+        // Only add menu item if it doesn't exist
+        if (!matchingMenu.items.some(_ => _.id === featureMenu.id)) {
+          matchingMenu.items.push(featureMenu)
+        }
+      } else {
+        matchingMenu.items = [featureMenu]
+      }
+    } else {
+      // Drill down into the next menu title to find where to add this featureMenu
+      this.addFeatureMenu(featureMenu, matchingMenu.items!, menuTitles.slice(1))
+    }
+  }
+
+  private async created() {
+    await this.featureService.fetch()
   }
 }
 </script>
