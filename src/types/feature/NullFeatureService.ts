@@ -5,24 +5,25 @@ import { Chiclet, Menu } from '@vuescape/types'
 import { Feature } from '@vuescape/types/feature/Feature'
 import { FeatureNavigationRegistration } from '@vuescape/types/feature/FeatureNavigationRegistration'
 import { FeatureService } from '@vuescape/types/feature/FeatureService'
+import milliseconds from 'mocha/lib/ms'
 
 export class NullFeatureService implements FeatureService {
-  public async fetch(): Promise<void> {
-    // noop
+  public async fetch(forceLoad?: boolean): Promise<void> {
+    // noop    
   }
-  public get menus(): Array<Menu & {menuTitlePath: string}> {
+  public async getFeatureNavigationRegistrations(): Promise<Array<FeatureNavigationRegistration>> {
     return []
   }
-  public get featureNavigationRegistrations(): Array<FeatureNavigationRegistration> {
+  public async getFeatures(): Promise<Array<Feature>> {
     return []
   }
-  public get features(): Array<Feature> {
-    return []
-  }
-  public   getChiclets(router: VueRouter): Array<Chiclet>  {
-    return []
-  }
-  public getFeature(featureId: string): Feature | undefined {
+  public async getFeature(featureId: string): Promise<Feature | undefined> {
     return undefined
+  }
+  public async getMenus(): Promise<(Array<Menu & { menuTitlePath: string }>)> {
+    return []
+  }
+  public async getChiclets(router: VueRouter): Promise<Array<Chiclet>> {
+    return []
   }
 }

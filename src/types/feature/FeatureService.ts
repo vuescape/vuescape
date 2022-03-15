@@ -8,13 +8,10 @@ import { FeatureNavigationRegistration } from './FeatureNavigationRegistration'
 
 export interface FeatureService {
   fetch(forceLoad?: boolean): Promise<void>
-  readonly menus: Array<Menu & { menuTitlePath: string }>
+  getFeatureNavigationRegistrations(): Promise<Array<FeatureNavigationRegistration>>
+  getFeatures(): Promise<Array<Feature>>
+  getFeature(featureId: string): Promise<Feature | undefined>
 
-  readonly featureNavigationRegistrations: Array<FeatureNavigationRegistration>
-
-  readonly features: Array<Feature>
-
-  getChiclets(router: VueRouter): Array<Chiclet>
-  
-  getFeature(featureId: string): Feature | undefined
+  getMenus(): Promise<Array<Menu & { menuTitlePath: string }>>
+  getChiclets(router: VueRouter): Promise<Array<Chiclet>>
 }
