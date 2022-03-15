@@ -35,7 +35,7 @@ import { Action, Getter, namespace, State } from 'vuex-class'
 import { AuthenticationModuleName, AuthenticationOperation } from '@vuescape/store/modules/Authentication'
 import { ns } from '@vuescape/store/modules/types'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
-import { FeatureService, Guid, Menu } from '@vuescape/types'
+import { FeatureService, Guid, Menu, MenuSources } from '@vuescape/types'
 
 import NavigationMenu from '@vuescape/components/NavigationMenu'
 
@@ -44,6 +44,7 @@ import NavigationMenu from '@vuescape/components/NavigationMenu'
 })
 export default class TheHeader extends Vue {
   private static readonly DefaultHeaderConfig = { logoAltText: '', toolbarStyle: '', shouldDisplayHelp: true }
+  private consolidatedMenus : Array<Menu> = []
 
   @State
   private isAuthenticated: boolean
@@ -88,22 +89,31 @@ export default class TheHeader extends Vue {
   private clickLogo() {
     if (this.theHeaderProps.logoHref) {
       document.location.href = this.theHeaderProps.logoHref
-    }
+  }
     if (this.theHeaderProps.logoNavigationRoute) {
       this.$router.push(this.theHeaderProps.logoNavigationRoute)
     }
   }
 
-  private get consolidatedMenus() {
-    let consolidatedMenus: Array<Menu> = []
-    if (this.menuConfiguration.length) {
-      consolidatedMenus = this.menuConfiguration
-    } else if (this.userProfileMenus) {
-      consolidatedMenus = this.userProfileMenus
+  private async populateConsolidatedMenus() {
+    const menuSources = this.theHeaderProps.menuSources as MenuSources
+    const consolidatedMenus: Array<Menu> = []
+    
+    // tslint:disable:no-bitwise
+    if((menuSources & MenuSources.RoleBased) === MenuSources.RoleBased && this.userProfileMenus) {
+      consolidatedMenus.push(...this.userProfileMenus)
     }
-    const featureMenus = this.featureService.menus
-    featureMenus.forEach(_ => this.addFeatureMenu(_, consolidatedMenus, _.menuTitlePath.split('/').filter(s => s)))
-    return consolidatedMenus
+
+    if((menuSources & MenuSources.Configuration) === MenuSources.Configuration && this.menuConfiguration.length) {
+      consolidatedMenus.push(...this.menuConfiguration)
+    }
+
+    if((menuSources & MenuSources.Feature) === MenuSources.Feature) {
+      const featureMenus = await this.featureService.getMenus()
+      featureMenus.forEach(_ => 
+        this.addFeatureMenu(_, consolidatedMenus, (_.menuTitlePath ?? '').split('|').filter(s => s)))
+      this.consolidatedMenus = consolidatedMenus
+    }
   }
 
   private addFeatureMenu(
@@ -144,7 +154,7 @@ export default class TheHeader extends Vue {
   }
 
   private async created() {
-    await this.featureService.fetch()
+    await this.populateConsolidatedMenus()
   }
 }
 </script>
