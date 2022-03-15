@@ -185,6 +185,7 @@ const HamburgerMenu = () =>
 })
 export default class NavigationMenu extends Vue {
   // private isMenuDisabled = false
+  private menusValue : Array<Menu> = []
 
   @Prop({ required: true })
   private menus: Array<Menu>
@@ -226,6 +227,11 @@ export default class NavigationMenu extends Vue {
     return isInPath
   }
 
+  @Watch('menus')
+  private onMenusChanged(val: Array<Menu>, oldVal: Array<Menu>) {
+    this.menusValue = val
+  }
+
   private getIconArray(iconString: string) {
     const iconArray = iconString ? iconString.split(' ') : ''
     return iconArray
@@ -237,6 +243,10 @@ export default class NavigationMenu extends Vue {
 
   private async redirectAndSignOut() {
     this.$router.push('/sign-out')
+  }
+
+  private created(){
+    this.menusValue = this.menus
   }
 }
 </script>
