@@ -136,7 +136,7 @@ export default class MultipleSelect extends Vue {
   @Prop({ type: [Array, Object, Number, String], required: true })
   private value: any
 
-  @Prop({ type: Array, required: false, default: [] })
+  @Prop({ type: Array, required: false, default: () => [] })
   private options: Array<any>
 
   @Prop({ type: String, required: false })
