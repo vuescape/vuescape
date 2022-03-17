@@ -26,7 +26,7 @@
             :aria-label="menu.title"
             flat
             slot="activator"
-            :class="[ { 'v-btn--active': isSubItemActive(menu.path) }, 'navigation-menu__v-btn--style' ]"
+            :class="[ { 'v-btn--active': isSubItemActive(menu) }, 'navigation-menu__v-btn--style' ]"
             :disabled="isSiteInMaintenanceMode"
           >
             <span
@@ -185,7 +185,7 @@ const HamburgerMenu = () =>
 })
 export default class NavigationMenu extends Vue {
   // private isMenuDisabled = false
-  private menusValue : Array<Menu> = []
+  private menusValue: Array<Menu> = []
 
   @Prop({ required: true })
   private menus: Array<Menu>
@@ -219,12 +219,22 @@ export default class NavigationMenu extends Vue {
   }))
   private availableHeight: Array<number>
 
-  public isSubItemActive(input: string) {
-    const paths = (Array.isArray(input) ? input : [input]) as Array<string>
-    const isInPath = paths.some(path => {
-      return this.$route.path.indexOf(path) === 0 // current path starts with this path string
-    })
-    return isInPath
+  public isSubItemActive(menu: Menu) {
+    if (!menu)
+    {
+      return false
+    } 
+
+    const path = this.$route.path
+
+    if (!menu.items) {
+      return menu.path === path
+    }
+
+    // Current menu is only one level deep so only need to check items
+    // and not recurse/loop over entire hierarchy.
+    const isActive = menu.items.some(_ => _.path === path)
+    return isActive
   }
 
   @Watch('menus')
@@ -245,7 +255,7 @@ export default class NavigationMenu extends Vue {
     this.$router.push('/sign-out')
   }
 
-  private created(){
+  private created() {
     this.menusValue = this.menus
   }
 }
