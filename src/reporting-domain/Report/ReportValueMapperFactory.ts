@@ -281,9 +281,9 @@ export class ReportValueMapperFactory {
         cell.onclick = clickHandler
       }
 
-      if (cell?.cellFormat?.horizontalAlignment !== undefined) {
+      if (cell?.cellFormat?.horizontalAlignment) {
         cell.cellFormat.horizontalAlignment = 
-          toEnum(HorizontalAlignment, cell.cellFormat.horizontalAlignment.toString())
+          toEnum(HorizontalAlignment, cell?.cellFormat?.horizontalAlignment?.toString())
       }
 
       if (cell.slots) {
