@@ -298,7 +298,7 @@ export default class ReportPane extends ComponentBase {
       this.availableHeight[0] -
       reportHeaderHeight -
       paddingTop 
-      + 3 // Decrease padding to look better
+      -22 // give some additional space
 
     this.treeTableHeight = treeTableHeight
   }
@@ -367,6 +367,7 @@ div.report-pane__container--layout div.v-btn-toggle button.v-btn:hover {
 .report-pane__span--additional-info {
   font-size: 13px;
   margin-top: 8px;
+  margin-bottom: 8px;
   color: rgb(136, 136, 136) !important;
 }
 .report-pane__header--title {
