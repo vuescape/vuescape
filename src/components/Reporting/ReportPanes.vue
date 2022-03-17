@@ -11,14 +11,12 @@
   >
     <report-pane
       v-if="navigationReport"
-      v-loading="navigationReport.isPending"
       :style="divStyle"
       :reportNamespace="navigationNamespace"
     />
     <div v-else></div>
     <report-pane
       v-if="mainReport"
-      v-loading="navigationReport.isPending"
       :style="divStyle"
       :reportNamespace="mainNamespace"
     />
@@ -158,7 +156,7 @@ export default class ReportPanes extends ComponentBase {
   }
 
   private get divStyle() {
-    const style = 'height: ' + (this.availableHeight[0] + 36) + 'px'
+    const style = 'height: ' + (this.availableHeight[0]) + 'px'
     return style 
   }
 
