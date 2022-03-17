@@ -473,18 +473,25 @@ export default class TreeTable extends ComponentBase {
       const tableCell = columnCell.parentElement as HTMLTableCellElement
       if (tableCell.colSpan > 1) {
         const cellWidth = this.getWidthOfCell(columnCell, tableX, 0)
-        const endingIndex = columnIndex + tableCell.colSpan - 1
+        const endingColumnIndex = columnIndex + tableCell.colSpan - 1
 
         const colspanWidth = columnWidths
-          .filter((_, index) => index >= columnIndex && index <= endingIndex)
+          .filter((_, index) => index >= columnIndex && index <= endingColumnIndex)
           .map(_ => this.getWidthAndUnitOfMeasureString(_).width)
           .reduce((totalWidth, width) => (totalWidth += width))
 
-        // If the cellWidth with a colspan is bigger than the area spanned
-        // then set the last cell in the span with enough space to fit that cell.
+        // If the cellWidth with a colspan is bigger than the area spanned then adjust other column widths.
         if (cellWidth > colspanWidth) {
-          const widthAndMeasure = this.getWidthAndUnitOfMeasureString(columnWidths[endingIndex])
-          columnWidths[endingIndex] = widthAndMeasure.width + cellWidth - colspanWidth + widthAndMeasure.unitOfMeasure
+          // const startingColumnIndex = this.shouldFreezeFirstColumnValue && columnIndex === 0 ? 0 : columnIndex
+          const startingColumnIndex = columnIndex
+          const additionalWidth = cellWidth - colspanWidth
+          const numberOfColumns = endingColumnIndex - startingColumnIndex + 1
+          const additionalWidthPerColumn = additionalWidth / numberOfColumns
+          
+          for (let i = startingColumnIndex; i <= endingColumnIndex; i++) {
+            const widthAndMeasure = this.getWidthAndUnitOfMeasureString(columnWidths[i])
+            columnWidths[i] = widthAndMeasure.width + additionalWidthPerColumn + widthAndMeasure.unitOfMeasure
+          }
         }
       }
     }
