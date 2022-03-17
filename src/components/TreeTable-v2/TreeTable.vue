@@ -373,6 +373,7 @@ export default class TreeTable extends ComponentBase {
         const colspan = tableCell.colSpan
         let cellWidth = 0
         let unitOfMeasure = ''
+
         for (let i = 0; i < tableCell.colSpan; i++) {
           const widthAndUnitOfMeasureString = this.getWidthAndUnitOfMeasureString(widths[columnIndex + i])
           unitOfMeasure = widthAndUnitOfMeasureString.unitOfMeasure
@@ -414,7 +415,8 @@ export default class TreeTable extends ComponentBase {
       for (const headerCell of headerCells) {
         const header = headerCell as HTMLTableCellElement
         if (!header.colSpan || header.colSpan === 1) {
-          const cellWidth = this.getWidthOfCell(header, tableX, maxWidth) + 5 + 6 + 6 // 5 for sorting and 7 padding on each side
+          // 5 for sorting and 7 padding on each side
+          const cellWidth = this.getWidthOfCell(header, tableX, maxWidth) + 5 + 6 + 6
           if (cellWidth > maxWidth) {
             maxWidth = cellWidth
           }
@@ -471,17 +473,18 @@ export default class TreeTable extends ComponentBase {
       const tableCell = columnCell.parentElement as HTMLTableCellElement
       if (tableCell.colSpan > 1) {
         const cellWidth = this.getWidthOfCell(columnCell, tableX, 0)
-        let colspanWidth = 0
-        const numberOfLoops = columnIndex + tableCell.colSpan
-        let unitOfMeasure = ''
-        for (let i = columnIndex; i < numberOfLoops; i++) {
-          const widthAndUnitOfMeasureString = this.getWidthAndUnitOfMeasureString(columnWidths[columnIndex + i])
-          unitOfMeasure = widthAndUnitOfMeasureString.unitOfMeasure
-          colspanWidth += widthAndUnitOfMeasureString.width
-        }
+        const endingIndex = columnIndex + tableCell.colSpan - 1
+
+        const colspanWidth = columnWidths
+          .filter((_, index) => index >= columnIndex && index <= endingIndex)
+          .map(_ => this.getWidthAndUnitOfMeasureString(_).width)
+          .reduce((totalWidth, width) => (totalWidth += width))
+
+        // If the cellWidth with a colspan is bigger than the area spanned
+        // then set the last cell in the span with enough space to fit that cell.
         if (cellWidth > colspanWidth) {
-          const lastColumnWidth = this.getWidthAndUnitOfMeasureString(columnWidths[numberOfLoops - 1]).width
-          columnWidths[numberOfLoops - 1] = lastColumnWidth + cellWidth - colspanWidth + unitOfMeasure
+          const widthAndMeasure = this.getWidthAndUnitOfMeasureString(columnWidths[endingIndex])
+          columnWidths[endingIndex] = widthAndMeasure.width + cellWidth - colspanWidth + widthAndMeasure.unitOfMeasure
         }
       }
     }
