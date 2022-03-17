@@ -1,6 +1,5 @@
 <template>
   <div
-    :style="divStyle"
     :key="reportNamespaceValue"
     class="report-pane__container--layout"
   >
@@ -42,6 +41,7 @@
               flat
               color="black"
               :value="section.id"
+              @click="changeSection"
             >{{ section.name }}</v-btn>
           </v-btn-toggle>
         </v-flex>
@@ -60,6 +60,7 @@
       </v-layout>
     </div>
     <tree-table
+      v-loading="isPerformingLongRunningOperation"
       v-show="selectedSection.id"
       :id="selectedSection.treeTable.id"
       :ref="treeTableReference"
@@ -113,6 +114,7 @@ const TreeTable = () =>
   components: { DownloadMenu, TreeTable },
 })
 export default class ReportPane extends ComponentBase {
+  private isPerformingLongRunningOperation = false
   private reportNamespaceValue = ''
   private scrollPositionsValue: Dictionary<{ scrollLeft: number, scrollTop: number }> = { }
 
@@ -200,13 +202,24 @@ export default class ReportPane extends ComponentBase {
   }
 
   private set selectedSectionId(id: string) {
-    if (this.report && this.report.sections && id) {
-      const section = this.report.sections.find((_ : { id: string })  => _.id === id)
-      this.scrollPositionsValue[this.selectedSection.id] = this.calculateScrollBarPositions()!
-      this.selectedSection = section
-      const self = this
-      setTimeout(() => self.positionScrollBars(), 1)      
-    }
+    const self = this
+    setTimeout(() => {
+      if (self.report && self.report.sections && id) {
+        const section = self.report.sections.find((_ : { id: string })  => _.id === id)
+        self.scrollPositionsValue[self.selectedSection.id] = self.calculateScrollBarPositions()!
+        self.selectedSection = section
+        setTimeout(() =>  {
+          self.positionScrollBars()
+        }, 1)
+        self.isPerformingLongRunningOperation = false
+      }
+    }, 300)
+  }
+
+  private changeSection() {
+    const self = this
+    self.isPerformingLongRunningOperation = true
+    // setTimeout(() => self.isPerformingLongRunningOperation = true, 1)
   }
 
   @Watch('reportNamespace')
@@ -220,6 +233,8 @@ export default class ReportPane extends ComponentBase {
   }
 
   private async downloadReport(resourceKind: ResourceKind) {
+    this.isPerformingLongRunningOperation = true
+    await this.$nextTick()
     const downloadNamespace = this.reportNamespaceValue + '/download'
     const link = this.report.downloadLinks.find((_ : Link) => _.resourceKind === resourceKind) as Link
 
@@ -246,6 +261,7 @@ export default class ReportPane extends ComponentBase {
     }
 
     downloadFile(data, true, filename)
+    this.isPerformingLongRunningOperation = false
   }
 
   private downloadExcel() {
