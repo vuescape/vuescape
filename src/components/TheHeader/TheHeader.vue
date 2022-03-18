@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-toolbar
-      v-if="shouldDisplayHeader"
       height="36"
       class="the-header__toolbar--size"
       :style="theHeaderProps.toolbarStyle"
@@ -18,7 +17,6 @@
       />
       <v-spacer></v-spacer>
       <navigation-menu
-        v-if="shouldDisplayHeader"
         :isHelpAvailable="theHeaderProps.shouldDisplayHelp"
         :menus="consolidatedMenus"
         :helpComponent="theHeaderProps.helpComponent"
@@ -61,10 +59,6 @@ export default class TheHeader extends Vue {
   }))
   // TODO: define type for header state
   private theHeaderProps: any
-
-  private get shouldDisplayHeader() {
-    return (this.isAuthenticated && this.hasExternalSessionsInitialized) || this.theHeaderProps.shouldShowHeader
-  }
 
   @(namespace('menu/configuration').State(state => {
     if (state && state.value) {
