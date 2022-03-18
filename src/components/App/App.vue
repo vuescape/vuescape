@@ -6,7 +6,10 @@
         name="app__component--transition"
         mode="out-in"
       >
-        <the-header ref="theHeader"></the-header>
+        <the-header
+          ref="theHeader"
+          v-if="shouldDisplayHeader"
+        ></the-header>
       </transition>
       <v-content class="app__content--height">
         <div
@@ -74,7 +77,7 @@ import TheHeader from '@vuescape/components/TheHeader'
   components: { AppInfoHandler, AppInfoPoller, TheHeader, TheFooter },
 })
 export default class App extends ComponentBase {
-  // private headerHeight = 0
+  private userProfileModuleValue: string
 
   @Inject('trackingService')
   private trackingService: TrackingService
@@ -82,7 +85,8 @@ export default class App extends ComponentBase {
   @Prop({ type: String, default: '/site-maintenance' })
   private siteMaintenanceRoutePath: string
 
-  @State private isSpinning: boolean
+  @State private isAuthenticated: boolean
+  @State private hasExternalSessionsInitialized: boolean
   @State private notifications: Array<NotificationMessage>
   @Action(RootOperation.Action.NotificationActions.REMOVE)
   private removeNotification: any
@@ -90,16 +94,11 @@ export default class App extends ComponentBase {
   @(namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE))
   private setAvailableHeight: (availableHeight: Array<number>) => void
 
-  // @(namespace('window/availableHeight').State(state => state.value))
-  // private availableHeight: Array<number>
-
   @State('appConfig/configuration')
   private appConfig: ModuleState<any>
 
   @State('theFooter/configuration')
   private footerConfiguration: ModuleState<any>
-
-  @State private isAuthenticated: boolean
 
   @State(
     (state: ModuleState<any>) => {
@@ -107,7 +106,19 @@ export default class App extends ComponentBase {
     },
     { namespace: UserProfileModuleName },
   )
-  private userProfileModuleValue: string
+
+  @(namespace('theHeader/configuration').State(state => {
+    if (state && state.value) {
+      const headerProps: any = state.value
+      return headerProps
+    }
+  }))
+  private theHeaderProps: any
+
+  private get shouldDisplayHeader() {
+    return (this.isAuthenticated && this.hasExternalSessionsInitialized) ||
+            this.theHeaderProps?.shouldShowHeader === true
+  }
 
   private get footerComponent() {
     if (
@@ -147,19 +158,6 @@ export default class App extends ComponentBase {
     this.setAvailableHeight([availableHeight])
   }
 
-  // private updated() {
-  //   // If there is no header height then check to see if there is a header height and adjust the available height.
-  //   // This is being done because the header does not render until after the available height
-  //   if (!this.headerHeight) {
-  //     const theHeader = this.$refs.theHeader as any
-  //     const theHeaderHeight = theHeader.$el.getBoundingClientRect().height as number
-  //     if (theHeaderHeight) {
-  //       this.headerHeight = theHeaderHeight
-  //       this.setAvailableHeight([this.availableHeight[0] - theHeaderHeight])
-  //     }
-  //   }
-  // }
-
   private async mounted() {
     const availableHeight = await this.getAvailableHeight()
     this.registerStoreModuleWithInitialValue<Array<number>>('window/availableHeight', [availableHeight])
@@ -180,15 +178,15 @@ export default class App extends ComponentBase {
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
     const theHeader = this.$refs.theHeader as any
     const theFooter = this.$refs.theFooter as any
-    if (!theHeader.$el.getBoundingClientRect || !theFooter.$el.getBoundingClientRect) {
+    if (theHeader?.$el?.getBoundingClientRect || !theFooter.$el.getBoundingClientRect) {
       return windowHeight
     }
     // A bit of hack here to default these values if no height found.
     // This avoids having to hook into the updated lifecycle event because that fires multiple times while
     // rendering pages.
     // The reason 0 height could be returned because the elements are not fully rendered yet.
-    const theHeaderHeight = (theHeader.$el.getBoundingClientRect().height as number) || 37
-    const theFooterHeight = (theFooter.$el.getBoundingClientRect().height as number) || 36
+    const theHeaderHeight = (theHeader?.$el?.getBoundingClientRect().height as number) || 37
+    const theFooterHeight = (theFooter?.$el?.getBoundingClientRect().height as number) || 36
     const contentPane = document.querySelector('main') as Element
     const paddingTop = Number.parseFloat(window.getComputedStyle(contentPane, null).getPropertyValue('padding-top'))
     const availableHeight = windowHeight - theHeaderHeight - theFooterHeight - paddingTop
