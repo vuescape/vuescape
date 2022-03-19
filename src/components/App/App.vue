@@ -178,7 +178,7 @@ export default class App extends ComponentBase {
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
     const theHeader = this.$refs.theHeader as any
     const theFooter = this.$refs.theFooter as any
-    if (theHeader?.$el?.getBoundingClientRect || !theFooter.$el.getBoundingClientRect) {
+    if (!theHeader?.$el?.getBoundingClientRect && !theFooter.$el.getBoundingClientRect) {
       return windowHeight
     }
     // A bit of hack here to default these values if no height found.
