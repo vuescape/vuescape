@@ -1,29 +1,15 @@
 <template>
   <div class="step-wizard__stepper-box">
-    <div
-      v-if="shouldShowProgressBarValue"
-      class="top"
-    >
+    <div v-if="shouldShowProgressBarValue" class="top">
       <div class="steps-wrapper">
         <template v-if="shouldShowTopButtons">
-          <div
-            v-if="currentStepIndex > 0"
-            class="stepper-button-top previous"
-            @click="backStep()"
-          >
+          <div v-if="currentStepIndex > 0" class="stepper-button-top previous" @click="backStep()">
             <font-awesome-icon :icon="['fad', 'arrow-alt-circle-left']" />
           </div>
         </template>
         <template v-for="(step, index) in steps">
-          <div
-            :class="['step', getStepStatus(index, step)]"
-            :key="index"
-            :style="{ width: `${100 / steps.length}%` }"
-          >
-            <div
-              class="circle"
-              :class="{ 'divider-line': index !== steps.length - 1 }"
-            >
+          <div :class="['step', getStepStatus(index, step)]" :key="index" :style="{ width: `${100 / steps.length}%` }">
+            <div class="circle" :class="{ 'divider-line': index !== steps.length - 1 }">
               <!-- <div class="divider-line" :style="{ width: `${(100 / steps.length) * (steps.length - 1) - 10}%` }"></div> -->
               <!-- TODO: -->
               <!-- <font-awesome-icon :icon="['fal', 'chevron-down']" /> -->
@@ -46,20 +32,11 @@
         </div>
       </div>
     </div>
-    <div
-      v-else
-      style="height: 63.66px;"
-    ></div>
-    <div
-      class="content"
-      v-loading="isSpinning"
-    >
-      <transition
-        :name="enterAnimation"
-        mode="out-in"
-      >
+    <div v-else style="height: 63.66px;"></div>
+    <div class="content" v-loading="isSpinning">
+      <transition :name="enterAnimation" mode="out-in">
         <!--If keep alive-->
-        <keep-alive v-if="steps[currentStepIndex].shouldKeepComponentAlive">
+        <keep-alive v-if="steps[currentStepIndex] && steps[currentStepIndex].shouldKeepComponentAlive">
           <component
             :key="steps[currentStepIndex].name + currentStepIndex"
             :is="steps[currentStepIndex].component"
@@ -71,9 +48,9 @@
             v-bind="steps[currentStepIndex].props"
           ></component>
         </keep-alive>
-        <!--If not show component and destroy it in each step change-->
+        <!--If not show component and destroy it in each step change. Instead of v-else use another v-if with the opposite logic to avoid a script error.-->
         <component
-          v-else
+          v-if="steps[currentStepIndex] && !steps[currentStepIndex].shouldKeepComponentAlive"
           :key="steps[currentStepIndex].name + currentStepIndex"
           :is="steps[currentStepIndex].component"
           :clickedNext="nextButton[currentStepIndex]"
@@ -85,19 +62,10 @@
       </transition>
     </div>
     <v-layout justify-center>
-      <v-container
-        fluid
-        grid-list-md
-      >
-        <v-layout
-          row
-          justify-center
-        >
+      <v-container fluid grid-list-md>
+        <v-layout row justify-center>
           <v-flex xs1></v-flex>
-          <v-flex
-            xs10
-            style="text-align: center; font-size: 22px; font-weight: 500;"
-          >
+          <v-flex xs10 style="text-align: center; font-size: 22px; font-weight: 500;">
             <div :class="['bottom', currentStepIndex > 0 ? '' : '']">
               <!-- only-next -->
               <div class="stepper-button previous">
@@ -110,15 +78,8 @@
                 >
                   &nbsp;Back
                 </vuescape-button>
-                <span
-                  v-if="cancelRouteOrCallback"
-                  style="margin-top: 7px;"
-                >
-                  <v-btn
-                    class="cancel"
-                    flat
-                    @click="cancel"
-                  >Cancel</v-btn>
+                <span v-if="cancelRouteOrCallback" style="margin-top: 7px;">
+                  <v-btn class="cancel" flat @click="cancel">Cancel</v-btn>
                   <!-- <a class="cancel" @click="cancel">Cancel</a> -->
                 </span>
               </div>
