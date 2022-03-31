@@ -3,7 +3,7 @@ import { TrackingProvider } from './TrackingProvider'
 // tslint:disable-next-line: ban-types
 declare var ga: Function
 
-export class GoogleTrackingProvider implements TrackingProvider {
+export class GoogleUniversalAnalyticsTrackingProvider implements TrackingProvider {
   private trackingId: string
   private isInitialized = false
 
@@ -12,7 +12,7 @@ export class GoogleTrackingProvider implements TrackingProvider {
   }
 
   public get name() {
-    return 'google-analytics'
+    return 'google-universal-analytics'
   }
 
   public identify(user: string): void {

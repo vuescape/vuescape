@@ -1,6 +1,8 @@
 export { TrackingProvider } from './TrackingProvider'
+export { TrackingProviderFactory } from './TrackingProviderFactory'
 
-export { GoogleTrackingProvider } from './GoogleTrackingProvider'
+export { GoogleAnalytics4TrackingProvider } from './GoogleAnalytics4TrackingProvider'
+export { GoogleUniversalAnalyticsTrackingProvider } from './GoogleUniversalAnalyticsTrackingProvider'
 export { HubSpotTrackingProvider } from './HubSpotTrackingProvider'
 export { NullTrackingProvider } from './NullTrackingProvider'
 
