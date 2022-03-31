@@ -44,7 +44,7 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
         const errorMessage: NotificationMessage = {
           key: Guid.newGuid(),
           type: NotificationType.Error,
-          message: error.response.data.message,
+          message: error.response.data.message || error.response.data, // support different 'shapes' of response
         }
         this.context.commit(StoreOperation.Mutation.NotificationMutations.ADD, errorMessage, {
           root: this.shouldUseGlobalNotifications,
