@@ -96,36 +96,36 @@ export class ReportValueMapperFactory {
         )
 
       if (this.store && this.namespacePrefix) {
-      // TODO: set namespace based on target
-      // TODO: ensure links exist and reference self
-      let namespace = this.namespacePrefix
-      if (selfLink.linkTarget === LinkTarget.CenterPane) {
-        namespace +=  '/' + PaneKind[PaneKind.Main].toLowerCase()
-      }
-      else if (selfLink.linkTarget === LinkTarget.LeftPane) {
-        namespace +=  '/' + PaneKind[PaneKind.Navigation].toLowerCase()
-      }
-      else if (selfLink.linkTarget === LinkTarget.RightPane) {
-        namespace +=  '/' + PaneKind[PaneKind.Detail].toLowerCase()
-      }
-      else {
-        console.error('Unsupported LinkTarget: ' + selfLink.linkTarget.toString())
-      }
+        // TODO: set namespace based on target
+        // TODO: ensure links exist and reference self
+        let namespace = this.namespacePrefix
+        if (selfLink.linkTarget === LinkTarget.CenterPane) {
+          namespace +=  '/' + PaneKind[PaneKind.Main].toLowerCase()
+        }
+        else if (selfLink.linkTarget === LinkTarget.LeftPane) {
+          namespace +=  '/' + PaneKind[PaneKind.Navigation].toLowerCase()
+        }
+        else if (selfLink.linkTarget === LinkTarget.RightPane) {
+          namespace +=  '/' + PaneKind[PaneKind.Detail].toLowerCase()
+        }
+        else {
+          console.error('Unsupported LinkTarget: ' + selfLink.linkTarget.toString())
+        }
 
-      const sourceUrl = cell.links![LinkName.Self.toLowerCase()].source
+        const sourceUrl = cell.links![LinkName.Self.toLowerCase()].source
 
-      registerStoreModule(
-        this.store,
-        namespace,
-        HttpMethod.Get,
-        sourceUrl,
-        this.baseUri,
-        false,
-        undefined,
-        reportValueMapperFactory.reportValueMapperInstance,
-      )
+        registerStoreModule(
+          this.store,
+          namespace,
+          HttpMethod.Get,
+          sourceUrl,
+          this.baseUri,
+          false,
+          undefined,
+          reportValueMapperFactory.reportValueMapperInstance,
+        )
 
-      dispatchAndAwaitAction(namespace, sourceUrl, this.store)
+        dispatchAndAwaitAction(namespace, sourceUrl, this.store)
       }
       else {
         throw Error('Could not register store module. store or namespace not specified')
