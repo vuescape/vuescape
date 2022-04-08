@@ -37,7 +37,6 @@ gtag('config', '${this.trackingId}', { send_page_view: false })
   }
 
   public trackPageView(urlFragment: string): void {
-    debugger
     if (this.isInitialized) {
       gtag('config', `${this.trackingId}`, { page_path: urlFragment })
     }
