@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Dictionary } from 'vuex'
+
+import { Dictionary } from '@vuescape/types'
 
 import { AsyncAction, HttpAsyncAction, HttpMethod, RestPayloadStrategy, RestService } from '@vuescape/http'
 import { IsEmptyFunction, ValueMapper } from '@vuescape/store/modules/types'
