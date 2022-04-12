@@ -1,31 +1,14 @@
 <template>
-  <div
-    :key="reportNamespaceValue"
-    class="report-pane__container--layout"
-  >
+  <div :key="reportNamespaceValue" class="report-pane__container--layout">
     <div :ref="reportHeaderRef">
-      <v-layout
-        align-start
-        fill-height
-        justify-start
-        row
-        report-pane__v-layout--margin
-      >
-        <v-flex
-          lg12
-          md12
-          xs12
-        >
+      <v-layout align-start fill-height justify-start row report-pane__v-layout--margin>
+        <v-flex lg12 md12 xs12>
           <div class="report-pane__header--title">
             {{ reportTitle }}
           </div>
         </v-flex>
       </v-layout>
-      <v-layout
-        row
-        style="white-space: nowrap;"
-        :ref="tabHeaderRow"
-      >
+      <v-layout row style="white-space: nowrap;" :ref="tabHeaderRow">
         <v-flex xs11>
           <v-btn-toggle
             v-if="report && report.sections && report.sections.length > 1"
@@ -42,7 +25,8 @@
               color="black"
               :value="section.id"
               @click="changeSection"
-            >{{ section.name }}</v-btn>
+              >{{ section.name }}</v-btn
+            >
           </v-btn-toggle>
         </v-flex>
         <v-spacer></v-spacer>
@@ -95,15 +79,14 @@ import {  } from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import { 
+import {
   dispatchAndAwaitAction,
   getModuleStateByKey,
   registerStoreModule,
 } from '@vuescape/store/storeHelpers'
 
-import { ComponentBase, downloadFile, HttpMethod, Section } from '@vuescape/index'
+import { ComponentBase, Dictionary, downloadFile, HttpMethod, Section } from '@vuescape/index'
 import { Link, ResourceKind } from '@vuescape/reporting-domain'
-import { Dictionary } from 'cypress/types/lodash'
 
 const DownloadMenu = () =>
   import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default)
@@ -151,7 +134,7 @@ export default class ReportPane extends ComponentBase {
   }
 
   private get shouldDisplayExcelDownload() {
-    const result = this.shouldDisplayDownloadMenu && 
+    const result = this.shouldDisplayDownloadMenu &&
                    this.report.downloadLinks.some((_ : Link) => _.resourceKind === ResourceKind.Excel)
     return result
   }
@@ -177,10 +160,10 @@ export default class ReportPane extends ComponentBase {
   }
 
   private get areNoResults() {
-    const result = this.report && 
-                   this.selectedSection?.treeTable?.content?.rows && 
+    const result = this.report &&
+                   this.selectedSection?.treeTable?.content?.rows &&
                    this.selectedSection?.treeTable?.content?.rows.length !== 0
-    
+
     return !result
   }
 
@@ -238,7 +221,7 @@ export default class ReportPane extends ComponentBase {
     const downloadNamespace = this.reportNamespaceValue + '/download'
     const link = this.report.downloadLinks.find((_ : Link) => _.resourceKind === resourceKind) as Link
 
-    const source = link.source 
+    const source = link.source
     registerStoreModule(
       this.$store,
       downloadNamespace,
@@ -313,7 +296,7 @@ export default class ReportPane extends ComponentBase {
     const treeTableHeight =
       this.availableHeight[0] -
       reportHeaderHeight -
-      paddingTop 
+      paddingTop
       -22 // give some additional space
 
     this.treeTableHeight = treeTableHeight
