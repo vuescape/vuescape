@@ -1,9 +1,7 @@
 <template>
   <div>
-    <vuescape-button :icons="icons" :disabled="isButtonDisabled" Depressed @click="click" :color="color" :data="data">
-      <slot>
-        Download CSV
-      </slot>
+    <vuescape-button :icons="icons" :isDisabled="isButtonDisabled" Depressed @click="click" :color="color" :data="data">
+      <slot> Download CSV </slot>
     </vuescape-button>
     <v-snackbar color="primary" :timeout="10000" bottom right v-model="shouldShowDownloadCompleted">
       <font-awesome-icon :icon="['fad', 'check-circle']"></font-awesome-icon>&nbsp;&nbsp; Your file is downloading
@@ -54,7 +52,7 @@ export default class DownloadFileButton extends Vue {
   @Prop({ type: Array, required: false, default: () => [] })
   private icons: Array<string>
 
-  private isButtonDisabled = this.isDisabled
+  private isButtonDisabled = true
   private shouldShowDownloadCompleted = false
 
   @Watch('isDisabled')
@@ -87,6 +85,10 @@ export default class DownloadFileButton extends Vue {
         component.shouldShowDownloadCompleted = true
       }, 200)
     }
+  }
+
+  private created() {
+    this.isButtonDisabled = this.isDisabled
   }
 }
 </script>

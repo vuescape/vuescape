@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    @click="$emit('click', $event)"
+    @click="!isButtonDisabled ? onButtonClick($event) : null"
     small
     outline
     depressed
@@ -77,6 +77,6 @@ export default class VuescapeButton extends Vue {
   pointer-events: all;
 }
 .vuescape-button__v-btn--style.v-btn--disabled:hover:before {
-  background-color: unset!important;
+  background-color: unset !important;
 }
 </style>
