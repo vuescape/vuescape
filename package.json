@@ -12,7 +12,7 @@
     "build:analysis": "cross-env NODE_ENV=production webpack --mode production --config ./build/webpack.analysis.config.js --progress --hide-modules --bail",
     "build:dev": "cross-env NODE_ENV=development webpack --mode development --config ./build/webpack.client.config.js --progress --hide-modules --bail",
     "build:prod": "cross-env NODE_ENV=production webpack --mode production --config ./build/webpack.client.config.js --hide-modules --bail",
-    "test": "mocha-webpack --mode development --reporter mocha-multi-reporters --reporter-options configFile=./mocha-multi-reporters.config.json mocha-appveyor-reporter --require ts-node/register --require ./test/setup.js  --webpack-config ./build/webpack.test.config.js  --recursive ./**/*.test.ts",
+    "test": "mocha-webpack --mode development --reporter mocha-multi-reporters --reporter-options configFile=./mocha-multi-reporters.config.json mocha-appveyor-reporter --require ts-node/register --require ./test/setup.js  --webpack-config ./build/webpack.test.config.js  --recursive /{,!(node_modules)/**/}*.test.ts",
     "test:debug": "webpack-dev-server --open-page test --mode development --config ./build/webpack.test-debug.config.js --timeout 120000"
   },
   "dependencies": {
