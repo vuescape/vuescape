@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    @click="!isButtonDisabled ? onButtonClick($event) : null"
+    @click="() => onButtonClick($event)"
     small
     outline
     depressed
@@ -48,6 +48,12 @@ export default class VuescapeButton extends Vue {
   @Watch('isDisabled')
   private isDisabledWatcher(val: boolean, oldVal: boolean) {
     this.isButtonDisabled = val
+  }
+
+  private onButtonClick(event: any) {
+    if (!this.isButtonDisabled) {
+      this.$emit('click', event)
+    }
   }
 
   private created() {
