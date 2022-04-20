@@ -846,7 +846,7 @@ const config = env => {
     resolve: {
       extensions: ['.ts', '.js', '.vue', '.json'],
       alias: {
-        vue$: 'vue/dist/vue.esm.js',
+        vue$: "vue/dist/vue.runtime.esm.js",
         '@vuescape': path.join(packageDirectory, 'src'),
       },
     },

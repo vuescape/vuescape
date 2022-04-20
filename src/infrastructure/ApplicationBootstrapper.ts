@@ -1,5 +1,5 @@
 // tslint:disable: member-ordering
-import Vue, { VueConstructor } from 'vue'
+import Vue, { CreateElement, VueConstructor } from 'vue'
 import VueRouter from 'vue-router'
 import { ErrorHandler } from 'vue-router/types/router'
 import { Store } from 'vuex'
@@ -176,7 +176,7 @@ export class ApplicationBootstrapper {
         el: this.rootComponentOptions.el,
         store: this.vuexStore,
         router: this.router,
-        template: `<${this.rootComponentOptions.componentName} />`,
+        render: (h: CreateElement) => h(this.rootComponentOptions.rootComponent),
         components: { [this.rootComponentOptions.componentName]: this.rootComponentOptions.rootComponent },
       })
     } catch (error) {
