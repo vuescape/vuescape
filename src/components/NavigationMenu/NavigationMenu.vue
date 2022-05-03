@@ -1,19 +1,8 @@
 <template>
-  <span
-    style="height: 100%;"
-    class="navigation-menu__container"
-  >
+  <span style="height: 100%" class="navigation-menu__container">
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-toolbar-items
-        v-for="menu in menus"
-        :key="menu.id"
-      >
-        <v-divider
-          v-if="menu.isDivider"
-          class="mx-3"
-          inset
-          vertical
-        ></v-divider>
+      <v-toolbar-items v-for="menu in menus" :key="menu.id">
+        <v-divider v-if="menu.isDivider" class="mx-3" inset vertical></v-divider>
         <v-menu
           content-class="navigation-menu__content"
           v-if="!menu.isDivider && menu.items"
@@ -26,13 +15,10 @@
             :aria-label="menu.title"
             flat
             slot="activator"
-            :class="[ { 'v-btn--active': isSubItemActive(menu) }, 'navigation-menu__v-btn--style' ]"
+            :class="[{ 'v-btn--active': isSubItemActive(menu) }, 'navigation-menu__v-btn--style']"
             :disabled="isSiteInMaintenanceMode"
           >
-            <span
-              v-if="menu.prefixHtml"
-              v-html="menu.prefixHtml"
-            ></span>
+            <span v-if="menu.prefixHtml" v-html="menu.prefixHtml"></span>
             <!-- <font-awesome-icon v-if="menu.icon" :icon="getIconArray(menu.icon)" class="navigation-menu__v-icon--layout" :style="{ color: '#555' }" /> -->
             <font-awesome-icon
               v-if="menu.icon"
@@ -40,18 +26,11 @@
               class="navigation-menu__v-icon--layout"
               :style="{ color: '#555' }"
             />&nbsp;{{ menu.title }} &nbsp;
-            <v-icon
-              v-if="menu.items && menu.items.length"
-              small
-              color="#555"
-              class="navigation-menu__v-icon--dropdown"
-            >fas fa-caret-down</v-icon>
+            <v-icon v-if="menu.items && menu.items.length" small color="#555" class="navigation-menu__v-icon--dropdown"
+              >fas fa-caret-down</v-icon
+            >
           </v-btn>
-          <v-list
-            class="navigation-menu__v-list--alignment"
-            v-if="menu.items"
-            light
-          >
+          <v-list class="navigation-menu__v-list--alignment" v-if="menu.items" light>
             <v-list-tile
               class="navigation-menu__v-list-tile--font"
               :aria-label="menuItem.ariaLabel || menuItem.title"
@@ -68,7 +47,7 @@
         <v-btn
           v-if="!menu.isDivider && !menu.items"
           flat
-          :class="[ 'navigation-menu__v-btn--style', menu.cssClass ]"
+          :class="['navigation-menu__v-btn--style', menu.cssClass]"
           :title="menu.icon ? menu.title : ''"
           :aria-label="menu.ariaLabel || menu.title"
           :to="{ path: menu.path }"
@@ -85,11 +64,7 @@
         </v-btn>
       </v-toolbar-items>
       <v-toolbar-items v-if="isAuthenticated">
-        <v-divider
-          class="mx-3"
-          inset
-          vertical
-        ></v-divider>
+        <v-divider class="mx-3" inset vertical></v-divider>
         <v-btn
           class="navigation-menu__v-btn--style"
           aria-label="Sign Out"
@@ -109,10 +84,7 @@
         </v-btn>
       </v-toolbar-items>
       <!-- TODO: This HACK prevents vuetify menu from going off the screen to the right. Do this properly.  -->
-      <div
-        v-else
-        style="width:100px;"
-      ></div>
+      <div v-else style="width: 100px"></div>
       <v-toolbar-items v-if="isHelpAvailable">
         <v-btn
           title="Help"
@@ -133,26 +105,15 @@
         scrollable
       >
         <v-card tile>
-          <v-toolbar
-            card
-            dark
-          >
+          <v-toolbar card dark>
             <v-toolbar-title aria-label="Help">Help</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn
-              aria-label="Close"
-              icon
-              dark
-              @click="closeHelp"
-            >
+            <v-btn aria-label="Close" icon dark @click="closeHelp">
               <v-icon aria-label="Close">close</v-icon>
             </v-btn>
           </v-toolbar>
           <div v-if="shouldShowHelp">
-            <transition
-              name="component-fade"
-              mode="in-out"
-            >
+            <transition name="component-fade" mode="in-out">
               <submit-issue></submit-issue>
             </transition>
           </div>
@@ -202,28 +163,27 @@ export default class NavigationMenu extends Vue {
   @State
   private isAuthenticated: boolean
 
-  @(namespace(UserProfileModuleName).State(state => {
+  @namespace(UserProfileModuleName).State(state => {
     return state.value.firstName
-  }))
+  })
   private firstName: string
 
-  @(namespace(AppInfoModuleName).State(state => {
+  @namespace(AppInfoModuleName).State(state => {
     const isSiteInMaintenanceMode = state.asyncResult.status === 200 ? state.value.isSiteInMaintenanceMode : false
     return isSiteInMaintenanceMode
-  }))
+  })
   private isSiteInMaintenanceMode: boolean
 
-  @(namespace('window/availableHeight').State(state => {
+  @namespace('window/availableHeight').State(state => {
     console.info(state.value[0])
     return state.value[0]
-  }))
+  })
   private availableHeight: Array<number>
 
   public isSubItemActive(menu: Menu) {
-    if (!menu)
-    {
+    if (!menu) {
       return false
-    } 
+    }
 
     const path = this.$route.path
 
