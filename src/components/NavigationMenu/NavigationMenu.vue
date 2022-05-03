@@ -233,7 +233,7 @@ export default class NavigationMenu extends Vue {
 
     // Current menu is only one level deep so only need to check items
     // and not recurse/loop over entire hierarchy.
-    const isActive = menu.items.some(_ => _.path === path)
+    const isActive = menu.items.some(_ => path.startsWith(_.path))
     return isActive
   }
 
