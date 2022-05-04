@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    @click="() => onButtonClick($event)"
+    @click="onButtonClick"
     small
     outline
     depressed
