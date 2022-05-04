@@ -252,6 +252,9 @@ export default class SlidingPanes extends ComponentBase {
             top: 0,
             right: '20px',
             'min-height': '30px',
+            display: 'flex',
+            'justify-content': 'right',
+            'align-items': 'center',
           },
         },
         this.createHeaderButtons(h, index),
@@ -462,5 +465,8 @@ export default class SlidingPanes extends ComponentBase {
   margin-right: 6px;
   font-size: 24px;
   color: #555555;
+}
+span.sliding-panes__material-icons--large > span {
+  display: inline-flex;
 }
 </style>
