@@ -71,10 +71,10 @@ export default class SlidingPanes extends ComponentBase {
   // Saved vuex watchers so we can destroy watchers when component is destroyed
   private vuexWatchers = new Array<() => void>()
 
-  @(namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE))
+  @namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE)
   private setAvailableHeight: (availableHeight: Array<number>) => void
 
-  @(namespace('window/availableHeight').State(state => state.value))
+  @namespace('window/availableHeight').State(state => state.value)
   private availableHeight: Array<number>
 
   //#region Public API
@@ -167,17 +167,14 @@ export default class SlidingPanes extends ComponentBase {
           pane,
         }
       })
-      .reduce(
-        (result, value, index, array) => {
-          const arr = array
-            .filter(v => v.pane.width !== 0)
-            .slice(index, index + 2)
-            .map(p => p.itemIndex)
-          result.push(arr)
-          return result
-        },
-        [] as Array<Array<number>>,
-      )
+      .reduce((result, value, index, array) => {
+        const arr = array
+          .filter(v => v.pane.width !== 0)
+          .slice(index, index + 2)
+          .map(p => p.itemIndex)
+        result.push(arr)
+        return result
+      }, [] as Array<Array<number>>)
       .filter(v => v.length === 2)
 
     // Hide all splitters
@@ -344,7 +341,7 @@ export default class SlidingPanes extends ComponentBase {
     const el = this.$el
     const self = this
     // tslint:disable-next-line: only-arrow-functions
-    const onTransitionEnd = function() {
+    const onTransitionEnd = function () {
       self.setAvailableHeight([self.availableHeight[0]])
       // We only want to listen now...don't want to respond to all transitionend events
       el.removeEventListener('transitionend', onTransitionEnd)
