@@ -73,7 +73,7 @@ export class HttpService {
     if ((this.restPayloadStrategy & RestPayloadStrategy.PostJson) === RestPayloadStrategy.PostJson) {
       formattedArgs = args
     } else {
-      formattedArgs = qs.stringify(args) as any
+      formattedArgs = qs.stringify(args, { arrayFormat: 'repeat' }) as any
     }
     const axiosConfig = {
       baseURL: this.baseUrl,
