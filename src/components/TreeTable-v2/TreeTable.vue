@@ -765,10 +765,10 @@ div.tree-table__div--box .tree-table-cell__td {
   margin-left: 8px;
   margin-right: 8px;
 }
+*/
 div.tree-table__div--box .tree-table-row__tr {
-  margin-left: 8px;
-  margin-right: 8px;
-} */
+  display: inline-flex;
+} 
 .tree-table__display--none {
   display: none;
 }
