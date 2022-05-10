@@ -54,7 +54,7 @@ export class HttpService {
         // tslint:disable-next-line: no-bitwise
         (this.restPayloadStrategy & RestPayloadStrategy.QueryString) === RestPayloadStrategy.QueryString
       ) {
-        queryString = '?' + qs.stringify(formattedArgs)
+        queryString = '?' + qs.stringify(formattedArgs, { arrayFormat: 'repeat' })
       }
     }
 
