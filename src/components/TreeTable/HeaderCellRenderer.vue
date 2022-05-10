@@ -1,14 +1,13 @@
 <template>
   <span>
-    {{ valueToDisplay  }}
-    <span
-      v-if="header.columnSorter"
-      @click="$emit('toggle-sort', header)"
-    >&nbsp;
+    {{ valueToDisplay }}
+    <span v-if="header.columnSorter" @click="$emit('toggle-sort', header)"
+      >&nbsp;
       <font-awesome-icon
         :icon="getIconArray(header.columnSorter.sortDirection)"
         class=""
-        style="color: #FFF; font-size: 16px; vertical-align: middle; cursor: hand;"
+        :style="iconStyle"
+        style="color: #fff; font-size: 16px; vertical-align: middle; cursor: hand"
       />
     </span>
   </span>
@@ -36,6 +35,16 @@ export default class HeaderCellRenderer extends ComponentBase {
     }
     if (sortDirection === SortDirection.Descending) {
       return ['fad', 'sort-down']
+    }
+  }
+
+  private get iconStyle() {
+    if (this.header?.columnSorter?.sortDirection === SortDirection.None) {
+      const result: any = {
+        '--fa-primary-opacity': 0.4,
+      }
+
+      return result
     }
   }
 
