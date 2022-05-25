@@ -27,6 +27,11 @@ export class AppInfoStore extends StoreModule<AppInfo, ModuleState<AppInfo>, Roo
           : undefined
       return result
     },
+    [StoreGetter.DisabledFeatures](state: ModuleState<AppInfo>) {
+      const result =
+        state.asyncResult && state.asyncResult.status === 200 && state.value ? state.value.disabledFeatures : []
+      return result
+    },
     [StoreGetter.Version](state: ModuleState<AppInfo>) {
       const result =
         state.asyncResult && state.asyncResult.status === 200 && state.value ? state.value.version : undefined
