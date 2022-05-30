@@ -80,7 +80,7 @@ export default class AppInfoPoller extends ComponentBase {
   }
 
   private reload() {
-    location.reload(true)
+    location.href='/'
   }
 
   @Watch('isSiteInMaintenanceMode')
