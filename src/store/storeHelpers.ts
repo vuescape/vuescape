@@ -32,6 +32,13 @@ export function getModuleState(namespace: string, key: string, store: Store<any>
   return getModuleStateByKey(stateKey, store)
 }
 
+export async function commitMutation(namespace: string, key: string, store: Store<any>, args?: any) {
+  if (store) {
+    const stateKey = makeStateKey(namespace, key)
+    return store.commit(stateKey, args)
+  }
+}
+
 export async function dispatchActionAsync(namespace: string, key: string, store: Store<any>, args?: any) {
   if (store) {
     const stateKey = makeStateKey(namespace, key)
