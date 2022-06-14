@@ -13,8 +13,7 @@ export function selfLinkClickHandler(row: TreeTableRow, cell: TreeTableCell) {
     const target = selfLink.linkTarget
 
     switch (target) {
-      case LinkTarget.DownloadBase64EncodedFile:
-      case LinkTarget.DownloadTextFile:
+      case LinkTarget.Download:
         // set state to download a file
         break
         // TODO: Do we need a ModalApi and ModalText kind?
@@ -30,11 +29,11 @@ export function selfLinkClickHandler(row: TreeTableRow, cell: TreeTableCell) {
       case LinkTarget.RightPane:
         // set state to load source in right pane
         break
-      case LinkTarget.NavigateCurrentWindow:
+      case LinkTarget.CurrentWindow:
         // set state to navigate to source in center pane
         // TODO: determine if absolute or relative url to see if we should perform a route or location.url
         break
-      case LinkTarget.NavigateNewWindow:
+      case LinkTarget.NewWindow:
         // set state to load a URL
         // TODO: determine if absolute or relative url to see if we should perform a route or location.url
         break

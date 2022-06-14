@@ -4,8 +4,7 @@ export enum LinkTarget {
   CenterPane,
   RightPane,
   Modal,
-  NavigateCurrentWindow,
-  NavigateNewWindow,
-  DownloadTextFile,
-  DownloadBase64EncodedFile,
+  CurrentWindow,
+  NewWindow,
+  Download,
 }
