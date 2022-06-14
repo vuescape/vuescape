@@ -39,6 +39,7 @@
           </v-container>
         </div>
       </v-content>
+      <download-snackbar></download-snackbar>
       <v-footer
         fixed
         app
@@ -49,7 +50,7 @@
         <component :is="footerComponent" />
       </v-footer>
     </v-app>
-    <component :is="appConfig.value.initializationComponent" />
+    <component v-if="appConfig && appConfig.value && appConfig.value.initializationComponent" :is="appConfig.value.initializationComponent" />
     <app-info-poller></app-info-poller>
     <app-info-handler :siteMaintenanceRoutePath="siteMaintenanceRoutePath"></app-info-handler>
   </div>
@@ -73,8 +74,11 @@ import AppInfoPoller from '@vuescape/components/AppInfoPoller'
 import TheFooter from '@vuescape/components/TheFooter'
 import TheHeader from '@vuescape/components/TheHeader'
 
+const DownloadSnackbar = () =>
+  import(/* webpackChunkName: 'download-snackbar' */ '@vuescape/components/DownloadSnackbar').then(m => m.default)
+
 @Component({
-  components: { AppInfoHandler, AppInfoPoller, TheHeader, TheFooter },
+  components: { AppInfoHandler, AppInfoPoller, DownloadSnackbar, TheHeader, TheFooter },
 })
 export default class App extends ComponentBase {
   private userProfileModuleValue: string
