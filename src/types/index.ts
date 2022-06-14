@@ -1,7 +1,6 @@
 export { AppInfo } from './AppInfo'
 export { AppOptions } from './AppOptions'
 export { Chiclet } from './Chiclet'
-export { ContentKind } from '../reporting-domain/TreeTable/ContentKind'
 export { Dictionary } from './Dictionary'
 export * from './feature'
 export { Guid } from './Guid'

@@ -52,7 +52,7 @@ import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Action, namespace, State } from 'vuex-class'
 
-import { ComponentBase, ContentKind, TreeTableCell } from '@vuescape/index'
+import { ComponentBase, HoverContentKind, TreeTableCell } from '@vuescape/index'
 import { ModuleState, ns, StoreOperation } from '@vuescape/store/modules'
 
 @Component({})
@@ -109,11 +109,11 @@ export default class Tooltip extends ComponentBase {
   }
 
   private get contentKind() {
-    return this.cell.hover ? this.cell.hover.contentKind : ContentKind.None
+    return this.cell.hover ? this.cell.hover.contentKind : HoverContentKind.None
   }
 
   private get plaintextContentKind() {
-    return ContentKind.Plaintext
+    return HoverContentKind.Plaintext
   }
 
   private async enableTooltip() {

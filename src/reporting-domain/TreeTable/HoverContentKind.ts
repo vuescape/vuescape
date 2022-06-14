@@ -1,5 +1,5 @@
 /** Represents the kind of content. */
-export enum ContentKind {
+export enum HoverContentKind {
   /** None. */
   None = 0,
 

@@ -6,8 +6,8 @@ import {
   ClientBehavior,
   ColumnWidthBehavior,
   ColumnWrapBehavior,
-  ContentKind,
   Guid,
+  HoverContentKind,
   HttpMethod,
   Link,
   LinkName,
@@ -265,10 +265,10 @@ export class ReportValueMapperFactory {
       }
       if (cell.hover) {
         if (cell.hover.contentKind) {
-          const contentKind = toEnum(ContentKind, cell.hover.contentKind.toString())
+          const contentKind = toEnum(HoverContentKind, cell.hover.contentKind.toString())
           cell.hover.contentKind = contentKind
         } else {
-          cell.hover.contentKind = ContentKind.None
+          cell.hover.contentKind = HoverContentKind.None
         }
         // Default to tooltip component. TODO: ensure tooltip name is correct and component loads. 
         // May need to pre-register?
