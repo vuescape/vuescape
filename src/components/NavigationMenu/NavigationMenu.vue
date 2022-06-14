@@ -131,10 +131,8 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Action, Getter, namespace, State } from 'vuex-class'
 
 import { AppInfoModuleName, AppInfoOperation } from '@vuescape/store/modules/AppInfo'
-import { AuthenticationModuleName, AuthenticationOperation } from '@vuescape/store/modules/Authentication'
-import { ns } from '@vuescape/store/modules/types'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
-import { Guid, Menu } from '@vuescape/types'
+import { Menu } from '@vuescape/types'
 
 const HamburgerMenu = () =>
   import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
