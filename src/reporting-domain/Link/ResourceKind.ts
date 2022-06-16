@@ -1,21 +1,71 @@
 export enum ResourceKind {
-        Unknown,
+  /// <summary>
+  /// Unknown (default).
+  /// </summary>
+  Unknown,
 
-        Report,
+  /// <summary>
+  /// A <see cref="Report"/>.
+  /// </summary>
+  Report,
 
-        Json,
+  /// <summary>
+  /// JSON document.
+  /// </summary>
+  Json,
 
-        Image,
+  /// <summary>
+  /// An image.
+  /// </summary>
+  Image,
 
-        Audio,
+  /// <summary>
+  /// Audio.
+  /// </summary>
+  Audio,
 
-        Video,
+  /// <summary>
+  /// Video.
+  /// </summary>
+  Video,
 
-        Html,
+  /// <summary>
+  /// HTML.
+  /// </summary>
+  Html,
 
-        Excel,
+  /// <summary>
+  /// A Microsoft Excel file.
+  /// </summary>
+  Excel,
 
-        Csv,
+  /// <summary>
+  /// A CSV file.
+  /// </summary>
+  Csv,
 
-        Pdf,
+  /// <summary>
+  /// A PDF file.
+  /// </summary>
+  Pdf,
+
+  /// <summary>
+  /// A Zip file.
+  /// </summary>
+  Zip,
+
+  /// <summary>
+  /// Text.
+  /// </summary>
+  Text,
+
+  /// <summary>
+  /// BSON as text.
+  /// </summary>
+  BsonAsText,
+
+  /// <summary>
+  /// BSON as bytes.
+  /// </summary>
+  BsonAsBytes,
 }
