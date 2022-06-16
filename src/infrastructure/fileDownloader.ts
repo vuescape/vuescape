@@ -9,8 +9,7 @@ export function downloadFile(data: string, isBase64EncodedBinary: boolean, filen
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i)
       }
-      const byteArray = new Uint8Array(byteNumbers)
-      downloadedData = new Uint8Array(byteArray)
+      downloadedData = new Uint8Array(byteNumbers)
     }
     else {
       downloadedData = data + '\n\n'
