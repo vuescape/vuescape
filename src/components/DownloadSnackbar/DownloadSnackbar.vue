@@ -42,7 +42,6 @@ export default class DownloadSnackbar extends ComponentBase {
   }
 
   private async created() {
-    debugger
     this.registerStoreModuleWithInitialValueIfNotExists<{ shouldShowDownloadSnackbar: boolean }>(
       DownloadSnackbar.DownloadSnackbarNamespace,
       {
