@@ -8,11 +8,11 @@
           </div>
         </v-flex>
       </v-layout>
-      <v-layout row style="white-space: nowrap;" :ref="tabHeaderRow">
+      <v-layout row style="white-space: nowrap" :ref="tabHeaderRow">
         <v-flex xs11>
           <v-btn-toggle
             v-if="report && report.sections && report.sections.length > 1"
-            style="text-align: left!important;box-shadow: unset"
+            style="text-align: left !important; box-shadow: unset"
             v-model="selectedSectionId"
             mandatory
           >
@@ -74,19 +74,13 @@
 </template>
 
 <script lang="ts">
-import {  } from 'vue'
-
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import {
-  dispatchAndAwaitAction,
-  getModuleStateByKey,
-  registerStoreModule,
-} from '@vuescape/store/storeHelpers'
+import { dispatchAndAwaitAction, getModuleStateByKey, registerStoreModule } from '@vuescape/store/storeHelpers'
 
-import { ComponentBase, Dictionary, downloadFile, HttpMethod, Section } from '@vuescape/index'
-import { Link, ResourceKind } from '@vuescape/reporting-domain'
+import { ComponentBase, Dictionary, downloadFile, HttpMethod, Section, toEnum } from '@vuescape/index'
+import { Link, PayloadEncodingKind, ResourceKind } from '@vuescape/reporting-domain'
 
 const DownloadMenu = () =>
   import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default)
@@ -99,9 +93,9 @@ const TreeTable = () =>
 export default class ReportPane extends ComponentBase {
   private isPerformingLongRunningOperation = false
   private reportNamespaceValue = ''
-  private scrollPositionsValue: Dictionary<{ scrollLeft: number, scrollTop: number }> = { }
+  private scrollPositionsValue: Dictionary<{ scrollLeft: number; scrollTop: number }> = {}
 
-  private selectedSection : any = { id: ''   }
+  private selectedSection: any = { id: '' }
   private treeTableHeight = 0
 
   // Props passed in on route
@@ -111,7 +105,7 @@ export default class ReportPane extends ComponentBase {
   @Prop({ type: String, default: '' })
   private divStyle: string
 
-  @(namespace('window/availableHeight').State(state => state.value))
+  @namespace('window/availableHeight').State(state => state.value)
   private availableHeight: Array<number>
 
   private get shouldDisplayDownloadMenu() {
@@ -130,12 +124,13 @@ export default class ReportPane extends ComponentBase {
   private get cssStyles() {
     const existingStyles = this.selectedSection.treeTable.content.cssStyles ?? {}
     existingStyles.height = this.treeTableHeight + 'px'
-    return  existingStyles
+    return existingStyles
   }
 
   private get shouldDisplayExcelDownload() {
-    const result = this.shouldDisplayDownloadMenu &&
-                   this.report.downloadLinks.some((_ : Link) => _.resourceKind === ResourceKind.Excel)
+    const result =
+      this.shouldDisplayDownloadMenu &&
+      this.report.downloadLinks.some((_: Link) => _.resourceKind === ResourceKind.Excel)
     return result
   }
 
@@ -160,9 +155,10 @@ export default class ReportPane extends ComponentBase {
   }
 
   private get areNoResults() {
-    const result = this.report &&
-                   this.selectedSection?.treeTable?.content?.rows &&
-                   this.selectedSection?.treeTable?.content?.rows.length !== 0
+    const result =
+      this.report &&
+      this.selectedSection?.treeTable?.content?.rows &&
+      this.selectedSection?.treeTable?.content?.rows.length !== 0
 
     return !result
   }
@@ -188,10 +184,10 @@ export default class ReportPane extends ComponentBase {
     const self = this
     setTimeout(() => {
       if (self.report && self.report.sections && id) {
-        const section = self.report.sections.find((_ : { id: string })  => _.id === id)
+        const section = self.report.sections.find((_: { id: string }) => _.id === id)
         self.scrollPositionsValue[self.selectedSection.id] = self.calculateScrollBarPositions()!
         self.selectedSection = section
-        setTimeout(() =>  {
+        setTimeout(() => {
           self.positionScrollBars()
         }, 1)
         self.isPerformingLongRunningOperation = false
@@ -215,35 +211,37 @@ export default class ReportPane extends ComponentBase {
     this.setTreeTableHeight()
   }
 
+  // All resource kinds are supported here.
   private async downloadReport(resourceKind: ResourceKind) {
     this.isPerformingLongRunningOperation = true
     await this.$nextTick()
     const downloadNamespace = this.reportNamespaceValue + '/download'
-    const link = this.report.downloadLinks.find((_ : Link) => _.resourceKind === resourceKind) as Link
+    const link = this.report.downloadLinks.find((_: Link) => _.resourceKind === resourceKind) as Link
 
     const source = link.source
-    registerStoreModule(
-      this.$store,
-      downloadNamespace,
-      HttpMethod.Get,
-      source,
-      undefined,
-      false)
+    registerStoreModule(this.$store, downloadNamespace, HttpMethod.Get, source, undefined, false)
 
     await dispatchAndAwaitAction(downloadNamespace, source, this.$store)
 
     const state = getModuleStateByKey(downloadNamespace, this.$store)
-    const data = state?.value
 
+    // TODO Use file name from the server?
+    // available at data.metadata.name
     const now = new Date()
-    const fileDate = `_${now.getFullYear()}-${('0' + (now.getMonth() + 1)).slice(-2)}-${(
-      '0' + now.getDate()).slice(-2)}`
+    const fileDate = `_${now.getFullYear()}-${('0' + (now.getMonth() + 1)).slice(-2)}-${('0' + now.getDate()).slice(
+      -2,
+    )}`
     let filename = ''
     if (resourceKind === ResourceKind.Excel) {
       filename = `${this.report.title}${fileDate}.xlsx`
+    } else if (resourceKind === ResourceKind.Csv) {
+      filename = `${this.report.title}${fileDate}.csv`
     }
 
-    downloadFile(data, true, filename)
+    const data = state?.value
+    const isBase64Encoded = toEnum(PayloadEncodingKind, data.payloadEncodingKind) === PayloadEncodingKind.Base64
+
+    downloadFile(data.payload, isBase64Encoded, filename)
     this.isPerformingLongRunningOperation = false
   }
 
@@ -272,10 +270,10 @@ export default class ReportPane extends ComponentBase {
         width = clientWidth
       }
 
-        const tabHeaderRow = this.$refs[this.tabHeaderRow] as HTMLElement
-        if (tabHeaderRow) {
-          tabHeaderRow.style.width = width + 'px'
-        }
+      const tabHeaderRow = this.$refs[this.tabHeaderRow] as HTMLElement
+      if (tabHeaderRow) {
+        tabHeaderRow.style.width = width + 'px'
+      }
     }
   }
 
@@ -293,11 +291,7 @@ export default class ReportPane extends ComponentBase {
     )
 
     const reportHeaderHeight = reportHeader.getBoundingClientRect().height as number
-    const treeTableHeight =
-      this.availableHeight[0] -
-      reportHeaderHeight -
-      paddingTop
-      -22 // give some additional space
+    const treeTableHeight = this.availableHeight[0] - reportHeaderHeight - paddingTop - 22 // give some additional space
 
     this.treeTableHeight = treeTableHeight
   }
@@ -331,7 +325,7 @@ export default class ReportPane extends ComponentBase {
   private created() {
     this.reportNamespaceValue = this.reportNamespace
     if (this.report && this.report.sections) {
-      this.report.sections.forEach((_ : Section) => {
+      this.report.sections.forEach((_: Section) => {
         this.scrollPositionsValue[_.id!] = { scrollLeft: Number.MAX_SAFE_INTEGER, scrollTop: 0 }
       })
       this.selectedSection = this.report.sections[0]
