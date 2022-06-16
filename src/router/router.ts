@@ -3,8 +3,10 @@ import VueRouter, { NavigationGuard, RouteConfig } from 'vue-router'
 
 export let router: VueRouter
 
-// TODO: type beforeEach as NavigationGuard<Vue> => void
-export function makeRouter(routes?: Array<RouteConfig>, navigationGuard? : NavigationGuard<Vue>) {
+export function makeRouter(
+  routes?: Array<RouteConfig>,
+  beforeResolveNavigationGuardFactories?: Array<(vueRouter: VueRouter) => NavigationGuard<Vue>>,
+) {
   if (router && (!routes || routes.length === 0)) {
     return router
   }
@@ -17,8 +19,10 @@ export function makeRouter(routes?: Array<RouteConfig>, navigationGuard? : Navig
     routes,
   })
 
-  if (navigationGuard) {
-    router.beforeEach(navigationGuard)
+  if (beforeResolveNavigationGuardFactories) {
+    for (const beforeResolveNavigationGuardFactory of beforeResolveNavigationGuardFactories) {
+      router.beforeResolve(beforeResolveNavigationGuardFactory(router))
+    }
   }
 
   return router
