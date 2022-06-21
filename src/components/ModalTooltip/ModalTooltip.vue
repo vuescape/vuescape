@@ -1,14 +1,12 @@
 <template>
   <span class="modal-tooltip__container">
-    <span
-      style="width: 14px; display: inline-block;"
-      v-show="!isHoveringImpl"
-    ></span>
-    <span v-show="isHoveringImpl" style="display: inline-block;">
+    <span style="display: inline-block">
       <font-awesome-icon
+        :class="{ 'modal-tooltip__icon--hover': isHoveringImpl }"
         :icon="['far', 'question-circle']"
-        style="font-size: 14px; color: #16a5c6; cursor: pointer;"
+        style="font-size: 14px; color: #aaa; cursor: pointer"
         @click.stop="enableTooltip"
+        title="Click for Details about this Metric"
       />
       <v-dialog
         origin="left center"
@@ -26,21 +24,17 @@
             <span class="modal-tooltip__title--close">
               <font-awesome-icon
                 :icon="['fal', 'times']"
-                style="cursor: pointer; font-size: 18px;"
+                style="cursor: pointer; font-size: 18px"
                 @click="
-                stopVideo()
-                shouldShowDialog = false
-              "
+                  stopVideo()
+                  shouldShowDialog = false
+                "
               />
             </span>
           </v-card-title>
           <v-card-text>
             <span v-if="contentKind === plaintextContentKind">{{ content }} </span>
-            <span
-              v-else
-              v-html="content"
-              ref="hoverHtml"
-            ></span>
+            <span v-else v-html="content" ref="hoverHtml"></span>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -62,10 +56,10 @@ export default class Tooltip extends ComponentBase {
   @State('tooltipSingleton')
   private tooltipSingleton: ModuleState<Array<boolean>>
 
-  @(namespace('tooltipSingleton').State((state: ModuleState<Array<boolean>>) => state.value))
+  @namespace('tooltipSingleton').State((state: ModuleState<Array<boolean>>) => state.value)
   private tooltipSingletonValue: Array<boolean>
 
-  @(namespace('tooltipSingleton').Mutation(StoreOperation.Mutation.SET_VALUE))
+  @namespace('tooltipSingleton').Mutation(StoreOperation.Mutation.SET_VALUE)
   private setTooltipSingleton: (val: Array<boolean>) => void
 
   @Prop({ type: Object, required: true })
@@ -153,5 +147,20 @@ export default class Tooltip extends ComponentBase {
   position: absolute;
   right: 8px;
   top: 4px;
+}
+.modal-tooltip__icon--hover {
+  color: #16a5c6 !important;
+  animation: modal-tooltip__bounce-in 0.5s;
+}
+@keyframes modal-tooltip__bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
