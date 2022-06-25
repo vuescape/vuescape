@@ -91,7 +91,7 @@
     "friendly-errors-webpack-plugin": "^1.7.0",
     "fs-extra": "^7.0.1",
     "html-webpack-plugin": "^3.2.0",
-    "jsdom": "^13.2.0",
+    "jsdom": "^16.5.0",
     "jsdom-global": "^3.0.2",
     "less": "^3.13.1",
     "less-loader": "^4.1.0",
