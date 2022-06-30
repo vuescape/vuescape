@@ -3,8 +3,8 @@
     <span style="display: inline-block">
       <font-awesome-icon
         :class="{ 'modal-tooltip__icon--hover': isHoveringImpl }"
-        :icon="['far', 'question-circle']"
-        style="font-size: 14px; color: #aaa; cursor: pointer"
+        :icon="['far', 'square-info']"
+        style="margin-top: 3px; margin-left: -18px; font-size: 18px; color: #ddd; cursor: pointer"
         @click.stop="enableTooltip"
         title="Click for Details about this Metric"
       />
@@ -150,17 +150,8 @@ export default class Tooltip extends ComponentBase {
 }
 .modal-tooltip__icon--hover {
   color: #16a5c6 !important;
-  animation: modal-tooltip__bounce-in 0.5s;
 }
-@keyframes modal-tooltip__bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
+.modal-tooltip__container {
+  margin-left: 13px;
 }
 </style>
