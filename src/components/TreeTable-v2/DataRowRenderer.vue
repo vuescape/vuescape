@@ -1,8 +1,5 @@
 <template>
-  <tr
-    :class="rowToDisplay.cssClasses"
-    :key="rowToDisplay.id"
-  >
+  <tr :class="rowToDisplay.cssClasses" :key="rowToDisplay.id">
     <td
       @mouseleave="onMouseLeave(cell)"
       @mouseover="onMouseEnter(cell)"
@@ -18,12 +15,7 @@
       <span v-if="index === 0">
         <span v-if="cell.hover && cell.hover.component">
           <!-- style="position: relative;" -->
-          <component
-            :is="cell.hover.component"
-            :cell="cell"
-            :row="rowToDisplay"
-            :isHovering="isHovering"
-          ></component>
+          <component :is="cell.hover.component" :cell="cell" :row="rowToDisplay" :isHovering="isHovering"></component>
           <!-- style="vertical-align: text-top;margin-right: 4px;position: absolute; right: 0;" -->
         </span>
         <span v-if="rowToDisplay.isExpandable">
@@ -32,19 +24,11 @@
             class="data-row-renderer__icon"
             :icon="['fal', 'chevron-down']"
           />
-          <font-awesome-icon
-            v-else
-            class="data-row-renderer__icon"
-            :icon="['fal', 'chevron-right']"
-          />
+          <font-awesome-icon v-else class="data-row-renderer__icon" :icon="['fal', 'chevron-right']" />
         </span>
       </span>
       <span class="tree-table__rendered-cell">
-        <cell-renderer
-          :key="cellKey(cell)"
-          :cell="cell"
-          :isHovering="cell.hover && isHovering"
-        ></cell-renderer>
+        <cell-renderer :key="cellKey(cell)" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
       </span>
     </td>
   </tr>
@@ -89,7 +73,7 @@ export default class DataRowRenderer extends ComponentBase {
   private getCellClasses(cell: TreeTableCell, row: TreeTableRow, index: number) {
     const cssClasses = {} as any
 
-cssClasses['tree-table-cell__td--clickable'] = typeof cell.onclick === typeof Function
+    cssClasses['tree-table-cell__td--clickable'] = typeof cell.onclick === typeof Function
     cssClasses['tree-table-cell__selected-metric'] = row.isSelected
     cssClasses['tree-table-cell__selected-metric--left'] = row.isSelected && index === 0
     cssClasses['tree-table-cell__selected-metric--interior'] =
@@ -97,31 +81,28 @@ cssClasses['tree-table-cell__td--clickable'] = typeof cell.onclick === typeof Fu
     cssClasses['tree-table-cell__selected-metric--right'] =
       row.isSelected && index === row.cells.filter(_ => _.isVisible !== false).length - 1
     cssClasses['tree-table-cell__td--focused-metric'] = row.isFocused === true
-    cssClasses['tree-table-cell__td--align-center'] = 
+    cssClasses['tree-table-cell__td--align-center'] =
       cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Center
-    cssClasses['tree-table-cell__td--align-left'] = 
-      cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Left
-    cssClasses['tree-table-cell__td--align-right'] = 
-      cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Right
-    
+    cssClasses['tree-table-cell__td--align-left'] = cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Left
+    cssClasses['tree-table-cell__td--align-right'] = cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Right
+
     return cssClasses
   }
 
   private getCellStyle(depth: number | undefined, index: number, cell: any) {
-    const result : any = {}
+    const result: any = {}
     if (depth != null) {
-      const amountToIndent = 4 + (depth * 8) + (this.rowToDisplay.isExpandable ? 0 : 0)
+      const amountToIndent = 4 + depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 0)
       if (index === 0) {
         result['padding-left'] = `${amountToIndent}px`
       }
     }
 
     Object.assign(result, cell.cssStyles)
-    
+
     if (cell?.cellFormat?.backgroundHexColor) {
       result['--tree-table__cell--background-color'] = cell.cellFormat.backgroundHexColor
-    }
-    else {
+    } else {
       result['--tree-table__cell--background-color'] = '#fff'
     }
 
