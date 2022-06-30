@@ -14,25 +14,21 @@
         origin="bottom left"
       >
         <template v-slot:activator="{ on }">
-          <!-- <v-hover v-slot="{ hover }"> -->
-            <!-- <v-btn
-              @click.stop="enableTooltip"
-              :style="{ 'border': hover || isHoveringImpl ? 'solid #16a5c6 1px!important' : '' }"
-              color="primary"
-              outline
-              depressed
-              class="tooltip__v-btn--style"
-            > -->
-              <font-awesome-icon
-                :class="{ 'tooltip__icon--hover': isHoveringImpl }"
-                :icon="['far', 'square-info']"
-                style="margin-top: 3px; margin-left: -18px; font-size: 18px; color: #ddd; cursor: pointer; display: inline-block"
-                @click.stop="enableTooltip"
-                v-on="on"
-                title="Click for Details about this Metric"
-              />
-            <!-- </v-btn> -->
-          <!-- </v-hover> -->
+          <font-awesome-icon
+            :class="{ 'tooltip__icon--hover': isHoveringImpl }"
+            :icon="['far', 'square-info']"
+            style="
+              margin-top: 3px;
+              margin-left: -18px;
+              font-size: 18px;
+              color: #ddd;
+              cursor: pointer;
+              display: inline-block;
+            "
+            @click.stop="enableTooltip"
+            v-on="on"
+            title="Click for Details about this Metric"
+          />
         </template>
 
         <v-card flat>
@@ -176,25 +172,8 @@ export default class Tooltip extends ComponentBase {
   right: 8px;
   top: 4px;
 }
-
 .tooltip__icon--hover {
   color: #16a5c6 !important;
-}
-.tooltip__v-btn--style {
-  border: 1px solid #dddddd !important;
-  border-radius: 5px;
-  height: 16px;
-  width: 16px;
-  margin-right: -1px;
-  padding: 0;
-  vertical-align: text-top; /* sub */
-  padding-bottom: 1px;
-}
-.tooltip__v-btn--style .v-btn:hover {
-  background-color: unset !important;
-}
-.tooltip__v-btn--style .v-btn__content {
-  padding-left: 18px;
 }
 .tooltip__container {
   margin-right: 2px;
