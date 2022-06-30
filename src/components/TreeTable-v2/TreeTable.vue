@@ -816,9 +816,6 @@ div.tree-table__div--box table.navigation-report td.tree-table-cell__td--clickab
 div.tree-table__div--box table.cell-border td {
   text-align: center;
 }
-div.tree-table__div--box table.cell-border td:last-child {
-  text-align: right;
-}
 div.tree-table__div--box table.cell-border td:first-child {
   text-align: left;
 }
