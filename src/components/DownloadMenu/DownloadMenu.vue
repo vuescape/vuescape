@@ -98,6 +98,21 @@
           <v-list-tile-title>{{ zipText || 'Zip' }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
+      <v-list-tile
+        v-if="shouldDisplayRaw"
+        @click="clickHandlers.clickRaw"
+      >
+        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
+          <font-awesome-icon
+            :icon="['fad', 'file-code']"
+            class="download-button__v-icon--font"
+            :style="{ color: '#555' }"
+          />
+        </v-list-tile-action>
+        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
+          <v-list-tile-title>Raw</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
     </v-list>
   </v-menu>
 </template>
@@ -107,6 +122,8 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component({})
 export default class DownloadMenu extends Vue {
+  @Prop({ type: Boolean, default: false })
+  private shouldDisplayRaw: boolean
   @Prop({ type: Boolean, default: false })
   private shouldDisplayExcel: boolean
   @Prop({ type: Boolean, default: true })
@@ -126,6 +143,7 @@ export default class DownloadMenu extends Vue {
     clickPdf?: () => void
     clickZip?: () => void,
     clickExcel?: () => void,
+    clickRaw?: () => void,
   }
 }
 </script>
