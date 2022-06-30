@@ -14,6 +14,7 @@
           depressed
           v-on="on"
           class="legend-table__v-btn--style"
+          title="Click for more information"
         >
           <font-awesome-icon
             :icon="['fas', 'info']"
@@ -59,7 +60,9 @@ export default class LegendTable extends Vue {
 .legend-table__font-awesome-icon--style {
   color: #bbbbbb;
   font-size: 14px;
-  margin-right: 0px;
+  margin-right: -0.5px;
+  margin-bottom: 0.5px;
+  transform: scaleX(1.15);
 }
 .legend-table__v-btn--style {
   border: 1px solid #dddddd !important;
