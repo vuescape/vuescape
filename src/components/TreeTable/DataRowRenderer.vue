@@ -14,7 +14,7 @@
       :colspan="cell.colspan"
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
-      <span v-if="index === 0">
+      <span v-if="index === 0" class="data-row-renderer__span--vertical-align">
         <span v-if="cell.hover && cell.hover.component">
           <!-- style="position: relative;" -->
           <component
@@ -38,7 +38,7 @@
           />
         </span>
       </span>
-      <span>
+      <span class="data-row-renderer__span--vertical-align">
         <cell-renderer
           :key="cellKey(cell)"
           :cell="cell"
@@ -99,7 +99,7 @@ export default class DataRowRenderer extends ComponentBase {
   }
 
   private getIndentStyle(depth: number, index: number, cell: any) {
-    const amountToIndent = 8 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
+    const amountToIndent = 12 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
     const indentation = index === 0 ? { 'padding-left': `${amountToIndent}px` } : '{}'
     return indentation
   }
@@ -110,7 +110,7 @@ export default class DataRowRenderer extends ComponentBase {
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
   margin-right: 4px;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
   font-size: 9px;
   width: 0.875em !important;
 }
@@ -121,5 +121,8 @@ export default class DataRowRenderer extends ComponentBase {
 .data-row-renderer__animation-enter,
 .data-row-renderer__animation-leave-to {
   opacity: 0;
+}
+.data-row-renderer__span--vertical-align {
+  vertical-align: middle;
 }
 </style>
