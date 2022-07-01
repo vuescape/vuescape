@@ -9,18 +9,11 @@
     :slidingPaneActions="slidingPaneActions"
     :shouldHandleResizeEvent="false"
   >
-    <report-pane
-      v-if="navigationReport"
-      :style="divStyle"
-      :reportNamespace="navigationNamespace"
-    />
+    <report-pane v-if="navigationReport" :style="divStyle" :reportNamespace="navigationNamespace" />
     <div v-else></div>
-    <report-pane
-      v-if="mainReport"
-      :style="divStyle"
-      :reportNamespace="mainNamespace"
-    />
+    <report-pane v-if="mainReport" :style="divStyle" :reportNamespace="mainNamespace" />
     <div v-else></div>
+    <report-pane v-if="detailReport" :style="divStyle" :reportNamespace="detailNamespace" />
   </SlidingPanes>
 </template>
 
@@ -36,10 +29,10 @@ import { ComponentBase } from '@vuescape/index'
 
 import { makeReportPaneNamespace, makeReportPaneNamespacePrefix, PaneKind } from '.'
 
-const ReportPane = () =>  
+const ReportPane = () =>
   import(/* webpackChunkName: 'report-pane' */ '@vuescape/components/Reporting/ReportPane.vue').then(m => m.default)
 
-const SlidingPanes = () =>  
+const SlidingPanes = () =>
   import(/* webpackChunkName: 'sliding-panes' */ '@vuescape/components/SlidingPanes').then(m => m.default)
 
 @Component({
@@ -76,50 +69,59 @@ export default class ReportPanes extends ComponentBase {
     return result
   }
 
+  private get detailNamespace() {
+    const result = makeReportPaneNamespace(this.reportId, PaneKind.Detail)
+    return result
+  }
+
   private get reportNamespace() {
     return makeReportPaneNamespacePrefix(this.reportId)
   }
 
-  @(namespace('window/availableHeight').State(state => state.value))
+  @namespace('window/availableHeight').State(state => state.value)
   private availableHeight: Array<number>
 
   // TODO: Define all the sliding pane actions.
+  // Also this should be passed into this component as prop
+  // but needs some work (e.g. create a factory) because
+  // this component has the context required to perform these
+  // actions.  e.g. this.$refs to act on the paneCollection.
   private slidingPaneActions: Array<SlidingPaneAction> = [
     {
       trigger: {
-        namespace: `${this.reportNamespace}/selectedRow`, // TODO: import constant from someplace
+        // Hard coding detail pane as pop out pane.
+        // TODO: make this configurable
+        namespace: `${this.reportNamespace}/detail`,
         getter: (state: any) => state.value,
       },
-      action: (value, oldValue, panes, properties?: any) => {
-        if (!value) {
-          return
-        }
-        const paneCollection = this.$refs[this.reportNamespace] as any
-        // if first time...TODO: need different check since id 
-        if (value.id !== '') {
-          const indexToOpen = paneCollection.slidingPaneConfig
-            .map((v: any, index: number) => {
-              return { item: v, index }
-            })
-            .filter((i: any) => i.item.initialWidth === 0)
-            .map((i: any) => i.index)
-          if (!paneCollection.isPaneOpen(indexToOpen)) {
-            // TODO: handle all panes or at minimum left, center and right
-            paneCollection.setWidths(
-              paneCollection.slidingPaneConfig[0].postActionWidth,
-              paneCollection.slidingPaneConfig[1].postActionWidth,
-            )
-          }
-        }
+      action: this.handleSlidingPaneAction,
+    },
+    {
+      trigger: {
+        // Hard coding detail pane as pop out pane.
+        // TODO: make this configurable
+        namespace: `${this.reportNamespace}/navigation`,
+        getter: (state: any) => state.value,
       },
+      action: this.handleSlidingPaneAction,
+    },
+    {
+      trigger: {
+        // Hard coding detail pane as pop out pane.
+        // TODO: make this configurable
+        namespace: `${this.reportNamespace}/main`,
+        getter: (state: any) => state.value,
+      },
+      action: this.handleSlidingPaneAction,
     },
   ]
 
   private get isLoading() {
     const mainState = getModuleStateByKey(this.mainNamespace, this.$store)
     const navigationState = getModuleStateByKey(this.navigationNamespace, this.$store)
+    const detailState = getModuleStateByKey(this.detailNamespace, this.$store)
 
-    const result = mainState?.isPending || navigationState?.isPending
+    const result = mainState?.isPending || navigationState?.isPending || detailState?.isPending
     return result
   }
 
@@ -133,6 +135,32 @@ export default class ReportPanes extends ComponentBase {
     const state = getModuleStateByKey(this.navigationNamespace, this.$store)
     const result = state?.value
     return result
+  }
+
+  private get detailReport() {
+    const state = getModuleStateByKey(this.detailNamespace, this.$store)
+    const result = state?.value
+    return result
+  }
+
+  private handleSlidingPaneAction(value: any, oldValue: any, panes: any, properties?: any) {
+    if (!value) {
+      return
+    }
+    const paneCollection = this.$refs[this.reportNamespace] as any
+    // if first time...TODO: need different check since id
+    if (value.id !== '') {
+      const indexToOpen = paneCollection.slidingPaneConfig
+        .map((v: any, index: number) => {
+          return { item: v, index }
+        })
+        .filter((i: any) => i.item.initialWidth === 0)
+        .map((i: any) => i.index)
+      if (!paneCollection.isPaneOpen(indexToOpen)) {
+        // TODO: handle all panes or at minimum left, center and right
+        paneCollection.setWidths(...paneCollection.slidingPaneConfig.map((_: any) => _.postActionWidth))
+      }
+    }
   }
 
   // @Watch('slidingPaneEvent')
@@ -156,8 +184,8 @@ export default class ReportPanes extends ComponentBase {
   }
 
   private get divStyle() {
-    const style = 'height: ' + (this.availableHeight[0]) + 'px'
-    return style 
+    const style = 'height: ' + this.availableHeight[0] + 'px'
+    return style
   }
 
   // TODO: reset state as appropriate
