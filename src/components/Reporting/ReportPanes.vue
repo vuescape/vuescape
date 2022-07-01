@@ -91,19 +91,12 @@ export default class ReportPanes extends ComponentBase {
       trigger: {
         // Hard coding detail pane as pop out pane.
         // TODO: make this configurable
-        namespace: `${this.reportNamespace}/detail`,
-        getter: (state: any) => state.value,
-      },
-      action: this.handleSlidingPaneAction,
-    },
-    {
-      trigger: {
-        // Hard coding detail pane as pop out pane.
-        // TODO: make this configurable
         namespace: `${this.reportNamespace}/navigation`,
         getter: (state: any) => state.value,
       },
       action: this.handleSlidingPaneAction,
+      // putting pane index in context
+      context: 0,
     },
     {
       trigger: {
@@ -113,6 +106,17 @@ export default class ReportPanes extends ComponentBase {
         getter: (state: any) => state.value,
       },
       action: this.handleSlidingPaneAction,
+      context: 1,
+    },
+    {
+      trigger: {
+        // Hard coding detail pane as pop out pane.
+        // TODO: make this configurable
+        namespace: `${this.reportNamespace}/detail`,
+        getter: (state: any) => state.value,
+      },
+      action: this.handleSlidingPaneAction,
+      context: 2,
     },
   ]
 
@@ -147,6 +151,7 @@ export default class ReportPanes extends ComponentBase {
     if (!value) {
       return
     }
+
     const paneCollection = this.$refs[this.reportNamespace] as any
     // if first time...TODO: need different check since id
     if (value.id !== '') {
@@ -155,8 +160,10 @@ export default class ReportPanes extends ComponentBase {
           return { item: v, index }
         })
         .filter((i: any) => i.item.initialWidth === 0)
-        .map((i: any) => i.index)
-      if (!paneCollection.isPaneOpen(indexToOpen)) {
+        .map((i: any) => i.index)[0]
+
+      debugger
+      if (!paneCollection.isPaneOpen(indexToOpen) && (properties && properties === indexToOpen)) {
         // TODO: handle all panes or at minimum left, center and right
         paneCollection.setWidths(...paneCollection.slidingPaneConfig.map((_: any) => _.postActionWidth))
       }
