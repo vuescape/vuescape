@@ -162,7 +162,6 @@ export default class ReportPanes extends ComponentBase {
         .filter((i: any) => i.item.initialWidth === 0)
         .map((i: any) => i.index)[0]
 
-      debugger
       if (!paneCollection.isPaneOpen(indexToOpen) && (properties && properties === indexToOpen)) {
         // TODO: handle all panes or at minimum left, center and right
         paneCollection.setWidths(...paneCollection.slidingPaneConfig.map((_: any) => _.postActionWidth))
