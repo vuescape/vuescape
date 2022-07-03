@@ -25,6 +25,7 @@
           ></component>
           <!-- style="vertical-align: text-top;margin-right: 4px;position: absolute; right: 0;" -->
         </span>
+        
         <span v-if="rowToDisplay.isExpandable">
           <font-awesome-icon
             v-if="rowToDisplay.isExpanded"
@@ -37,6 +38,7 @@
             :icon="['fal', 'chevron-right']"
           />
         </span>
+        <span v-if="!cell.hover || !cell.hover.component">&nbsp;</span>
       </span>
       <span class="data-row-renderer__span--vertical-align">
         <cell-renderer
