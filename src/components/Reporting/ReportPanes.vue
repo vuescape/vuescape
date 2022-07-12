@@ -8,6 +8,7 @@
     :slidingPaneConfig="reportPaneConfig"
     :slidingPaneActions="slidingPaneActions"
     :shouldHandleResizeEvent="false"
+    :slidingPaneHeaderPosition="absolute"
   >
     <report-pane v-if="navigationReport" :style="divStyle" :reportNamespace="navigationNamespace" />
     <div v-else></div>
