@@ -41,6 +41,10 @@ export default class SlidingPanes extends ComponentBase {
   @Prop({ type: String, default: 'default-theme' })
   public slidingPaneCssClass: string
 
+  // CSS position to apply to the min/max/close header row. The default is 'static'.
+  @Prop({ type: String, default: 'static' })
+  public slidingPaneHeaderPosition: string
+
   // Styles to apply to underlying splitpanes
   @Prop({
     type: Object,
@@ -244,12 +248,12 @@ export default class SlidingPanes extends ComponentBase {
         {
           style: {
             'z-index': 1000,
-            // position: 'absolute',
+            'position': this.slidingPaneHeaderPosition,
             'text-align': 'right',
-            top: 0,
-            right: '20px',
+            'top': 0,
+            'right': '20px',
             'min-height': '30px',
-            display: 'flex',
+            'display': 'flex',
             'justify-content': 'right',
             'align-items': 'center',
           },
