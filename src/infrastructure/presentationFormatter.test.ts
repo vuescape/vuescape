@@ -217,6 +217,18 @@ describe('presentationFormatter --', () => {
       expect(roundedValue).toEqual(23)
     })
 
+    // Ensures not using "Bankers Rounding"
+    it('should round up when nearest integer is even', () => {
+      // Arrange
+      const inputValue = 2.05
+
+      // Act
+      const roundedValue = round(inputValue, 1)
+
+      // Assert
+      expect(roundedValue).toEqual(2.1)
+    })
+
     it('should round up away from zero when input is negative', () => {
       // Arrange
       const inputValue = -22.555
