@@ -201,6 +201,9 @@ export default class App extends ComponentBase {
 </script>
 
 <style>
+div.v-menu__content.menuable__content__active {
+  border-radius: 5px;
+}
 .v-tab {
   text-transform: none;
 }
