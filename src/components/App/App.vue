@@ -2,20 +2,11 @@
   <div>
     <resize-observer @notify="handleResize"></resize-observer>
     <v-app>
-      <transition
-        name="app__component--transition"
-        mode="out-in"
-      >
-        <the-header
-          ref="theHeader"
-          v-if="shouldDisplayHeader"
-        ></the-header>
+      <transition name="app__component--transition" mode="out-in">
+        <the-header ref="theHeader" v-if="shouldDisplayHeader"></the-header>
       </transition>
       <v-content class="app__content--height">
-        <div
-          class="app__container--scroll"
-          ref="appContainer"
-        >
+        <div class="app__container--scroll" ref="appContainer">
           <v-container fluid>
             <v-alert
               v-for="notification in notifications"
@@ -30,27 +21,23 @@
             >
               {{ notification.message }}
             </v-alert>
-            <transition
-              name="app__component--transition"
-              mode="out-in"
-            >
-              <router-view></router-view>
+            <component :is="navigationComponentValue"></component>
+            <transition name="app__component--transition" mode="out-in">
+              <router-view v-if="$route.meta && $route.meta.useNewInstance" :key="$route.path"></router-view>
+              <router-view v-else></router-view>
             </transition>
           </v-container>
         </div>
       </v-content>
       <download-snackbar></download-snackbar>
-      <v-footer
-        fixed
-        app
-        ref="theFooter"
-        :height="36"
-        class="v-footer__layout--border"
-      >
+      <v-footer fixed app ref="theFooter" :height="36" class="v-footer__layout--border">
         <component :is="footerComponent" />
       </v-footer>
     </v-app>
-    <component v-if="appConfig && appConfig.value && appConfig.value.initializationComponent" :is="appConfig.value.initializationComponent" />
+    <component
+      v-if="appConfig && appConfig.value && appConfig.value.initializationComponent"
+      :is="appConfig.value.initializationComponent"
+    />
     <app-info-poller></app-info-poller>
     <app-info-handler :siteMaintenanceRoutePath="siteMaintenanceRoutePath"></app-info-handler>
   </div>
@@ -86,6 +73,9 @@ export default class App extends ComponentBase {
   @Inject('trackingService')
   private trackingService: TrackingService
 
+  @Inject('navigationComponent')
+  private navigationComponent: Vue
+
   @Prop({ type: String, default: '/site-maintenance' })
   private siteMaintenanceRoutePath: string
 
@@ -95,7 +85,7 @@ export default class App extends ComponentBase {
   @Action(RootOperation.Action.NotificationActions.REMOVE)
   private removeNotification: any
 
-  @(namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE))
+  @namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE)
   private setAvailableHeight: (availableHeight: Array<number>) => void
 
   @State('appConfig/configuration')
@@ -110,18 +100,22 @@ export default class App extends ComponentBase {
     },
     { namespace: UserProfileModuleName },
   )
-
-  @(namespace('theHeader/configuration').State(state => {
+  @namespace('theHeader/configuration').State(state => {
     if (state && state.value) {
       const headerProps: any = state.value
       return headerProps
     }
-  }))
+  })
   private theHeaderProps: any
 
+  private get navigationComponentValue() {
+    return this.navigationComponent
+  }
+
   private get shouldDisplayHeader() {
-    return (this.isAuthenticated && this.hasExternalSessionsInitialized) ||
-            this.theHeaderProps?.shouldShowHeader === true
+    return (
+      (this.isAuthenticated && this.hasExternalSessionsInitialized) || this.theHeaderProps?.shouldShowHeader === true
+    )
   }
 
   private get footerComponent() {
