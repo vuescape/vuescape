@@ -29,6 +29,8 @@ export class ApplicationBootstrapper {
   private trackingService: TrackingService = new NullTrackingService()
   private featureService: FeatureService = new NullFeatureService()
 
+  private navigationComponent?: VueConstructor<Vue> 
+
   private initFunction = async () => {
     return
   }
@@ -129,6 +131,12 @@ export class ApplicationBootstrapper {
     return this
   }
 
+  public withNavigationComponent(navigationComponent : VueConstructor<Vue>) {
+    this.navigationComponent = navigationComponent
+    Vue.component(navigationComponent.name, navigationComponent)
+    return this
+  }
+
   public withRootComponent(el: string, componentName: string, rootComponent: VueConstructor<Vue>, props?: any) {
     this.rootComponentOptions = { el, componentName, rootComponent, props }
     return this
@@ -172,6 +180,7 @@ export class ApplicationBootstrapper {
         provide: () => ({
           trackingService: this.trackingService,
           featureService: this.featureService,
+          navigationComponent: this.navigationComponent,
         }),
         el: this.rootComponentOptions.el,
         store: this.vuexStore,
@@ -180,22 +189,23 @@ export class ApplicationBootstrapper {
         components: { [this.rootComponentOptions.componentName]: this.rootComponentOptions.rootComponent },
       })
     } catch (error) {
-      if (error.response) {
+      const err = error as any
+      if (err.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.error(error.response.data)
-        console.error(error.response.status)
-        console.error(error.response.headers)
-      } else if (error.request) {
+        console.error(err.response.data)
+        console.error(err.response.status)
+        console.error(err.response.headers)
+      } else if (err.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        console.error(error.request)
+        console.error(err.request)
       } else {
         // Something happened in setting up the request that triggered an Error
-        console.error('Error', error.message)
+        console.error('Error', err.message)
       }
-      console.error(error.config)
+      console.error(err.config)
     }
   }
 }
