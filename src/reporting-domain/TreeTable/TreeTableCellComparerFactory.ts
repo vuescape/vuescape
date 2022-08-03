@@ -14,13 +14,13 @@ export function makeTreeTableCellPropertyCompare(
   }
 
   return (left: any, right: any) => {
-    if (!left && !right) {
+    if (left == null && right == null) {
       return 0
     }
-    if (!left && right) {
+    if (left == null && right != null) {
       return -1
     }
-    if (left && !right) {
+    if (left != null && right == null) {
       return 1
     }
 
@@ -43,27 +43,38 @@ export function makeTreeTableCellPropertyCompare(
       return 1
     }
 
-    let leftItemValue = leftItem[0].value != null ? leftItem[0].value : leftItem[0].displayValue
-    let rightItemValue = rightItem[0].value != null ? rightItem[0].value : rightItem[0].displayValue
+    const leftItemValue = leftItem[0].value != null ? leftItem[0].value : leftItem[0].displayValue
+    const rightItemValue = rightItem[0].value != null ? rightItem[0].value : rightItem[0].displayValue
 
     if (doNotSortValue != null) {
       if (leftItemValue === doNotSortValue || rightItemValue === doNotSortValue) {
         return 0
-      }   
+      }
     }
-    
-    leftItemValue = leftItemValue || ''
-    rightItemValue = rightItemValue || ''
+
+    if (leftItemValue == null && rightItemValue == null) {
+      return 0
+    }
+    if (leftItemValue == null && rightItemValue != null) {
+      return -1
+    }
+    if (leftItemValue != null && rightItemValue == null) {
+      return 1
+    }
+
     if (sortComparisonStrategy === SortComparisonStrategy.StringCaseInsensitive) {
-      leftItemValue = leftItemValue.toUpperCase()
-      rightItemValue = rightItemValue.toUpperCase()
+      const result = rightItemValue.toString().localeCompare(leftItemValue) * sortDirection
+      return result
     }
+
     if (leftItemValue.valueOf() < rightItemValue.valueOf()) {
       return 1 * sortDirection
     }
+
     if (leftItemValue.valueOf() > rightItemValue.valueOf()) {
       return -1 * sortDirection
     }
+
     return 0
   }
 }
