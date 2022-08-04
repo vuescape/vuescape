@@ -63,6 +63,9 @@ export default class SlidingPanes extends ComponentBase {
   @Prop({ type: String, required: true })
   public eventNamespace: string
 
+  @Prop({ type: String, default: 'flex' })
+  public headerButtonCssDisplay: 'flex' | 'inline'
+
   private panes: Array<{ width: number; savedWidth: number }> = this.slidingPaneConfig.map(p => {
     return {
       width: p.initialWidth !== undefined ? p.initialWidth : 0,
@@ -253,9 +256,10 @@ export default class SlidingPanes extends ComponentBase {
             'top': 0,
             'right': '20px',
             'min-height': '30px',
-            'display': 'flex',
+            'display': this.headerButtonCssDisplay,
             'justify-content': 'right',
             'align-items': 'center',
+            'float': this.headerButtonCssDisplay === 'inline' ? 'right' : 'none',
           },
         },
         this.createHeaderButtons(h, index),

@@ -8,6 +8,7 @@
     :slidingPaneConfig="reportPaneConfig"
     :slidingPaneActions="slidingPaneActions"
     :shouldHandleResizeEvent="false"
+    headerButtonCssDisplay="inline"
     slidingPaneHeaderPosition="static"
   >
     <report-pane v-if="navigationReport" :style="divStyle" :reportNamespace="navigationNamespace" />
