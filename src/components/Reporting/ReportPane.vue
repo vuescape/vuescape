@@ -8,10 +8,10 @@
           </div>
         </v-flex>
       </v-layout>
-      <v-layout row style="white-space: nowrap" :ref="tabHeaderRow">
+      <v-layout row class="report-pane__section--layout" :style="subheaderStyle" :ref="tabHeaderRow">
         <v-flex xs11>
           <v-btn-toggle
-            v-if="report && report.sections && report.sections.length > 1"
+            v-if="areMultipleReportSections"
             style="text-align: left !important; box-shadow: unset"
             v-model="selectedSectionId"
             mandatory
@@ -53,7 +53,6 @@
       :footers="selectedSection.treeTable.content.footers"
       :rows="selectedSection.treeTable.content.rows"
       :columnDefinitions="selectedSection.treeTable.columnDefinitions"
-      :shouldFreezeFirstColumn="selectedSection.treeTable.content.shouldFreezeFirstColumn"
       :shouldIncludeFooter="selectedSection.treeTable.content.shouldIncludeFooter"
       :sortLevel="selectedSection.treeTable.content.sortLevel"
       :cssStyles="cssStyles"
@@ -107,6 +106,19 @@ export default class ReportPane extends ComponentBase {
 
   @namespace('window/availableHeight').State(state => state.value)
   private availableHeight: Array<number>
+
+  private get subheaderStyle() {
+    if (this.areMultipleReportSections) {
+      return {}
+    }
+
+    return { marginTop: '-30px' }
+  }
+
+  private get areMultipleReportSections() {
+    const result = this.report?.sections?.length > 1
+    return result
+  }
 
   private get shouldDisplayDownloadMenu() {
     const result = this.report && this.report.downloadLinks && this.report.downloadLinks.length > 0
@@ -255,6 +267,11 @@ export default class ReportPane extends ComponentBase {
 
   // Set width to properly right align as of and download button
   private rightAlignHeader() {
+    const self = this
+    requestAnimationFrame(() => self.rightAlignHeaderImpl())
+  }
+
+  private rightAlignHeaderImpl() {
     const treeTableReference = this.treeTableReference
     const treeTable = this.$refs[treeTableReference] as { $el: Element }
     if (!treeTable) {
@@ -291,8 +308,7 @@ export default class ReportPane extends ComponentBase {
     )
 
     const reportHeaderHeight = reportHeader.getBoundingClientRect().height as number
-    const treeTableHeight = this.availableHeight[0] - reportHeaderHeight - paddingTop - 22 // give some additional space
-
+    const treeTableHeight = this.availableHeight[0] - reportHeaderHeight - paddingTop - 20 // give some additional space
     this.treeTableHeight = treeTableHeight
   }
 
@@ -376,5 +392,9 @@ div.report-pane__container--layout div.v-btn-toggle button.v-btn:hover {
   margin-bottom: 10px;
   margin-right: 6px;
   text-align: center;
+}
+.report-pane__section--layout {
+  white-space: nowrap;
+  margin-top: -10px;
 }
 </style>
