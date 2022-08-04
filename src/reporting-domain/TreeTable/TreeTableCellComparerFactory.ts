@@ -12,6 +12,7 @@ export function makeTreeTableCellPropertyCompare(
   if (sortDirection === SortDirection.None) {
     throw new Error('Cannot perform a sort with a SortDirection value of None.')
   }
+  const collator = new Intl.Collator()
 
   return (left: any, right: any) => {
     if (left == null && right == null) {
@@ -67,14 +68,18 @@ export function makeTreeTableCellPropertyCompare(
       return result
     }
 
-    if (leftItemValue.valueOf() < rightItemValue.valueOf()) {
-      return 1 * sortDirection
+    if (typeof leftItemValue === typeof rightItemValue) {
+      if (leftItemValue.valueOf() < rightItemValue.valueOf()) {
+        return 1 * sortDirection
+      }
+
+      if (leftItemValue.valueOf() > rightItemValue.valueOf()) {
+        return -1 * sortDirection
+      }
+
+      return 0
     }
 
-    if (leftItemValue.valueOf() > rightItemValue.valueOf()) {
-      return -1 * sortDirection
-    }
-
-    return 0
+    return collator.compare(leftItemValue, rightItemValue) * sortDirection * -1
   }
 }
