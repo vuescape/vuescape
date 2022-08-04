@@ -1,11 +1,5 @@
 <template>
-  <div
-    :id="uniqueId"
-    :ref="uniqueId"
-    :key="uniqueId"
-    class="tree-table__div--box"
-    :style="cssStyleObject"
-  >
+  <div :id="uniqueId" :ref="uniqueId" :key="uniqueId" class="tree-table-v2__div--box" :style="cssStyleObject">
     <vue-scrolling-table
       :scroll-horizontal="shouldScrollHorizontalValue"
       :scroll-vertical="shouldScrollVerticalValue"
@@ -13,7 +7,7 @@
       :sync-footer-scroll="shouldSyncFooterScrollValue"
       :include-footer="shouldIncludeFooterValue"
       :dead-area-color="deadAreaColorValue"
-      :class="[{ freezeFirstColumn: shouldFreezeFirstColumnValue }, cssClass]"
+      :class="cssClass"
     >
       <template slot="thead">
         <header-row-renderer
@@ -24,18 +18,10 @@
         ></header-row-renderer>
       </template>
       <template slot="tbody">
-        <row-renderer
-          v-for="row in rowsToDisplay"
-          :key="row.id"
-          :row="row"
-        ></row-renderer>
+        <row-renderer v-for="row in rowsToDisplay" :key="row.id" :row="row"></row-renderer>
       </template>
       <template slot="tfoot">
-        <row-renderer
-          v-for="footer in footersToDisplay"
-          :key="footer.id"
-          :row="footer"
-        ></row-renderer>
+        <row-renderer v-for="footer in footersToDisplay" :key="footer.id" :row="footer"></row-renderer>
       </template>
     </vue-scrolling-table>
   </div>
@@ -101,9 +87,6 @@ export default class TreeTable extends ComponentBase {
   @Prop({ type: Boolean, required: false, default: false })
   private shouldIncludeFooter: boolean
 
-  @Prop({ type: Boolean, required: false, default: true })
-  private shouldFreezeFirstColumn: boolean
-
   @Prop({ type: String, required: false, default: '#FFFFFF' })
   private deadAreaColor: string
 
@@ -122,13 +105,11 @@ export default class TreeTable extends ComponentBase {
   @Prop({ type: Function, required: false })
   private treeTableSorter?: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow>
 
-  @(namespace('window/availableHeight').State(state => state.value))
+  @namespace('window/availableHeight').State(state => state.value)
   private availableHeight: Array<number>
 
-  private treeTableSorterImpl: (
-    rows: Array<TreeTableRow>,
-    headers: Array<TreeTableHeaderRow>,
-  ) => Array<TreeTableRow> = this.defaultTreeTableSorter
+  private treeTableSorterImpl: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow> =
+    this.defaultTreeTableSorter
 
   private rowsToDisplay: Array<TreeTableRow> = []
 
@@ -173,9 +154,6 @@ export default class TreeTable extends ComponentBase {
   }
   private get maxRowsValue() {
     return this.maxRows
-  }
-  private get shouldFreezeFirstColumnValue() {
-    return this.shouldFreezeFirstColumn
   }
 
   @Watch('availableHeight')
@@ -350,10 +328,26 @@ export default class TreeTable extends ComponentBase {
     return ''
   }
 
-  private setElementWidth(element: HTMLTableCellElement, width: string) {
+  private freezeCell(element: HTMLTableCellElement, leftPosition: string) {
+    element.style.left = leftPosition
+    element.style.position = 'sticky'
+    element.style.backgroundClip = 'padding-box'
+  }
+
+  private setElementWidth(element: HTMLTableCellElement, width: string, leftPosition?: string) {
     element.style.width = width
     element.style.minWidth = width
     element.style.maxWidth = width
+  }
+
+  private getCurrentLeftPosition(columnIndex: number, widths: Array<string>) {
+    let result = 0
+    for (let i = 0; i < columnIndex; i++) {
+      const widthAndUnitOfMeasureString = this.getWidthAndUnitOfMeasureString(widths[i])
+      result += widthAndUnitOfMeasureString.width
+    }
+
+    return result
   }
 
   private setColumnWidth(
@@ -365,10 +359,15 @@ export default class TreeTable extends ComponentBase {
     const cells = table.querySelectorAll(
       `th[data-column-index='${columnIndex}'], td[data-column-index='${columnIndex}']`,
     )
+    const leftPosition = this.getCurrentLeftPosition(columnIndex, widths)
     for (const cell of cells) {
       const tableCell = cell as HTMLTableCellElement
       if (tableCell.colSpan === 1) {
         this.setElementWidth(tableCell, widths[columnIndex])
+        const widthAndUnitOfMeasureString = this.getWidthAndUnitOfMeasureString(widths[columnIndex])
+        if (columnDefinitions[columnIndex].isFrozen) {
+          this.freezeCell(tableCell, leftPosition + widthAndUnitOfMeasureString.unitOfMeasure)
+        }
       } else {
         const colspan = tableCell.colSpan
         let cellWidth = 0
@@ -379,7 +378,13 @@ export default class TreeTable extends ComponentBase {
           unitOfMeasure = widthAndUnitOfMeasureString.unitOfMeasure
           cellWidth += widthAndUnitOfMeasureString.width
         }
+
         this.setElementWidth(tableCell, cellWidth + unitOfMeasure)
+        // colspan with sticky is not truly sticky so don't make columns with colspan sticky
+        //  TODO: make sticky work with colspan
+        if (columnDefinitions[columnIndex].isFrozen && tableCell.nodeName === 'TH') {
+          this.freezeCell(tableCell, leftPosition + unitOfMeasure)
+        }
       }
     }
   }
@@ -482,12 +487,11 @@ export default class TreeTable extends ComponentBase {
 
         // If the cellWidth with a colspan is bigger than the area spanned then adjust other column widths.
         if (cellWidth > colspanWidth) {
-          // const startingColumnIndex = this.shouldFreezeFirstColumnValue && columnIndex === 0 ? 0 : columnIndex
           const startingColumnIndex = columnIndex
           const additionalWidth = cellWidth - colspanWidth
           const numberOfColumns = endingColumnIndex - startingColumnIndex + 1
           const additionalWidthPerColumn = additionalWidth / numberOfColumns
-          
+
           for (let i = startingColumnIndex; i <= endingColumnIndex; i++) {
             const widthAndMeasure = this.getWidthAndUnitOfMeasureString(columnWidths[i])
             columnWidths[i] = widthAndMeasure.width + additionalWidthPerColumn + widthAndMeasure.unitOfMeasure
@@ -517,24 +521,13 @@ export default class TreeTable extends ComponentBase {
 
     for (let columnIndex = 0; columnIndex < this.columnDefinitions.length; columnIndex++) {
       this.setColumnWidth(table, columnIndex, columnWidths, this.columnDefinitions)
+      // if (columnIndex < 3) {
+      //     const widthAndUnitOfMeasureString = this.getWidthAndUnitOfMeasureString(widths[columnIndex])
+      //     this.freezeCell(tableCell, leftPosition + widthAndUnitOfMeasureString.unitOfMeasure)
+      //     leftPosition += widthAndUnitOfMeasureString.width
+      // }
     }
 
-    //
-    // const numberOfHeaderColumns = this.headersToDisplay[0].cells.length
-    // for (let columnIndex = 0; columnIndex < this.headersToDisplay.length; columnIndex++) {
-    //   this.setColumnWidth(table, tableX, columnIndex, this.headersToDisplay[0].cells[columnIndex])
-    // }
-    // for (const row of table.querySelectorAll('thead tr') as NodeListOf<HTMLTableRowElement>) {
-    //   for (let j = 0; j < row.cells.length; j++) {
-    //     this.setCellWidth(row.cells[j], this.headersToDisplay[0].cells[j].cellWidth, tableX)
-    //   }
-    // }
-
-    // for (const row of table.querySelectorAll('tbody tr') as NodeListOf<HTMLTableRowElement>) {
-    //   for (let j = 0; j < row.cells.length; j++) {
-    //     this.setCellWidth(row.cells[j], this.headersToDisplay[0].cells[j].cellWidth, tableX)
-    //   }
-    // }
     this.$emit('columns-resized')
   }
 
@@ -589,22 +582,26 @@ export default class TreeTable extends ComponentBase {
 .tree-table-cell__td--wrap {
   white-space: initial;
 }
-div.tree-table__div--box .fixed-column {
+div.tree-table-v2__div--box .fixed-column {
   text-align: unset;
 }
 .tree-table-cell__td--clickable {
   cursor: pointer;
 }
-div.tree-table__div--box table.scrolling tr {
+div.tree-table-v2__div--box table.scrolling tr {
   text-align: left;
 }
+div.tree-table-v2__div--box table.scrolling {
+  border-collapse: separate;
+  border-spacing: 0;
+}
 /* TODO: fix this so that we don't get double lines*/
-table.scrolling tr.tree-table-cell__tr--subheader {
+div.tree-table-v2__div--box table.scrolling tr.tree-table-cell__tr--subheader {
   /* margin: -1px 0; */
   border-bottom: 1px solid #555555 !important;
   border-top: 1px solid #555555 !important;
 }
-table.scrolling td.tree-table-cell__td--subheader {
+div.tree-table-v2__div--box table.scrolling td.tree-table-cell__td--subheader {
   background-color: #f8f8f8 !important;
   /* border-bottom: 1px solid #555555 !important;
   border-top: 1px solid #555555 !important;
@@ -613,35 +610,35 @@ table.scrolling td.tree-table-cell__td--subheader {
   height: 33px;
   vertical-align: middle;
 }
-table.scrolling tr td.tree-table-cell__td--focused-metric {
+div.tree-table-v2__div--box table.scrolling tr td.tree-table-cell__td--focused-metric {
   background-color: rgb(235, 248, 240) !important;
 }
-table.scrolling tr.tree-table-cell__td--data-row:hover td {
+div.tree-table-v2__div--box table.scrolling tr.tree-table-cell__td--data-row:hover td {
   background-color: rgb(235, 248, 240) !important;
 }
-table.scrolling td i.material-icons {
+div.tree-table-v2__div--box table.scrolling td i.material-icons {
   vertical-align: bottom;
 }
-div.tree-table__div--box table.scrolling td,
-div.tree-table__div--box table.scrolling th {
+div.tree-table-v2__div--box table.scrolling td,
+div.tree-table-v2__div--box table.scrolling th {
   /* border: 1px solid #ddd !important; */
   font-size: small;
 }
 .tree-table__border-top--on {
   border-top: 1px solid #ddd !important;
 }
-div.tree-table__div--box table.scrolling td {
+div.tree-table-v2__div--box table.scrolling td {
   height: 31px;
   vertical-align: middle;
 }
-div.tree-table__div--box table.scrolling thead.scrollsync {
+div.tree-table-v2__div--box table.scrolling thead.scrollsync {
   background-color: white !important;
   /* overflow-y: auto !important; Pushes header over scrollbar which causes misalignment of header and body when scroll bar is visible at the far right */
 }
-div.tree-table__div--box table.scrolling thead {
+div.tree-table-v2__div--box table.scrolling thead {
   --tree-table__cell--background-color: #16a5c6;
 }
-div.tree-table__div--box table.scrolling thead th {
+div.tree-table-v2__div--box table.scrolling thead th {
   border: 0px;
   background-color: var(--tree-table__cell--background-color) !important;
   color: #ffffff;
@@ -650,13 +647,13 @@ div.tree-table__div--box table.scrolling thead th {
   font-weight: 500;
   white-space: nowrap;
 }
-div.tree-table__div--box table.scrolling td.cell__value--raw.tree-table-cell__td--subheader {
+div.tree-table-v2__div--box table.scrolling td.cell__value--raw.tree-table-cell__td--subheader {
   border-left: 0 !important;
 }
-table.scrolling tr.cell__value--grid-line {
+div.tree-table-v2__div--box table.scrolling tr.cell__value--grid-line {
   border-bottom: 1px solid #ddd !important;
 }
-table.scrolling td.cell__value--raw {
+div.tree-table-v2__div--box table.scrolling td.cell__value--raw {
   width: 13em;
   max-width: 13em;
   min-width: 13em;
@@ -665,7 +662,7 @@ table.scrolling td.cell__value--raw {
   padding-left: 4px;
   border-left: 1px solid #ddd !important;
 }
-table.scrolling td.cell__value--common {
+div.tree-table-v2__div--box table.scrolling td.cell__value--common {
   width: 7em;
   max-width: 7em;
   min-width: 7em;
@@ -674,7 +671,7 @@ table.scrolling td.cell__value--common {
   border-left: 0 !important;
   text-align: center;
 }
-div.tree-table__div--box table.scrolling td {
+div.tree-table-v2__div--box table.scrolling td {
   border: 0px;
   white-space: nowrap !important;
   border-left: 1px solid #dddddd;
@@ -682,57 +679,58 @@ div.tree-table__div--box table.scrolling td {
   border-top: 0;
   border-bottom: 0;
 }
-div.tree-table__div--box table.scrolling .column__width--20em {
+div.tree-table-v2__div--box table.scrolling .column__width--20em {
   width: 20em;
   min-width: 20em;
   max-width: 20em;
 }
-div.tree-table__div--box table.scrolling tfoot tr th {
+div.tree-table-v2__div--box table.scrolling tfoot tr th {
   width: 130em;
   min-width: 130em;
   max-width: 130em;
 }
-div.tree-table__div--box table.freezeFirstColumn thead tr:first-child {
+div.tree-table-v2__div--box table.freezeFirstColumn thead tr:first-child {
   border-top: 0 !important;
 }
-div.tree-table__div--box table.freezeFirstColumn tfoot tr:first-child {
+div.tree-table-v2__div--box table.freezeFirstColumn tfoot tr:first-child {
   border-top: 0 !important;
 }
-div.tree-table__div--box table.freezeFirstColumn thead tr,
-div.tree-table__div--box table.freezeFirstColumn tbody tr {
+div.tree-table-v2__div--box table.scrolling thead tr,
+div.tree-table-v2__div--box table.scrolling tbody tr,
+div.tree-table-v2__div--box table.scrolling tfoot tr {
   display: block;
   width: min-content;
 }
-div.tree-table__div--box table.freezeFirstColumn thead td:first-child,
-div.tree-table__div--box table.freezeFirstColumn tbody td:first-child,
-div.tree-table__div--box table.freezeFirstColumn thead th:first-child,
-div.tree-table__div--box table.freezeFirstColumn tfoot td:first-child,
-div.tree-table__div--box table.freezeFirstColumn tbody th:first-child {
+/* div.tree-table-v2__div--box table.freezeFirstColumn thead td:first-child,
+div.tree-table-v2__div--box table.freezeFirstColumn tbody td:first-child,
+div.tree-table-v2__div--box table.freezeFirstColumn thead th:first-child,
+div.tree-table-v2__div--box table.freezeFirstColumn tfoot td:first-child,
+div.tree-table-v2__div--box table.freezeFirstColumn tbody th:first-child {
   position: sticky;
   position: -webkit-sticky;
   left: 0;
   /* Need so that firefox will render border */
-  background-clip: padding-box;
-}
+/*  background-clip: padding-box;
+} */
 
-div.tree-table__div--box table.scrolling {
+div.tree-table-v2__div--box table.scrolling {
   background-color: white !important;
   height: 100% !important;
 }
-.tree-table__div--box {
+.tree-table-v2__div--box {
   clear: both;
   padding: 0;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
 }
-div.tree-table__div--box table.scrolling.scrollx tbody {
+div.tree-table-v2__div--box table.scrolling.scrollx tbody {
   overflow-x: auto !important;
 }
-div.tree-table__div--box table.scrolling.scrollx tbody::-webkit-scrollbar {
+div.tree-table-v2__div--box table.scrolling.scrollx tbody::-webkit-scrollbar {
   height: 9px;
 }
-div.tree-table__div--box table.scrolling.scrolly tbody {
+div.tree-table-v2__div--box table.scrolling.scrolly tbody {
   overflow-y: auto !important;
 }
 
@@ -757,76 +755,75 @@ td.tree-table-cell__selected-metric {
   cursor: default;
 }
 /* Defined on the server side */
-div.tree-table__div--box .tree-table-cell__td {
+div.tree-table-v2__div--box .tree-table-cell__td {
   padding-left: 4px;
   padding-right: 4px;
 }
-/* div.tree-table__div--box .tree-table-cell__th {
+/* div.tree-table-v2__div--box .tree-table-cell__th {
   margin-left: 8px;
   margin-right: 8px;
 }
 */
-div.tree-table__div--box .tree-table-row__tr {
-  display: inline-flex;
-} 
 .tree-table__display--none {
   display: none;
 }
-div.tree-table__div--box table.cell-border td,
-div.tree-table__div--box table.cell-border th {
+div.tree-table-v2__div--box table.cell-border td,
+div.tree-table-v2__div--box table.cell-border th {
   border: 1px solid #ddd !important;
 }
-div.tree-table__div--box table.cell-border td:first-child,
-div.tree-table__div--box table.cell-border th:first-child {
+div.tree-table-v2__div--box table.cell-border td:first-child,
+div.tree-table-v2__div--box table.cell-border th:first-child {
   /* border-left: 0!important; */
 }
-div.tree-table__div--box table.cell-border td:last-child,
-div.tree-table__div--box table.cell-border th:last-child {
+div.tree-table-v2__div--box table.cell-border td:last-child,
+div.tree-table-v2__div--box table.cell-border th:last-child {
   /* border-right: 0!important; */
 }
-div.tree-table__div--box table.cell-border thead tr td,
-div.tree-table__div--box table.cell-border thead tr th {
+div.tree-table-v2__div--box table.cell-border thead tr td,
+div.tree-table-v2__div--box table.cell-border thead tr th {
   border-top: 0 !important;
 }
-div.tree-table__div--box table.cell-border tfoot tr td,
-div.tree-table__div--box table.cell-border tfoot tr th {
+div.tree-table-v2__div--box table.cell-border tfoot tr td,
+div.tree-table-v2__div--box table.cell-border tfoot tr th {
   border-top: 0 !important;
 }
-div.tree-table__div--box table.cell-border tr:first-child td,
-div.tree-table__div--box table.cell-border tr:first-child th {
+div.tree-table-v2__div--box table.cell-border tr:first-child td,
+div.tree-table-v2__div--box table.cell-border tr:first-child th {
   border-top: 0 !important;
 }
-div.tree-table__div--box table.cell-border tfoot tr:first-child td,
-div.tree-table__div--box table.cell-border tfoot tr:first-child th {
+div.tree-table-v2__div--box table.cell-border tfoot tr:first-child td,
+div.tree-table-v2__div--box table.cell-border tfoot tr:first-child th {
   border: 1px solid #ddd !important;
 }
-
-div.tree-table__div--box table.navigation-report td {
+div.tree-table-v2__div--box table.navigation-report {
+  margin-top: 30px;
+}
+div.tree-table-v2__div--box table.navigation-report td {
   font-size: 17px !important;
   border: 0 !important;
 }
-div.tree-table__div--box table.navigation-report th {
+div.tree-table-v2__div--box table.navigation-report th {
   font-size: 18px !important;
   border: 0 !important;
 }
-div.tree-table__div--box table.navigation-report td.tree-table-cell__td--clickable {
+div.tree-table-v2__div--box table.navigation-report td.tree-table-cell__td--clickable {
   text-decoration: underline;
   color: blue !important; /* use default color for link */
 }
-div.tree-table__div--box table.cell-border td {
+div.tree-table-v2__div--box table.cell-border td {
   text-align: center;
 }
-div.tree-table__div--box table.cell-border td:first-child {
+div.tree-table-v2__div--box table.cell-border td:first-child {
   text-align: left;
 }
 /* Reserve space for scrollbar in footer but make the scrollbar transparent so it doesn't render */
-div.tree-table__div--box table.scrolling tfoot.scrollsync {
+div.tree-table-v2__div--box table.scrolling tfoot.scrollsync {
   overflow-y: scroll;
 }
-div.tree-table__div--box table.scrolling tfoot.scrollsync::-webkit-scrollbar {
+div.tree-table-v2__div--box table.scrolling tfoot.scrollsync::-webkit-scrollbar {
   background-color: transparent;
 }
-div.tree-table__div--box table.scrolling tfoot.scrollsync::-webkit-scrollbar-track {
+div.tree-table-v2__div--box table.scrolling tfoot.scrollsync::-webkit-scrollbar-track {
   background-color: transparent;
 }
 </style>
