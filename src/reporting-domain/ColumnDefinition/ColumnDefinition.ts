@@ -12,4 +12,5 @@ export interface ColumnDefinition {
   width?: number
   /** The unit of measure for the width. */
   widthUnitOfMeasure? : UnitOfMeasure
+  isFrozen: boolean
 }

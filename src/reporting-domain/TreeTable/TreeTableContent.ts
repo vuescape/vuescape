@@ -11,7 +11,6 @@ export interface TreeTableContent {
   shouldSyncHeaderScroll: boolean
   shouldSyncFooterScroll: boolean
   shouldIncludeFooter: boolean
-  shouldFreezeFirstColumn: boolean
   deadAreaColor: string
   maxRows?: number
   cssClass: string

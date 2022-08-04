@@ -196,6 +196,7 @@ export class ReportValueMapperFactory {
         columnWrapBehavior: toEnum(ColumnWrapBehavior, _.columnWrapBehavior),
         width: _.width,
         widthUnitOfMeasure: tryToEnum(UnitOfMeasure, _.widthUnitOfMeasure),
+        isFrozen: _.isFrozen,
       }
     })
 
@@ -215,7 +216,6 @@ export class ReportValueMapperFactory {
     // result.shouldSyncHeaderScroll = content.shouldSyncHeaderScroll
     // result.shouldSyncFooterScroll = content.shouldSyncFooterScroll
     // result.shouldIncludeFooter = content.shouldIncludeFooter
-    // result.shouldFreezeFirstColumn = content.shouldFreezeFirstColumn
     // result.deadAreaColor = content.deadAreaColor
     // result.maxRows = content.maxRows
     // result.cssStyles = content.cssStyles
