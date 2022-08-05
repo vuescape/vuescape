@@ -290,9 +290,12 @@ export class ReportValueMapperFactory {
         const keys = Object.keys(cell.slots.slotNameToUiObjectMap)
         for (const key of keys) {
           const uiObject = cell.slots.slotNameToUiObjectMap[key] as any
+          if (uiObject.uiObjectType == null) {
+            debugger
+          }
           cell.slots.slotNameToUiObjectMap[key] = {
             value: uiObject.value,
-            uiObjectType: toEnum(UiObjectType, uiObject.uiObjectType.toString()),
+            uiObjectType: tryToEnum(UiObjectType, uiObject.uiObjectType?.toString()),
           }
         }
 
@@ -320,14 +323,16 @@ export class ReportValueMapperFactory {
               break
             case UiObjectType.String:
               break
-          default:
-            throw Error('Unsupported UiObjectType: ' + uiObject.uiObjectType)
-            break                                                                                            
+            case undefined:
+              break
+            default:
+              throw Error('Unsupported UiObjectType: ' + uiObject.uiObjectType)
+              break                                                                                            
           }
 
           cell.value = uiObject.value
           if (!cell.displayValue) {
-            cell.displayValue = uiObject.value.toString()
+            cell.displayValue = uiObject.value?.toString()
           }
         }
       }
