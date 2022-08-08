@@ -66,5 +66,5 @@ export const rootStoreOptions: StoreOptions<RootState> = {
     notifications: [],
     isSpinning: false,
   },
-  // strict: process.env.NODE_ENV !== 'production',
+  strict: process.env.NODE_ENV === 'development',
 }
