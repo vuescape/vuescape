@@ -50,7 +50,7 @@ import RowRenderer from './RowRenderer.vue'
   components: { HeaderCellRenderer, RowRenderer, VueScrollingTable },
 })
 export default class TreeTable extends ComponentBase {
-  @Prop({ type: String, default: false })
+  @Prop({ type: String, required: false })
   private id: string
 
   @Prop({ type: Array, required: true })
