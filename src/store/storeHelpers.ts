@@ -68,7 +68,7 @@ export const registerDynamicModule = <S, R>(
     console.log(`registering module: ${namespace}`)
   } else {
     // tslint:disable-next-line: semicolon
-    ;(store.state as any)[namespace] = null
+    store.commit(namespace, null)
     console.log(`reusing module: ${namespace}`)
     if (shouldUnregister) {
       store.unregisterModule(namespace)
