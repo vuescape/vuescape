@@ -290,9 +290,6 @@ export class ReportValueMapperFactory {
         const keys = Object.keys(cell.slots.slotNameToUiObjectMap)
         for (const key of keys) {
           const uiObject = cell.slots.slotNameToUiObjectMap[key] as any
-          if (uiObject.uiObjectType == null) {
-            debugger
-          }
           cell.slots.slotNameToUiObjectMap[key] = {
             value: uiObject.value,
             uiObjectType: tryToEnum(UiObjectType, uiObject.uiObjectType?.toString()),
