@@ -19,7 +19,7 @@ import Vue from 'vue'
 
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-import { downloadFile } from '@vuescape/infrastructure'
+import { decodeBase64String, downloadFile } from '@vuescape/infrastructure'
 
 const VuescapeButton = () =>
   import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
@@ -50,6 +50,8 @@ export default class DownloadFileButton extends Vue {
   private filenamePrefix: string
   @Prop({ type: Array, required: false, default: () => [] })
   private icons: Array<string>
+  @Prop({ default: false })
+  private shouldAddByteOrderMark: boolean
 
   private isButtonDisabled = true
   private shouldShowDownloadCompleted = false
@@ -76,7 +78,8 @@ export default class DownloadFileButton extends Vue {
     // to call nextTick to allow changes to the data property to propagate.
     await this.$nextTick()
 
-    downloadFile(this.data, this.isBase64EncodedBinary, this.createFilename())
+    const data = this.isBase64EncodedBinary ? decodeBase64String(this.data) : this.data
+    downloadFile(data, this.createFilename(), this.shouldAddByteOrderMark)
 
     if (this.shouldShowCompletedMessage) {
       const component = this
