@@ -78,9 +78,8 @@ import { namespace } from 'vuex-class'
 
 import { dispatchAndAwaitAction, getModuleStateByKey, registerStoreModule } from '@vuescape/store/storeHelpers'
 
-import { ComponentBase, Dictionary, downloadFile, HttpMethod, Section, toEnum } from '@vuescape/index'
+import { ComponentBase, decodeBase64String, Dictionary, downloadFile, HttpMethod, Section, toEnum } from '@vuescape/index'
 import { Link, PayloadEncodingKind, ResourceKind } from '@vuescape/reporting-domain'
-import { decodeBase64String } from '@vuescape/infrastructure'
 
 const DownloadMenu = () =>
   import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default)
