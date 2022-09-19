@@ -42,3 +42,14 @@ export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirst
 
   return result
 }
+
+export function decodeBase64String(base64String: string) {
+  const byteCharacters = atob(base64String)
+  const byteNumbers = new Array(byteCharacters.length)
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i)
+  }
+
+  const result = new Uint8Array(byteNumbers)
+  return result
+}
