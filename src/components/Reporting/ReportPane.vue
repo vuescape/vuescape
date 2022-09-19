@@ -80,6 +80,7 @@ import { dispatchAndAwaitAction, getModuleStateByKey, registerStoreModule } from
 
 import { ComponentBase, Dictionary, downloadFile, HttpMethod, Section, toEnum } from '@vuescape/index'
 import { Link, PayloadEncodingKind, ResourceKind } from '@vuescape/reporting-domain'
+import { decodeBase64String } from '@vuescape/infrastructure'
 
 const DownloadMenu = () =>
   import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default)
@@ -244,16 +245,19 @@ export default class ReportPane extends ComponentBase {
       -2,
     )}`
     let filename = ''
+    let shouldAddByteOrderMark = false
     if (resourceKind === ResourceKind.Excel) {
       filename = `${this.report.title}${fileDate}.xlsx`
     } else if (resourceKind === ResourceKind.Csv) {
       filename = `${this.report.title}${fileDate}.csv`
+      shouldAddByteOrderMark = true
     }
 
     const data = state?.value
     const isBase64Encoded = toEnum(PayloadEncodingKind, data.payloadEncodingKind) === PayloadEncodingKind.Base64
+    const fileContents = isBase64Encoded ? decodeBase64String(data.payload) : data.payload
 
-    downloadFile(data.payload, isBase64Encoded, filename)
+    downloadFile(fileContents, filename, shouldAddByteOrderMark)
     this.isPerformingLongRunningOperation = false
   }
 
