@@ -1,125 +1,25 @@
 <template>
-  <span style="height: 100%" class="navigation-menu__container">
-    <v-toolbar-items class="hidden-sm-and-down">
-      <v-toolbar-items v-for="menu in menus" :key="menu.id">
-        <v-divider v-if="menu.isDivider" class="mx-3" inset vertical></v-divider>
-        <v-menu
-          content-class="navigation-menu__content"
-          v-if="!menu.isDivider && menu.items"
-          auto
-          open-on-click
-          offset-y
-          :disabled="isSiteInMaintenanceMode"
-        >
-          <v-btn
-            :aria-label="menu.title"
-            flat
-            slot="activator"
-            :class="[{ 'v-btn--active': isSubItemActive(menu) }, 'navigation-menu__v-btn--style']"
-            :disabled="isSiteInMaintenanceMode"
-          >
-            <span v-if="menu.prefixHtml" v-html="menu.prefixHtml"></span>
-            <!-- <font-awesome-icon v-if="menu.icon" :icon="getIconArray(menu.icon)" class="navigation-menu__v-icon--layout" :style="{ color: '#555' }" /> -->
-            <font-awesome-icon
-              v-if="menu.icon"
-              :icon="getIconArray(menu.icon)"
-              class="navigation-menu__v-icon--layout"
-              :style="{ color: '#555' }"
-            />&nbsp;{{ menu.title }} &nbsp;
-            <v-icon v-if="menu.items && menu.items.length" small color="#555" class="navigation-menu__v-icon--dropdown"
-              >fas fa-caret-down</v-icon
-            >
-          </v-btn>
-          <v-list class="navigation-menu__v-list--alignment" v-if="menu.items" light>
-            <v-list-tile
-              class="navigation-menu__v-list-tile--font"
-              :aria-label="menuItem.ariaLabel || menuItem.title"
-              v-for="menuItem in menu.items"
-              :key="menuItem.id"
-              :to="{ path: menuItem.path }"
-            >
-              <v-list-tile-title :aria-label="menuItem.ariaLabel || menuItem.title">{{
-                menuItem.title
-              }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-        <v-btn
-          v-if="!menu.isDivider && !menu.items"
-          flat
-          :class="['navigation-menu__v-btn--style', menu.cssClass]"
-          :title="menu.icon ? menu.title : ''"
-          :aria-label="menu.ariaLabel || menu.title"
-          :to="{ path: menu.path }"
-          :disabled="isSiteInMaintenanceMode"
-        >
-          <font-awesome-icon
-            class="navigation-menu__v-icon--layout"
-            v-if="menu.icon"
-            :style="{ color: '#555' }"
-            :icon="getIconArray(menu.icon)"
-          />
-          <!-- <v-icon v-if="menu.icon" small class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon> -->
-          &nbsp;{{ menu.title }}
-        </v-btn>
-      </v-toolbar-items>
-      <v-toolbar-items v-if="isAuthenticated">
-        <v-divider class="mx-3" inset vertical></v-divider>
-        <v-btn
-          class="navigation-menu__v-btn--style"
-          aria-label="Sign Out"
-          flat
-          slot="activator"
-          navigation-menu__v-btn--style
-          :disabled="isSiteInMaintenanceMode"
-          @click.prevent="redirectAndSignOut"
-        >
-          <font-awesome-icon
-            class="navigation-menu__v-icon--layout"
-            :style="{ color: '#555' }"
-            :icon="['fa', 'sign-out-alt']"
-          />
-          <!-- <v-icon small class="navigation-menu__v-icon--layout">fad sign-out-alt</v-icon> -->
-          &nbsp;Sign Out
-        </v-btn>
-      </v-toolbar-items>
-      <!-- TODO: This HACK prevents vuetify menu from going off the screen to the right. Do this properly.  -->
-      <div v-else style="width: 100px"></div>
-      <v-toolbar-items v-if="isHelpAvailable">
-        <v-btn
-          title="Help"
-          flat
-          class="navigation-menu__v-btn--style"
-          @click="shouldShowHelp = true"
-          :disabled="isSiteInMaintenanceMode"
-        >
-          <v-icon small>help</v-icon>
-        </v-btn>
-      </v-toolbar-items>
-      <v-dialog
-        v-if="isHelpAvailable"
-        v-model="shouldShowHelp"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
-        scrollable
-      >
-        <v-card tile>
-          <v-toolbar card dark>
-            <v-toolbar-title aria-label="Help">Help</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn aria-label="Close" icon dark @click="closeHelp">
-              <v-icon aria-label="Close">close</v-icon>
-            </v-btn>
-          </v-toolbar>
-          <div v-if="shouldShowHelp">
-            <transition name="component-fade" mode="in-out">
-              <submit-issue></submit-issue>
-            </transition>
-          </div>
-        </v-card>
-      </v-dialog>
-    </v-toolbar-items>
+  <span>
+    <v-layout row style="height: 100%" class="navigation-menu__container">
+      <v-flex v-if="shouldShowRightSection" v-bind="{ [`lg${breakpoints}`]: true }">
+        <v-toolbar height="36" class="navigation-menu__toolbar--size" :style="toolbarStyle">
+          <navigation-menu-item v-for="menu in leftMenuItems" :key="menu.id" :menu="menu"></navigation-menu-item>
+        </v-toolbar>
+      </v-flex>
+      <v-flex v-if="shouldShowRightSection" v-bind="{ [`lg${breakpoints}`]: true }">
+        <v-toolbar height="36" class="navigation-menu__toolbar--size" :style="toolbarStyle">
+          <v-layout justify-center>
+            <navigation-menu-item v-for="menu in centerMenuItems" :key="menu.id" :menu="menu"></navigation-menu-item>
+          </v-layout>
+        </v-toolbar>
+      </v-flex>
+      <v-flex v-if="shouldShowRightSection" v-bind="{ [`lg${breakpoints}`]: true }">
+        <v-toolbar height="36" class="navigation-menu__toolbar--size" :style="toolbarStyle">
+          <v-spacer></v-spacer>
+          <navigation-menu-item v-for="menu in rightMenuItems" :key="menu.id" :menu="menu"></navigation-menu-item>
+        </v-toolbar>
+      </v-flex>
+    </v-layout>
     <hamburger-menu :menus="menus"></hamburger-menu>
   </span>
 </template>
@@ -128,29 +28,36 @@
 import Vue from 'vue'
 
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Action, Getter, namespace, State } from 'vuex-class'
+import { namespace, State } from 'vuex-class'
 
-import { AppInfoModuleName, AppInfoOperation } from '@vuescape/store/modules/AppInfo'
+import { HorizontalAlignment } from '@vuescape/reporting-domain'
+import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 import { Menu } from '@vuescape/types'
 
 const HamburgerMenu = () =>
   import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
 
+const NavigationMenuItem = () =>
+  import(/* webpackChunkName: 'navigation-menu-item' */ './NavigationMenuItem.vue').then(m => m.default)
+
 @Component({
   components: {
     HamburgerMenu,
+    NavigationMenuItem,
   },
 })
 export default class NavigationMenu extends Vue {
-  // private isMenuDisabled = false
   private menusValue: Array<Menu> = []
+  private hasLeftNavigationItems = false
+  private hasCenterNavigationItems = false
+  private hasRightNavigationItems = false
+
+  @Prop({ type: String, default: '' })
+  private toolbarStyle: string
 
   @Prop({ required: true })
   private menus: Array<Menu>
-
-  @Prop({ type: Boolean, default: true })
-  private isHelpAvailable: boolean
 
   @Prop()
   private helpComponent: any
@@ -178,11 +85,67 @@ export default class NavigationMenu extends Vue {
   })
   private availableHeight: Array<number>
 
+  private get shouldShowLeftSection() {
+    const result = this.hasLeftNavigationItems || (this.hasCenterNavigationItems && this.hasRightNavigationItems)
+    return result
+  }
+
+  private get shouldShowCenterSection() {
+    const result = this.hasCenterNavigationItems
+    return result
+  }
+
+  private get shouldShowRightSection() {
+    const hasLeft = this.hasLeftNavigationItems
+    const hasCenter = this.hasCenterNavigationItems
+    const hasRight = this.hasRightNavigationItems
+    if ((hasLeft && !hasCenter && !hasRight) || (hasCenter && !hasLeft && !hasRight)) {
+      return false
+    }
+    return true
+  }
+
+  private get leftMenuItems() {
+    const result = this.menusValue.filter(_ => _.horizontalAlignment === HorizontalAlignment.Left)
+    return result
+  }
+
+  private get centerMenuItems() {
+    const result = this.menusValue.filter(_ => _.horizontalAlignment === HorizontalAlignment.Center)
+    return result
+  }
+
+  private get rightMenuItems() {
+    const result = this.menusValue.filter(_ => _.horizontalAlignment === HorizontalAlignment.Right)
+    return result
+  }
+
+  private get breakpoints() {
+    const hasLeft = this.hasLeftNavigationItems
+    const hasCenter = this.hasCenterNavigationItems
+    const hasRight = this.hasRightNavigationItems
+
+    if (
+      (hasLeft && !hasCenter && !hasRight) ||
+      (hasCenter && !hasLeft && !hasRight) ||
+      (hasRight && !hasLeft && !hasCenter)
+    ) {
+      return 12
+    }
+
+    if (hasRight && hasLeft && !hasCenter) {
+      return 6
+    }
+
+    return 4
+  }
+
   public isSubItemActive(menu: Menu) {
     if (!menu) {
       return false
     }
 
+console.info(this.$route.path)
     const path = this.$route.path
 
     if (!menu.items) {
@@ -198,6 +161,9 @@ export default class NavigationMenu extends Vue {
   @Watch('menus')
   private onMenusChanged(val: Array<Menu>, oldVal: Array<Menu>) {
     this.menusValue = val
+    this.hasLeftNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
+    this.hasRightNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Right)
+    this.hasCenterNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Center)
   }
 
   private getIconArray(iconString: string) {
@@ -215,47 +181,16 @@ export default class NavigationMenu extends Vue {
 
   private created() {
     this.menusValue = this.menus
+    this.hasLeftNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
+    this.hasRightNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Right)
+    this.hasCenterNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Center)
   }
 }
 </script>
 
 <style>
-div.navigation-menu__v-list--alignment a.v-list__tile {
+.navigation-menu__toolbar--size {
   height: 36px;
-  max-height: 36px;
-}
-
-i.v-icon {
-  font-weight: normal;
-}
-.v-btn__content {
-  font-weight: normal;
-}
-.navigation-menu__v-icon--dropdown {
-  font-size: 10px !important;
-  margin-top: 4px !important;
-}
-.navigation-menu__v-list-tile--font a div {
-  font-size: 13px;
-  color: unset;
-}
-.navigation-menu__v-list-tile--font a.v-list__tile--active div {
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.87);
-}
-.navigation-menu__v-btn--style {
-  min-width: 64px;
-  font-size: 13px;
-}
-.navigation-menu__v-icon--layout {
-  margin-top: 2px;
-}
-.navigation-menu__v-list--alignment {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.navigation-menu__content.menuable__content__active {
-  max-height: 500px !important;
+  border-bottom: 100px;
 }
 </style>
