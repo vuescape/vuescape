@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-on="globalClickHandler ? { click: globalClickHandler } : {}">
     <resize-observer @notify="handleResize"></resize-observer>
     <v-app>
       <transition name="app__component--transition" mode="out-in">
@@ -75,6 +75,9 @@ export default class App extends ComponentBase {
 
   @Inject('navigationComponent')
   private navigationComponent: Vue
+
+  @Inject('globalClickHandler')
+  private globalClickHandler: (e: MouseEvent) => void
 
   @Prop({ type: String, default: '/site-maintenance' })
   private siteMaintenanceRoutePath: string

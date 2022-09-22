@@ -28,6 +28,7 @@ export class ApplicationBootstrapper {
   private rootComponentOptions: { el: string; componentName: string; rootComponent: VueConstructor<Vue>; props: any }
   private trackingService: TrackingService = new NullTrackingService()
   private featureService: FeatureService = new NullFeatureService()
+  private globalClickHandler: (e : MouseEvent) => void 
 
   private navigationComponent?: VueConstructor<Vue> 
 
@@ -142,6 +143,11 @@ export class ApplicationBootstrapper {
     return this
   }
 
+  public withGlobalClickHandler(handler: (e: MouseEvent) => void) {
+    this.globalClickHandler = handler
+    return this
+  }
+
   public async bootstrap() {
     this.validate()
 
@@ -181,6 +187,7 @@ export class ApplicationBootstrapper {
           trackingService: this.trackingService,
           featureService: this.featureService,
           navigationComponent: this.navigationComponent,
+          globalClickHandler: this.globalClickHandler,
         }),
         el: this.rootComponentOptions.el,
         store: this.vuexStore,
