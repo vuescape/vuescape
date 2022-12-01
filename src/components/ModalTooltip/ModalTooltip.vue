@@ -3,10 +3,10 @@
     <span style="display: inline-block">
       <font-awesome-icon
         :class="{ 'modal-tooltip__icon--hover': isHoveringImpl }"
-        :icon="['far', 'square-info']"
-        style="margin-top: 3px; margin-left: -18px; font-size: 18px; color: #ddd; cursor: pointer"
+        :icon="icons"
+        :style="iconStyleObject"
         @click.stop="enableTooltip"
-        title="Click for Details about this Metric"
+        :title="hintText"
       />
       <v-dialog
         origin="left center"
@@ -34,7 +34,11 @@
           </v-card-title>
           <v-card-text>
             <span v-if="contentKind === plaintextContentKind">{{ content }} </span>
-            <span v-else v-html="content" ref="hoverHtml"></span>
+            <span
+              v-else
+              v-html="content"
+              ref="hoverHtml"
+            ></span>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -67,6 +71,24 @@ export default class Tooltip extends ComponentBase {
 
   @Prop({ type: Boolean, default: false })
   private isHovering: boolean
+
+  @Prop({ type: String, default: 'Click for Details about this Metric' })
+  private hintText: boolean
+
+  @Prop({ type: Array, default: () => ['far', 'square-info'] })
+  private icons: boolean
+
+  @Prop({
+    type: Object,
+    default: () => ({
+      'margin-top': '3px',
+      'margin-left': '-18px',
+      'font-size': '18px',
+      color: '#ddd',
+      cursor: 'pointer',
+    }),
+  })
+  private iconStyleObject: boolean
 
   private isHoveringImpl = false
 
