@@ -1,71 +1,45 @@
 <template>
-  <div>
-    <v-toolbar
-      height="36"
-      class="the-header__toolbar--size"
-      :style="theHeaderProps.toolbarStyle"
-      ref="toolbar"
-    >
-      <img
-        id="home-logo"
-        class="the-header__img--layout"
-        :class="getCssClass"
-        :src="theHeaderProps.logoUrl"
-        :alt="theHeaderProps.logoAltText"
-        :title="theHeaderProps.logoAltText"
-        @click="clickLogo"
-      />
-      <v-spacer></v-spacer>
-      <navigation-menu
-        :isHelpAvailable="theHeaderProps.shouldDisplayHelp"
-        :menus="consolidatedMenus"
-        :helpComponent="theHeaderProps.helpComponent"
-      ></navigation-menu>
-    </v-toolbar>
-  </div>
+  <navigation-menu
+    :toolbarStyle="theHeaderProps.toolbarStyle"
+    :menus="consolidatedMenus"
+    :helpComponent="theHeaderProps.helpComponent"
+  ></navigation-menu>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { Component, Inject, Prop } from 'vue-property-decorator'
-import { Action, Getter, namespace, State } from 'vuex-class'
+import { Getter, namespace, State } from 'vuex-class'
 
-import { AuthenticationModuleName, AuthenticationOperation } from '@vuescape/store/modules/Authentication'
 import { ns } from '@vuescape/store/modules/types'
-import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 import { FeatureService, Guid, Menu, MenuSources } from '@vuescape/types'
 
 import NavigationMenu from '@vuescape/components/NavigationMenu'
+import { ComponentBase } from '@vuescape/infrastructure'
+import { HorizontalAlignment } from '@vuescape/reporting-domain'
 
 @Component({
   components: { NavigationMenu },
 })
-export default class TheHeader extends Vue {
+export default class TheHeader extends ComponentBase {
   private static readonly DefaultHeaderConfig = { logoAltText: '', toolbarStyle: '', shouldDisplayHelp: true }
-  private consolidatedMenus : Array<Menu> = []
+  private consolidatedMenus: Array<Menu> = []
 
-  @State
-  private isAuthenticated: boolean
-
-  @State
-  private hasExternalSessionsInitialized: boolean
-
-  @(namespace('theHeader/configuration').State(state => {
+  @namespace('theHeader/configuration').State(state => {
     if (state && state.value) {
       const headerProps: any = state.value
       return headerProps || TheHeader.DefaultHeaderConfig
     }
     return TheHeader.DefaultHeaderConfig
-  }))
+  })
   // TODO: define type for header state
   private theHeaderProps: any
 
-  @(namespace('menu/configuration').State(state => {
+  @namespace('menu/configuration').State(state => {
     if (state && state.value) {
       return state.value
     }
     return []
-  }))
+  })
   private menuConfiguration: Array<Menu>
 
   @Getter(ns('userProfile', 'Menus'))
@@ -74,47 +48,51 @@ export default class TheHeader extends Vue {
   @Inject('featureService')
   private featureService: FeatureService
 
-  private get getCssClass() {
-    if (this.theHeaderProps.logoHref || this.theHeaderProps.logoNavigationRoute) {
-      return 'the-header__img--clickable'
-    }
-  }
-
-  private clickLogo() {
-    if (this.theHeaderProps.logoHref) {
-      document.location.href = this.theHeaderProps.logoHref
-  }
-    if (this.theHeaderProps.logoNavigationRoute) {
-      this.$router.push(this.theHeaderProps.logoNavigationRoute)
-    }
-  }
-
   private async populateConsolidatedMenus() {
     const menuSources = this.theHeaderProps.menuSources as MenuSources
     const consolidatedMenus: Array<Menu> = []
-    
+
     // tslint:disable:no-bitwise
-    if((menuSources & MenuSources.RoleBased) === MenuSources.RoleBased && this.userProfileMenus) {
+    if ((menuSources & MenuSources.RoleBased) === MenuSources.RoleBased && this.userProfileMenus) {
       consolidatedMenus.push(...this.userProfileMenus)
     }
 
-    if((menuSources & MenuSources.Configuration) === MenuSources.Configuration && this.menuConfiguration.length) {
+    if ((menuSources & MenuSources.Configuration) === MenuSources.Configuration && this.menuConfiguration.length) {
       consolidatedMenus.push(...this.menuConfiguration)
     }
 
-    if((menuSources & MenuSources.Feature) === MenuSources.Feature) {
+    if ((menuSources & MenuSources.Feature) === MenuSources.Feature) {
       const featureMenus = await this.featureService.getMenus()
-      featureMenus.forEach(_ => 
-        this.addFeatureMenu(_, consolidatedMenus, (_.menuTitlePath ?? '').split('|').filter(s => s)))
+      featureMenus.forEach(_ =>
+        this.addFeatureMenu(
+          _,
+          consolidatedMenus,
+          (_.menuTitlePath ?? '').split('|').filter(s => s),
+        ),
+      )
       this.consolidatedMenus = consolidatedMenus
     }
+
+    const signOutDivider: Menu = {
+      id: Guid.newGuid(),
+      title: '',
+      path: '',
+      isDivider: true,
+      horizontalAlignment: HorizontalAlignment.Right,
+    }
+    const signOutMenuItem: Menu = {
+      id: 'sign-out',
+      title: 'Sign Out',
+      isDivider: false,
+      ariaLabel: 'Sign Out',
+      path: '/sign-out',
+      icon: 'fa sign-out-alt',
+      horizontalAlignment: HorizontalAlignment.Right,
+    }
+    this.consolidatedMenus.push(...[signOutDivider, signOutMenuItem])
   }
 
-  private addFeatureMenu(
-    featureMenu: Menu & { menuTitlePath: string },
-    menus: Array<Menu>,
-    menuTitles: Array<string>,
-  ) {
+  private addFeatureMenu(featureMenu: Menu & { menuTitlePath: string }, menus: Array<Menu>, menuTitles: Array<string>) {
     // If no titles then add to the top level
     if (menuTitles.length === 0) {
       // Only add menu item if it doesn't exist
@@ -127,7 +105,13 @@ export default class TheHeader extends Vue {
     let matchingMenu = menus.find(_ => _.title.toLowerCase() === menuTitles[0].toLowerCase())
     // If there was no match for the title then add a placeholder menu
     if (!matchingMenu) {
-      matchingMenu = { id: Guid.newGuid(), title: menuTitles[0], path: '', items: [] }
+      matchingMenu = {
+        id: Guid.newGuid(),
+        title: menuTitles[0],
+        path: '',
+        items: [],
+        horizontalAlignment: featureMenu.horizontalAlignment,
+      }
       menus.push(matchingMenu)
     }
     // If this is the last menu title then add to the items or create items array
@@ -153,16 +137,11 @@ export default class TheHeader extends Vue {
 }
 </script>
 <style>
-.the-header__toolbar--size {
-  height: 36px;
-  border-bottom: 100px;
-}
-.the-header__img--layout {
-  vertical-align: middle;
+img.the-header__img--layout {
   max-height: 20px;
   max-width: 92px;
 }
-.the-header__img--clickable {
+img.the-header__img--clickable {
   cursor: pointer;
 }
 </style>
