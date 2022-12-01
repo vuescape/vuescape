@@ -1,12 +1,12 @@
 <template>
   <span>
-    <v-layout row style="height: 100%" class="navigation-menu__container">
-      <v-flex v-if="shouldShowRightSection" v-bind="{ [`lg${breakpoints}`]: true }">
+    <v-layout row style="height: 100%" class="navigation-menu__container hidden-sm-and-down">
+      <v-flex v-if="shouldShowLeftSection" v-bind="{ [`lg${breakpoints}`]: true }">
         <v-toolbar height="36" class="navigation-menu__toolbar--size" :style="toolbarStyle">
           <navigation-menu-item v-for="menu in leftMenuItems" :key="menu.id" :menu="menu"></navigation-menu-item>
         </v-toolbar>
       </v-flex>
-      <v-flex v-if="shouldShowRightSection" v-bind="{ [`lg${breakpoints}`]: true }">
+      <v-flex v-if="shouldShowCenterSection" v-bind="{ [`lg${breakpoints}`]: true }">
         <v-toolbar height="36" class="navigation-menu__toolbar--size" :style="toolbarStyle">
           <v-layout justify-center>
             <navigation-menu-item v-for="menu in centerMenuItems" :key="menu.id" :menu="menu"></navigation-menu-item>
@@ -20,7 +20,7 @@
         </v-toolbar>
       </v-flex>
     </v-layout>
-    <hamburger-menu :menus="menus"></hamburger-menu>
+    <hamburger-menu :menus="menus" :style="toolbarStyle" class="hidden-md-and-up"></hamburger-menu>
   </span>
 </template>
 
@@ -140,24 +140,6 @@ export default class NavigationMenu extends Vue {
     return 4
   }
 
-  public isSubItemActive(menu: Menu) {
-    if (!menu) {
-      return false
-    }
-
-console.info(this.$route.path)
-    const path = this.$route.path
-
-    if (!menu.items) {
-      return menu.path === path
-    }
-
-    // Current menu is only one level deep so only need to check items
-    // and not recurse/loop over entire hierarchy.
-    const isActive = menu.items.some(_ => path.startsWith(_.path))
-    return isActive
-  }
-
   @Watch('menus')
   private onMenusChanged(val: Array<Menu>, oldVal: Array<Menu>) {
     this.menusValue = val
@@ -175,10 +157,6 @@ console.info(this.$route.path)
     this.shouldShowHelp = false
   }
 
-  private async redirectAndSignOut() {
-    this.$router.push('/sign-out')
-  }
-
   private created() {
     this.menusValue = this.menus
     this.hasLeftNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
@@ -192,5 +170,9 @@ console.info(this.$route.path)
 .navigation-menu__toolbar--size {
   height: 36px;
   border-bottom: 100px;
+}
+.navigation-menu__container button.v-btn {
+  margin-left: 0;
+  margin-right: 0;
 }
 </style>

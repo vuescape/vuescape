@@ -1,6 +1,11 @@
 <template>
-  <span>
-    <v-divider v-if="menu.isDivider" class="mx-3 navigation-menu-item__divider--height" inset vertical></v-divider>
+  <span :class="{ 'navigation-menu-item__divider--height': menu.isDivider }">
+    <v-divider
+      v-if="menu.isDivider"
+      class="mx-3 navigation-menu-item__divider--height"
+      inset
+      vertical
+    ></v-divider>
     <v-menu
       content-class="navigation-menu__content"
       v-if="!menu.isDivider && menu.items"
@@ -17,7 +22,10 @@
         :class="[{ 'v-btn--active': isSubItemActive(menu) }, 'navigation-menu__v-btn--style']"
         :disabled="isSiteInMaintenanceMode"
       >
-        <span v-if="menu.prefixHtml" v-html="menu.prefixHtml"></span>
+        <span
+          v-if="menu.prefixHtml"
+          v-html="menu.prefixHtml"
+        ></span>
         <!-- <font-awesome-icon v-if="menu.icon" :icon="getIconArray(menu.icon)" class="navigation-menu__v-icon--layout" :style="{ color: '#555' }" /> -->
         <font-awesome-icon
           v-if="menu.icon"
@@ -25,11 +33,19 @@
           class="navigation-menu__v-icon--layout"
           :style="{ color: '#555' }"
         />&nbsp;{{ menu.title }} &nbsp;
-        <v-icon v-if="menu.items && menu.items.length" small color="#555" class="navigation-menu__v-icon--dropdown"
+        <v-icon
+          v-if="menu.items && menu.items.length"
+          small
+          color="#555"
+          class="navigation-menu__v-icon--dropdown"
           >fas fa-caret-down</v-icon
         >
       </v-btn>
-      <v-list class="navigation-menu__v-list--alignment" v-if="menu.items" light>
+      <v-list
+        class="navigation-menu__v-list--alignment"
+        v-if="menu.items"
+        light
+      >
         <v-list-tile
           class="navigation-menu__v-list-tile--font"
           :aria-label="menuItem.ariaLabel || menuItem.title"
@@ -41,58 +57,51 @@
         </v-list-tile>
       </v-list>
     </v-menu>
-    <v-btn
-      v-if="!menu.isDivider && !menu.items"
-      :key="menu.id"
-      flat
-      :class="['navigation-menu__v-btn--style', menu.cssClass]"
-      :title="menu.icon ? menu.title : ''"
-      :aria-label="menu.ariaLabel || menu.title"
-      :disabled="isSiteInMaintenanceMode"
-      @click="handleNavigation($event, menu)"
+    <div
+      v-if="menu.imageSrc"
+      :class="menu.cssClass"
     >
-      <font-awesome-icon
-        class="navigation-menu__v-icon--layout"
-        v-if="menu.icon"
-        :style="{ color: '#555' }"
-        :icon="getIconArray(menu.icon)"
+      <img
+        :id="menu.id"
+        :class="menu.cssClass"
+        :src="menu.imageSrc"
+        :alt="menu.ariaLabel || menu.title"
+        :title="menu.ariaLabel || menu.title"
+        :aria-label="menu.ariaLabel || menu.title"
+        @click="handleNavigation($event, menu)"
+        :disabled="isSiteInMaintenanceMode"
       />
-      <!-- <v-icon v-if="menu.icon" small class="navigation-menu__v-icon--layout">{{ menu.icon }}</v-icon> -->
-      &nbsp;{{ menu.title }}
-    </v-btn>
-    <!-- This is on the right -->
-    <!-- <v-toolbar-items v-if="isAuthenticated">
-          <v-divider class="mx-3" inset vertical></v-divider>
-          <v-btn
-            class="navigation-menu__v-btn--style"
-            aria-label="Sign Out"
-            flat
-            slot="activator"
-            navigation-menu__v-btn--style
-            :disabled="isSiteInMaintenanceMode"
-            @click.prevent="redirectAndSignOut"
-          >
-            <font-awesome-icon
-              class="navigation-menu__v-icon--layout"
-              :style="{ color: '#555' }"
-              :icon="['fa', 'sign-out-alt']"
-            />
-            &nbsp;Sign Out
-          </v-btn>
-        </v-toolbar-items> -->
-    <!-- TODO: This HACK prevents vuetify menu from going off the screen to the right. Do this properly.  -->
-    <!-- <div v-else style="width: 100px"></div> -->
+    </div>
+    <div v-else>
+      <v-btn
+        v-if="!menu.isDivider && !menu.items"
+        :key="menu.id"
+        flat
+        :class="['navigation-menu__v-btn--style', menu.cssClass, { 'v-btn--active': isItemActive(menu) }]"
+        :title="menu.icon ? menu.title : ''"
+        :aria-label="menu.ariaLabel || menu.title"
+        :disabled="isSiteInMaintenanceMode"
+        @click="handleNavigation($event, menu)"
+      >
+        <font-awesome-icon
+          class="navigation-menu__v-icon--layout"
+          v-if="menu.icon"
+          :style="{ color: '#555' }"
+          :icon="getIconArray(menu.icon)"
+        />
+        &nbsp;{{ menu.title }}
+      </v-btn>
+    </div>
   </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Action, Getter, namespace, State } from 'vuex-class'
+import { Component, Prop } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
 
-import { AppInfoModuleName, AppInfoOperation } from '@vuescape/store/modules/AppInfo'
-import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
+import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { Menu } from '@vuescape/types'
 
 const HamburgerMenu = () =>
@@ -133,9 +142,14 @@ export default class NavigationMenuItem extends Vue {
     return isActive
   }
 
+  public isItemActive(menu: Menu) {
+    const path = this.$route.path
+    const result = path.startsWith(menu?.path) || path.startsWith(menu?.pathIsActiveWhen!)
+    return result
+  }
+
   // Manually handle navigation
   private handleNavigation(e: MouseEvent, menuItem: Menu) {
-
     // If this menu item shouldn't fire the click event then stop propagation
     if (menuItem.shouldFireClickEvent === false) {
       e.stopPropagation()
