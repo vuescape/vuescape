@@ -2,11 +2,20 @@
   <div v-on="globalClickHandler ? { click: globalClickHandler } : {}">
     <resize-observer @notify="handleResize"></resize-observer>
     <v-app>
-      <transition name="app__component--transition" mode="out-in">
-        <the-header ref="theHeader" v-if="shouldDisplayHeader"></the-header>
+      <transition
+        name="app__component--transition"
+        mode="out-in"
+      >
+        <the-header
+          ref="theHeader"
+          v-if="shouldDisplayHeader"
+        ></the-header>
       </transition>
       <v-content class="app__content--height">
-        <div class="app__container--scroll" ref="appContainer">
+        <div
+          class="app__container--scroll"
+          ref="appContainer"
+        >
           <v-container fluid>
             <v-alert
               v-for="notification in notifications"
@@ -21,16 +30,30 @@
             >
               {{ notification.message }}
             </v-alert>
-            <component :is="navigationComponentValue"></component>
-            <transition name="app__component--transition" mode="out-in">
-              <router-view v-if="$route.meta && $route.meta.useNewInstance" :key="$route.path"></router-view>
+            <keep-alive>
+              <component :is="navigationComponentValue"></component>
+            </keep-alive>
+            <transition
+              name="app__component--transition"
+              mode="out-in"
+            >
+              <router-view
+                v-if="$route.meta && $route.meta.useNewInstance"
+                :key="$route.path"
+              ></router-view>
               <router-view v-else></router-view>
             </transition>
           </v-container>
         </div>
       </v-content>
       <download-snackbar></download-snackbar>
-      <v-footer fixed app ref="theFooter" :height="36" class="v-footer__layout--border">
+      <v-footer
+        fixed
+        app
+        ref="theFooter"
+        :height="36"
+        class="v-footer__layout--border"
+      >
         <component :is="footerComponent" />
       </v-footer>
     </v-app>
