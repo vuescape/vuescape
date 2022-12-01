@@ -11,11 +11,23 @@
     headerButtonCssDisplay="inline"
     slidingPaneHeaderPosition="static"
   >
-    <report-pane v-if="navigationReport" :style="divStyle" :reportNamespace="navigationNamespace" />
+    <report-pane
+      v-if="navigationReport"
+      :style="divStyle"
+      :reportNamespace="navigationNamespace"
+    />
     <div v-else></div>
-    <report-pane v-if="mainReport" :style="divStyle" :reportNamespace="mainNamespace" />
+    <report-pane
+      v-if="mainReport"
+      :style="divStyle"
+      :reportNamespace="mainNamespace"
+    />
     <div v-else></div>
-    <report-pane v-if="detailReport" :style="divStyle" :reportNamespace="detailNamespace" />
+    <report-pane
+      v-if="detailReport"
+      :style="divStyle"
+      :reportNamespace="detailNamespace"
+    />
   </SlidingPanes>
 </template>
 
@@ -146,7 +158,14 @@ export default class ReportPanes extends ComponentBase {
   private get detailReport() {
     const state = getModuleStateByKey(this.detailNamespace, this.$store)
     const result = state?.value
+    this.setPageTitle(result?.title)
     return result
+  }
+
+  private setPageTitle(title: string) {
+    if (document.title !== title) {
+      document.title = title
+    }
   }
 
   private handleSlidingPaneAction(value: any, oldValue: any, panes: any, properties?: any) {
@@ -164,7 +183,7 @@ export default class ReportPanes extends ComponentBase {
         .filter((i: any) => i.item.initialWidth === 0)
         .map((i: any) => i.index)[0]
 
-      if (!paneCollection.isPaneOpen(indexToOpen) && (properties && properties === indexToOpen)) {
+      if (!paneCollection.isPaneOpen(indexToOpen) && properties && properties === indexToOpen) {
         // TODO: handle all panes or at minimum left, center and right
         paneCollection.setWidths(...paneCollection.slidingPaneConfig.map((_: any) => _.postActionWidth))
       }
