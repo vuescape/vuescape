@@ -47,5 +47,6 @@ export class Axios {
     return this.axiosInstance
   }
 
-  private constructor() {}
+  private constructor() {
+  }
 }

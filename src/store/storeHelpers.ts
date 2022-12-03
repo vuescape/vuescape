@@ -27,6 +27,7 @@ export function getModuleStateByKey(stateKey: string, store: Store<any>): Module
     return moduleState
   }
 }
+
 export function getModuleState(namespace: string, key: string, store: Store<any>): ModuleState<any> | undefined {
   const stateKey = makeStateKey(namespace, key)
   return getModuleStateByKey(stateKey, store)
@@ -66,7 +67,8 @@ export const registerDynamicModule = <S, R>(
 ) => {
   if (!(store && store.state && (store.state as any)[namespace])) {
     console.log(`registering module: ${namespace}`)
-  } else {
+  }
+  else {
     // tslint:disable-next-line: semicolon
     store.commit(namespace, null)
     console.log(`reusing module: ${namespace}`)

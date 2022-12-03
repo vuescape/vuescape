@@ -2,7 +2,7 @@
   <v-card
     flat
     hover
-    style="border: 2px dashed #9BDDDB; text-align: center; height: 100%; text-align: center;"
+    style="border: 2px dashed #9bdddb; text-align: center; height: 100%; text-align: center;"
     :style="files.length === 0 ? 'cursor: pointer;' : 'cursor : unset;'"
     @click="files.length === 0 && $refs.fileInput.click()"
   >
@@ -115,14 +115,14 @@ export default class FileUpload extends Vue {
   background-color: #f5f5f5;
 }
 .file-upload__span--title {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1 !important;
+  font-size:      20px;
+  font-weight:    400;
+  line-height:    1 !important;
   letter-spacing: 0.02em !important;
 }
 .v-list__tile:hover {
   background-color: rgb(235, 248, 240);
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left:     16px;
+  padding-right:    16px;
 }
 </style>

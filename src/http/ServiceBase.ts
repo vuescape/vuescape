@@ -1,5 +1,6 @@
 import { AsyncAction, HttpAsyncAction, HttpMethod, makeHttpAsyncAction, usingRetryFor } from '.'
 import { RestPayloadStrategy } from './RestPayloadStrategy'
+
 export class ServiceBase<T> {
   protected endpoint: string
   protected baseUrl?: string

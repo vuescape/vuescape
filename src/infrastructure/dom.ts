@@ -10,11 +10,13 @@ export function selectElementContents(elementId: string) {
     try {
       range.selectNodeContents(element)
       sel.addRange(range)
-    } catch (e) {
+    }
+    catch (e) {
       range.selectNode(element)
       sel.addRange(range)
     }
-  } else if (body.createTextRange) {
+  }
+  else if (body.createTextRange) {
     range = body.createTextRange()
     range.moveToElementText(element)
     range.select()

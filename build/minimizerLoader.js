@@ -7,18 +7,18 @@ function getMinimizerLoaders() {
     process.env.NODE_ENV !== 'production'
       ? []
       : [
-          new UglifyJsPlugin({
-            cache: true,
-            parallel: true,
-            sourceMap: true, // set to true if you want JS source maps
-            uglifyOptions: {
-              compress: {
-                // pure_funcs: ['console.log'],
-              },
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true, // set to true if you want JS source maps
+          uglifyOptions: {
+            compress: {
+              // pure_funcs: ['console.log'],
             },
-          }),
-          new OptimizeCSSAssetsPlugin({}),
-        ]
+          },
+        }),
+        new OptimizeCSSAssetsPlugin({}),
+      ]
 
   return uglifyLoader
 }

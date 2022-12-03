@@ -1,4 +1,5 @@
 import { AsyncAction } from './AsyncAction'
+
 export function usingRetryFor<T>(
   asyncAction: AsyncAction<T>,
   retryDelay: number = 250,
@@ -11,7 +12,8 @@ export function usingRetryFor<T>(
         try {
           const result = await asyncAction(args)
           return result as T
-        } catch (error) {
+        }
+        catch (error) {
           if (retryNumber++ >= maxNumberOfRetries) {
             throw error
           }

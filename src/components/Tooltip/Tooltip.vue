@@ -158,19 +158,19 @@ export default class Tooltip extends ComponentBase {
 
 <style>
 .tooltip__v-card--title {
-  font-size: 17px;
-  font-weight: 400;
+  font-size:     17px;
+  font-weight:   400;
   padding-right: 8px;
   align-content: baseline;
 }
 .tooltop__title--font {
   font-weight: 500;
-  width: 90% !important;
+  width:       90% !important;
 }
 .tooltip__title--close {
   position: absolute;
-  right: 8px;
-  top: 4px;
+  right:    8px;
+  top:      4px;
 }
 .tooltip__icon--hover {
   color: #16a5c6 !important;

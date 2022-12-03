@@ -1,15 +1,15 @@
 <template>
   <div>
-    <vuescape-button :icons="icons" :isDisabled="isButtonDisabled" Depressed @click="click" :color="color" :data="data">
-      <slot> Download CSV </slot>
+    <vuescape-button :color="color" :data="data" :icons="icons" :isDisabled="isButtonDisabled" Depressed @click="click">
+      <slot> Download CSV</slot>
     </vuescape-button>
-    <v-snackbar color="primary" :timeout="10000" bottom right v-model="shouldShowDownloadCompleted">
+    <v-snackbar v-model="shouldShowDownloadCompleted" :timeout="10000" bottom color="primary" right>
       <font-awesome-icon :icon="['fad', 'check-circle']"></font-awesome-icon>&nbsp;&nbsp; Your file is downloading
-      <v-btn flat color="primary" @click="shouldShowDownloadCompleted = false">Close</v-btn>
+      <v-btn color="primary" flat @click="shouldShowDownloadCompleted = false">Close</v-btn>
     </v-snackbar>
-    <v-snackbar :timeout="10000" :bottom="true" :right="true" v-model="shouldShowDownloadCsvMessage">
+    <v-snackbar v-model="shouldShowDownloadCsvMessage" :bottom="true" :right="true" :timeout="10000">
       Your file is being prepared for download.
-      <v-btn flat color="primary" @click="shouldShowDownloadCsvMessage = false">Close</v-btn>
+      <v-btn color="primary" flat @click="shouldShowDownloadCsvMessage = false">Close</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -36,7 +36,10 @@ export default class DownloadFileButton extends Vue {
   @Prop({ default: 'primary' })
   private color: string
   // tslint:disable-next-line:no-empty
-  @Prop({ default: () => {} })
+  @Prop({
+    default: () => { /* no-op */
+    },
+  })
   private onClick: () => void
   @Prop()
   private data: string

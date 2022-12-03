@@ -72,10 +72,10 @@ export default class CardGrid extends ComponentBase {
 <style>
 .card-grid__resource--href {
   text-decoration: none;
-  overflow: hidden;
+  overflow:        hidden;
 }
 .card-grid__resource-image--response {
-  width: 100%;
+  width:  100%;
   height: auto;
 }
 .card-grid__resource-card--full-height {

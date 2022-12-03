@@ -16,7 +16,7 @@ export function selfLinkClickHandler(row: TreeTableRow, cell: TreeTableCell) {
       case LinkTarget.Download:
         // set state to download a file
         break
-        // TODO: Do we need a ModalApi and ModalText kind?
+      // TODO: Do we need a ModalApi and ModalText kind?
       case LinkTarget.Modal:
         // Set state to open a modal and retrieve source
         break

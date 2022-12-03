@@ -44,7 +44,7 @@ export default class DefaultCellRenderer extends ComponentBase {
 
 <style>
 span {
-  color: var(--tree-table__cell--font-color);
+  color:     var(--tree-table__cell--font-color);
   font-size: var(--tree-table__cell--font-size);
 }
 </style>

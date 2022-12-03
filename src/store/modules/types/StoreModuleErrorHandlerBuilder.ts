@@ -40,7 +40,8 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
         // This will cause the sign-in page to load with the current URL location as param since
         // there is no token to automatically sign in.
         document.location.reload()
-      } else if (status === 400) {
+      }
+      else if (status === 400) {
         const errorMessage: NotificationMessage = {
           key: Guid.newGuid(),
           type: NotificationType.Error,
@@ -49,7 +50,8 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
         this.context.commit(StoreOperation.Mutation.NotificationMutations.ADD, errorMessage, {
           root: this.shouldUseGlobalNotifications,
         })
-      } else {
+      }
+      else {
         const errorMessage: NotificationMessage = {
           key: Guid.newGuid(),
           type: NotificationType.Error,
@@ -59,7 +61,8 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
           root: this.shouldUseGlobalNotifications,
         })
       }
-    } else {
+    }
+    else {
       // We couldn't connect to the server to get a status code. Typically seen as a CORS issue
       // or if the server is down or potentially a client side network issue.
       // Add a message here instead of error.message being 'Network Error'

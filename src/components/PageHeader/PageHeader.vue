@@ -7,7 +7,7 @@
       class="page-header__header--separation"
     >
       <v-flex md8>
-        <span>{{title}}</span>
+        <span>{{ title }}</span>
       </v-flex>
     </v-layout>
     <slot></slot>
@@ -28,7 +28,6 @@ export default class PageHeader extends Vue {
 <style>
 .page-header__header--separation {
   margin-bottom: 10px;
-  font-size: 24px;
+  font-size:     24px;
 }
 </style>
-

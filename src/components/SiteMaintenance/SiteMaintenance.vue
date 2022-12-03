@@ -17,7 +17,7 @@
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0">We're Performing Some Maintenance Right Now</h3>
-            <div>{{sitePerformanceMaintenanceMessage}}</div>
+            <div>{{ sitePerformanceMaintenanceMessage }}</div>
           </div>
         </v-card-title>
       </v-card>
@@ -34,7 +34,7 @@
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0">We Are Back Online!</h3>
-            <div>{{sitePerformanceMaintenanceMessage}}</div>
+            <div>{{ sitePerformanceMaintenanceMessage }}</div>
           </div>
         </v-card-title>
       </v-card>
@@ -55,32 +55,32 @@ export default class SiteMaintenance extends Vue {
   private sitePerformanceMaintenanceMessage = ''
 
   @(namespace('siteMaintenance/configuration')
-  .State(
-    state => {
-      if (state && state.value) {
-        const siteMaintenanceConfiguration: any = state.value
-        return siteMaintenanceConfiguration || {}
-      }
-      return {}
-    },
-  ))
+    .State(
+      state => {
+        if (state && state.value) {
+          const siteMaintenanceConfiguration: any = state.value
+          return siteMaintenanceConfiguration || {}
+        }
+        return {}
+      },
+    ))
   private siteMaintenanceConfiguration: string
 
   @(namespace(AppInfoModuleName)
-  .State(
-    state => {
-      const isSiteInMaintenanceMode = state.asyncResult.status === 200 ? state.value.isSiteInMaintenanceMode : undefined
-      return isSiteInMaintenanceMode
-    },
-  ))
+    .State(
+      state => {
+        const isSiteInMaintenanceMode = state.asyncResult.status === 200 ? state.value.isSiteInMaintenanceMode : undefined
+        return isSiteInMaintenanceMode
+      },
+    ))
   private isSiteInMaintenanceMode?: boolean
 
   @(namespace(AppInfoModuleName)
-  .State(
-    state => {
-      return state.asyncResult.status === 200 ? state.value.siteMaintenanceMessage : undefined
-    },
-  ))
+    .State(
+      state => {
+        return state.asyncResult.status === 200 ? state.value.siteMaintenanceMessage : undefined
+      },
+    ))
   private siteMaintenanceMessage: string
 
   @Watch('isSiteInMaintenanceMode')
@@ -95,7 +95,8 @@ export default class SiteMaintenance extends Vue {
     ) {
       this.isPerformingMaintenance = this.isSiteInMaintenanceMode.toString()
       this.sitePerformanceMaintenanceMessage = this.siteMaintenanceMessage
-    } else if (this.isSiteInMaintenanceMode === false && this.wasPreviouslyPerformingMaintenance) {
+    }
+    else if (this.isSiteInMaintenanceMode === false && this.wasPreviouslyPerformingMaintenance) {
       this.isPerformingMaintenance = this.isSiteInMaintenanceMode.toString()
       this.sitePerformanceMaintenanceMessage = this.siteMaintenanceMessage
     }
@@ -132,10 +133,10 @@ export default class SiteMaintenance extends Vue {
 <style>
 .site-maintenance__card-div--constrain {
   overflow: hidden;
-  height: 200px;
+  height:   200px;
 }
 .site-maintenance__card-img--header {
   margin-top: -60px;
-  width: 100%;
+  width:      100%;
 }
 </style>

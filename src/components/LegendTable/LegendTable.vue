@@ -28,13 +28,13 @@
         <table class="legend-table__table--legend">
           <slot name="header">
             <thead>
-              <tr>
-                <td colspan="2">Legend</td>
-              </tr>
+            <tr>
+              <td colspan="2">Legend</td>
+            </tr>
             </thead>
           </slot>
           <tbody>
-            <slot></slot>
+          <slot></slot>
           </tbody>
         </table>
       </div>
@@ -55,52 +55,52 @@ export default class LegendTable extends Vue {
 <style>
 .legend-table__div--spaced {
   background: white;
-  padding: 10px;
+  padding:    10px;
 }
 .legend-table__font-awesome-icon--style {
-  color: #bbbbbb;
-  font-size: 14px;
-  margin-right: -0.5px;
+  color:         #bbbbbb;
+  font-size:     14px;
+  margin-right:  -0.5px;
   margin-bottom: 0.5px;
-  transform: scaleX(1.15);
+  transform:     scaleX(1.15);
 }
 .legend-table__v-btn--style {
-  border: 1px solid #dddddd !important;
-  border-radius: 5px;
-  height: 24px;
-  width: 24px;
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-top: 6px;
-  margin-right: 6px;
-  margin-bottom: -7px;
+  border:         1px solid #dddddd !important;
+  border-radius:  5px;
+  height:         24px;
+  width:          24px;
+  padding-left:   8px;
+  padding-right:  8px;
+  margin-top:     6px;
+  margin-right:   6px;
+  margin-bottom:  -7px;
   vertical-align: text-bottom;
 }
 table.legend-table__table--legend thead td {
-  border: 0px;
-  background-color: #16a5c6 !important;
-  color: #ffffff;
-  text-align: center;
-  height: 32px;
-  font-size: 13px;
-  font-weight: 500;
-  padding-right: 20px;
-  padding-left: 20px;
+  border:              0px;
+  background-color:    #16a5c6 !important;
+  color:               #ffffff;
+  text-align:          center;
+  height:              32px;
+  font-size:           13px;
+  font-weight:         500;
+  padding-right:       20px;
+  padding-left:        20px;
   border-bottom-color: rgb(85, 85, 85);
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
 table.legend-table__table--legend tbody td {
-  padding-left: 10px;
+  padding-left:  10px;
   padding-right: 10px;
 }
 table.legend-table__table--legend {
   border-collapse: collapse;
   /* font-family: 'Segoe UI'; */
-  padding: 10px;
+  padding:         10px;
 }
 table.legend-table__table--legend tr {
-  height: 28px;
+  height:    28px;
   min-width: 100px;
 }
 table.legend-table__table--legend tr:last-child {
@@ -109,22 +109,22 @@ table.legend-table__table--legend tr:last-child {
   border-bottom-width: 1px;
 }
 table.legend-table__table--legend thead td {
-  font-size: 13px;
-  border: 0px;
-  background-color: #16a5c6 !important;
-  color: #ffffff;
-  text-align: center;
-  height: 32px;
-  font-weight: 500;
-  padding-right: 20px;
-  padding-left: 20px;
+  font-size:           13px;
+  border:              0px;
+  background-color:    #16a5c6 !important;
+  color:               #ffffff;
+  text-align:          center;
+  height:              32px;
+  font-weight:         500;
+  padding-right:       20px;
+  padding-left:        20px;
   border-bottom-color: rgb(85, 85, 85);
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
 table.legend-table__table--legend tbody td {
-  padding-left: 10px;
+  padding-left:  10px;
   padding-right: 10px;
-  font-size: 13px;
+  font-size:     13px;
 }
 </style>

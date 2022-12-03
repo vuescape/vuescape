@@ -25,7 +25,8 @@
               color="black"
               :value="section.id"
               @click="changeSection"
-              >{{ section.name }}</v-btn
+            >{{ section.name }}
+            </v-btn
             >
           </v-btn-toggle>
         </v-flex>
@@ -78,7 +79,15 @@ import { namespace } from 'vuex-class'
 
 import { dispatchAndAwaitAction, getModuleStateByKey, registerStoreModule } from '@vuescape/store/storeHelpers'
 
-import { ComponentBase, decodeBase64String, Dictionary, downloadFile, HttpMethod, Section, toEnum } from '@vuescape/index'
+import {
+  ComponentBase,
+  decodeBase64String,
+  Dictionary,
+  downloadFile,
+  HttpMethod,
+  Section,
+  toEnum,
+} from '@vuescape/index'
 import { Link, PayloadEncodingKind, ResourceKind } from '@vuescape/reporting-domain'
 
 const DownloadMenu = () =>
@@ -247,7 +256,8 @@ export default class ReportPane extends ComponentBase {
     let shouldAddByteOrderMark = false
     if (resourceKind === ResourceKind.Excel) {
       filename = `${this.report.title}${fileDate}.xlsx`
-    } else if (resourceKind === ResourceKind.Csv) {
+    }
+    else if (resourceKind === ResourceKind.Csv) {
       filename = `${this.report.title}${fileDate}.csv`
       shouldAddByteOrderMark = true
     }
@@ -356,9 +366,9 @@ export default class ReportPane extends ComponentBase {
 <style>
 .report-pane__v-btn--active {
   background-color: #16a5c6 !important;
-  color: #ffffff !important;
-  opacity: 1 !important;
-  border-radius: 5px 5px 0 0 !important;
+  color:            #ffffff !important;
+  opacity:          1 !important;
+  border-radius:    5px 5px 0 0 !important;
 }
 .report-pane__v-btn--inactive {
   border-radius: 5px 5px 0 0 !important;
@@ -371,33 +381,33 @@ div.report-pane__container--layout div.v-btn-toggle button.v-btn:hover {
   background-color: rgba(22, 165, 198, 0.4);
 }
 .report-pane__container--layout {
-  padding-top: 10px;
-  overflow: hidden;
-  margin-left: 16px;
+  padding-top:  10px;
+  overflow:     hidden;
+  margin-left:  16px;
   margin-right: 16px;
 }
 .report-pane__span--additional-info {
-  font-size: 13px;
-  margin-top: 8px;
+  font-size:     13px;
+  margin-top:    8px;
   margin-bottom: 8px;
-  color: rgb(136, 136, 136) !important;
+  color:         rgb(136, 136, 136) !important;
 }
 .report-pane__header--title {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 40px;
+  font-size:     18px;
+  font-weight:   500;
+  line-height:   40px;
   margin-bottom: 10px;
 }
 .report-pane__container--layout .info--text.report-pane__v-alert--layout {
-  border-color: #9bdddb !important;
+  border-color:  #9bdddb !important;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top:    10px;
   margin-bottom: 10px;
-  margin-right: 6px;
-  text-align: center;
+  margin-right:  6px;
+  text-align:    center;
 }
 .report-pane__section--layout {
   white-space: nowrap;
-  margin-top: -10px;
+  margin-top:  -10px;
 }
 </style>

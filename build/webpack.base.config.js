@@ -9,7 +9,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const config = env => {
-  const packageDirectory = resolve(`.`) 
+  const packageDirectory = resolve(`.`)
 
   return {
     context: packageDirectory,
@@ -846,7 +846,7 @@ const config = env => {
     resolve: {
       extensions: ['.ts', '.js', '.vue', '.json'],
       alias: {
-        vue$: "vue/dist/vue.runtime.esm.js",
+        vue$: 'vue/dist/vue.runtime.esm.js',
         '@vuescape': path.join(packageDirectory, 'src'),
       },
     },

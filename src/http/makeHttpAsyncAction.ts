@@ -6,7 +6,7 @@ export function makeHttpAsyncAction<T>(
   endpoint: string,
   baseUrl?: string,
   shouldUseCache?: boolean,
-  restPayloadStrategy? : RestPayloadStrategy,
+  restPayloadStrategy?: RestPayloadStrategy,
 ) {
   const asyncAction: HttpAsyncAction<T> = (args: any) => {
     const httpService = new HttpService(baseUrl, shouldUseCache, restPayloadStrategy)

@@ -4,7 +4,7 @@ export interface Menu {
   // id should be a unique id such as a GUID
   id: string
   title: string
-  cssClass? : string
+  cssClass?: string
   ariaLabel?: string
   icon?: string
   path: string
@@ -14,7 +14,7 @@ export interface Menu {
   shouldFireClickEvent?: boolean
 
   // Set an image src
-  imageSrc? : string
+  imageSrc?: string
 
   // This is not used for navigation.
   // Override path to use if this item should be considered active

@@ -66,18 +66,20 @@ export default class TheFooter extends Vue {
 // Using less here to avoid compile error building test when this module uses CSS
 <style lang="less">
 .the-footer__logo--position {
-    position: absolute;
-    left: 50%;
-    width: 16px;
-    margin-left: -8px;
-    margin-top: 9.5px;
+  position: absolute;
+  left: 50%;
+  width: 16px;
+  margin-left: -8px;
+  margin-top: 9.5px;
 }
+
 .the-footer__copyright,
 .the-footer__links {
   margin-left: 0.2em;
   margin-right: 0.2em;
   margin-top: 7.5px;
 }
+
 .the-footer__styles {
   font-size: 0.90em;
   position: relative;
@@ -127,6 +129,7 @@ export default class TheFooter extends Vue {
 .container {
   margin-left: auto;
 }
+
 .the-footer__version--center {
   padding: 4px;
 }

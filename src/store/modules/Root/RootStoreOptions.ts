@@ -1,7 +1,6 @@
-import { ActionTree, MutationTree, StoreOptions } from 'vuex'
-
 import { NotificationOperation } from '@vuescape/store/Notification'
 import { RootState } from '@vuescape/store/RootState'
+import { ActionTree, MutationTree, StoreOptions } from 'vuex'
 
 import { StoreAction } from './StoreAction'
 import { StoreMutation } from './StoreMutation'
@@ -19,7 +18,7 @@ const actions: ActionTree<RootState, RootState> = {
 
 Object.assign(actions, notificationOperation.actions())
 
-const mutations: MutationTree<RootState> = {  
+const mutations: MutationTree<RootState> = {
   [StoreMutation.HAS_EXTERNAL_SESSIONS_INITIALIZED](currentState, hasExternalSessionsInitialized: boolean) {
     currentState.hasExternalSessionsInitialized = hasExternalSessionsInitialized
   },
@@ -40,11 +39,14 @@ const mutations: MutationTree<RootState> = {
         property.endsWith('/configuration')
       ) {
         // no-op
-      } else if (property === 'isAuthenticated') {
+      }
+      else if (property === 'isAuthenticated') {
         currentState.isAuthenticated = false
-      } else if (property === 'isSpinning') {
+      }
+      else if (property === 'isSpinning') {
         currentState.isSpinning = false
-      } else {
+      }
+      else {
         // TODO: formalize this reset into a module state mutation
         // tslint:disable-next-line:semicolon
         ;(currentState as any)[property] = {}

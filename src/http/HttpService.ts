@@ -23,7 +23,8 @@ export class HttpService {
   public invoke<T>(httpMethod: HttpMethod, endpoint: string, args?: {}) {
     if (httpMethod === HttpMethod.Get) {
       return this.get<T>(endpoint, args)
-    } else if (httpMethod === HttpMethod.Post) {
+    }
+    else if (httpMethod === HttpMethod.Post) {
       return this.post<T>(endpoint, args)
     }
 
@@ -72,7 +73,8 @@ export class HttpService {
     // tslint:disable-next-line: no-bitwise
     if ((this.restPayloadStrategy & RestPayloadStrategy.PostJson) === RestPayloadStrategy.PostJson) {
       formattedArgs = args
-    } else {
+    }
+    else {
       formattedArgs = qs.stringify(args, { arrayFormat: 'repeat' }) as any
     }
     const axiosConfig = {

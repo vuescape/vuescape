@@ -9,20 +9,25 @@ import milliseconds from 'mocha/lib/ms'
 
 export class NullFeatureService implements FeatureService {
   public async fetch(forceLoad?: boolean): Promise<void> {
-    // noop    
+    // noop
   }
+
   public async getFeatureNavigationRegistrations(): Promise<Array<FeatureNavigationRegistration>> {
     return []
   }
+
   public async getFeatures(): Promise<Array<Feature>> {
     return []
   }
+
   public async getFeature(featureId: string): Promise<Feature | undefined> {
     return undefined
   }
+
   public async getMenus(): Promise<(Array<Menu & { menuTitlePath: string }>)> {
     return []
   }
+
   public async getChiclets(router: VueRouter): Promise<Array<Chiclet>> {
     return []
   }

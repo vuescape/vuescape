@@ -9,6 +9,7 @@ export function tryToEnum<T>(
 
   return toEnum(enumType, enumString, shouldCapitalizeFirstCharacter)
 }
+
 export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirstCharacter = true): T[keyof T] {
   // Split to handle flags
   const enumStrings = enumString
@@ -23,7 +24,8 @@ export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirst
 
     if (result == null) {
       result = enumValue
-    } else {
+    }
+    else {
       // Add value if flags
       // tslint:disable-next-line: no-bitwise
       (result as any) |= enumValue as any

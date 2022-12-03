@@ -38,7 +38,7 @@
           small
           color="#555"
           class="navigation-menu__v-icon--dropdown"
-          >fas fa-caret-down</v-icon
+        >fas fa-caret-down</v-icon
         >
       </v-btn>
       <v-list
@@ -167,7 +167,7 @@ export default class NavigationMenuItem extends Vue {
 
 <style>
 div.navigation-menu__v-list--alignment a.v-list__tile {
-  height: 36px;
+  height:     36px;
   max-height: 36px;
 }
 
@@ -178,28 +178,28 @@ i.v-icon {
   font-weight: normal;
 }
 .navigation-menu__v-icon--dropdown {
-  font-size: 10px !important;
+  font-size:  10px !important;
   margin-top: 4px !important;
 }
 .navigation-menu__v-list-tile--font a div {
   font-size: 13px;
-  color: unset;
+  color:     unset;
 }
 .navigation-menu__v-list-tile--font a.v-list__tile--active div {
-  font-size: 13px;
+  font-size:   13px;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.87);
+  color:       rgba(0, 0, 0, 0.87);
 }
 .navigation-menu__v-btn--style {
   min-width: 64px;
   font-size: 13px;
-  height: 36px !important;
+  height:    36px !important;
 }
 .navigation-menu__v-icon--layout {
   margin-top: 2px;
 }
 .navigation-menu__v-list--alignment {
-  padding-top: 0;
+  padding-top:    0;
   padding-bottom: 0;
 }
 .navigation-menu__content.menuable__content__active {

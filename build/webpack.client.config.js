@@ -15,7 +15,7 @@ const base = require('./webpack.base.config')
 const clientConfig = env => {
   const packageDirectory = '.'
 
-  const outputPath = resolve( path.join(packageDirectory, 'dist'))
+  const outputPath = resolve(path.join(packageDirectory, 'dist'))
   console.info(outputPath)
   return {
     entry: {
@@ -25,7 +25,7 @@ const clientConfig = env => {
       path: outputPath,
       filename: 'vuescape.js',
       library: 'vuescape',
-      libraryTarget: 'umd'
+      libraryTarget: 'umd',
     },
     optimization: {
       minimizer: getMinimizerLoaders(),
@@ -55,8 +55,7 @@ const clientConfig = env => {
       new MiniCssExtractPlugin({
         filename: 'vuescape.css',
       }),
-      new CopyWebpackPlugin([
-      ]),
+      new CopyWebpackPlugin([]),
     ],
   }
 
@@ -68,7 +67,7 @@ const clientConfig = env => {
       }),
     )
   }
-  
+
   return config
 }
 

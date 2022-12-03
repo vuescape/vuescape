@@ -67,8 +67,8 @@ export default class SectionHeaderRowRenderer extends ComponentBase {
 .section-header-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
   /* margin-left: -2px; */
-  font-size: 9px;
+  font-size:     9px;
   margin-bottom: 1px;
-  width: 0.875em !important;
+  width:         0.875em !important;
 }
 </style>

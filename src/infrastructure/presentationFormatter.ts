@@ -129,18 +129,18 @@ export const toDateTimeDisplay = (value: any, emptyValue = '-') => {
   return isNaN(dateValue.getTime())
     ? emptyValue
     : dateValue.getMonth() +
-        1 +
-        '/' +
-        dateValue.getDate() +
-        '/' +
-        dateValue.getFullYear() +
-        ' ' +
-        hours +
-        ':' +
-        minutes +
-        // + ":" + seconds
-        ' ' +
-        amPm
+    1 +
+    '/' +
+    dateValue.getDate() +
+    '/' +
+    dateValue.getFullYear() +
+    ' ' +
+    hours +
+    ':' +
+    minutes +
+    // + ":" + seconds
+    ' ' +
+    amPm
 }
 
 export const toTextDisplay = (value: any, emptyDisplay = '-') => {

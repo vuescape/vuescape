@@ -21,7 +21,7 @@
             To load these updates we do require a refresh of the browser.
           </p>
           <p>
-            Click the Refresh Now button below to load the new features in version {{changedVersion}}.
+            Click the Refresh Now button below to load the new features in version {{ changedVersion }}.
           </p>
         </v-card-text>
 
@@ -80,7 +80,7 @@ export default class AppInfoPoller extends ComponentBase {
   }
 
   private reload() {
-    location.href='/'
+    location.href = '/'
   }
 
   @Watch('isSiteInMaintenanceMode')
@@ -99,5 +99,3 @@ export default class AppInfoPoller extends ComponentBase {
   color: white;
 }
 </style>
-
-    

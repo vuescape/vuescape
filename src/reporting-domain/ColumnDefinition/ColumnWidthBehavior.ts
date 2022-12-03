@@ -2,7 +2,7 @@
 export enum ColumnWidthBehavior {
   /** None. */
   None = 0,
-  
+
   /** Fit the cell width to the content. */
   DynamicallySizeToContent,
 

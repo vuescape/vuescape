@@ -12,7 +12,8 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
   private static defaultIsEmpty<T>(value: T) {
     if (value !== null && value !== undefined && (value as any).length === 0) {
       return true
-    } else if (
+    }
+    else if (
       typeof value !== 'string' &&
       value &&
       Object.keys(value).length === 0 &&
@@ -20,11 +21,14 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
     ) {
       // Empty object {} is also empty
       return true
-    } else if (value) {
+    }
+    else if (value) {
       return false
-    } else if (((value as unknown) as number) === 0) {
+    }
+    else if (((value as unknown) as number) === 0) {
       return false
-    } else if (((value as unknown) as string) === '') {
+    }
+    else if (((value as unknown) as string) === '') {
       return false
     }
     return true
@@ -53,17 +57,17 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
   public readonly errorHandlerBuilder: ErrorHandlerBuilder | undefined
 
   constructor({
-    asyncActions = {},
-    isEmpty = StoreModuleOptions.defaultIsEmpty,
-    mapToValue = StoreModuleOptions.identityMapper,
-    initialValue,
-    props,
-    spinnerDelay = 300,
-    isNamespaced = true,
-    shouldUseGlobalNotifications = false,
-    shouldUseGlobalSpinner = false,
-    errorHandlerBuilder = new StoreModuleErrorHandlerBuilder(),
-  }: {
+                asyncActions = {},
+                isEmpty = StoreModuleOptions.defaultIsEmpty,
+                mapToValue = StoreModuleOptions.identityMapper,
+                initialValue,
+                props,
+                spinnerDelay = 300,
+                isNamespaced = true,
+                shouldUseGlobalNotifications = false,
+                shouldUseGlobalSpinner = false,
+                errorHandlerBuilder = new StoreModuleErrorHandlerBuilder(),
+              }: {
     asyncActions?: Dictionary<AsyncAction<T> | HttpAsyncAction<T>>
     isEmpty?: IsEmptyFunction<T>
     mapToValue?: ValueMapper<T>

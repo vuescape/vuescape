@@ -4,5 +4,6 @@ export class StoreOperation {
   public static Action = StoreAction
   public static Mutation = StoreMutation
 
-  private constructor() {}
+  private constructor() {
+  }
 }

@@ -8,5 +8,6 @@ export class StoreAction {
 
 // Use namespace to simulate inner class on StoreAction to make NotificationActions easy to find
 export namespace StoreAction {
-  export class NotificationActions extends NotificationAction {}
+  export class NotificationActions extends NotificationAction {
+  }
 }

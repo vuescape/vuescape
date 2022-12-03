@@ -40,7 +40,8 @@ export default class DataTableRenderer extends Vue {
     this.headers.splice(0)
     if (this.columnHeaders && this.columnHeaders.length !== 0) {
       this.headers = this.columnHeaders
-    } else if (this.shouldAddSpacesToColumnHeaders) {
+    }
+    else if (this.shouldAddSpacesToColumnHeaders) {
       if (val && val.length > 0) {
         const firstItem = val[0]
         Object.keys(firstItem).forEach((key, index) => {
@@ -48,7 +49,8 @@ export default class DataTableRenderer extends Vue {
           this.headers.push({ text: inferredColumnHeading, value: key, align: 'left' })
         })
       }
-    } else {
+    }
+    else {
       if (val && val.length > 0) {
         const firstItem = val[0]
         Object.keys(firstItem).forEach((key, index) => {
@@ -61,6 +63,7 @@ export default class DataTableRenderer extends Vue {
   private capitalizeFirstCharacter(text: string) {
     return text.charAt(0).toUpperCase() + text.slice(1)
   }
+
   private sentenceFromCamelCase(text: string) {
     return text.replace(/([A-Z])/g, ' $1').slice(1)
   }

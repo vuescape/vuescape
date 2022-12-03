@@ -3,6 +3,6 @@ import { NavigationItemBase } from '@vuescape/types'
 
 export interface MenuNavigationItem extends NavigationItemBase {
   menuTitlePath: string
-  horizontalAlignment : HorizontalAlignment
+  horizontalAlignment: HorizontalAlignment
   shouldFireClickEvent?: boolean
 }

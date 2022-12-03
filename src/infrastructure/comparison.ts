@@ -47,7 +47,7 @@ export function makePropertyComparer(
   }
 
   if (sortComparisonStrategy === SortComparisonStrategy.Default) {
-    return (left: any, right: any) => {      
+    return (left: any, right: any) => {
       if (!left && !right) {
         return 0
       }

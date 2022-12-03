@@ -80,8 +80,8 @@
                       @click="() => navigateFromHamburgerMenu(menuItem.path)"
                     >
                       <v-list-tile-title :aria-label="menuItem.ariaLabel || menuItem.title">{{
-                        menuItem.title
-                      }}</v-list-tile-title>
+                          menuItem.title
+                        }}</v-list-tile-title>
                     </v-list-tile>
                   </v-list>
                 </div>
@@ -147,7 +147,7 @@ export default class HamburgerMenu extends Vue {
 .hamburger-menu__v-menu--size .v-expansion-panel .v-expansion-panel__container {
   border-top: 1px solid #9bdddb;
   /* height: 36px; */
-  font-size: 13px;
+  font-size:  13px;
 }
 .hamburger-menu__hamburger-menu__icon {
   font-size: 9px;
@@ -155,38 +155,38 @@ export default class HamburgerMenu extends Vue {
 
 .hamburger-menu__v-menu--size {
   min-width: 100% !important;
-  top: 37px !important;
-  left: 0 !important;
+  top:       37px !important;
+  left:      0 !important;
 }
 .hamburger-menu__hamburger-icon--layout {
-  color: #555;
+  color:      #555;
   margin-top: 14px;
-  cursor: pointer;
+  cursor:     pointer;
 }
 
 div.hamburger-menu__v-list--alignment a.v-list__tile {
-  height: 36px;
+  height:     36px;
   max-height: 36px;
 }
 
 .hamburger-menu__v-list-tile--font a div {
   font-size: 13px;
-  color: unset;
+  color:     unset;
 }
 .hamburger-menu__v-list-tile--font a.v-list__tile--active div {
-  font-size: 13px;
+  font-size:   13px;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.87);
+  color:       rgba(0, 0, 0, 0.87);
 }
 .hamburger-menu__v-list--alignment {
-  padding-top: 0;
+  padding-top:    0;
   padding-bottom: 0;
 }
 /* .menuable__content__active {
   max-height: 500px !important;
 } */
 .hamburger-menu__toolbar--size {
-  height: 36px;
+  height:        36px;
   border-bottom: 100px;
 }
 </style>

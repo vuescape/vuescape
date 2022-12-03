@@ -1,4 +1,4 @@
-import { NavigationItemBase } from "./NavigationItemBase"
+import { NavigationItemBase } from './NavigationItemBase'
 
 export interface FeatureNavigationRegistration {
   id: string

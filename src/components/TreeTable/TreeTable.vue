@@ -105,24 +105,31 @@ export default class TreeTable extends ComponentBase {
   private get shouldScrollVerticalValue() {
     return this.shouldScrollVertical
   }
+
   private get shouldScrollHorizontalValue() {
     return this.shouldScrollHorizontal
   }
+
   private get shouldSyncHeaderScrollValue() {
     return this.shouldSyncFooterScroll
   }
+
   private get shouldSyncFooterScrollValue() {
     return this.shouldSyncFooterScroll
   }
+
   private get shouldIncludeFooterValue() {
     return this.shouldIncludeFooter
   }
+
   private get deadAreaColorValue() {
     return this.deadAreaColor
   }
+
   private get maxRowsValue() {
     return this.maxRows
   }
+
   private get shouldFreezeFirstColumnValue() {
     return this.shouldFreezeFirstColumn
   }
@@ -138,12 +145,14 @@ export default class TreeTable extends ComponentBase {
       let newSortDirection = SortDirection.Ascending
       if (header.columnSorter.sortDirection === undefined || header.columnSorter.sortDirection === SortDirection.None) {
         newSortDirection = SortDirection.Ascending
-      } else if (
+      }
+      else if (
         header.columnSorter.sortDirection === SortDirection.Ascending ||
         header.columnSorter.sortDirection === SortDirection.Descending
       ) {
         newSortDirection = header.columnSorter.sortDirection * -1
-      } else {
+      }
+      else {
         throw new Error('Unsupported SortDirection: ' + header.columnSorter.sortDirection)
       }
       this.headers.forEach(_ =>
@@ -212,7 +221,7 @@ export default class TreeTable extends ComponentBase {
 <style>
 div.tree-table__div--box table.scrolling {
   border-collapse: separate;
-  border-spacing: 0;
+  border-spacing:  0;
 }
 div.tree-table__div--box .fixed-column {
   text-align: unset;
@@ -227,16 +236,16 @@ div.tree-table__div--box table.scrolling tr {
 div.tree-table__div--box table.scrolling tr.subheader {
   /* margin: -1px 0; */
   border-bottom: 1px solid #555555 !important;
-  border-top: 1px solid #555555 !important;
+  border-top:    1px solid #555555 !important;
 }
 div.tree-table__div--box table.scrolling td.subheader {
   background-color: #f8f8f8 !important;
   /* border-bottom: 1px solid #555555 !important;
   border-top: 1px solid #555555 !important;
   font-weight: 500; */
-  padding-left: 0.4em;
-  height: 33px;
-  vertical-align: middle;
+  padding-left:     0.4em;
+  height:           33px;
+  vertical-align:   middle;
 }
 div.tree-table__div--box table.scrolling tr td.focused-metric {
   background-color: rgb(235, 248, 240) !important;
@@ -249,11 +258,11 @@ div.tree-table__div--box table.scrolling td i.material-icons {
 }
 div.tree-table__div--box table.scrolling td,
 div.tree-table__div--box table.scrolling th {
-  border: 0px solid #ddd !important;
+  border:    0px solid #ddd !important;
   font-size: small;
 }
 div.tree-table__div--box table.scrolling td {
-  height: 31px;
+  height:         31px;
   vertical-align: middle;
 }
 div.tree-table__div--box table.scrolling thead.scrollsync {
@@ -261,12 +270,12 @@ div.tree-table__div--box table.scrolling thead.scrollsync {
   /* overflow-y: auto !important; Pushes header over scrollbar which causes misalignment of header and body when scroll bar is visible at the far right */
 }
 div.tree-table__div--box table.scrolling thead th {
-  border: 0px;
+  border:           0px;
   background-color: #16a5c6 !important;
-  color: #ffffff;
-  text-align: center;
-  height: 32px;
-  font-weight: 500;
+  color:            #ffffff;
+  text-align:       center;
+  height:           32px;
+  font-weight:      500;
 }
 div.tree-table__div--box table.scrolling td.cell--value--raw.subheader {
   border-left: 0 !important;
@@ -278,67 +287,67 @@ div.tree-table__div--box table.scrolling td.cell--value--grid-line {
   /* border-bottom: 1px solid #ddd!important; */
 }
 div.tree-table__div--box table.scrolling td.cell--value--raw {
-  width: 13em;
-  max-width: 13em;
-  min-width: 13em;
-  text-align: right;
+  width:         13em;
+  max-width:     13em;
+  min-width:     13em;
+  text-align:    right;
   padding-right: 6px;
-  padding-left: 4px;
-  border-left: 1px solid #ddd !important;
+  padding-left:  4px;
+  border-left:   1px solid #ddd !important;
 }
 div.tree-table__div--box table.scrolling td.cell--value--common {
-  width: 7em;
-  max-width: 7em;
-  min-width: 7em;
-  padding-left: 12px;
+  width:         7em;
+  max-width:     7em;
+  min-width:     7em;
+  padding-left:  12px;
   padding-right: 6px;
-  border-left: 0 !important;
-  text-align: center;
+  border-left:   0 !important;
+  text-align:    center;
 }
 div.tree-table__div--box table.scrolling td {
-  border: 0px;
-  white-space: nowrap !important;
-  border-left: 1px solid #dddddd;
-  border-right: 0;
-  border-top: 0;
+  border:        0px;
+  white-space:   nowrap !important;
+  border-left:   1px solid #dddddd;
+  border-right:  0;
+  border-top:    0;
   border-bottom: 0;
 }
 div.tree-table__div--box table.scrolling .w2 {
-  width: 20em;
+  width:     20em;
   min-width: 20em;
   max-width: 20em;
 }
 div.tree-table__div--box table.scrolling tfoot tr th {
-  width: 130em;
+  width:     130em;
   min-width: 130em;
   max-width: 130em;
 }
 div.tree-table__div--box table.freezeFirstColumn thead tr,
 div.tree-table__div--box table.freezeFirstColumn tbody tr {
   display: block;
-  width: min-content;
+  width:   min-content;
 }
 div.tree-table__div--box table.freezeFirstColumn thead td:first-child,
 div.tree-table__div--box table.freezeFirstColumn tbody td:first-child,
 div.tree-table__div--box table.freezeFirstColumn thead th:first-child,
 div.tree-table__div--box table.freezeFirstColumn tbody th:first-child {
-  position: sticky;
-  position: -webkit-sticky;
-  left: 0;
+  position:        sticky;
+  position:        -webkit-sticky;
+  left:            0;
   /* Need so that firefox will render border */
   background-clip: padding-box;
 }
 
 div.tree-table__div--box table.scrolling {
   background-color: white !important;
-  height: 100% !important;
+  height:           100% !important;
 }
 div.tree-table__div--box .tree-table__div--box {
-  clear: both;
-  padding: 0;
-  margin-left: auto;
+  clear:        both;
+  padding:      0;
+  margin-left:  auto;
   margin-right: auto;
-  overflow: hidden;
+  overflow:     hidden;
 }
 div.tree-table__div--box table.scrolling.scrollx tbody {
   overflow-x: auto !important;
@@ -349,21 +358,21 @@ div.tree-table__div--box table.scrolling.scrolly tbody {
 
 div.tree-table__div--box td.selected-metric-left {
   -webkit-box-shadow: inset 3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
-  -moz-box-shadow: inset 3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
-  box-shadow: inset 3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
+  -moz-box-shadow:    inset 3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
+  box-shadow:         inset 3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
 }
 
 div.tree-table__div--box td.selected-metric-right {
   -webkit-box-shadow: inset -3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
-  -moz-box-shadow: inset -3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
-  box-shadow: inset -3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
+  -moz-box-shadow:    inset -3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
+  box-shadow:         inset -3px 0 0px 0px #666, inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
   /* padding: 0px !important; */
 }
 
 div.tree-table__div--box td.selected-metric-interior {
   -webkit-box-shadow: inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
-  -moz-box-shadow: inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
-  box-shadow: inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
+  -moz-box-shadow:    inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
+  box-shadow:         inset 0 3px 0 0 #666, inset 0 -3px 0 0 #666;
   /* padding: 0px !important; */
 }
 

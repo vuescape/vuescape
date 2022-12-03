@@ -3,7 +3,7 @@ import { SortDirection, TreeTableHeaderCell, TreeTableHeaderRow } from '../TreeT
 export function getSortedHeaderCellWithIndex(headers: Array<TreeTableHeaderRow>) {
   let sortHeader: Array<{ cell: TreeTableHeaderCell; index: number }>
 
-  if (!headers || !headers.length)  {
+  if (!headers || !headers.length) {
     return
   }
 

@@ -1,23 +1,23 @@
 <script lang="ts">
-import Vue, { CreateElement } from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Action, namespace, State } from 'vuex-class'
+import { CreateElement } from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { StoreOperation } from '@vuescape/store/modules'
+
+import CloseIcon from 'mdi-vue/Close.vue'
+import FullscreenIcon from 'mdi-vue/Fullscreen.vue'
+import FullscreenExitIcon from 'mdi-vue/FullscreenExit.vue'
 
 import Splitpanes from 'splitpanes'
 
 import 'splitpanes/dist/splitpanes.css'
 
-import { SlidingPaneAction } from './SlidingPaneAction'
-import { SlidingPaneConfig } from './SlidingPaneConfig'
-
 import { EventType } from './EventType'
 
-import CloseIcon from 'mdi-vue/Close.vue'
-import FullscreenIcon from 'mdi-vue/Fullscreen.vue'
-import FullscreenExitIcon from 'mdi-vue/FullscreenExit.vue'
+import { SlidingPaneAction } from './SlidingPaneAction'
+import { SlidingPaneConfig } from './SlidingPaneConfig'
 
 @Component({
   components: { CloseIcon, FullscreenIcon, FullscreenExitIcon, Splitpanes },
@@ -122,7 +122,8 @@ export default class SlidingPanes extends ComponentBase {
     if (this.panes[index].width === 100) {
       this.doMaximizeOrRestorePane(index)
       this.closePane(index)
-    } else {
+    }
+    else {
       this.setWidth(index, 0, 0)
 
       const totalRemainingWidth = this.panes
@@ -233,7 +234,7 @@ export default class SlidingPanes extends ComponentBase {
       },
       // Wrap all provided slots (components to display in the pane will be in the slots)
       (this.$slots.default || new Array())
-        .filter(slot => slot.width !== 0)
+        .filter(slot => (slot as any).width !== 0)
         .map((slot: any, index: number) => this.wrapSlot(h, slot, index)),
     )
 
@@ -277,7 +278,8 @@ export default class SlidingPanes extends ComponentBase {
       if (this.slidingPaneConfig[index].singlePaneCssClass) {
         classes.push(this.slidingPaneConfig[index].singlePaneCssClass)
       }
-    } else {
+    }
+    else {
       if (this.slidingPaneConfig[index].multiplePaneCssClass) {
         classes.push(this.slidingPaneConfig[index].multiplePaneCssClass)
       }
@@ -349,7 +351,7 @@ export default class SlidingPanes extends ComponentBase {
     const el = this.$el
     const self = this
     // tslint:disable-next-line: only-arrow-functions
-    const onTransitionEnd = function () {
+    const onTransitionEnd = function() {
       self.setAvailableHeight([self.availableHeight[0]])
       // We only want to listen now...don't want to respond to all transitionend events
       el.removeEventListener('transitionend', onTransitionEnd)
@@ -366,7 +368,8 @@ export default class SlidingPanes extends ComponentBase {
           this.setWidth(i, this.panes[i].savedWidth)
         }
       }
-    } else {
+    }
+    else {
       for (let i = 0; i < this.panes.length; i++) {
         // Not sure this is 100% accurate since with multiple panes might not want to hide all?
         this.setWidth(i, i === index ? 100 : 0)
@@ -466,10 +469,10 @@ export default class SlidingPanes extends ComponentBase {
   background-color: #dddddd !important;
 }
 .sliding-panes__material-icons--large {
-  margin-top: 6px;
+  margin-top:   6px;
   margin-right: 6px;
-  font-size: 24px;
-  color: #555555;
+  font-size:    24px;
+  color:        #555555;
 }
 span.sliding-panes__material-icons--large > span {
   display: inline-flex;

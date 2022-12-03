@@ -11,6 +11,6 @@ export interface ColumnDefinition {
   /** The cell width. */
   width?: number
   /** The unit of measure for the width. */
-  widthUnitOfMeasure? : UnitOfMeasure
+  widthUnitOfMeasure?: UnitOfMeasure
   isFrozen: boolean
 }

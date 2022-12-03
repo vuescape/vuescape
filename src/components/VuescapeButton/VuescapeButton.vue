@@ -69,17 +69,17 @@ export default class VuescapeButton extends Vue {
 }
 .vuescape-button__v-btn--style {
   margin-bottom: 0;
-  font-size: 11px;
-  border-color: #dddddd !important;
+  font-size:     11px;
+  border-color:  #dddddd !important;
   /* margin-top: -4px; */
   border-radius: 5px;
-  height: 24px;
+  height:        24px;
 }
 .vuescape-button__v-icon--font {
   font-size: 15px;
 }
 .vuescape-button__v-btn--style.v-btn--disabled {
-  cursor: not-allowed;
+  cursor:         not-allowed;
   pointer-events: all;
 }
 .vuescape-button__v-btn--style.v-btn--disabled:hover:before {

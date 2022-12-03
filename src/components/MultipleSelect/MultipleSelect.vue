@@ -255,7 +255,8 @@ export default class MultipleSelect extends Vue {
       }
       if (shouldUpdateAsync) {
         setTimeout(updateAlignment, 100)
-      } else {
+      }
+      else {
         updateAlignment()
       }
     }
@@ -274,26 +275,27 @@ export default class MultipleSelect extends Vue {
 <style>
 .multiple-select__span--prefix {
   vertical-align: top;
-  padding-right: 0;
-  font-weight: 500;
-  display: inline-block;
-  line-height: 20px;
+  padding-right:  0;
+  font-weight:    500;
+  display:        inline-block;
+  line-height:    20px;
 }
 .multiselect__content-wrapper {
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+              0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 .multiselect {
   font-size: var(--custom-font-size);
-  width: fit-content;
+  width:     fit-content;
 }
 
-.multiselect__content-wrapper /*, .multiselect__element */ {
+.multiselect__content-wrapper /*, .multiselect__element */
+{
   width: fit-content;
 }
 
 .multiselect__option {
-  width: 100%;
+  width:     100%;
   font-size: var(--custom-font-size);
 }
 .multiple-select__span--prefix {
@@ -301,19 +303,19 @@ export default class MultipleSelect extends Vue {
 }
 .multiselect__option--selected.multiselect__option--highlight {
   background: rgba(0, 0, 0, 0.03);
-  color: unset;
+  color:      unset;
 }
 .multiselect__option--highlight {
   background: rgba(0, 0, 0, 0.03);
-  outline: none;
-  color: unset;
+  outline:    none;
+  color:      unset;
 }
 .multiselect__tags {
-  border: var(--border-style);
+  border:       var(--border-style);
   padding-left: 0;
 }
 .multiselect__single {
-  font-size: var(--custom-font-size);
+  font-size:   var(--custom-font-size);
   font-weight: 500;
 }
 .multiselect__input {
@@ -321,15 +323,15 @@ export default class MultipleSelect extends Vue {
 }
 .multiselect__tag {
   background-color: #dcdcdc !important;
-  color: rgba(0, 0, 0, 0.87);
+  color:            rgba(0, 0, 0, 0.87);
 }
 .multiselect__tag-icon {
   background-color: #dcdcdc !important;
-  color: rgba(0, 0, 0, 0.87);
+  color:            rgba(0, 0, 0, 0.87);
 }
 .multiselect__tags-wrap {
   padding-left: 10px;
-  display: inline-block;
+  display:      inline-block;
 }
 .multiselect__placeholder {
   padding-left: 10px;

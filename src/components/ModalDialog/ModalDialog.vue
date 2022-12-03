@@ -13,7 +13,8 @@
         <v-card-title
           v-if="titleValue"
           class="modal-dialog__dialog--title"
-        >{{ titleValue }} </v-card-title>
+        >{{ titleValue }}
+        </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
           <v-layout
@@ -45,7 +46,8 @@
             @click="onCancelClicked"
             class="modal-dialog__v-btn--cancel"
             flat
-          >{{ cancelButtonTextValue }} </v-btn>
+          >{{ cancelButtonTextValue }}
+          </v-btn>
           <vuescape-button
             v-if="shouldShowOKButtonValue"
             Depressed
@@ -122,7 +124,8 @@ export default class ModalDialog extends Vue {
     if (newValue !== oldValue) {
       if (newValue) {
         this.$emit('dialog-open')
-      } else {
+      }
+      else {
         this.$emit('dialog-close')
       }
     }
@@ -189,19 +192,19 @@ export default class ModalDialog extends Vue {
 
 <style>
 .modal-dialog__dialog--title {
-  font-size: 18px;
+  font-size:   18px;
   font-weight: 500;
 }
 .modal-dialog__v-btn--cancel {
   text-decoration: underline;
-  font-size: 16px;
-  height: 40px;
+  font-size:       16px;
+  height:          40px;
 }
 div.v-card__actions button.modal-dialog__v-btn--ok {
-  width: 50px;
-  height: 40px;
+  width:            50px;
+  height:           40px;
   background-color: #16a5c6 !important;
-  color: white !important;
-  font-size: 16px;
+  color:            white !important;
+  font-size:        16px;
 }
 </style>

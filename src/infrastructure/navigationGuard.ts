@@ -17,12 +17,14 @@ const authenticatedNavigationGuardImpl: any = (
     console.warn('User is not authenticated.  Need to authenticate.')
     // Sign in route is not defined in this sample
     next({ path: signInPath, query: { redirect: to.fullPath } })
-  } else if (
+  }
+  else if (
     doesRouteRequireAuthorization // && some other authorization checks
   ) {
     console.warn('User is not authorized.')
     next(false)
-  } else {
+  }
+  else {
     next()
   }
 }

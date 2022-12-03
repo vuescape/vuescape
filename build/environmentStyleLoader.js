@@ -5,15 +5,15 @@ function getEnvironmentStyleLoader() {
   const environmentStyleLoader =
     process.env.NODE_ENV !== 'production'
       ? {
-          loader: 'vue-style-loader',
-          options: {
-            sourceMap: false,
-            shadowMode: false,
-          },
-        }
+        loader: 'vue-style-loader',
+        options: {
+          sourceMap: false,
+          shadowMode: false,
+        },
+      }
       : {
-          loader: MiniCssExtractPlugin.loader,
-        }
+        loader: MiniCssExtractPlugin.loader,
+      }
 
   return environmentStyleLoader
 }

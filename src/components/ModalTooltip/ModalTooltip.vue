@@ -156,19 +156,19 @@ export default class Tooltip extends ComponentBase {
 .modal-tooltip__v-card--title {
   /* background-color: #16a5c6 !important;
   color: #ffffff; */
-  font-size: 17px;
-  font-weight: 400;
+  font-size:     17px;
+  font-weight:   400;
   padding-right: 8px;
   align-content: baseline;
 }
 .modal-tooltop__title--font {
   font-weight: 500;
-  width: 90% !important;
+  width:       90% !important;
 }
 .modal-tooltip__title--close {
   position: absolute;
-  right: 8px;
-  top: 4px;
+  right:    8px;
+  top:      4px;
 }
 .modal-tooltip__icon--hover {
   color: #16a5c6 !important;

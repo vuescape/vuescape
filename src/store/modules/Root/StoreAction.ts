@@ -8,5 +8,6 @@ export class StoreAction {
 }
 
 export namespace StoreAction {
-  export class NotificationActions extends NotificationAction {}
+  export class NotificationActions extends NotificationAction {
+  }
 }

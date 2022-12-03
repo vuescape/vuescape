@@ -219,30 +219,30 @@ export default class DateRangeSlider extends Vue {
 
 <style>
 .noUi-handle {
-  content: url('./handle.svg') !important;
-  height: 23px !important;
-  width: 6px !important;
-  top: 0.1px !important;
-  border: unset;
+  content:       url('./handle.svg') !important;
+  height:        23px !important;
+  width:         6px !important;
+  top:           0.1px !important;
+  border:        unset;
   border-radius: unset;
-  background: unset;
-  cursor: ew-resize;
-  box-shadow: unset;
-  background: unset;
+  background:    unset;
+  cursor:        ew-resize;
+  box-shadow:    unset;
+  background:    unset;
 }
 .noUi-value {
   font-weight: 400;
-  font-size: 12px;
-  margin-top: -7px !important;
-  color: rgba(0, 0, 0, 0.87) !important;
+  font-size:   12px;
+  margin-top:  -7px !important;
+  color:       rgba(0, 0, 0, 0.87) !important;
 }
 .noUi-horizontal {
   height: 24px;
 }
 .noUi-horizontal .noUi-handle {
-  top: 7px;
+  top:    7px;
   height: 10px;
-  color: rgba(0, 0, 0, 0.87);
+  color:  rgba(0, 0, 0, 0.87);
 }
 .noUi-handle::before {
   content: none;
@@ -257,27 +257,27 @@ export default class DateRangeSlider extends Vue {
   top: -8px; */
 }
 .noUi-connect {
-  cursor: grab !important;
+  cursor:     grab !important;
   background: rgba(0, 0, 0, 0.3) !important;
-  opacity: 0.25;
+  opacity:    0.25;
 }
 div.noUi-pips.noUi-pips-horizontal {
   padding: 0;
 }
 .noUi-pips-horizontal {
   margin-top: -23px;
-  font-size: x-small;
+  font-size:  x-small;
 }
 .noUi-marker-horizontal.noUi-marker {
-  height: 5.5px;
-  width: 0px;
+  height:      5.5px;
+  width:       0px;
   margin-left: -0.5px;
 }
 .noUi-handle-left {
   right: -6px !important;
 }
 .noUi-handle-right {
-  right: 0px !important;
+  right:        0px !important;
   margin-right: 0.5px;
 }
 .noUi-handle-0 {
@@ -301,19 +301,19 @@ div.noUi-pips.noUi-pips-horizontal {
   background-color: #38598b; /* rgba(52,188,0, 0.2); */
 }
 .noUi-target {
-  border-top: 1px solid rgba(0, 0, 0, 0.87);
-  border-bottom: unset;
-  border-right: unset;
-  border-left: unset;
-  border-radius: 0;
+  border-top:       1px solid rgba(0, 0, 0, 0.87);
+  border-bottom:    unset;
+  border-right:     unset;
+  border-left:      unset;
+  border-radius:    0;
   background-color: white;
-  box-shadow: unset;
+  box-shadow:       unset;
 }
 .noUi-base {
   color: rgba(0, 0, 0, 0.87);
 }
 .date-range-slider__div--margin {
   margin-right: 5px;
-  margin-left: 5px;
+  margin-left:  5px;
 }
 </style>

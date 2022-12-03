@@ -49,8 +49,8 @@
             v-else
             flat
             tile
-            :class="['chiclet-grid__v-card--hover', 
-            chiclet.cssClass, 
+            :class="['chiclet-grid__v-card--hover',
+            chiclet.cssClass,
             !chiclet.icons || !chiclet.icons.length ? 'chiclet-grid__title--center-vertical' : '' ]"
             :width="chicletWidth"
             :height="chicletHeight"
@@ -161,6 +161,7 @@ export default class ChicletGrid extends ComponentBase {
     }
     return results
   }
+
   private async mounted() {
     this.onAvailableHeightChanged([0], [0])
   }
@@ -176,36 +177,36 @@ export default class ChicletGrid extends ComponentBase {
   border: 2px solid rgb(173, 227, 239);
 }
 .chiclet-grid__container .chiclet-grid__v-card--hover {
-  border: 2px solid #eeeeee;
+  border:           2px solid #eeeeee;
   background-color: #eeeeee;
-  margin-top: -10px;
-  cursor: pointer;
-  border-radius: 20px;
+  margin-top:       -10px;
+  cursor:           pointer;
+  border-radius:    20px;
 }
 .chiclet-grid__chiclet--layout {
-  display: unset;
-  margin-left: 10px;
+  display:      unset;
+  margin-left:  10px;
   margin-right: 10px;
 }
 .chiclet-grid__title--inside {
-  font-weight: 500;
-  font-size: 16px;
+  font-weight:  500;
+  font-size:    16px;
   margin-right: 4px;
-  margin-left: 4px;
-  line-height: 20px;
+  margin-left:  4px;
+  line-height:  20px;
 }
 .chiclet-grid__span--title-under {
-  font-size: 15px;
+  font-size:   15px;
   font-weight: 500;
-  width: 160px;
-  max-width: 160px;
-  min-width: 160px;
-  display: block;
+  width:       160px;
+  max-width:   160px;
+  min-width:   160px;
+  display:     block;
 }
 .chiclet-grid__title--center-vertical {
-  display: flex;
+  display:         flex;
   justify-content: center;
-  align-content: center;
-  flex-direction: column;
+  align-content:   center;
+  flex-direction:  column;
 }
 </style>

@@ -4,5 +4,6 @@ export class UserProfileOperation {
   public static Action = StoreAction
   public static Mutation = {}
 
-  private constructor() {}
+  private constructor() {
+  }
 }

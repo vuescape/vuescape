@@ -2,7 +2,7 @@
 export enum ColumnWrapBehavior {
   /** None. */
   None = 0,
-  
+
   /** Wrap the contents of the cell. */
   Wrap,
 

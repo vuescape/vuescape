@@ -1,4 +1,4 @@
-import { Dictionary } from "@vuescape/types";
+import { Dictionary } from '@vuescape/types'
 
 export interface Step {
   component: object | (() => {})

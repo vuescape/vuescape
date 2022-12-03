@@ -2,7 +2,7 @@
   <span>
     {{ valueToDisplay }}
     <span v-if="header.columnSorter" @click="$emit('toggle-sort', header)"
-      >&nbsp;
+    >&nbsp;
       <font-awesome-icon
         :icon="getIconArray(header.columnSorter.sortDirection)"
         class=""

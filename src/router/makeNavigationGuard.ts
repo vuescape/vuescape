@@ -16,7 +16,8 @@ export const makeNavigationGuard = (
         onAuthorized(to, from)
       }
       next()
-    } else {
+    }
+    else {
       if (onNotAuthorized) {
         onNotAuthorized(to, from)
       }

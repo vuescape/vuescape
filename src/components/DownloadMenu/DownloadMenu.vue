@@ -17,7 +17,8 @@
         <v-icon
           small
           class="download-menu__v-icon--dropdown"
-        >fas fa-caret-down</v-icon>
+        >fas fa-caret-down
+        </v-icon>
       </v-btn>
     </template>
     <v-list class="download-menu__v-list--layout">
@@ -151,34 +152,34 @@ export default class DownloadMenu extends Vue {
 <style>
 .download-button__v-btn--style {
   margin-bottom: 0;
-  font-size: 11px;
-  border-color: #dddddd !important;
+  font-size:     11px;
+  border-color:  #dddddd !important;
   /* margin-top: -4px; */
   border-radius: 5px;
-  height: 24px;
+  height:        24px;
 }
 .download-button__v-icon--font {
   font-size: 15px;
   /* margin-top: -1px; */
 }
 .download-menu__v-icon--dropdown {
-  font-size: 10px !important;
+  font-size:  10px !important;
   margin-top: 2px !important;
 }
 .download-menu__v-list--layout {
-  padding-top: 0;
+  padding-top:    0;
   padding-bottom: 0;
 }
 div.download-menu__v-list--layout a.v-list__tile {
-  height: 24px;
+  height:     24px;
   max-height: 24px;
 }
 .download-menu__v-list-tile-action--layout {
   margin-left: -3.6px;
 }
 .download-menu__v-list-tile-content--layout {
-  font-size: 11px;
-  color: rgb(136, 136, 136);
+  font-size:   11px;
+  color:       rgb(136, 136, 136);
   margin-left: -35px;
 }
 </style>

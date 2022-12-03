@@ -190,7 +190,8 @@ export default class App extends ComponentBase {
     // identify/init here as well as in the watcher
     if (this.userProfileModuleValue) {
       this.trackingService.identifyUser(this.userProfileModuleValue)
-    } else {
+    }
+    else {
       // Even if no user email init so that any functionality will be available to users
       // even if not signed in (with an email)
       this.trackingService.initializeProvider()
@@ -235,18 +236,18 @@ div.v-menu__content.menuable__content__active {
 }
 .app__sliding-pane--single {
   padding-right: 1em;
-  padding-left: 1em;
-  margin-right: auto;
-  margin-left: auto;
+  padding-left:  1em;
+  margin-right:  auto;
+  margin-left:   auto;
 }
 .app__sliding-pane--multiple {
   padding-right: 0em;
-  padding-left: 0em;
-  margin-right: 0px;
-  margin-left: 10px;
+  padding-left:  0em;
+  margin-right:  0px;
+  margin-left:   10px;
 }
 div.container.fluid {
-  padding: 0 !important;
+  padding:  0 !important;
   overflow: hidden;
 }
 div.theme--light.application {
@@ -254,25 +255,25 @@ div.theme--light.application {
 }
 .v-select__selections {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  font-size: 16.8px !important;
+  font-size:   16.8px !important;
 }
 div.application {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .app__v-alert--margin {
-  margin-top: 1em;
+  margin-top:   1em;
   margin-right: 10px;
-  font-weight: 500;
+  font-weight:  500;
 }
 .app__content--height {
   max-height: 100vh !important;
-  padding: 0px 0px 36px !important;
+  padding:    0px 0px 36px !important;
 }
 .app__container--scroll {
-  height: 100%;
-  overflow-y: auto;
+  height:              100%;
+  overflow-y:          auto;
   backface-visibility: hidden;
-  margin-left: 8px;
+  margin-left:         8px;
 }
 .app__component--transition-enter-active,
 .app__component--transition-leave-active {
@@ -291,8 +292,8 @@ div.application {
 div.container {
   margin-left: 0;
 }
-/* Vuetify Datatables are setting overflow which breaks keeping the main content within the viewport (and causes) scrolling so 
- override the builtin in style here 
+/* Vuetify Datatables are setting overflow which breaks keeping the main content within the viewport (and causes) scrolling so
+ override the builtin in style here
    TODO : verify this is still true since new Vuetify version has been released. */
 .table__overflow {
   overflow-x: inherit !important;
@@ -305,7 +306,7 @@ html {
   overflow-y: hidden;
 }
 body {
-  color: #111111;
+  color:       #111111;
   line-height: 1.7em;
 }
 
@@ -318,7 +319,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 8px;
+  border-radius:    8px;
   background-color: #b4b4b4;
 }
 .complete {
@@ -333,20 +334,20 @@ body {
 }
 .status-passed {
   background-color: #b7eebc;
-  color: darkgreen !important;
+  color:            darkgreen !important;
 }
 .status-failed {
   background-color: #ffbbc0;
-  color: darkred !important;
+  color:            darkred !important;
 }
 table td.very-positive {
   background-color: #6ed071 !important;
-  color: darkgreen !important;
+  color:            darkgreen !important;
 }
 
 table td.positive {
   background-color: #b7eebc !important;
-  color: darkgreen !important;
+  color:            darkgreen !important;
 }
 
 table td.neutral {
@@ -355,12 +356,12 @@ table td.neutral {
 
 table td.negative {
   background-color: #ffbbc0 !important;
-  color: darkred !important;
+  color:            darkred !important;
 }
 
 table td.very-negative {
   background-color: #fb7072 !important;
-  color: darkred !important;
+  color:            darkred !important;
 }
 
 i.material-icons {
@@ -394,11 +395,11 @@ i.material-icons {
   display: none;
 }
 .app__container--scroll .el-loading-mask div.el-loading-spinner {
-  content: url('./thin-broken-ring-335.gif');
-  width: 42px;
+  content:  url('./thin-broken-ring-335.gif');
+  width:    42px;
   position: absolute;
-  left: calc(50% - 21px);
-  top: 50%;
+  left:     calc(50% - 21px);
+  top:      50%;
 }
 .app__container--scroll .el-loading-mask {
   background-color: rgba(255, 255, 255, 0);

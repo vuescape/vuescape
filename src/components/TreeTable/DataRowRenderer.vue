@@ -25,7 +25,7 @@
           ></component>
           <!-- style="vertical-align: text-top;margin-right: 4px;position: absolute; right: 0;" -->
         </span>
-        
+
         <span v-if="rowToDisplay.isExpandable">
           <font-awesome-icon
             v-if="rowToDisplay.isExpanded"
@@ -81,6 +81,7 @@ export default class DataRowRenderer extends ComponentBase {
       this.isHovering = true
     }
   }
+
   private onMouseLeave(cell: TreeTableCell) {
     if (cell.hover) {
       this.isHovering = false
@@ -111,10 +112,10 @@ export default class DataRowRenderer extends ComponentBase {
 <style>
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
-  margin-right: 4px;
+  margin-right:  4px;
   margin-bottom: 2px;
-  font-size: 9px;
-  width: 0.875em !important;
+  font-size:     9px;
+  width:         0.875em !important;
 }
 .data-row-renderer__animation-enter-active,
 .data-row-renderer__animation-leave-active {

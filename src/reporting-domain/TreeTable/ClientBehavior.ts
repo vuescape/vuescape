@@ -5,6 +5,6 @@ export class ClientBehavior {
   public static readonly SortTreeTableClientBehavior = 'SortTreeTableClientBehavior'
   public static readonly ToggleTreeTableChildRowExpansionClientBehavior =
     'ToggleTreeTableChildRowExpansionClientBehavior'
-  
+
   public name: string
 }

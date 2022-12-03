@@ -28,9 +28,9 @@ export class ApplicationBootstrapper {
   private rootComponentOptions: { el: string; componentName: string; rootComponent: VueConstructor<Vue>; props: any }
   private trackingService: TrackingService = new NullTrackingService()
   private featureService: FeatureService = new NullFeatureService()
-  private globalClickHandler: (e : MouseEvent) => void 
+  private globalClickHandler: (e: MouseEvent) => void
 
-  private navigationComponent?: VueConstructor<Vue> 
+  private navigationComponent?: VueConstructor<Vue>
 
   private initFunction = async () => {
     return
@@ -132,7 +132,7 @@ export class ApplicationBootstrapper {
     return this
   }
 
-  public withNavigationComponent(navigationComponent : VueConstructor<Vue>) {
+  public withNavigationComponent(navigationComponent: VueConstructor<Vue>) {
     this.navigationComponent = navigationComponent
     Vue.component(navigationComponent.name, navigationComponent)
     return this
@@ -161,7 +161,8 @@ export class ApplicationBootstrapper {
     const vuetifyOptions: any = { theme: this.vuetifyTheme }
     if (this.iconfont) {
       vuetifyOptions.iconfont = this.iconfont
-    } else {
+    }
+    else {
       vuetifyOptions.iconfont = 'faSvg'
     }
     Vue.use(Vuetify, vuetifyOptions)
@@ -195,7 +196,8 @@ export class ApplicationBootstrapper {
         render: (h: CreateElement) => h(this.rootComponentOptions.rootComponent),
         components: { [this.rootComponentOptions.componentName]: this.rootComponentOptions.rootComponent },
       })
-    } catch (error) {
+    }
+    catch (error) {
       const err = error as any
       if (err.response) {
         // The request was made and the server responded with a status code
@@ -203,12 +205,14 @@ export class ApplicationBootstrapper {
         console.error(err.response.data)
         console.error(err.response.status)
         console.error(err.response.headers)
-      } else if (err.request) {
+      }
+      else if (err.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
         console.error(err.request)
-      } else {
+      }
+      else {
         // Something happened in setting up the request that triggered an Error
         console.error('Error', err.message)
       }

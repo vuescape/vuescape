@@ -5,6 +5,6 @@ const route: RouteConfig = {
   name: 'not-found',
   component: () =>
     import(/* webpackChunkName: 'not-found' */
-    '@vuescape/components/NotFound').then(m => m.default),
+      '@vuescape/components/NotFound').then(m => m.default),
 }
 export default route

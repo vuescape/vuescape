@@ -122,10 +122,12 @@ export default class TheHeader extends ComponentBase {
         if (!matchingMenu.items.some(_ => _.id === featureMenu.id)) {
           matchingMenu.items.push(featureMenu)
         }
-      } else {
+      }
+      else {
         matchingMenu.items = [featureMenu]
       }
-    } else {
+    }
+    else {
       // Drill down into the next menu title to find where to add this featureMenu
       this.addFeatureMenu(featureMenu, matchingMenu.items!, menuTitles.slice(1))
     }
@@ -139,7 +141,7 @@ export default class TheHeader extends ComponentBase {
 <style>
 img.the-header__img--layout {
   max-height: 20px;
-  max-width: 92px;
+  max-width:  92px;
 }
 img.the-header__img--clickable {
   cursor: pointer;

@@ -64,6 +64,7 @@ export default class DataRowRenderer extends ComponentBase {
       this.isHovering = true
     }
   }
+
   private onMouseLeave(cell: TreeTableCell) {
     if (cell.hover) {
       this.isHovering = false
@@ -102,7 +103,8 @@ export default class DataRowRenderer extends ComponentBase {
 
     if (cell?.cellFormat?.backgroundHexColor) {
       result['--tree-table__cell--background-color'] = cell.cellFormat.backgroundHexColor
-    } else {
+    }
+    else {
       result['--tree-table__cell--background-color'] = '#fff'
     }
 
@@ -114,10 +116,10 @@ export default class DataRowRenderer extends ComponentBase {
 <style>
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
-  margin-right: 4px;
+  margin-right:  4px;
   margin-bottom: 1px;
-  font-size: 9px;
-  width: 0.875em !important;
+  font-size:     9px;
+  width:         0.875em !important;
 }
 .data-row-renderer__animation-enter-active,
 .data-row-renderer__animation-leave-active {

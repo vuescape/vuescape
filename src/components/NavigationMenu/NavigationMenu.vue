@@ -168,11 +168,11 @@ export default class NavigationMenu extends Vue {
 
 <style>
 .navigation-menu__toolbar--size {
-  height: 36px;
+  height:        36px;
   border-bottom: 100px;
 }
 .navigation-menu__container button.v-btn {
-  margin-left: 0;
+  margin-left:  0;
   margin-right: 0;
 }
 </style>

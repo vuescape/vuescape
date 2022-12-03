@@ -1,5 +1,5 @@
-import { ClientBehavior, TreeTableContent } from ".";
-import { ColumnDefinition } from "..";
+import { ClientBehavior, TreeTableContent } from '.'
+import { ColumnDefinition } from '..'
 
 export interface TreeTable {
   id: string

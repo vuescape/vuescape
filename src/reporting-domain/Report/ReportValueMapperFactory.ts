@@ -39,9 +39,9 @@ import {
 export class ReportValueMapperFactory {
   private reportValueMapperInstance: ValueMapper<Report | undefined>
   private clickHandlerInstance?: (row?: TreeTableRow, cell?: TreeTableCell) => void
-  private store? : Store<Report>
-  private namespacePrefix? : string
-  private baseUri? : string
+  private store?: Store<Report>
+  private namespacePrefix?: string
+  private baseUri?: string
 
   public constructor(
     // row?: TreeTableRow,
@@ -84,7 +84,7 @@ export class ReportValueMapperFactory {
       // this: ((row?: TreeTableRow, cell?: TreeTableCell) => void) | undefined,
       row?: TreeTableRow,
       cell?: TreeTableCell) => {
-      if (!cell?.links ||!cell.links[LinkName.Self.toLowerCase()]) {
+      if (!cell?.links || !cell.links[LinkName.Self.toLowerCase()]) {
         return undefined
       }
 
@@ -95,20 +95,20 @@ export class ReportValueMapperFactory {
         this.namespacePrefix,
         this.baseUri,
         this.clickHandlerInstance,
-        )
+      )
 
       if (this.store && this.namespacePrefix) {
         // TODO: set namespace based on target
         // TODO: ensure links exist and reference self
         let namespace = this.namespacePrefix
         if (selfLink.linkTarget === LinkTarget.CenterPane) {
-          namespace +=  '/' + PaneKind[PaneKind.Main].toLowerCase()
+          namespace += '/' + PaneKind[PaneKind.Main].toLowerCase()
         }
         else if (selfLink.linkTarget === LinkTarget.LeftPane) {
-          namespace +=  '/' + PaneKind[PaneKind.Navigation].toLowerCase()
+          namespace += '/' + PaneKind[PaneKind.Navigation].toLowerCase()
         }
         else if (selfLink.linkTarget === LinkTarget.RightPane) {
-          namespace +=  '/' + PaneKind[PaneKind.Detail].toLowerCase()
+          namespace += '/' + PaneKind[PaneKind.Detail].toLowerCase()
         }
         else {
           console.error('Unsupported LinkTarget: ' + selfLink.linkTarget.toString())
@@ -140,7 +140,7 @@ export class ReportValueMapperFactory {
   private processDownloadLinks(downloadLinks: Array<any>) {
     if (downloadLinks && downloadLinks.length > 0) {
       const mappedLinks = downloadLinks.map(_ => {
-        const link : Link = {
+        const link: Link = {
           source: _.source,
           linkTarget: toEnum(LinkTarget, _.linkTarget),
           resourceKind: toEnum(ResourceKind, _.resourceKind),
@@ -269,7 +269,8 @@ export class ReportValueMapperFactory {
         if (cell.hover.contentKind) {
           const contentKind = toEnum(HoverContentKind, cell.hover.contentKind.toString())
           cell.hover.contentKind = contentKind
-        } else {
+        }
+        else {
           cell.hover.contentKind = HoverContentKind.None
         }
         // Default to tooltip component. TODO: ensure tooltip name is correct and component loads.
@@ -301,7 +302,7 @@ export class ReportValueMapperFactory {
         const defaultSlotName = cell.slots.defaultSlotName
         if (cell.slots.slotNameToUiObjectMap[defaultSlotName]) {
           const uiObject = cell.slots.slotNameToUiObjectMap[defaultSlotName]
-          switch(uiObject.uiObjectType) {
+          switch (uiObject.uiObjectType) {
             case UiObjectType.Bool:
               break
             case UiObjectType.DateTime:

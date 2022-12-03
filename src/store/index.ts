@@ -8,6 +8,7 @@ export let store: Store<any>
 export function setStore(vuexStore: Store<any>) {
   store = vuexStore
 }
+
 export {
   dispatchActionAsync,
   dispatchAndAwaitAction,

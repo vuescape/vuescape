@@ -45,7 +45,8 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
   protected addActions(actions: ActionTree<S, R>) {
     if (this.actions) {
       Object.assign(this.actions, actions)
-    } else {
+    }
+    else {
       this.actions = actions
     }
   }
@@ -53,7 +54,8 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
   protected addMutations(mutations: MutationTree<S>) {
     if (this.mutations) {
       Object.assign(this.mutations, mutations)
-    } else {
+    }
+    else {
       this.mutations = mutations
     }
   }
@@ -61,7 +63,8 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
   protected addGetters(getters: GetterTree<S, R>) {
     if (this.getters) {
       Object.assign(this.getters, getters)
-    } else {
+    }
+    else {
       this.getters = getters
     }
   }
@@ -106,7 +109,8 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
       if (result.data !== undefined) {
         result = result.data
       }
-    } catch (error) {
+    }
+    catch (error) {
       const handleError = storeModuleOptions.errorHandlerBuilder!.build({
         context,
         shouldUseGlobalNotifications: moduleOptions.shouldUseGlobalNotifications,
@@ -121,7 +125,8 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
     }
     if (storeModuleOptions && storeModuleOptions.isEmpty && storeModuleOptions.isEmpty(result)) {
       context.commit(StoreOperation.Mutation.SET_EMPTY)
-    } else {
+    }
+    else {
       result = storeModuleOptions && storeModuleOptions.mapToValue ? storeModuleOptions.mapToValue(result) : result
       context.commit(StoreOperation.Mutation.SET_VALUE, result)
     }

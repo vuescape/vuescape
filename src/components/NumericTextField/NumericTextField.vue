@@ -171,7 +171,7 @@ export default class NumericTextField extends Vue {
 
     const regex = RegExp(/\.0{2,}$/g)
     let decimalMatches = result!.toString().match(regex)
-    
+
     while (decimalMatches && decimalMatches.length === 1) {
       result = result!.toString().replace(regex, '')
       decimalMatches = result!.toString().match(regex)
@@ -191,7 +191,8 @@ export default class NumericTextField extends Vue {
     const shouldAllowDecimal = this.formatOptions && this.formatOptions.shouldAllowDecimal
     if (shouldAllowDecimal && keyCode === DECIMAL) {
       // Allow decimal
-    } else if (keyCode < 48 || keyCode > 57) {
+    }
+    else if (keyCode < 48 || keyCode > 57) {
       // Disallow non-numeric
       e.preventDefault()
     }
@@ -209,7 +210,8 @@ export default class NumericTextField extends Vue {
     this.errorVal = errorMessages.length !== 0
     if (this.errorVal) {
       this.errorMessagesVal = errorMessages
-    } else {
+    }
+    else {
       this.errorMessagesVal.splice(0)
     }
   }
@@ -244,7 +246,8 @@ export default class NumericTextField extends Vue {
     const textField = (this.$refs[this.uniqueId] as unknown) as any
     if (isError) {
       setTimeout(() => textField.$el.classList.add('numeric-text-field__shake'), 1)
-    } else {
+    }
+    else {
       setTimeout(() => textField.$el.classList.remove('numeric-text-field__shake'), 1)
     }
     this.$emit('error-messages-changed', this.errorMessagesVal)
@@ -271,10 +274,12 @@ export default class NumericTextField extends Vue {
           characters[index + 1] !== '.'
         ) {
           hasFoundLeadingZero = true
-        } else {
+        }
+        else {
           result += character
         }
-      } else {
+      }
+      else {
         // Allowed characters other than integers
         if (character === '.' || (character === '-' && index === 0) || (character === '+' && index === 0)) {
           result += character
@@ -308,10 +313,10 @@ div.numeric-text-field__input--color div.v-input__control input {
   color: unset;
 }
 .numeric-text-field__shake {
-  animation: numeric-text-field__shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
+  animation:           numeric-text-field__shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform:           translate3d(0, 0, 0);
   backface-visibility: hidden;
-  perspective: 1000px;
+  perspective:         1000px;
 }
 @keyframes numeric-text-field__shake {
   10%,
