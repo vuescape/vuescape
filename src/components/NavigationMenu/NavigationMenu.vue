@@ -30,7 +30,7 @@ import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace, State } from 'vuex-class'
 
-import { HorizontalAlignment } from '@vuescape/reporting-domain'
+import { HorizontalAlignment } from '@vuescape/reporting-domain/TreeTable/HorizontalAlignment'
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 import { Menu } from '@vuescape/types'

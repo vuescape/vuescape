@@ -1,5 +1,5 @@
-import { NavigationItemBase } from './NavigationItemBase'
-import { HorizontalAlignment } from '@vuescape/reporting-domain'
+import { HorizontalAlignment } from '@vuescape/reporting-domain/TreeTable/HorizontalAlignment'
+import { NavigationItemBase } from '@vuescape/types'
 
 export interface MenuNavigationItem extends NavigationItemBase {
   menuTitlePath: string

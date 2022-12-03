@@ -15,7 +15,7 @@ import { FeatureService, Guid, Menu, MenuSources } from '@vuescape/types'
 
 import NavigationMenu from '@vuescape/components/NavigationMenu'
 import { ComponentBase } from '@vuescape/infrastructure'
-import { HorizontalAlignment } from '@vuescape/reporting-domain'
+import { HorizontalAlignment } from '@vuescape/reporting-domain/TreeTable/HorizontalAlignment'
 
 @Component({
   components: { NavigationMenu },

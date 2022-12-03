@@ -7,11 +7,15 @@ import {
   ColumnWidthBehavior,
   ColumnWrapBehavior,
   Guid,
+  HorizontalAlignment,
   HoverContentKind,
   HttpMethod,
   Link,
   LinkName,
   LinkTarget,
+  Report,
+  ResourceKind,
+  Section,
   SortComparisonStrategy,
   SortDirection,
   SortLevel,
@@ -22,6 +26,7 @@ import {
   TreeTableHeaderRow,
   TreeTableRow,
   tryToEnum,
+  UiObjectType,
   UnitOfMeasure,
 } from '@vuescape/index'
 
@@ -31,15 +36,12 @@ import {
   registerStoreModule,
 } from '@vuescape/store/storeHelpers'
 
-import { Report, Section } from '.'
-import { HorizontalAlignment, ResourceKind, UiObjectType } from '..'
-
 export class ReportValueMapperFactory {
   private reportValueMapperInstance: ValueMapper<Report | undefined>
   private clickHandlerInstance?: (row?: TreeTableRow, cell?: TreeTableCell) => void
   private store? : Store<Report>
-  private namespacePrefix? : string 
-  private baseUri? : string 
+  private namespacePrefix? : string
+  private baseUri? : string
 
   public constructor(
     // row?: TreeTableRow,
@@ -79,7 +81,7 @@ export class ReportValueMapperFactory {
 
   private getClickHandler() {
     const clickHandler = (
-      // this: ((row?: TreeTableRow, cell?: TreeTableCell) => void) | undefined, 
+      // this: ((row?: TreeTableRow, cell?: TreeTableCell) => void) | undefined,
       row?: TreeTableRow,
       cell?: TreeTableCell) => {
       if (!cell?.links ||!cell.links[LinkName.Self.toLowerCase()]) {
@@ -92,7 +94,7 @@ export class ReportValueMapperFactory {
         this.store,
         this.namespacePrefix,
         this.baseUri,
-        this.clickHandlerInstance, 
+        this.clickHandlerInstance,
         )
 
       if (this.store && this.namespacePrefix) {
@@ -138,12 +140,12 @@ export class ReportValueMapperFactory {
   private processDownloadLinks(downloadLinks: Array<any>) {
     if (downloadLinks && downloadLinks.length > 0) {
       const mappedLinks = downloadLinks.map(_ => {
-        const link : Link = { 
-          source: _.source, 
+        const link : Link = {
+          source: _.source,
           linkTarget: toEnum(LinkTarget, _.linkTarget),
           resourceKind: toEnum(ResourceKind, _.resourceKind),
           title: '',
-        }        
+        }
         return link
       })
       return mappedLinks
@@ -178,8 +180,8 @@ export class ReportValueMapperFactory {
   }
 
   private processTreeTable(
-    treeTable: any, 
-    clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void, 
+    treeTable: any,
+    clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
     isNavigation = false) {
     const result: any = {}
 
@@ -203,7 +205,7 @@ export class ReportValueMapperFactory {
     content.sortLevel = toEnum(SortLevel, content.sortLevel)
 
     // Set default values for navigation reports
-    if (isNavigation) {      
+    if (isNavigation) {
       content.cssClass += ' navigation-report'
     }
 
@@ -270,19 +272,19 @@ export class ReportValueMapperFactory {
         } else {
           cell.hover.contentKind = HoverContentKind.None
         }
-        // Default to tooltip component. TODO: ensure tooltip name is correct and component loads. 
+        // Default to tooltip component. TODO: ensure tooltip name is correct and component loads.
         // May need to pre-register?
         cell.hover.content = cell.hover.content || 'tooltip'
       }
 
       // wire up a clickhandler if there is a self link
-      // Note: in this case no click handlers will be wired up without a self link  
+      // Note: in this case no click handlers will be wired up without a self link
       if (clickHandler && cell.links && cell.links[LinkName.Self]) {
         cell.onclick = clickHandler
       }
 
       if (cell?.cellFormat?.horizontalAlignment) {
-        cell.cellFormat.horizontalAlignment = 
+        cell.cellFormat.horizontalAlignment =
           toEnum(HorizontalAlignment, cell?.cellFormat?.horizontalAlignment?.toString())
       }
 
@@ -324,7 +326,7 @@ export class ReportValueMapperFactory {
               break
             default:
               throw Error('Unsupported UiObjectType: ' + uiObject.uiObjectType)
-              break                                                                                            
+              break
           }
 
           cell.value = uiObject.value
@@ -345,11 +347,11 @@ export class ReportValueMapperFactory {
     }
 
     if (row.expandedSummaryRows && row.expandedSummaryRows.length > 0) {
-      row.expandedSummaryRows.forEach(expandedSummaryRow => 
+      row.expandedSummaryRows.forEach(expandedSummaryRow =>
         this.processRow(expandedSummaryRow, behaviors, clickHandler))
     }
     if (row.collapsedSummaryRows && row.collapsedSummaryRows.length > 0) {
-      row.collapsedSummaryRows.forEach(collapsedSummaryRow => 
+      row.collapsedSummaryRows.forEach(collapsedSummaryRow =>
         this.processRow(collapsedSummaryRow, behaviors, clickHandler))
     }
   }

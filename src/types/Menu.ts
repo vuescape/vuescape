@@ -1,4 +1,4 @@
-import { HorizontalAlignment } from "@vuescape/reporting-domain/TreeTable"
+import { HorizontalAlignment } from '@vuescape/reporting-domain/TreeTable/HorizontalAlignment'
 
 export interface Menu {
   // id should be a unique id such as a GUID
@@ -12,7 +12,7 @@ export interface Menu {
   isDivider?: boolean
   horizontalAlignment?: HorizontalAlignment
   shouldFireClickEvent?: boolean
-  
+
   // Set an image src
   imageSrc? : string
 
