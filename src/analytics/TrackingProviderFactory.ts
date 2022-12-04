@@ -20,6 +20,11 @@ export class TrackingProviderFactory {
       return googleUniversalAnalyticsTrackingProvider
     }
 
+    const nullTrackingProvider = new NullTrackingProvider()
+    if (name === nullTrackingProvider.name) {
+      return nullTrackingProvider
+    }
+
     throw new Error('Unsupported tracking provider name: ' + name)
   }
 }

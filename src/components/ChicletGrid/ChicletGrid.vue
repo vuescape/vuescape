@@ -101,9 +101,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import { namespace, State } from 'vuex-class'
+import { namespace } from 'vuex-class'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { Chiclet } from '@vuescape/types'

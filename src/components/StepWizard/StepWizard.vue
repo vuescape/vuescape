@@ -106,11 +106,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Step } from './Step'
 
 const VuescapeButton = () =>
   import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
-
-import { Step } from './Step'
 
 @Component({
   components: { VuescapeButton },

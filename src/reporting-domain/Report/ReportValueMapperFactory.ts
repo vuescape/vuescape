@@ -31,10 +31,7 @@ import {
 } from '@vuescape/index'
 
 import { ValueMapper } from '@vuescape/store/modules/types'
-import {
-  dispatchAndAwaitAction,
-  registerStoreModule,
-} from '@vuescape/store/storeHelpers'
+import { dispatchAndAwaitAction, registerStoreModule } from '@vuescape/store/storeHelpers'
 
 export class ReportValueMapperFactory {
   private reportValueMapperInstance: ValueMapper<Report | undefined>

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
 
-import { HttpAsyncAction, HttpMethod } from '@vuescape/http'
+import { HttpMethod } from '@vuescape/http'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { ns, StoreModuleState, ValueMapper } from '@vuescape/store/modules/types'
 

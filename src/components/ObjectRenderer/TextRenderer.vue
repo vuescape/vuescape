@@ -29,8 +29,6 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { RenderKind } from './RenderKind'
-
 @Component
 export default class TextRenderer extends Vue {
   @Prop() private item: Array<object>

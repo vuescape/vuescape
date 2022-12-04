@@ -46,12 +46,11 @@
   </span>
 </template>
 <script lang="ts">
-import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Action, namespace, State } from 'vuex-class'
+import { namespace, State } from 'vuex-class'
 
 import { ComponentBase, HoverContentKind, TreeTableCell } from '@vuescape/index'
-import { ModuleState, ns, StoreOperation } from '@vuescape/store/modules'
+import { ModuleState, StoreOperation } from '@vuescape/store/modules'
 
 @Component({})
 export default class Tooltip extends ComponentBase {

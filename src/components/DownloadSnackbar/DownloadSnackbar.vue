@@ -19,10 +19,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Action, Mutation, namespace, State } from 'vuex-class'
+import { Component } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
 
-import { ModuleState, ns, StoreMutation, StoreOperation, ValueMapper } from '@vuescape/store/modules/types'
+import { StoreOperation } from '@vuescape/store/modules/types'
 
 import { ComponentBase } from '@vuescape/index'
 

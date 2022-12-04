@@ -5,7 +5,6 @@ import { Chiclet, Menu } from '@vuescape/types'
 import { Feature } from '@vuescape/types/feature/Feature'
 import { FeatureNavigationRegistration } from '@vuescape/types/feature/FeatureNavigationRegistration'
 import { FeatureService } from '@vuescape/types/feature/FeatureService'
-import milliseconds from 'mocha/lib/ms'
 
 export class NullFeatureService implements FeatureService {
   public async fetch(forceLoad?: boolean): Promise<void> {

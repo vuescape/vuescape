@@ -10,7 +10,6 @@ import {
   ValueMapper,
 } from '@vuescape/store/modules'
 import { Dictionary } from '@vuescape/types'
-import { RootState } from '.'
 
 export function makeStateKey(namespace: string, key: string) {
   let prefix = ''

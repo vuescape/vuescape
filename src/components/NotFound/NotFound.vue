@@ -21,7 +21,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import { namespace, State } from 'vuex-class'
+import { namespace } from 'vuex-class'
 
 @Component
 export default class NotFound extends Vue {

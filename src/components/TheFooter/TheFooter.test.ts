@@ -3,10 +3,10 @@ import expect from 'expect'
 import Vuetify from 'vuetify'
 import Vuex from 'vuex'
 
-import { AppInfoModuleName, AppInfoOperation, AppInfoStore } from '@vuescape/store/modules/AppInfo'
+import { AppInfoModuleName, AppInfoStore } from '@vuescape/store/modules/AppInfo'
 import { rootStoreOptions } from '@vuescape/store/modules/Root'
 import { registerDynamicModule } from '@vuescape/store/storeHelpers'
-import { makeStoreModule, ns } from '@vuescape/store/modules/types'
+import { makeStoreModule } from '@vuescape/store/modules/types'
 
 import TheFooter from '.'
 

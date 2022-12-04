@@ -6,9 +6,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Action, State } from 'vuex-class'
 
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 
 import * as noUiSlider from 'nouislider'
 import 'nouislider/distribute/nouislider.css'

@@ -45,7 +45,7 @@ import { Prop } from 'vue-property-decorator'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
-import { TreeTableCell, TreeTableRow } from '@vuescape/index'
+import { TreeTableRow } from '@vuescape/index'
 
 @Component({})
 export default class SectionHeaderRowRenderer extends ComponentBase {

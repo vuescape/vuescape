@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Inject, Prop } from 'vue-property-decorator'
-import { Getter, namespace, State } from 'vuex-class'
+import { Component, Inject } from 'vue-property-decorator'
+import { Getter, namespace } from 'vuex-class'
 
 import { ns } from '@vuescape/store/modules/types'
 import { FeatureService, Guid, Menu, MenuSources } from '@vuescape/types'

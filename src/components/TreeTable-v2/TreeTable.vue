@@ -30,7 +30,7 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import VueScrollingTable from 'vue-scrolling-table'
-import { Action, namespace, State } from 'vuex-class'
+import { namespace } from 'vuex-class'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
@@ -39,7 +39,6 @@ import {
   getSortedHeaderCellWithIndex,
   Guid,
   makeTreeTableCellPropertyCompare,
-  ScrollBarDimension,
   SortDirection,
   TreeTableHeaderCell,
   TreeTableHeaderRow,

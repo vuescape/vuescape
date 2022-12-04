@@ -44,12 +44,11 @@
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
+import { Getter } from 'vuex-class'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
-import { AppInfoModuleName, AppInfoOperation, AppInfoStore } from '@vuescape/store/modules/AppInfo'
+import { AppInfoModuleName, AppInfoOperation } from '@vuescape/store/modules/AppInfo'
 import { ns } from '@vuescape/store/modules/types'
-import { AppInfo } from '@vuescape/types'
 
 @Component
 export default class AppInfoPoller extends ComponentBase {
