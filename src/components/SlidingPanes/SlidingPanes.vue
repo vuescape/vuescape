@@ -233,7 +233,7 @@ export default class SlidingPanes extends ComponentBase {
         },
       },
       // Wrap all provided slots (components to display in the pane will be in the slots)
-      (this.$slots.default || new Array())
+      (this.$slots.default || [])
         .filter(slot => (slot as any).width !== 0)
         .map((slot: any, index: number) => this.wrapSlot(h, slot, index)),
     )
