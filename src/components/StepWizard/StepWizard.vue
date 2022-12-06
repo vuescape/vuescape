@@ -394,9 +394,8 @@ export default class StepWizard extends Vue {
   position:            absolute;
   width:               calc(100% - 1rem - 4px);
   margin-left:         calc(0.5rem + 2px);
-  background:          linear-gradient(to right, #16a5c6 50%, #ccc 50%);
   background-size:     200% 100%;
-  background-position: right bottom;
+  background:          linear-gradient(to right, #16a5c6 50%, #ccc 50%) right bottom;
   transition:          all 600ms ease;
 }
 .step-wizard__stepper-box .top .steps-wrapper .step .circle {
@@ -461,10 +460,7 @@ export default class StepWizard extends Vue {
   right: calc(10vh);
 }
 .step-wizard__stepper-box .bottom .stepper-button {
-  padding-top:     0.5rem;
-  padding-bottom:  0.5rem;
-  padding-left:    0;
-  padding-right:   0;
+  padding:         0.5rem 0;
   display:         flex;
   align-items:     center;
   justify-content: space-between;
@@ -516,7 +512,6 @@ export default class StepWizard extends Vue {
   /* background-color: unset !important;
   color: unset!important; */
 }
-
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style svg {
   font-size: 20px;
 }
