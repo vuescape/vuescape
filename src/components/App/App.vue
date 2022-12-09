@@ -3,39 +3,37 @@
     <resize-observer @notify="handleResize"></resize-observer>
     <v-app>
       <transition
-        name="app__component--transition"
         mode="out-in"
+        name="app__component--transition"
       >
         <the-header
-          ref="theHeader"
           v-if="shouldDisplayHeader"
+          ref="theHeader"
         ></the-header>
       </transition>
       <v-content class="app__content--height">
         <div
-          class="app__container--scroll"
           ref="appContainer"
+          class="app__container--scroll"
         >
           <v-container fluid>
             <v-alert
               v-for="notification in notifications"
               :key="notification.key"
-              class="app__v-alert--margin"
-              transition="fade-transition"
-              :value="notification"
               :type="notification.type"
-              outline
+              :value="notification"
+              class="app__v-alert--margin"
               dismissible
+              outline
+              transition="fade-transition"
               @click="notificationClosed(notification.key)"
             >
               {{ notification.message }}
             </v-alert>
-            <keep-alive>
-              <component :is="navigationComponentValue"></component>
-            </keep-alive>
+            <component :is="navigationComponentValue"></component>
             <transition
-              name="app__component--transition"
               mode="out-in"
+              name="app__component--transition"
             >
               <router-view
                 v-if="$route.meta && $route.meta.useNewInstance"
@@ -50,18 +48,18 @@
       </v-content>
       <download-snackbar></download-snackbar>
       <v-footer
-        fixed
-        app
         ref="theFooter"
         :height="36"
+        app
         class="v-footer__layout--border"
+        fixed
       >
         <component :is="footerComponent" />
       </v-footer>
     </v-app>
     <component
-      v-if="appConfig && appConfig.value && appConfig.value.initializationComponent"
       :is="appConfig.value.initializationComponent"
+      v-if="appConfig && appConfig.value && appConfig.value.initializationComponent"
     />
     <app-info-poller></app-info-poller>
     <app-info-handler :siteMaintenanceRoutePath="siteMaintenanceRoutePath"></app-info-handler>
@@ -85,8 +83,8 @@ import AppInfoPoller from '@vuescape/components/AppInfoPoller'
 import TheFooter from '@vuescape/components/TheFooter'
 import TheHeader from '@vuescape/components/TheHeader'
 
-const DownloadSnackbar = () =>
-  import(/* webpackChunkName: 'download-snackbar' */ '@vuescape/components/DownloadSnackbar').then(m => m.default)
+const DownloadSnackbar = () => import(/* webpackChunkName: 'download-snackbar' */ '@vuescape/components/DownloadSnackbar').then(
+  m => m.default)
 
 @Component({
   components: { AppInfoHandler, AppInfoPoller, DownloadSnackbar, TheHeader, TheFooter },
@@ -94,63 +92,45 @@ const DownloadSnackbar = () =>
 export default class App extends ComponentBase {
   private userProfileModuleValue: string
 
-  @Inject('trackingService')
-  private trackingService: TrackingService
+  @Inject('trackingService') private trackingService: TrackingService
 
-  @Inject('navigationComponent')
-  private navigationComponent: Vue
+  @Inject('navigationComponent') private navigationComponent: Vue
 
-  @Inject('globalClickHandler')
-  private globalClickHandler: (e: MouseEvent) => void
+  @Inject('globalClickHandler') private globalClickHandler: (e: MouseEvent) => void
 
-  @Prop({ type: String, default: '/site-maintenance' })
-  private siteMaintenanceRoutePath: string
+  @Prop({ type: String, default: '/site-maintenance' }) private siteMaintenanceRoutePath: string
 
   @State private isAuthenticated: boolean
   @State private hasExternalSessionsInitialized: boolean
   @State private notifications: Array<NotificationMessage>
-  @Action(RootOperation.Action.NotificationActions.REMOVE)
-  private removeNotification: any
+  @Action(RootOperation.Action.NotificationActions.REMOVE) private removeNotification: any
 
-  @namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE)
-  private setAvailableHeight: (availableHeight: Array<number>) => void
+  @namespace('window/availableHeight')
+    .Mutation(StoreOperation.Mutation.SET_VALUE) private setAvailableHeight: (availableHeight: Array<number>) => void
 
-  @State('appConfig/configuration')
-  private appConfig: ModuleState<any>
+  @State('appConfig/configuration') private appConfig: ModuleState<any>
 
-  @State('theFooter/configuration')
-  private footerConfiguration: ModuleState<any>
+  @State('theFooter/configuration') private footerConfiguration: ModuleState<any>
 
-  @State(
-    (state: ModuleState<any>) => {
-      return state && state.value ? state.value : undefined
-    },
-    { namespace: UserProfileModuleName },
-  )
-  @namespace('theHeader/configuration').State(state => {
+  @State((state: ModuleState<any>) => {
+    return state && state.value ? state.value : undefined
+  }, { namespace: UserProfileModuleName }) @namespace('theHeader/configuration').State(state => {
     if (state && state.value) {
       const headerProps: any = state.value
       return headerProps
     }
-  })
-  private theHeaderProps: any
+  }) private theHeaderProps: any
 
   private get navigationComponentValue() {
     return this.navigationComponent
   }
 
   private get shouldDisplayHeader() {
-    return (
-      (this.isAuthenticated && this.hasExternalSessionsInitialized) || this.theHeaderProps?.shouldShowHeader === true
-    )
+    return ((this.isAuthenticated && this.hasExternalSessionsInitialized) || this.theHeaderProps?.shouldShowHeader === true)
   }
 
   private get footerComponent() {
-    if (
-      this.footerConfiguration &&
-      this.footerConfiguration.value &&
-      this.footerConfiguration.value.footerComponentOverride
-    ) {
+    if (this.footerConfiguration && this.footerConfiguration.value && this.footerConfiguration.value.footerComponentOverride) {
       return this.footerConfiguration.value.footerComponentOverride
     }
     return 'the-footer'
