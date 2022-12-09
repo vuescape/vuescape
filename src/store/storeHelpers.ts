@@ -2,12 +2,7 @@ import { Module, Store } from 'vuex'
 
 import { AsyncAction, HttpAsyncAction, HttpMethod, RestPayloadStrategy, RestService } from '@vuescape/http'
 import {
-  IsEmptyFunction,
-  makeStoreModule,
-  ModuleState,
-  StoreModule,
-  StoreModuleOptions,
-  ValueMapper,
+  IsEmptyFunction, makeStoreModule, ModuleState, StoreModule, StoreModuleOptions, StoreOperation, ValueMapper,
 } from '@vuescape/store/modules'
 import { Dictionary } from '@vuescape/types'
 
@@ -69,7 +64,7 @@ export const registerDynamicModule = <S, R>(
   }
   else {
     // tslint:disable-next-line: semicolon
-    store.commit(namespace, null)
+    store.commit(makeStateKey(namespace, StoreOperation.Mutation.SET_VALUE), null)
     console.log(`reusing module: ${namespace}`)
     if (shouldUnregister) {
       store.unregisterModule(namespace)
