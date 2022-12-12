@@ -1,15 +1,43 @@
 <template>
   <div>
-    <vuescape-button :color="color" :data="data" :icons="icons" :isDisabled="isButtonDisabled" Depressed @click="click">
+    <vuescape-button
+      :color="color"
+      :data="data"
+      :icons="icons"
+      :isDisabled="isButtonDisabled"
+      Depressed
+      @click="click"
+    >
       <slot> Download CSV</slot>
     </vuescape-button>
-    <v-snackbar v-model="shouldShowDownloadCompleted" :timeout="10000" bottom color="primary" right>
+    <v-snackbar
+      v-model="shouldShowDownloadCompleted"
+      :timeout="10000"
+      bottom
+      color="primary"
+      right
+    >
       <font-awesome-icon :icon="['fad', 'check-circle']"></font-awesome-icon>&nbsp;&nbsp; Your file is downloading
-      <v-btn color="primary" flat @click="shouldShowDownloadCompleted = false">Close</v-btn>
+      <v-btn
+        color="primary"
+        flat
+        @click="shouldShowDownloadCompleted = false"
+      >Close
+      </v-btn>
     </v-snackbar>
-    <v-snackbar v-model="shouldShowDownloadCsvMessage" :bottom="true" :right="true" :timeout="10000">
+    <v-snackbar
+      v-model="shouldShowDownloadCsvMessage"
+      :bottom="true"
+      :right="true"
+      :timeout="10000"
+    >
       Your file is being prepared for download.
-      <v-btn color="primary" flat @click="shouldShowDownloadCsvMessage = false">Close</v-btn>
+      <v-btn
+        color="primary"
+        flat
+        @click="shouldShowDownloadCsvMessage = false"
+      >Close
+      </v-btn>
     </v-snackbar>
   </div>
 </template>

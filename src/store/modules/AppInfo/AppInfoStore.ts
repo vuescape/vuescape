@@ -1,6 +1,4 @@
 // A bit hacky to import store here but can't perform any operations on class before calling super()
-import { store } from '@vuescape/store'
-
 import { GetterTree } from 'vuex'
 
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'

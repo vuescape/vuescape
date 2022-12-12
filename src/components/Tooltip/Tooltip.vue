@@ -48,7 +48,11 @@
           </v-card-title>
           <v-card-text>
             <span v-if="contentKind === plaintextContentKind">{{ content }} </span>
-            <span v-else v-html="content" ref="hoverHtml"></span>
+            <span
+              v-else
+              v-html="content"
+              ref="hoverHtml"
+            ></span>
           </v-card-text>
         </v-card>
       </v-menu>

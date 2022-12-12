@@ -6,8 +6,19 @@
     :style="files.length === 0 ? 'cursor: pointer;' : 'cursor : unset;'"
     @click="files.length === 0 && $refs.fileInput.click()"
   >
-    <input accept=".xlsx" ref="fileInput" style="display: none;" type="file" multiple @change="filesChanged" />
-    <div v-if="files.length === 0" @drop.prevent="dropFiles" @dragover.prevent>
+    <input
+      accept=".xlsx"
+      ref="fileInput"
+      style="display: none;"
+      type="file"
+      multiple
+      @change="filesChanged"
+    />
+    <div
+      v-if="files.length === 0"
+      @drop.prevent="dropFiles"
+      @dragover.prevent
+    >
       <v-card-title style="display: inline-block;">
         <span class="file-upload__span--title">Drag and drop or click to choose your Excel survey file.</span>
       </v-card-title>
@@ -19,12 +30,19 @@
         />
       </v-card-text>
     </div>
-    <div v-if="files.length > 0" style="cursor: unset;" @click.prevent.stop="">
+    <div
+      v-if="files.length > 0"
+      style="cursor: unset;"
+      @click.prevent.stop=""
+    >
       <v-layout row>
         <v-flex xs12>&nbsp;</v-flex>
       </v-layout>
       <v-list>
-        <v-list-tile v-for="file in files" :key="file.name">
+        <v-list-tile
+          v-for="file in files"
+          :key="file.name"
+        >
           <v-list-tile-action>
             <font-awesome-icon
               :icon="['fad', 'file-excel']"
@@ -36,7 +54,10 @@
             <v-list-tile-title v-text="file.name"></v-list-tile-title>
           </v-list-tile-content>
           <v-list-tile-avatar>
-            <span style="cursor: pointer;" @click.stop="remove(file.name)">
+            <span
+              style="cursor: pointer;"
+              @click.stop="remove(file.name)"
+            >
               <font-awesome-icon
                 :icon="['fal', 'times-square']"
                 class="vuescape-button__v-icon--font file-upload__close"

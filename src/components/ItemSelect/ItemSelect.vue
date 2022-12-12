@@ -10,11 +10,20 @@
   >
     <!-- https://stackoverflow.com/questions/50891858/vue-how-to-pass-down-slots-inside-wrapper-component -->
     <!-- Pass on all named slots -->
-    <slot v-for="slot in Object.keys($slots)" :name="slot" :slot="slot" />
+    <slot
+      v-for="slot in Object.keys($slots)"
+      :name="slot"
+      :slot="slot"
+    />
     <!-- Pass on all scoped slots -->
-    <template v-for="slot in Object.keys($scopedSlots)" :slot="slot" slot-scope="scope"
+    <template
+      v-for="slot in Object.keys($scopedSlots)"
+      :slot="slot"
+      slot-scope="scope"
     >
-      <slot :name="slot" v-bind="scope"
+      <slot
+        :name="slot"
+        v-bind="scope"
       />
     </template>
   </v-autocomplete>

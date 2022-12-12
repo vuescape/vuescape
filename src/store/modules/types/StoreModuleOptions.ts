@@ -57,17 +57,17 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
   public readonly errorHandlerBuilder: ErrorHandlerBuilder | undefined
 
   constructor({
-                asyncActions = {},
-                isEmpty = StoreModuleOptions.defaultIsEmpty,
-                mapToValue = StoreModuleOptions.identityMapper,
-                initialValue,
-                props,
-                spinnerDelay = 300,
-                isNamespaced = true,
-                shouldUseGlobalNotifications = false,
-                shouldUseGlobalSpinner = false,
-                errorHandlerBuilder = new StoreModuleErrorHandlerBuilder(),
-              }: {
+    asyncActions = {},
+    isEmpty = StoreModuleOptions.defaultIsEmpty,
+    mapToValue = StoreModuleOptions.identityMapper,
+    initialValue,
+    props,
+    spinnerDelay = 300,
+    isNamespaced = true,
+    shouldUseGlobalNotifications = false,
+    shouldUseGlobalSpinner = false,
+    errorHandlerBuilder = new StoreModuleErrorHandlerBuilder(),
+  }: {
     asyncActions?: Dictionary<AsyncAction<T> | HttpAsyncAction<T>>
     isEmpty?: IsEmptyFunction<T>
     mapToValue?: ValueMapper<T>

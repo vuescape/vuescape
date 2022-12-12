@@ -80,7 +80,8 @@ export class ReportValueMapperFactory {
     const clickHandler = (
       // this: ((row?: TreeTableRow, cell?: TreeTableCell) => void) | undefined,
       row?: TreeTableRow,
-      cell?: TreeTableCell) => {
+      cell?: TreeTableCell,
+    ) => {
       if (!cell?.links || !cell.links[LinkName.Self.toLowerCase()]) {
         return undefined
       }
@@ -152,7 +153,8 @@ export class ReportValueMapperFactory {
   private processSections(
     sections: any,
     clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
-    isNavigation = false) {
+    isNavigation = false,
+  ) {
     if (sections && sections.length !== 0) {
       const result = sections.map((section: any) => this.processSection(section, clickHandler, isNavigation))
       return result
@@ -164,7 +166,8 @@ export class ReportValueMapperFactory {
   private processSection(
     section: any,
     clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
-    isNavigation = false) {
+    isNavigation = false,
+  ) {
 
     const result: Section = {
       id: section.id,
@@ -179,7 +182,8 @@ export class ReportValueMapperFactory {
   private processTreeTable(
     treeTable: any,
     clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
-    isNavigation = false) {
+    isNavigation = false,
+  ) {
     const result: any = {}
 
     const content = treeTable.content

@@ -1,26 +1,67 @@
 <template>
   <span>
-    <v-layout row style="height: 100%" class="navigation-menu__container hidden-sm-and-down">
-      <v-flex v-if="shouldShowLeftSection" v-bind="{ [`lg${breakpoints}`]: true }">
-        <v-toolbar height="36" class="navigation-menu__toolbar--size" :style="toolbarStyle">
-          <navigation-menu-item v-for="menu in leftMenuItems" :key="menu.id" :menu="menu"></navigation-menu-item>
+    <v-layout
+      row
+      style="height: 100%"
+      class="navigation-menu__container hidden-sm-and-down"
+    >
+      <v-flex
+        v-if="shouldShowLeftSection"
+        v-bind="{ [`lg${breakpoints}`]: true }"
+      >
+        <v-toolbar
+          height="36"
+          class="navigation-menu__toolbar--size"
+          :style="toolbarStyle"
+        >
+          <navigation-menu-item
+            v-for="menu in leftMenuItems"
+            :key="menu.id"
+            :menu="menu"
+          ></navigation-menu-item>
         </v-toolbar>
       </v-flex>
-      <v-flex v-if="shouldShowCenterSection" v-bind="{ [`lg${breakpoints}`]: true }">
-        <v-toolbar height="36" class="navigation-menu__toolbar--size" :style="toolbarStyle">
+      <v-flex
+        v-if="shouldShowCenterSection"
+        v-bind="{ [`lg${breakpoints}`]: true }"
+      >
+        <v-toolbar
+          height="36"
+          class="navigation-menu__toolbar--size"
+          :style="toolbarStyle"
+        >
           <v-layout justify-center>
-            <navigation-menu-item v-for="menu in centerMenuItems" :key="menu.id" :menu="menu"></navigation-menu-item>
+            <navigation-menu-item
+              v-for="menu in centerMenuItems"
+              :key="menu.id"
+              :menu="menu"
+            ></navigation-menu-item>
           </v-layout>
         </v-toolbar>
       </v-flex>
-      <v-flex v-if="shouldShowRightSection" v-bind="{ [`lg${breakpoints}`]: true }">
-        <v-toolbar height="36" class="navigation-menu__toolbar--size" :style="toolbarStyle">
+      <v-flex
+        v-if="shouldShowRightSection"
+        v-bind="{ [`lg${breakpoints}`]: true }"
+      >
+        <v-toolbar
+          height="36"
+          class="navigation-menu__toolbar--size"
+          :style="toolbarStyle"
+        >
           <v-spacer></v-spacer>
-          <navigation-menu-item v-for="menu in rightMenuItems" :key="menu.id" :menu="menu"></navigation-menu-item>
+          <navigation-menu-item
+            v-for="menu in rightMenuItems"
+            :key="menu.id"
+            :menu="menu"
+          ></navigation-menu-item>
         </v-toolbar>
       </v-flex>
     </v-layout>
-    <hamburger-menu :menus="menus" :style="toolbarStyle" class="hidden-md-and-up"></hamburger-menu>
+    <hamburger-menu
+      :menus="menus"
+      :style="toolbarStyle"
+      class="hidden-md-and-up"
+    ></hamburger-menu>
   </span>
 </template>
 

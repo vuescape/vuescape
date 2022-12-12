@@ -81,7 +81,7 @@
                     >
                       <v-list-tile-title :aria-label="menuItem.ariaLabel || menuItem.title">{{
                           menuItem.title
-                        }}</v-list-tile-title>
+                                                                                            }}</v-list-tile-title>
                     </v-list-tile>
                   </v-list>
                 </div>

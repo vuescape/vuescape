@@ -1,5 +1,9 @@
 <template>
-  <div :key="id" class="tree-table__div--box" :style="cssStyleValue">
+  <div
+    :key="id"
+    class="tree-table__div--box"
+    :style="cssStyleValue"
+  >
     <vue-scrolling-table
       :scroll-horizontal="shouldScrollHorizontalValue"
       :scroll-vertical="shouldScrollVerticalValue"
@@ -10,8 +14,17 @@
       :class="{ freezeFirstColumn: shouldFreezeFirstColumnValue }"
     >
       <template slot="thead">
-        <tr v-for="headerRow in headersToDisplay" :class="headerRow.cssClasses" :key="headerRow.id">
-          <th v-for="header in headerRow.cells" :class="header.cssClasses" :key="header.id" :colspan="header.colspan">
+        <tr
+          v-for="headerRow in headersToDisplay"
+          :class="headerRow.cssClasses"
+          :key="headerRow.id"
+        >
+          <th
+            v-for="header in headerRow.cells"
+            :class="header.cssClasses"
+            :key="header.id"
+            :colspan="header.colspan"
+          >
             <component
               :is="header.renderer || 'HeaderCellRenderer'"
               :header="header"
@@ -21,7 +34,11 @@
         </tr>
       </template>
       <template slot="tbody">
-        <row-renderer v-for="row in rowsToDisplay" :key="row.id" :row="row"></row-renderer>
+        <row-renderer
+          v-for="row in rowsToDisplay"
+          :key="row.id"
+          :row="row"
+        ></row-renderer>
       </template>
     </vue-scrolling-table>
   </div>

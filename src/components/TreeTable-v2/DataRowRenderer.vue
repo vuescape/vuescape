@@ -1,5 +1,8 @@
 <template>
-  <tr :class="rowToDisplay.cssClasses" :key="rowToDisplay.id">
+  <tr
+    :class="rowToDisplay.cssClasses"
+    :key="rowToDisplay.id"
+  >
     <td
       @mouseleave="onMouseLeave(cell)"
       @mouseover="onMouseEnter(cell)"
@@ -15,7 +18,12 @@
       <span v-if="index === 0">
         <span v-if="cell.hover && cell.hover.component">
           <!-- style="position: relative;" -->
-          <component :is="cell.hover.component" :cell="cell" :row="rowToDisplay" :isHovering="isHovering"></component>
+          <component
+            :is="cell.hover.component"
+            :cell="cell"
+            :row="rowToDisplay"
+            :isHovering="isHovering"
+          ></component>
           <!-- style="vertical-align: text-top;margin-right: 4px;position: absolute; right: 0;" -->
         </span>
         <span v-if="rowToDisplay.isExpandable">
@@ -24,11 +32,19 @@
             class="data-row-renderer__icon"
             :icon="['fal', 'chevron-down']"
           />
-          <font-awesome-icon v-else class="data-row-renderer__icon" :icon="['fal', 'chevron-right']" />
+          <font-awesome-icon
+            v-else
+            class="data-row-renderer__icon"
+            :icon="['fal', 'chevron-right']"
+          />
         </span>
       </span>
       <span class="tree-table__rendered-cell">
-        <cell-renderer :key="cellKey(cell)" :cell="cell" :isHovering="cell.hover && isHovering"></cell-renderer>
+        <cell-renderer
+          :key="cellKey(cell)"
+          :cell="cell"
+          :isHovering="cell.hover && isHovering"
+        ></cell-renderer>
       </span>
     </td>
   </tr>
@@ -116,10 +132,10 @@ export default class DataRowRenderer extends ComponentBase {
 <style>
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
-  margin-right:  4px;
+  margin-right: 4px;
   margin-bottom: 1px;
-  font-size:     9px;
-  width:         0.875em !important;
+  font-size: 9px;
+  width: 0.875em !important;
 }
 .data-row-renderer__animation-enter-active,
 .data-row-renderer__animation-leave-active {

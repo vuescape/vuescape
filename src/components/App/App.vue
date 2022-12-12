@@ -39,8 +39,10 @@
                 v-if="$route.meta && $route.meta.useNewInstance"
                 :key="$route.path"
               ></router-view>
-              <router-view v-else
-                           :key="`${$route.name}-${$route.params.portfolioStrategyId}`">
+              <router-view
+                v-else
+                :key="`${$route.name}-${$route.params.portfolioStrategyId}`"
+              >
               </router-view>
             </transition>
           </v-container>

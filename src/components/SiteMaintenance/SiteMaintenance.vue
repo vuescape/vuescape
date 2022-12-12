@@ -69,7 +69,8 @@ export default class SiteMaintenance extends Vue {
   @(namespace(AppInfoModuleName)
     .State(
       state => {
-        const isSiteInMaintenanceMode = state.asyncResult.status === 200 ? state.value.isSiteInMaintenanceMode : undefined
+        const isSiteInMaintenanceMode = state.asyncResult.status === 200 ? state.value.isSiteInMaintenanceMode :
+          undefined
         return isSiteInMaintenanceMode
       },
     ))

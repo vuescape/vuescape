@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div :ref="sliderId" :id="sliderId" class="date-range-slider__div--margin"></div>
+    <div
+      :ref="sliderId"
+      :id="sliderId"
+      class="date-range-slider__div--margin"
+    ></div>
   </div>
 </template>
 

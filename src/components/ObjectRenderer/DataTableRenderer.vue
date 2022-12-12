@@ -5,13 +5,29 @@
         <slot name="header"></slot>
       </v-card-title>
     </v-card>
-    <v-data-table :headers="headers" :items="items" :search="search" hide-actions>
-      <template slot="items" slot-scope="props">
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :search="search"
+      hide-actions
+    >
+      <template
+        slot="items"
+        slot-scope="props"
+      >
         <!-- // eslint-disable-line require-v-for-key -->
-        <td v-for="(value) in props.item" class="text-xs-left">{{ value }}</td>
+        <td
+          v-for="(value) in props.item"
+          class="text-xs-left"
+        >{{ value }}
+        </td>
       </template>
       <template slot="no-data">
-        <v-alert :value="!areResultsFound" outline color="primary">
+        <v-alert
+          :value="!areResultsFound"
+          outline
+          color="primary"
+        >
           No Results Found
         </v-alert>
       </template>

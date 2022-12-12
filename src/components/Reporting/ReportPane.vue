@@ -1,14 +1,32 @@
 <template>
-  <div :key="reportNamespaceValue" class="report-pane__container--layout">
+  <div
+    :key="reportNamespaceValue"
+    class="report-pane__container--layout"
+  >
     <div :ref="reportHeaderRef">
-      <v-layout align-start fill-height justify-start row report-pane__v-layout--margin>
-        <v-flex lg12 md12 xs12>
+      <v-layout
+        align-start
+        fill-height
+        justify-start
+        row
+        report-pane__v-layout--margin
+      >
+        <v-flex
+          lg12
+          md12
+          xs12
+        >
           <div class="report-pane__header--title">
             {{ reportTitle }}
           </div>
         </v-flex>
       </v-layout>
-      <v-layout row class="report-pane__section--layout" :style="subheaderStyle" :ref="tabHeaderRow">
+      <v-layout
+        row
+        class="report-pane__section--layout"
+        :style="subheaderStyle"
+        :ref="tabHeaderRow"
+      >
         <v-flex xs11>
           <v-btn-toggle
             v-if="areMultipleReportSections"

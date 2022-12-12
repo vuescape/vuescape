@@ -1,5 +1,11 @@
 <template>
-  <div :id="uniqueId" :ref="uniqueId" :key="uniqueId" class="tree-table-v2__div--box" :style="cssStyleObject">
+  <div
+    :id="uniqueId"
+    :ref="uniqueId"
+    :key="uniqueId"
+    class="tree-table-v2__div--box"
+    :style="cssStyleObject"
+  >
     <vue-scrolling-table
       :scroll-horizontal="shouldScrollHorizontalValue"
       :scroll-vertical="shouldScrollVerticalValue"
@@ -18,10 +24,18 @@
         ></header-row-renderer>
       </template>
       <template slot="tbody">
-        <row-renderer v-for="row in rowsToDisplay" :key="row.id" :row="row"></row-renderer>
+        <row-renderer
+          v-for="row in rowsToDisplay"
+          :key="row.id"
+          :row="row"
+        ></row-renderer>
       </template>
       <template slot="tfoot">
-        <row-renderer v-for="footer in footersToDisplay" :key="footer.id" :row="footer"></row-renderer>
+        <row-renderer
+          v-for="footer in footersToDisplay"
+          :key="footer.id"
+          :row="footer"
+        ></row-renderer>
       </template>
     </vue-scrolling-table>
   </div>

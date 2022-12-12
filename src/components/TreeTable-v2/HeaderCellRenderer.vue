@@ -1,7 +1,13 @@
 <template>
-  <span class="tree-table__rendered-cell" :style="cssStyle" :class="header.cssClasses">
+  <span
+    class="tree-table__rendered-cell"
+    :style="cssStyle"
+    :class="header.cssClasses"
+  >
     {{ valueToDisplay }}
-    <span v-if="header.columnSorter" @click="$emit('toggle-sort', header)"
+    <span
+      v-if="header.columnSorter"
+      @click="$emit('toggle-sort', header)"
     >&nbsp;
       <font-awesome-icon
         :icon="getIconArray(header.columnSorter.sortDirection)"

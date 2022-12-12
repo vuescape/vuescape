@@ -1,15 +1,29 @@
 <template>
   <div class="step-wizard__stepper-box">
-    <div v-if="shouldShowProgressBarValue" class="top">
+    <div
+      v-if="shouldShowProgressBarValue"
+      class="top"
+    >
       <div class="steps-wrapper">
         <template v-if="shouldShowTopButtons">
-          <div v-if="currentStepIndex > 0" class="stepper-button-top previous" @click="backStep()">
+          <div
+            v-if="currentStepIndex > 0"
+            class="stepper-button-top previous"
+            @click="backStep()"
+          >
             <font-awesome-icon :icon="['fad', 'arrow-alt-circle-left']" />
           </div>
         </template>
         <template v-for="(step, index) in steps">
-          <div :class="['step', getStepStatus(index, step)]" :key="index" :style="{ width: `${100 / steps.length}%` }">
-            <div class="circle" :class="{ 'divider-line': index !== steps.length - 1 }">
+          <div
+            :class="['step', getStepStatus(index, step)]"
+            :key="index"
+            :style="{ width: `${100 / steps.length}%` }"
+          >
+            <div
+              class="circle"
+              :class="{ 'divider-line': index !== steps.length - 1 }"
+            >
               <!-- <div class="divider-line" :style="{ width: `${(100 / steps.length) * (steps.length - 1) - 10}%` }"></div> -->
               <!-- TODO: -->
               <!-- <font-awesome-icon :icon="['fal', 'chevron-down']" /> -->
@@ -32,9 +46,18 @@
         </div>
       </div>
     </div>
-    <div v-else style="height: 63.66px;"></div>
-    <div class="content" v-loading="isSpinning">
-      <transition :name="enterAnimation" mode="out-in">
+    <div
+      v-else
+      style="height: 63.66px;"
+    ></div>
+    <div
+      class="content"
+      v-loading="isSpinning"
+    >
+      <transition
+        :name="enterAnimation"
+        mode="out-in"
+      >
         <!--If keep alive-->
         <keep-alive v-if="steps[currentStepIndex] && steps[currentStepIndex].shouldKeepComponentAlive">
           <component
@@ -62,10 +85,19 @@
       </transition>
     </div>
     <v-layout justify-center>
-      <v-container fluid grid-list-md>
-        <v-layout row justify-center>
+      <v-container
+        fluid
+        grid-list-md
+      >
+        <v-layout
+          row
+          justify-center
+        >
           <v-flex xs1></v-flex>
-          <v-flex xs10 style="text-align: center; font-size: 22px; font-weight: 500;">
+          <v-flex
+            xs10
+            style="text-align: center; font-size: 22px; font-weight: 500;"
+          >
             <div :class="['bottom', currentStepIndex > 0 ? '' : '']">
               <!-- only-next -->
               <div class="stepper-button previous">
@@ -78,8 +110,15 @@
                 >
                   &nbsp;Back
                 </vuescape-button>
-                <span v-if="cancelRouteOrCallback" style="margin-top: 7px;">
-                  <v-btn class="cancel" flat @click="cancel">Cancel</v-btn>
+                <span
+                  v-if="cancelRouteOrCallback"
+                  style="margin-top: 7px;"
+                >
+                  <v-btn
+                    class="cancel"
+                    flat
+                    @click="cancel"
+                  >Cancel</v-btn>
                   <!-- <a class="cancel" @click="cancel">Cancel</a> -->
                 </span>
               </div>
@@ -388,15 +427,15 @@ export default class StepWizard extends Vue {
   background-position: left bottom;
 }
 .step-wizard__stepper-box .top .steps-wrapper .step .circle.divider-line::before {
-  content:             '';
-  display:             inline-block;
-  height:              2px;
-  position:            absolute;
-  width:               calc(100% - 1rem - 4px);
-  margin-left:         calc(0.5rem + 2px);
-  background-size:     200% 100%;
-  background:          linear-gradient(to right, #16a5c6 50%, #ccc 50%) right bottom;
-  transition:          all 600ms ease;
+  content:         '';
+  display:         inline-block;
+  height:          2px;
+  position:        absolute;
+  width:           calc(100% - 1rem - 4px);
+  margin-left:     calc(0.5rem + 2px);
+  background-size: 200% 100%;
+  background:      linear-gradient(to right, #16a5c6 50%, #ccc 50%) right bottom;
+  transition:      all 600ms ease;
 }
 .step-wizard__stepper-box .top .steps-wrapper .step .circle {
   border-style:     solid;

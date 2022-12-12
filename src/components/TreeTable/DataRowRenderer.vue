@@ -14,7 +14,10 @@
       :colspan="cell.colspan"
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
     >
-      <span v-if="index === 0" class="data-row-renderer__span--vertical-align">
+      <span
+        v-if="index === 0"
+        class="data-row-renderer__span--vertical-align"
+      >
         <span v-if="cell.hover && cell.hover.component">
           <!-- style="position: relative;" -->
           <component
@@ -112,10 +115,10 @@ export default class DataRowRenderer extends ComponentBase {
 <style>
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
-  margin-right:  4px;
+  margin-right: 4px;
   margin-bottom: 2px;
-  font-size:     9px;
-  width:         0.875em !important;
+  font-size: 9px;
+  width: 0.875em !important;
 }
 .data-row-renderer__animation-enter-active,
 .data-row-renderer__animation-leave-active {
