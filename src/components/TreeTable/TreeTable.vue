@@ -1,28 +1,28 @@
 <template>
   <div
-    :key="id"
-    class="tree-table__div--box"
+    :key="idValue"
     :style="cssStyleValue"
+    class="tree-table__div--box"
   >
     <vue-scrolling-table
+      :class="{ freezeFirstColumn: shouldFreezeFirstColumnValue }"
+      :dead-area-color="deadAreaColorValue"
+      :include-footer="shouldIncludeFooterValue"
       :scroll-horizontal="shouldScrollHorizontalValue"
       :scroll-vertical="shouldScrollVerticalValue"
-      :sync-header-scroll="shouldSyncHeaderScrollValue"
       :sync-footer-scroll="shouldSyncFooterScrollValue"
-      :include-footer="shouldIncludeFooterValue"
-      :dead-area-color="deadAreaColorValue"
-      :class="{ freezeFirstColumn: shouldFreezeFirstColumnValue }"
+      :sync-header-scroll="shouldSyncHeaderScrollValue"
     >
       <template slot="thead">
         <tr
           v-for="headerRow in headersToDisplay"
-          :class="headerRow.cssClasses"
           :key="headerRow.id"
+          :class="headerRow.cssClasses"
         >
           <th
             v-for="header in headerRow.cells"
-            :class="header.cssClasses"
             :key="header.id"
+            :class="header.cssClasses"
             :colspan="header.colspan"
           >
             <component
@@ -67,6 +67,8 @@ import RowRenderer from './RowRenderer.vue'
   components: { HeaderCellRenderer, RowRenderer, VueScrollingTable },
 })
 export default class TreeTable extends ComponentBase {
+  private idValue: string
+
   @Prop({ type: String, required: false })
   private id: string
 
@@ -94,7 +96,7 @@ export default class TreeTable extends ComponentBase {
   @Prop({ type: Boolean, required: false, default: true })
   private shouldFreezeFirstColumn: boolean
 
-  @Prop({ type: String, required: false, default: '#FFFFFF' })
+  @Prop({ type: String, required: false, default: '#ffffff' })
   private deadAreaColor: string
 
   @Prop({ type: Number, required: false, default: 100000 })
@@ -149,6 +151,11 @@ export default class TreeTable extends ComponentBase {
 
   private get shouldFreezeFirstColumnValue() {
     return this.shouldFreezeFirstColumn
+  }
+
+  @Watch('id')
+  private idWatcher(val: string, oldVal: string) {
+    this.idValue = val
   }
 
   @Watch('rows')
@@ -221,9 +228,8 @@ export default class TreeTable extends ComponentBase {
   }
 
   private created() {
-    if (!this.id) {
-      this.id = Guid.newGuid.toString()
-    }
+    this.idValue = this.id ? this.id : Guid.newGuid.toString()
+
     if (this.treeTableSorter) {
       this.treeTableSorterImpl = this.treeTableSorter
     }
