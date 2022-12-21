@@ -2,6 +2,7 @@
   <div v-on="globalClickHandler ? { click: globalClickHandler } : {}">
     <resize-observer @notify="handleResize"></resize-observer>
     <v-app>
+      <component :is="navigationComponentValue"></component>
       <transition
         mode="out-in"
         name="app__component--transition"
@@ -30,7 +31,6 @@
             >
               {{ notification.message }}
             </v-alert>
-            <component :is="navigationComponentValue"></component>
             <transition
               mode="out-in"
               name="app__component--transition"
@@ -249,8 +249,8 @@ div.application {
   font-weight:  500;
 }
 .app__content--height {
-  max-height: 100vh !important;
-  padding:    0px 0px 36px !important;
+  max-height:     100vh !important;
+  padding-bottom: 36px !important;
 }
 .app__container--scroll {
   height:              100%;
