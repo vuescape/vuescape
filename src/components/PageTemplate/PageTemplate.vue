@@ -29,8 +29,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 
-const PageHeader = () =>
-  import(/* webpackChunkName: 'page-header' */ '@vuescape/components/PageHeader').then(m => m.default)
+const PageHeader = () => import(/* webpackChunkName: 'page-header' */ '@vuescape/components/PageHeader').then(m => m.default)
 
 @Component({
   components: { PageHeader },

@@ -104,8 +104,7 @@ import { namespace } from 'vuex-class'
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { Menu } from '@vuescape/types'
 
-const HamburgerMenu = () =>
-  import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
+const HamburgerMenu = () => import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
 
 @Component({
   components: {
@@ -143,7 +142,7 @@ export default class NavigationMenuItem extends Vue {
   }
 
   public isItemActive(menu: Menu) {
-    const path = this.$route.path
+    const path   = this.$route.path
     const result = path.startsWith(menu?.path) || path.startsWith(menu?.pathIsActiveWhen!)
     return result
   }

@@ -65,7 +65,11 @@ import HeaderRowRenderer from './HeaderRowRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 
 @Component({
-  components: { HeaderRowRenderer, RowRenderer, VueScrollingTable },
+  components: {
+    HeaderRowRenderer,
+    RowRenderer,
+    VueScrollingTable,
+  },
 })
 export default class TreeTable extends ComponentBase {
   private uniqueId: string
@@ -203,18 +207,14 @@ export default class TreeTable extends ComponentBase {
       if (header.columnSorter.sortDirection === undefined || header.columnSorter.sortDirection === SortDirection.None) {
         newSortDirection = SortDirection.Ascending
       }
-      else if (
-        header.columnSorter.sortDirection === SortDirection.Ascending ||
-        header.columnSorter.sortDirection === SortDirection.Descending
-      ) {
+      else if (header.columnSorter.sortDirection === SortDirection.Ascending || header.columnSorter.sortDirection === SortDirection.Descending) {
         newSortDirection = header.columnSorter.sortDirection * -1
       }
       else {
         throw new Error('Unsupported SortDirection: ' + header.columnSorter.sortDirection)
       }
-      this.headers.forEach(_ =>
-        _.cells.forEach(col => (col.columnSorter ? (col.columnSorter.sortDirection = SortDirection.None) : undefined)),
-      )
+      this.headers.forEach(_ => _.cells.forEach(col => (col.columnSorter ?
+        (col.columnSorter.sortDirection = SortDirection.None) : undefined)))
       header.columnSorter.sortDirection = newSortDirection
       this.setRowsToDisplay()
     }
@@ -240,8 +240,7 @@ export default class TreeTable extends ComponentBase {
       return rows
     }
 
-    const propertySorter = makeTreeTableCellPropertyCompare(
-      sortHeader.index,
+    const propertySorter = makeTreeTableCellPropertyCompare(sortHeader.index,
       sortHeader.cell.columnSorter!.sortDirection,
       sortHeader.cell.columnSorter!.sortComparisonStrategy,
     )
@@ -269,9 +268,9 @@ export default class TreeTable extends ComponentBase {
       return
     }
 
-    const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible || row.shouldDisplayChildren)
+    const rows         = this.rows.slice(0, this.maxRows).filter(row => row.isVisible || row.shouldDisplayChildren)
     this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headers)
-    const tableBody = document.querySelector(`div[id='${this.uniqueId}'] table.scrolling tbody`) as {
+    const tableBody    = document.querySelector(`div[id='${this.uniqueId}'] table.scrolling tbody`) as {
       scrollTop: number,
     }
     if (tableBody) {
@@ -292,11 +291,8 @@ export default class TreeTable extends ComponentBase {
       return
     }
 
-    if (
-      columnDefinition.columnWidthBehavior === ColumnWidthBehavior.UseSpecifiedWidth &&
-      columnDefinition.width !== undefined
-    ) {
-      const width = columnDefinition.width
+    if (columnDefinition.columnWidthBehavior === ColumnWidthBehavior.UseSpecifiedWidth && columnDefinition.width !== undefined) {
+      const width  = columnDefinition.width
       const suffix = this.getUnitOfMeasureSuffix(columnDefinition.widthUnitOfMeasure)
       this.setCellWidthValues(cell, width, suffix)
       if (columnDefinition.columnWrapBehavior === ColumnWrapBehavior.NoWrapAndDisplayEllipsis) {
@@ -316,9 +312,9 @@ export default class TreeTable extends ComponentBase {
       const els = cell.querySelectorAll('span') as any
       for (const el of els) {
         if (el.nodeName === 'SPAN') {
-          const rect = el.getBoundingClientRect()
+          const rect        = el.getBoundingClientRect()
           const tableXValue = tableX || 0
-          const width = rect.x - tableXValue + rect.width
+          const width       = rect.x - tableXValue + rect.width
           this.setCellWidthValues(cell, width, 'px')
           return
         }
@@ -327,7 +323,7 @@ export default class TreeTable extends ComponentBase {
   }
 
   private setCellWidthValues(cell: HTMLTableCellElement, width: number, suffix: string) {
-    cell.style.width = width + suffix
+    cell.style.width    = width + suffix
     cell.style.minWidth = width + suffix
     cell.style.maxWidth = width + suffix
   }
@@ -350,13 +346,13 @@ export default class TreeTable extends ComponentBase {
   }
 
   private freezeCell(element: HTMLTableCellElement, leftPosition: string) {
-    element.style.left = leftPosition
-    element.style.position = 'sticky'
+    element.style.left           = leftPosition
+    element.style.position       = 'sticky'
     element.style.backgroundClip = 'padding-box'
   }
 
   private setElementWidth(element: HTMLTableCellElement, width: string, leftPosition?: string) {
-    element.style.width = width
+    element.style.width    = width
     element.style.minWidth = width
     element.style.maxWidth = width
   }
@@ -371,15 +367,12 @@ export default class TreeTable extends ComponentBase {
     return result
   }
 
-  private setColumnWidth(
-    table: HTMLTableElement,
+  private setColumnWidth(table: HTMLTableElement,
     columnIndex: number,
     widths: Array<string>,
     columnDefinitions: Array<ColumnDefinition>,
   ) {
-    const cells = table.querySelectorAll(
-      `th[data-column-index='${columnIndex}'], td[data-column-index='${columnIndex}']`,
-    )
+    const cells        = table.querySelectorAll(`th[data-column-index='${columnIndex}'], td[data-column-index='${columnIndex}']`)
     const leftPosition = this.getCurrentLeftPosition(columnIndex, widths)
     for (const cell of cells) {
       const tableCell = cell as HTMLTableCellElement
@@ -391,13 +384,13 @@ export default class TreeTable extends ComponentBase {
         }
       }
       else {
-        const colspan = tableCell.colSpan
-        let cellWidth = 0
+        const colspan     = tableCell.colSpan
+        let cellWidth     = 0
         let unitOfMeasure = ''
 
         for (let i = 0; i < tableCell.colSpan; i++) {
           const widthAndUnitOfMeasureString = this.getWidthAndUnitOfMeasureString(widths[columnIndex + i])
-          unitOfMeasure = widthAndUnitOfMeasureString.unitOfMeasure
+          unitOfMeasure                     = widthAndUnitOfMeasureString.unitOfMeasure
           cellWidth += widthAndUnitOfMeasureString.width
         }
 
@@ -411,8 +404,7 @@ export default class TreeTable extends ComponentBase {
     }
   }
 
-  private getColumnWidth(
-    table: HTMLTableElement,
+  private getColumnWidth(table: HTMLTableElement,
     tableX: number,
     columnIndex: number,
     columnDefinitions: Array<ColumnDefinition>,
@@ -424,10 +416,8 @@ export default class TreeTable extends ComponentBase {
     }
 
     if (columnDefinition.columnWidthBehavior === ColumnWidthBehavior.DynamicallySizeToContent) {
-      const columnCells = table.querySelectorAll(
-        `td[data-column-index='${columnIndex}'] span.tree-table__rendered-cell`,
-      )
-      let maxWidth = 0
+      const columnCells = table.querySelectorAll(`td[data-column-index='${columnIndex}'] span.tree-table__rendered-cell`)
+      let maxWidth      = 0
       for (const columnCell of columnCells) {
         const tableCell = columnCell.parentElement as HTMLTableCellElement
         if (tableCell.colSpan === 1) {
@@ -479,12 +469,14 @@ export default class TreeTable extends ComponentBase {
 
   private getWidthAndUnitOfMeasureString(widthString: string) {
     const unitOfMeasure = widthString.slice(widthString.length - 2)
-    const width = Number(widthString.slice(0, widthString.length - 2))
-    return { width, unitOfMeasure }
+    const width         = Number(widthString.slice(0, widthString.length - 2))
+    return {
+      width,
+      unitOfMeasure,
+    }
   }
 
-  private adjustColumnWidthsForColspan(
-    table: HTMLTableElement,
+  private adjustColumnWidthsForColspan(table: HTMLTableElement,
     tableX: number,
     columnIndex: number,
     columnDefinition: ColumnDefinition,
@@ -499,7 +491,7 @@ export default class TreeTable extends ComponentBase {
     for (const columnCell of columnCells) {
       const tableCell = columnCell.parentElement as HTMLTableCellElement
       if (tableCell.colSpan > 1) {
-        const cellWidth = this.getWidthOfCell(columnCell, tableX, 0)
+        const cellWidth         = this.getWidthOfCell(columnCell, tableX, 0)
         const endingColumnIndex = columnIndex + tableCell.colSpan - 1
 
         const colspanWidth = columnWidths
@@ -509,14 +501,14 @@ export default class TreeTable extends ComponentBase {
 
         // If the cellWidth with a colspan is bigger than the area spanned then adjust other column widths.
         if (cellWidth > colspanWidth) {
-          const startingColumnIndex = columnIndex
-          const additionalWidth = cellWidth - colspanWidth
-          const numberOfColumns = endingColumnIndex - startingColumnIndex + 1
+          const startingColumnIndex      = columnIndex
+          const additionalWidth          = cellWidth - colspanWidth
+          const numberOfColumns          = endingColumnIndex - startingColumnIndex + 1
           const additionalWidthPerColumn = additionalWidth / numberOfColumns
 
           for (let i = startingColumnIndex; i <= endingColumnIndex; i++) {
             const widthAndMeasure = this.getWidthAndUnitOfMeasureString(columnWidths[i])
-            columnWidths[i] = widthAndMeasure.width + additionalWidthPerColumn + widthAndMeasure.unitOfMeasure
+            columnWidths[i]       = widthAndMeasure.width + additionalWidthPerColumn + widthAndMeasure.unitOfMeasure
           }
         }
       }
@@ -529,7 +521,7 @@ export default class TreeTable extends ComponentBase {
     }
 
     const tableDOMRect = table.getBoundingClientRect() as DOMRect
-    const tableX = tableDOMRect.x
+    const tableX       = tableDOMRect.x
 
     // const scrollBarWidth = new ScrollBarDimension().width
     const columnWidths = []

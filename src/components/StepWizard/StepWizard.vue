@@ -147,8 +147,8 @@ import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Step } from './Step'
 
-const VuescapeButton = () =>
-  import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
+const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
+  m => m.default)
 
 @Component({
   components: { VuescapeButton },
@@ -167,13 +167,13 @@ export default class StepWizard extends Vue {
   private cancelRouteOrCallback: any
 
   private shouldShowProgressBarValue = true
-  private finalStepButtonTextValue = ''
+  private finalStepButtonTextValue   = ''
 
-  private currentStepIndex: number = 0
-  private previousStepIndex: number = 0
+  private currentStepIndex: number   = 0
+  private previousStepIndex: number  = 0
   private nextButton: Array<boolean> = []
-  private canContinue = false
-  private steps: Array<Step> = []
+  private canContinue                = false
+  private steps: Array<Step>         = []
 
   private get activeStep() {
     const result = this.steps.filter((_: Step, index: number) => index === this.currentStepIndex)
@@ -221,11 +221,11 @@ export default class StepWizard extends Vue {
 
   @Watch('wizardSteps')
   private onStepsChanged(newValue: Array<Step>, oldValue: Array<Step>) {
-    this.nextButton = []
-    this.currentStepIndex = 0
+    this.nextButton        = []
+    this.currentStepIndex  = 0
     this.previousStepIndex = 0
-    this.canContinue = false
-    this.steps = newValue
+    this.canContinue       = false
+    this.steps             = newValue
     this.activateStep(0)
   }
 
@@ -242,7 +242,7 @@ export default class StepWizard extends Vue {
   private activateStep(index: number, back = false) {
     if (this.steps[index]) {
       this.previousStepIndex = this.currentStepIndex
-      this.currentStepIndex = index
+      this.currentStepIndex  = index
       if (!back) {
         this.$emit('completed-step', this.previousStepIndex)
       }
@@ -261,7 +261,7 @@ export default class StepWizard extends Vue {
   }
 
   private async nextStepAction() {
-    this.canContinue = true
+    this.canContinue                       = true
     this.nextButton[this.currentStepIndex] = true
     if (this.canContinue) {
       if (this.steps[this.currentStepIndex].shouldDisplayLoadingOnNext) {
@@ -313,9 +313,9 @@ export default class StepWizard extends Vue {
 
   private init() {
     // Initiate stepper
-    this.finalStepButtonTextValue = this.finalStepButtonText
+    this.finalStepButtonTextValue   = this.finalStepButtonText
     this.shouldShowProgressBarValue = this.shouldShowProgressBar
-    this.steps = this.wizardSteps
+    this.steps                      = this.wizardSteps
     this.activateStep(0)
   }
 

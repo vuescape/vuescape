@@ -142,9 +142,7 @@ export default class DownloadMenu extends Vue {
     clickChart?: () => void
     clickCsv?: () => void
     clickPdf?: () => void
-    clickZip?: () => void,
-    clickExcel?: () => void,
-    clickRaw?: () => void,
+    clickZip?: () => void, clickExcel?: () => void, clickRaw?: () => void,
   }
 }
 </script>

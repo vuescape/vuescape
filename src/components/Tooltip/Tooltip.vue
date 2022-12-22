@@ -90,7 +90,7 @@ export default class Tooltip extends ComponentBase {
   private isHovering: boolean
 
   private isHoveringImpl = false
-  private hasOpened = false
+  private hasOpened      = false
 
   @Watch('shouldShowDialog')
   private async onShouldShowDialogChanged(newValue: boolean, oldValue: boolean) {
@@ -141,7 +141,7 @@ export default class Tooltip extends ComponentBase {
 
   private async enableTooltip() {
     this.setTooltipSingleton([false])
-    this.hasOpened = true
+    this.hasOpened        = true
     this.shouldShowDialog = true
   }
 

@@ -27,11 +27,11 @@ const formatWithNumber = (value: string, formatResult: (value: number) => string
 
 const toNumber = (value: any, places: number) => {
   let p = places || 0
-  p = p < 0 ? 0 : p
+  p     = p < 0 ? 0 : p
 
-  const factor = Math.pow(10, p)
+  const factor  = Math.pow(10, p)
   const rounded = Math.round(Math.abs(value * factor)) / factor
-  const parts = (rounded + '').split('.')
+  const parts   = (rounded + '').split('.')
 
   let result = parts[0]
     .split('')
@@ -42,7 +42,7 @@ const toNumber = (value: any, places: number) => {
 
   if (p > 0) {
     let digitsAfterDecimal = parts.length > 1 && parseInt(parts[1], undefined) ? parts[1] : ('' + factor).substring(1)
-    digitsAfterDecimal = digitsAfterDecimal + ('' + factor).substring(1 + digitsAfterDecimal.length)
+    digitsAfterDecimal     = digitsAfterDecimal + ('' + factor).substring(1 + digitsAfterDecimal.length)
     result += '.' + digitsAfterDecimal
   }
 
@@ -50,15 +50,15 @@ const toNumber = (value: any, places: number) => {
 }
 
 const toAccountingDisplay = (value: string, places: number, emptyDisplay: string) => {
-  const p = places || 1
-  const formatter = (numberValue: number) =>
-    round(numberValue, p) >= 0.0 ? toNumber(numberValue, p) : '(' + toNumber(numberValue, p) + ')'
+  const p         = places || 1
+  const formatter = (numberValue: number) => round(numberValue, p) >= 0.0 ? toNumber(numberValue, p) :
+    '(' + toNumber(numberValue, p) + ')'
   return formatWithNumber(value, formatter, emptyDisplay)
 }
 
 const toCurrencyDisplay = (value: string, places: number, emptyDisplay: string) => {
-  const formatter = (numberValue: number) =>
-    round(numberValue, places) >= 0.0 ? '$' + toNumber(numberValue, places) : '-$' + toNumber(numberValue, places)
+  const formatter = (numberValue: number) => round(numberValue, places) >= 0.0 ? '$' + toNumber(numberValue, places) :
+    '-$' + toNumber(numberValue, places)
 
   return formatWithNumber(value, formatter, emptyDisplay)
 }
@@ -74,17 +74,16 @@ const toMMCurrencyDisplay = (value: string, places: number, emptyDisplay: string
 
 const toPercentageDisplay = (value: string, places: number, emptyDisplay: string) => {
   const formatter = (numberValue: number) => {
-    return round(numberValue, places) >= 0.0
-      ? toNumber(numberValue, places) + '%'
-      : '-' + toNumber(numberValue, places) + '%'
+    return round(numberValue, places) >= 0.0 ? toNumber(numberValue, places) + '%' :
+      '-' + toNumber(numberValue, places) + '%'
   }
 
   return formatWithNumber(value, formatter, emptyDisplay)
 }
 
 const toNumberDisplay = (value: string, places: number, emptyDisplay: string) => {
-  const formatter = (numberValue: number) =>
-    round(numberValue, places) >= 0.0 ? toNumber(numberValue, places) : '-' + toNumber(numberValue, places)
+  const formatter = (numberValue: number) => round(numberValue, places) >= 0.0 ? toNumber(numberValue, places) :
+    '-' + toNumber(numberValue, places)
 
   return formatWithNumber(value, formatter, emptyDisplay)
 }
@@ -101,9 +100,8 @@ export const toDateDisplay = (value: any, emptyValue = '-') => {
   }
   value = dateValue
 
-  const result = isNaN(dateValue.getTime())
-    ? emptyValue
-    : value.getMonth() + 1 + '/' + value.getDate() + '/' + value.getFullYear()
+  const result = isNaN(dateValue.getTime()) ? emptyValue :
+    value.getMonth() + 1 + '/' + value.getDate() + '/' + value.getFullYear()
 
   return result
 }
@@ -115,32 +113,23 @@ export const toDateTimeDisplay = (value: any, emptyValue = '-') => {
 
   let dateValue = new Date(value)
   // This is to fix a Safari problem in its handling of UTC dates
-  dateValue = isNaN(dateValue.getTime()) ? new Date(dateValue + 'Z') : dateValue
+  dateValue     = isNaN(dateValue.getTime()) ? new Date(dateValue + 'Z') : dateValue
 
-  let hours = dateValue.getHours()
-  const amPm = hours < 12 ? 'am' : 'pm'
-  hours = hours < 12 ? hours : hours - 12
-  hours = hours === 0 ? 12 : hours
+  let hours   = dateValue.getHours()
+  const amPm  = hours < 12 ? 'am' : 'pm'
+  hours       = hours < 12 ? hours : hours - 12
+  hours       = hours === 0 ? 12 : hours
   let minutes = '' + dateValue.getMinutes()
-  minutes = minutes.length === 1 ? '0' + minutes : minutes
+  minutes     = minutes.length === 1 ? '0' + minutes : minutes
   // let seconds = '' + value.getSeconds();
   // seconds = seconds.length === 1 ? '0' + seconds : seconds;
 
-  return isNaN(dateValue.getTime())
-    ? emptyValue
-    : dateValue.getMonth() +
-    1 +
-    '/' +
-    dateValue.getDate() +
-    '/' +
-    dateValue.getFullYear() +
-    ' ' +
-    hours +
-    ':' +
-    minutes +
-    // + ":" + seconds
-    ' ' +
-    amPm
+  return isNaN(dateValue.getTime()) ? emptyValue :
+    dateValue.getMonth() + 1 + '/' + dateValue.getDate() + '/' + dateValue.getFullYear() + ' ' + hours + ':' + minutes + // +
+                                                                                                                     // ":"
+                                                                                                                     // +
+                                                                                                                     // seconds
+    ' ' + amPm
 }
 
 export const toTextDisplay = (value: any, emptyDisplay = '-') => {
@@ -154,28 +143,21 @@ export const toTextDisplay = (value: any, emptyDisplay = '-') => {
 export type presentationFormatKind = 'currency' | 'percentage' | 'number' | 'ratio' | 'accounting' | 'mmcurrency'
 
 export const presentationFormatMap: Dictionary<(value: any, places: number, emptyDisplay: string) => string> = {
-  currency: toCurrencyDisplay,
+  currency  : toCurrencyDisplay,
   percentage: toPercentageDisplay,
-  number: toNumberDisplay,
-  ratio: toNumberDisplay,
+  number    : toNumberDisplay,
+  ratio     : toNumberDisplay,
   accounting: toAccountingDisplay,
   mmcurrency: toMMCurrencyDisplay,
 }
 
-export const presentationFormatKindToSymbolMap = new Map<presentationFormatKind, string>([
-  ['currency', '$'],
-  ['percentage', '%'],
-  ['number', '#'],
-  ['ratio', '/'],
-  ['accounting', '$'],
-  ['mmcurrency', '$'],
-])
+export const presentationFormatKindToSymbolMap = new Map<presentationFormatKind, string>([['currency', '$'], ['percentage', '%'], ['number', '#'], ['ratio', '/'], ['accounting', '$'], ['mmcurrency', '$']])
 
 export function round(value: number, places: number = 0) {
   let p = places || 0
-  p = p < 0 ? 0 : p
+  p     = p < 0 ? 0 : p
 
-  const factor = Math.pow(10, p)
+  const factor  = Math.pow(10, p)
   const rounded = (Math.sign(value) * Math.round(Math.abs(value * factor))) / factor
 
   return rounded
@@ -189,9 +171,7 @@ export function formatValue(
 ) {
   const formatter = presentationFormatMap[presentationFormat]
   if (!formatter) {
-    console.warn(
-      `Could not find formatter for presentationFormat: ${presentationFormat}. Using original value of ${value}.`,
-    )
+    console.warn(`Could not find formatter for presentationFormat: ${presentationFormat}. Using original value of ${value}.`)
     return value
   }
 

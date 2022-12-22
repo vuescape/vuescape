@@ -49,8 +49,8 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 
 import { decodeBase64String, downloadFile } from '@vuescape/infrastructure'
 
-const VuescapeButton = () =>
-  import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
+const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
+  m => m.default)
 
 @Component({
   components: { VuescapeButton },
@@ -84,7 +84,7 @@ export default class DownloadFileButton extends Vue {
   @Prop({ default: false })
   private shouldAddByteOrderMark: boolean
 
-  private isButtonDisabled = true
+  private isButtonDisabled            = true
   private shouldShowDownloadCompleted = false
 
   @Watch('isDisabled')
@@ -96,10 +96,9 @@ export default class DownloadFileButton extends Vue {
     if (this.getFilename !== undefined) {
       return this.getFilename()
     }
-    const now = new Date()
-    const filename = `${this.filenamePrefix}_${now.getFullYear()}-${('0' + (now.getMonth() + 1)).slice(-2)}-${(
-      '0' + now.getDate()
-    ).slice(-2)}.csv`
+    const now      = new Date()
+    const filename = `${this.filenamePrefix}_${now.getFullYear()}-${('0' + (now.getMonth() + 1)).slice(-2)}-${('0' + now.getDate()).slice(
+      -2)}.csv`
     return filename
   }
 

@@ -59,32 +59,46 @@ export default class Tooltip extends ComponentBase {
   @State('tooltipSingleton')
   private tooltipSingleton: ModuleState<Array<boolean>>
 
-  @namespace('tooltipSingleton').State((state: ModuleState<Array<boolean>>) => state.value)
+  @namespace('tooltipSingleton')
+    .State((state: ModuleState<Array<boolean>>) => state.value)
   private tooltipSingletonValue: Array<boolean>
 
-  @namespace('tooltipSingleton').Mutation(StoreOperation.Mutation.SET_VALUE)
+  @namespace('tooltipSingleton')
+    .Mutation(StoreOperation.Mutation.SET_VALUE)
   private setTooltipSingleton: (val: Array<boolean>) => void
 
-  @Prop({ type: Object, required: true })
+  @Prop({
+    type    : Object,
+    required: true,
+  })
   private cell: TreeTableCell
 
-  @Prop({ type: Boolean, default: false })
+  @Prop({
+    type   : Boolean,
+    default: false,
+  })
   private isHovering: boolean
 
-  @Prop({ type: String, default: 'Click for Details about this Metric' })
+  @Prop({
+    type   : String,
+    default: 'Click for Details about this Metric',
+  })
   private hintText: boolean
 
-  @Prop({ type: Array, default: () => ['far', 'square-info'] })
+  @Prop({
+    type   : Array,
+    default: () => ['far', 'square-info'],
+  })
   private icons: boolean
 
   @Prop({
-    type: Object,
+    type   : Object,
     default: () => ({
-      'margin-top': '3px',
+      'margin-top' : '3px',
       'margin-left': '-18px',
-      'font-size': '18px',
-      color: '#ddd',
-      cursor: 'pointer',
+      'font-size'  : '18px',
+      color        : '#ddd',
+      cursor       : 'pointer',
     }),
   })
   private iconStyleObject: boolean

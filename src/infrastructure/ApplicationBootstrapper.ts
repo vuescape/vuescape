@@ -20,14 +20,14 @@ import 'vuetify/src/stylus/app.styl'
 export class ApplicationBootstrapper {
   private iconfont: string
   private iconLoaders: Array<() => void>
-  private vuetifyTheme = {}
+  private vuetifyTheme                     = {}
   private errorHandler: ErrorHandler
-  private storeModules = {}
+  private storeModules                     = {}
   private vuexStore: Store<any>
   private router: VueRouter
   private rootComponentOptions: { el: string; componentName: string; rootComponent: VueConstructor<Vue>; props: any }
   private trackingService: TrackingService = new NullTrackingService()
-  private featureService: FeatureService = new NullFeatureService()
+  private featureService: FeatureService   = new NullFeatureService()
   private globalClickHandler: (e: MouseEvent) => void
 
   private navigationComponent?: VueConstructor<Vue>
@@ -39,22 +39,18 @@ export class ApplicationBootstrapper {
 
   private validate() {
     if (!this.router) {
-      console.warn(
-        'Router not set in ApplicationBootstrapper. ' + 'Call withRouter() with the router if a router is needed.',
-      )
+      console.warn('Router not set in ApplicationBootstrapper. ' + 'Call withRouter() with the router if a router is needed.')
     }
     if (!this.vuexStore) {
       console.warn(
-        'Vuex store not defined so storeModules could not registered.  Call withVuexStore() to set the Vuex Store.',
-      )
+        'Vuex store not defined so storeModules could not registered.  Call withVuexStore() to set the Vuex Store.')
     }
     if (!this.rootComponentOptions) {
       console.warn('No Vue root component defined.  Call withRootComponent() to set the root component.')
     }
   }
 
-  private registerStoreModules = async (
-    vuexStore: Store<any>,
+  private registerStoreModules = async (vuexStore: Store<any>,
     storeModulesToRegister: Dictionary<() => StoreModule<{}, ModuleState<{}, {}>, {}, {}>>,
   ) => {
     const { registerDynamicModule } = await import('@vuescape/store/storeHelpers')
@@ -65,20 +61,22 @@ export class ApplicationBootstrapper {
   }
 
   private defaultErrorHandler = (err: Error, vm: Vue, info: string) => {
-    console.error(
-      `Vue threw an error.
-  Usually this is caused by an error during rendering but could be at any point during the component lifecycle.`,
-    )
+    console.error(`Vue threw an error.
+  Usually this is caused by an error during rendering but could be at any point during the component lifecycle.`)
     console.error(err, vm, info)
   }
 
-  public withRequestCaching(
-    maxAgeMinutes = 15,
-    maxSize = 100,
-    shouldCacheAllGetRequests = true,
-    cacheFlag = 'shouldCache',
+  public withRequestCaching(maxAgeMinutes = 15,
+    maxSize                               = 100,
+    shouldCacheAllGetRequests             = true,
+    cacheFlag                             = 'shouldCache',
   ) {
-    this.cacheOptions = { maxAgeMinutes, maxSize, shouldCacheAllRequests: shouldCacheAllGetRequests, cacheFlag }
+    this.cacheOptions = {
+      maxAgeMinutes,
+      maxSize,
+      shouldCacheAllRequests: shouldCacheAllGetRequests,
+      cacheFlag,
+    }
     return this
   }
 
@@ -139,7 +137,12 @@ export class ApplicationBootstrapper {
   }
 
   public withRootComponent(el: string, componentName: string, rootComponent: VueConstructor<Vue>, props?: any) {
-    this.rootComponentOptions = { el, componentName, rootComponent, props }
+    this.rootComponentOptions = {
+      el,
+      componentName,
+      rootComponent,
+      props,
+    }
     return this
   }
 
@@ -184,16 +187,16 @@ export class ApplicationBootstrapper {
       await this.initFunction()
       // tslint:disable-next-line:no-unused-expression
       new Vue({
-        provide: () => ({
-          trackingService: this.trackingService,
-          featureService: this.featureService,
+        provide   : () => ({
+          trackingService    : this.trackingService,
+          featureService     : this.featureService,
           navigationComponent: this.navigationComponent,
-          globalClickHandler: this.globalClickHandler,
+          globalClickHandler : this.globalClickHandler,
         }),
-        el: this.rootComponentOptions.el,
-        store: this.vuexStore,
-        router: this.router,
-        render: (h: CreateElement) => h(this.rootComponentOptions.rootComponent),
+        el        : this.rootComponentOptions.el,
+        store     : this.vuexStore,
+        router    : this.router,
+        render    : (h: CreateElement) => h(this.rootComponentOptions.rootComponent),
         components: { [this.rootComponentOptions.componentName]: this.rootComponentOptions.rootComponent },
       })
     }

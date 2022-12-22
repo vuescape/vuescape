@@ -12,8 +12,8 @@ import TheFooter from '.'
 
 const theFooterConfiguration = {
   copyrightName: 'Vuescape',
-  logoAltText: 'Vuescape',
-  logoUrl: '/images/logo.png',
+  logoAltText  : 'Vuescape',
+  logoUrl      : '/images/logo.png',
 }
 
 describe('TheFooter.vue --', () => {
@@ -37,14 +37,19 @@ describe('TheFooter.vue --', () => {
     it('should contain the current year as the copyright year', async () => {
       // Arrange
       const currentYear = new Date().getFullYear()
-      const localVue = createLocalVue()
+      const localVue    = createLocalVue()
       localVue.use(Vuetify)
       localVue.use(Vuex)
       const store = new Vuex.Store(rootStoreOptions)
       registerDynamicModule(store, 'theFooter/configuration', makeStoreModule(theFooterConfiguration), false)
 
       // Act
-      const wrapper = shallowMount(TheFooter, { store, localVue })
+      const wrapper = shallowMount(TheFooter,
+        {
+          store,
+          localVue,
+        },
+      )
 
       // Assert
       const footerHtml = wrapper.find('.the-footer__copyright')
@@ -62,10 +67,15 @@ describe('TheFooter.vue --', () => {
       registerDynamicModule(store, 'theFooter/configuration', makeStoreModule(theFooterConfiguration), false)
 
       // Act
-      const wrapper = shallowMount(TheFooter, { store, localVue })
+      const wrapper = shallowMount(TheFooter,
+        {
+          store,
+          localVue,
+        },
+      )
 
       // Assert
-      const footerHtml = wrapper.find('.the-footer__copyright')
+      const footerHtml      = wrapper.find('.the-footer__copyright')
       const copyrightSymbol = footerHtml.text().substring(0, 1)
       expect(copyrightSymbol).toBe('©')
       done()

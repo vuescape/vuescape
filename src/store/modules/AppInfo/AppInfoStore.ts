@@ -12,39 +12,35 @@ import { StoreGetter } from './StoreGetter'
 export class AppInfoStore extends StoreModule<AppInfo, ModuleState<AppInfo>, RootState> {
   private myGetters: GetterTree<ModuleState<AppInfo>, RootState> = {
     [StoreGetter.SiteMaintenanceMessage](state: ModuleState<AppInfo>) {
-      const result =
-        state.asyncResult && state.asyncResult.status === 200 && state.value
-          ? state.value.siteMaintenanceMessage
-          : undefined
+      const result = state.asyncResult && state.asyncResult.status === 200 && state.value ?
+        state.value.siteMaintenanceMessage : undefined
       return result
     },
     [StoreGetter.IsSiteInMaintenanceMode](state: ModuleState<AppInfo>) {
-      const result =
-        state.asyncResult && state.asyncResult.status === 200 && state.value
-          ? state.value.isSiteInMaintenanceMode
-          : undefined
+      const result = state.asyncResult && state.asyncResult.status === 200 && state.value ?
+        state.value.isSiteInMaintenanceMode : undefined
       return result
     },
     [StoreGetter.DisabledFeatures](state: ModuleState<AppInfo>) {
-      const result =
-        state.asyncResult && state.asyncResult.status === 200 && state.value ? state.value.disabledFeatures : []
+      const result = state.asyncResult && state.asyncResult.status === 200 && state.value ?
+        state.value.disabledFeatures : []
       return result
     },
     [StoreGetter.Version](state: ModuleState<AppInfo>) {
-      const result =
-        state.asyncResult && state.asyncResult.status === 200 && state.value ? state.value.version : undefined
+      const result = state.asyncResult && state.asyncResult.status === 200 && state.value ? state.value.version :
+        undefined
       return result
     },
   }
 
   constructor() {
     super({
-      isNamespaced: true,
-      asyncActions: {
+      isNamespaced                : true,
+      asyncActions                : {
         [StoreAction.FetchAppInfo]: new AppInfoService().get(),
       },
       shouldUseGlobalNotifications: false,
-      shouldUseGlobalSpinner: false,
+      shouldUseGlobalSpinner      : false,
     })
     this.addGetters(this.myGetters)
   }

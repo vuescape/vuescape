@@ -19,7 +19,10 @@ import DefaultCellRenderer from './DefaultCellRenderer.vue'
 import FixedCellRenderer from './FixedCellRenderer.vue'
 
 @Component({
-  components: { DefaultCellRenderer, FixedCellRenderer },
+  components: {
+    DefaultCellRenderer,
+    FixedCellRenderer,
+  },
 })
 export default class CellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })

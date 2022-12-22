@@ -40,32 +40,31 @@ export class ReportValueMapperFactory {
   private namespacePrefix?: string
   private baseUri?: string
 
-  public constructor(
-    // row?: TreeTableRow,
+  public constructor(// row?: TreeTableRow,
     // cell?: TreeTableCell,
     store?: Store<Report>,
     namespacePrefix?: string,
     baseUri?: string,
     clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
   ) {
-    const self = this
-    self.store = store
+    const self           = this
+    self.store           = store
     self.namespacePrefix = namespacePrefix
-    self.baseUri = baseUri
+    self.baseUri         = baseUri
 
-    self.clickHandlerInstance = clickHandler ?? self.getClickHandler()
+    self.clickHandlerInstance      = clickHandler ?? self.getClickHandler()
     self.reportValueMapperInstance = (input: any) => {
       if (!input) {
         return
       }
 
-      const isNavigation = input.id.toLowerCase().endsWith('navigation')
+      const isNavigation   = input.id.toLowerCase().endsWith('navigation')
       const result: Report = {
-        id: input.id,
-        title: input.title,
-        sections: self.processSections(input.sections, self.clickHandlerInstance, isNavigation),
+        id                  : input.id,
+        title               : input.title,
+        sections            : self.processSections(input.sections, self.clickHandlerInstance, isNavigation),
         additionalReportInfo: input.additionalReportInfo,
-        downloadLinks: self.processDownloadLinks(input.downloadLinks),
+        downloadLinks       : self.processDownloadLinks(input.downloadLinks),
       }
 
       return result
@@ -77,19 +76,15 @@ export class ReportValueMapperFactory {
   }
 
   private getClickHandler() {
-    const clickHandler = (
-      // this: ((row?: TreeTableRow, cell?: TreeTableCell) => void) | undefined,
-      row?: TreeTableRow,
-      cell?: TreeTableCell,
-    ) => {
+    const clickHandler = (// this: ((row?: TreeTableRow, cell?: TreeTableCell) => void) | undefined,
+      row?: TreeTableRow, cell?: TreeTableCell) => {
       if (!cell?.links || !cell.links[LinkName.Self.toLowerCase()]) {
         return undefined
       }
 
       const selfLink = cell.links![LinkName.Self.toLowerCase()]
 
-      const reportValueMapperFactory = new ReportValueMapperFactory(
-        this.store,
+      const reportValueMapperFactory = new ReportValueMapperFactory(this.store,
         this.namespacePrefix,
         this.baseUri,
         this.clickHandlerInstance,
@@ -114,8 +109,7 @@ export class ReportValueMapperFactory {
 
         const sourceUrl = cell.links![LinkName.Self.toLowerCase()].source
 
-        registerStoreModule(
-          this.store,
+        registerStoreModule(this.store,
           namespace,
           HttpMethod.Get,
           sourceUrl,
@@ -139,10 +133,10 @@ export class ReportValueMapperFactory {
     if (downloadLinks && downloadLinks.length > 0) {
       const mappedLinks = downloadLinks.map(_ => {
         const link: Link = {
-          source: _.source,
-          linkTarget: toEnum(LinkTarget, _.linkTarget),
+          source      : _.source,
+          linkTarget  : toEnum(LinkTarget, _.linkTarget),
           resourceKind: toEnum(ResourceKind, _.resourceKind),
-          title: '',
+          title       : '',
         }
         return link
       })
@@ -150,8 +144,7 @@ export class ReportValueMapperFactory {
     }
   }
 
-  private processSections(
-    sections: any,
+  private processSections(sections: any,
     clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
     isNavigation = false,
   ) {
@@ -163,43 +156,41 @@ export class ReportValueMapperFactory {
     return [] as Array<Section>
   }
 
-  private processSection(
-    section: any,
+  private processSection(section: any,
     clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
     isNavigation = false,
   ) {
 
     const result: Section = {
-      id: section.id,
-      title: section.title,
-      name: section.name,
+      id       : section.id,
+      title    : section.title,
+      name     : section.name,
       treeTable: this.processTreeTable(section.treeTable, clickHandler, isNavigation),
     }
 
     return result
   }
 
-  private processTreeTable(
-    treeTable: any,
+  private processTreeTable(treeTable: any,
     clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
     isNavigation = false,
   ) {
     const result: any = {}
 
-    const content = treeTable.content
+    const content   = treeTable.content
     const behaviors = treeTable.behaviors as Array<ClientBehavior>
 
     content.headers?.forEach((header: TreeTableHeaderRow) => this.processHeader(header))
     content.rows?.forEach((row: TreeTableRow) => this.processRow(row, behaviors, clickHandler))
     content.footers?.forEach((row: TreeTableRow) => this.processRow(row, behaviors, clickHandler))
-    result.id = treeTable.id
+    result.id                = treeTable.id
     result.columnDefinitions = treeTable?.columnDefinitions?.map((_: any) => {
       return {
         columnWidthBehavior: toEnum(ColumnWidthBehavior, _.columnWidthBehavior),
-        columnWrapBehavior: toEnum(ColumnWrapBehavior, _.columnWrapBehavior),
-        width: _.width,
-        widthUnitOfMeasure: tryToEnum(UnitOfMeasure, _.widthUnitOfMeasure),
-        isFrozen: _.isFrozen,
+        columnWrapBehavior : toEnum(ColumnWrapBehavior, _.columnWrapBehavior),
+        width              : _.width,
+        widthUnitOfMeasure : tryToEnum(UnitOfMeasure, _.widthUnitOfMeasure),
+        isFrozen           : _.isFrozen,
       }
     })
 
@@ -210,7 +201,7 @@ export class ReportValueMapperFactory {
       content.cssClass += ' navigation-report'
     }
 
-    result.content = content
+    result.content   = content
     result.behaviors = behaviors
     // result.headers = content.headers
     // result.rows = content.rows
@@ -232,20 +223,18 @@ export class ReportValueMapperFactory {
       cell.id = cell.id || Guid.newGuid()
       if (cell.columnSorter) {
         if (cell.columnSorter.sortComparisonStrategy) {
-          const sortComparisonStrategy = toEnum(
-            SortComparisonStrategy,
+          const sortComparisonStrategy             = toEnum(SortComparisonStrategy,
             cell.columnSorter.sortComparisonStrategy.toString(),
           )
           cell.columnSorter.sortComparisonStrategy = sortComparisonStrategy
         }
-        const sortDirection = toEnum(SortDirection, cell.columnSorter.sortDirection.toString())
+        const sortDirection             = toEnum(SortDirection, cell.columnSorter.sortDirection.toString())
         cell.columnSorter.sortDirection = sortDirection
       }
     })
   }
 
-  private processRow(
-    row: TreeTableRow,
+  private processRow(row: TreeTableRow,
     behaviors: Array<ClientBehavior>,
     clickHandler?: (row?: TreeTableRow, cell?: TreeTableCell) => void,
   ) {
@@ -253,22 +242,22 @@ export class ReportValueMapperFactory {
     row.cells.forEach(cell => {
       // TODO: This value should come from default slot
       cell.value = cell.displayValue
-      cell.id = cell.id || Guid.newGuid()
+      cell.id    = cell.id || Guid.newGuid()
       if (cell.links) {
         const keys = Object.keys(cell.links)
         for (const key of keys) {
-          const link = cell.links[key]
+          const link      = cell.links[key]
           cell.links[key] = {
-            title: link.title,
-            source: link.source,
-            linkTarget: toEnum(LinkTarget, link.linkTarget.toString()),
+            title       : link.title,
+            source      : link.source,
+            linkTarget  : toEnum(LinkTarget, link.linkTarget.toString()),
             resourceKind: toEnum(ResourceKind, link.resourceKind.toString()),
           }
         }
       }
       if (cell.hover) {
         if (cell.hover.contentKind) {
-          const contentKind = toEnum(HoverContentKind, cell.hover.contentKind.toString())
+          const contentKind      = toEnum(HoverContentKind, cell.hover.contentKind.toString())
           cell.hover.contentKind = contentKind
         }
         else {
@@ -286,16 +275,18 @@ export class ReportValueMapperFactory {
       }
 
       if (cell?.cellFormat?.horizontalAlignment) {
-        cell.cellFormat.horizontalAlignment =
-          toEnum(HorizontalAlignment, cell?.cellFormat?.horizontalAlignment?.toString())
+        cell.cellFormat.horizontalAlignment = toEnum(
+          HorizontalAlignment,
+          cell?.cellFormat?.horizontalAlignment?.toString(),
+        )
       }
 
       if (cell.slots) {
         const keys = Object.keys(cell.slots.slotNameToUiObjectMap)
         for (const key of keys) {
-          const uiObject = cell.slots.slotNameToUiObjectMap[key] as any
+          const uiObject                        = cell.slots.slotNameToUiObjectMap[key] as any
           cell.slots.slotNameToUiObjectMap[key] = {
-            value: uiObject.value,
+            value       : uiObject.value,
             uiObjectType: tryToEnum(UiObjectType, uiObject.uiObjectType?.toString()),
           }
         }
@@ -349,12 +340,18 @@ export class ReportValueMapperFactory {
     }
 
     if (row.expandedSummaryRows && row.expandedSummaryRows.length > 0) {
-      row.expandedSummaryRows.forEach(expandedSummaryRow =>
-        this.processRow(expandedSummaryRow, behaviors, clickHandler))
+      row.expandedSummaryRows.forEach(expandedSummaryRow => this.processRow(
+        expandedSummaryRow,
+        behaviors,
+        clickHandler,
+      ))
     }
     if (row.collapsedSummaryRows && row.collapsedSummaryRows.length > 0) {
-      row.collapsedSummaryRows.forEach(collapsedSummaryRow =>
-        this.processRow(collapsedSummaryRow, behaviors, clickHandler))
+      row.collapsedSummaryRows.forEach(collapsedSummaryRow => this.processRow(
+        collapsedSummaryRow,
+        behaviors,
+        clickHandler,
+      ))
     }
   }
 }

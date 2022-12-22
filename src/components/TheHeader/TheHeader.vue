@@ -21,8 +21,12 @@ import { HorizontalAlignment } from '@vuescape/reporting-domain/TreeTable/Horizo
   components: { NavigationMenu },
 })
 export default class TheHeader extends ComponentBase {
-  private static readonly DefaultHeaderConfig = { logoAltText: '', toolbarStyle: '', shouldDisplayHelp: true }
-  private consolidatedMenus: Array<Menu> = []
+  private static readonly DefaultHeaderConfig = {
+    logoAltText      : '',
+    toolbarStyle     : '',
+    shouldDisplayHelp: true,
+  }
+  private consolidatedMenus: Array<Menu>      = []
 
   @namespace('theHeader/configuration').State(state => {
     if (state && state.value) {
@@ -49,7 +53,7 @@ export default class TheHeader extends ComponentBase {
   private featureService: FeatureService
 
   private async populateConsolidatedMenus() {
-    const menuSources = this.theHeaderProps.menuSources as MenuSources
+    const menuSources                    = this.theHeaderProps.menuSources as MenuSources
     const consolidatedMenus: Array<Menu> = []
 
     // tslint:disable:no-bitwise
@@ -63,30 +67,27 @@ export default class TheHeader extends ComponentBase {
 
     if ((menuSources & MenuSources.Feature) === MenuSources.Feature) {
       const featureMenus = await this.featureService.getMenus()
-      featureMenus.forEach(_ =>
-        this.addFeatureMenu(
-          _,
-          consolidatedMenus,
-          (_.menuTitlePath ?? '').split('|').filter(s => s),
-        ),
-      )
+      featureMenus.forEach(_ => this.addFeatureMenu(_,
+        consolidatedMenus,
+        (_.menuTitlePath ?? '').split('|').filter(s => s),
+      ))
       this.consolidatedMenus = consolidatedMenus
     }
 
-    const signOutDivider: Menu = {
-      id: Guid.newGuid(),
-      title: '',
-      path: '',
-      isDivider: true,
+    const signOutDivider: Menu  = {
+      id                 : Guid.newGuid(),
+      title              : '',
+      path               : '',
+      isDivider          : true,
       horizontalAlignment: HorizontalAlignment.Right,
     }
     const signOutMenuItem: Menu = {
-      id: 'sign-out',
-      title: 'Sign Out',
-      isDivider: false,
-      ariaLabel: 'Sign Out',
-      path: '/sign-out',
-      icon: 'fa sign-out-alt',
+      id                 : 'sign-out',
+      title              : 'Sign Out',
+      isDivider          : false,
+      ariaLabel          : 'Sign Out',
+      path               : '/sign-out',
+      icon               : 'fa sign-out-alt',
       horizontalAlignment: HorizontalAlignment.Right,
     }
     this.consolidatedMenus.push(...[signOutDivider, signOutMenuItem])
@@ -102,14 +103,14 @@ export default class TheHeader extends ComponentBase {
       return
     }
     const isLastMenuTitle = menuTitles.length === 1
-    let matchingMenu = menus.find(_ => _.title.toLowerCase() === menuTitles[0].toLowerCase())
+    let matchingMenu      = menus.find(_ => _.title.toLowerCase() === menuTitles[0].toLowerCase())
     // If there was no match for the title then add a placeholder menu
     if (!matchingMenu) {
       matchingMenu = {
-        id: Guid.newGuid(),
-        title: menuTitles[0],
-        path: '',
-        items: [],
+        id                 : Guid.newGuid(),
+        title              : menuTitles[0],
+        path               : '',
+        items              : [],
         horizontalAlignment: featureMenu.horizontalAlignment,
       }
       menus.push(matchingMenu)

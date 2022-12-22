@@ -31,7 +31,7 @@ export class DefaultTrackingService implements TrackingService {
 
   public getTrackingProvider(name?: string): TrackingProvider | undefined {
     const nameToFind = name || this.trackingProviders[0].name
-    const result = this.trackingProviders.find(_ => _.name === nameToFind)
+    const result     = this.trackingProviders.find(_ => _.name === nameToFind)
     return result
   }
 }

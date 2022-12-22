@@ -16,7 +16,7 @@ export class HttpService {
     if (baseUrl) {
       this.baseUrl = baseUrl
     }
-    this.shouldUseCache = shouldUseCache
+    this.shouldUseCache      = shouldUseCache
     this.restPayloadStrategy = restPayloadStrategy
   }
 
@@ -32,15 +32,12 @@ export class HttpService {
   }
 
   public get<T>(endpoint: string, args?: any): AxiosPromise<T> {
-    let queryString = ''
+    let queryString       = ''
     let formattedEndpoint = endpoint
     if (args) {
       const formattedArgs: any = JSON.parse(JSON.stringify(args))
-      if (
-        // tslint:disable-next-line: no-bitwise
-        (this.restPayloadStrategy & RestPayloadStrategy.Url) ===
-        RestPayloadStrategy.Url
-      ) {
+      if (// tslint:disable-next-line: no-bitwise
+        (this.restPayloadStrategy & RestPayloadStrategy.Url) === RestPayloadStrategy.Url) {
         const keys = Object.keys(formattedArgs)
         for (const key of keys) {
           if (formattedEndpoint.includes(`{:${key}}`)) {
@@ -50,21 +47,18 @@ export class HttpService {
         }
       }
 
-      if (
-        this.restPayloadStrategy === RestPayloadStrategy.None ||
-        // tslint:disable-next-line: no-bitwise
-        (this.restPayloadStrategy & RestPayloadStrategy.QueryString) === RestPayloadStrategy.QueryString
-      ) {
+      if (this.restPayloadStrategy === RestPayloadStrategy.None || // tslint:disable-next-line: no-bitwise
+        (this.restPayloadStrategy & RestPayloadStrategy.QueryString) === RestPayloadStrategy.QueryString) {
         queryString = '?' + qs.stringify(formattedArgs, { arrayFormat: 'repeat' })
       }
     }
 
-    const axiosConfig = {
-      baseURL: this.baseUrl,
+    const axiosConfig   = {
+      baseURL    : this.baseUrl,
       shouldCache: this.shouldUseCache,
     } as any
     axiosConfig.headers = { 'Content-Type': 'application/json' }
-    axiosConfig.data = {}
+    axiosConfig.data    = {}
     return Axios.instance.get<T>(formattedEndpoint + queryString, axiosConfig)
   }
 
@@ -82,7 +76,7 @@ export class HttpService {
     } as any
     if (this.restPayloadStrategy === RestPayloadStrategy.MultipartFormData) {
       axiosConfig.headers = { 'Content-Type': 'multipart/form-data' }
-      formattedArgs = args
+      formattedArgs       = args
     }
     return Axios.instance.post<T>(endpoint, formattedArgs, axiosConfig)
   }

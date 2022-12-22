@@ -12,7 +12,7 @@ describe('DownloadFileButton.vue --', () => {
   describe('props --', () => {
     it('should set shouldShowCompletedMessage', () => {
       const shouldShowCompletedMessage = true
-      const wrapper = mount(DownloadFileButton, { propsData: { shouldShowCompletedMessage } })
+      const wrapper                    = mount(DownloadFileButton, { propsData: { shouldShowCompletedMessage } })
 
       // tslint:disable-next-line: no-string-literal
       expect(wrapper.props()['shouldShowCompletedMessage']).toBe(shouldShowCompletedMessage)
@@ -28,7 +28,7 @@ describe('DownloadFileButton.vue --', () => {
 
       const wrapper = mount(DownloadFileButton, {
         propsData: {
-          onClick: () => {
+          onClick   : () => {
             wasClicked = true
           },
           isDisabled: false,
@@ -51,7 +51,7 @@ describe('DownloadFileButton.vue --', () => {
 
       const wrapper = mount(DownloadFileButton, {
         propsData: {
-          onClick: () => {
+          onClick   : () => {
             wasClicked = true
           },
           isDisabled: true,

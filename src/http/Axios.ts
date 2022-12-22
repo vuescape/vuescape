@@ -13,19 +13,17 @@ export class Axios {
   }
 
   public static async initCaching(cacheOptions: CacheOptions) {
-    const cacheAdapter = (await import(/* webpackChunkName: 'axios-extensions' */ 'axios-extensions'))
-      .cacheAdapterEnhancer
-    const Cache = (await import(/* webpackChunkName: 'lru-cache' */'lru-cache')).default
+    const cacheAdapter = (await import(/* webpackChunkName: 'axios-extensions' */ 'axios-extensions')).cacheAdapterEnhancer
+    const Cache        = (await import(/* webpackChunkName: 'lru-cache' */'lru-cache')).default
 
-    Axios.cacheAdapterFactory = () =>
-      cacheAdapter(axios.defaults.adapter!, {
-        enabledByDefault: cacheOptions.shouldCacheAllRequests,
-        cacheFlag: cacheOptions.cacheFlag,
-        defaultCache: new Cache<string, AxiosPromise>({
-          maxAge: cacheOptions.maxAgeMinutes * 60 * 1000,
-          max: cacheOptions.maxSize,
-        }),
-      })
+    Axios.cacheAdapterFactory = () => cacheAdapter(axios.defaults.adapter!, {
+      enabledByDefault: cacheOptions.shouldCacheAllRequests,
+      cacheFlag       : cacheOptions.cacheFlag,
+      defaultCache    : new Cache<string, AxiosPromise>({
+        maxAge: cacheOptions.maxAgeMinutes * 60 * 1000,
+        max   : cacheOptions.maxSize,
+      }),
+    })
 
     Axios.shouldUseCache = true
   }

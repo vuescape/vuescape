@@ -25,8 +25,7 @@ export default class ComponentBase extends Vue {
     registerStoreModuleWithInitialValueIfNotExists(this.$store, namespace, initialValue)
   }
 
-  protected registerStoreModuleWithAsyncActionsIfNotExists<S, P = {}>(
-    namespace: string,
+  protected registerStoreModuleWithAsyncActionsIfNotExists<S, P = {}>(namespace: string,
     asyncActions: Dictionary<AsyncAction<S> | HttpAsyncAction<S>>,
     initialValue?: S,
     mapper?: ValueMapper<S>,
@@ -34,8 +33,7 @@ export default class ComponentBase extends Vue {
     props?: P,
     shouldUseGlobalNotifications = true,
   ) {
-    registerStoreModuleWithAsyncActionsIfNotExists(
-      this.$store,
+    registerStoreModuleWithAsyncActionsIfNotExists(this.$store,
       namespace,
       asyncActions,
       initialValue,
@@ -46,8 +44,7 @@ export default class ComponentBase extends Vue {
     )
   }
 
-  protected registerStoreModuleWithAsyncActions<S, P = {}>(
-    namespace: string,
+  protected registerStoreModuleWithAsyncActions<S, P = {}>(namespace: string,
     asyncActions: Dictionary<AsyncAction<S> | HttpAsyncAction<S>>,
     initialValue?: S,
     mapper?: ValueMapper<S>,
@@ -55,8 +52,7 @@ export default class ComponentBase extends Vue {
     props?: P,
     shouldUseGlobalNotifications = true,
   ) {
-    registerStoreModuleWithAsyncActions(
-      this.$store,
+    registerStoreModuleWithAsyncActions(this.$store,
       namespace,
       asyncActions,
       initialValue,
@@ -67,20 +63,18 @@ export default class ComponentBase extends Vue {
     )
   }
 
-  protected registerStoreModuleIfNotExists<S, P = {}>(
-    namespace: string,
+  protected registerStoreModuleIfNotExists<S, P = {}>(namespace: string,
     httpMethod: HttpMethod,
     endpoint: string,
     baseUrl?: string,
-    shouldUseCache = true,
+    shouldUseCache      = true,
     initialValue?: S,
     mapper?: ValueMapper<S>,
     isEmpty?: IsEmptyFunction<S>,
     props?: P,
     restPayloadStrategy = RestPayloadStrategy.QueryString,
   ) {
-    registerStoreModuleIfNotExists(
-      this.$store,
+    registerStoreModuleIfNotExists(this.$store,
       namespace,
       httpMethod,
       endpoint,
@@ -94,20 +88,18 @@ export default class ComponentBase extends Vue {
     )
   }
 
-  protected registerStoreModule<T, P = {}>(
-    namespace: string,
+  protected registerStoreModule<T, P = {}>(namespace: string,
     httpMethod: HttpMethod,
     endpoint: string,
     baseUrl?: string,
-    shouldUseCache = true,
+    shouldUseCache      = true,
     initialValue?: T,
     mapper?: ValueMapper<T>,
     isEmpty?: IsEmptyFunction<T>,
     props?: P,
     restPayloadStrategy = RestPayloadStrategy.QueryString,
   ) {
-    registerStoreModule(
-      this.$store,
+    registerStoreModule(this.$store,
       namespace,
       httpMethod,
       endpoint,

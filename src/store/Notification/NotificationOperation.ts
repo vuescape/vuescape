@@ -22,12 +22,12 @@ export class NotificationOperation<S, R> {
         currentState.notifications.splice(index, 1)
       },
       [NotificationMutation.CLEAR](currentState) {
-        const state = currentState as any
+        const state         = currentState as any
         state.notifications = []
       },
     }
   }
-  public actions: () => ActionTree<S, R> = () => {
+  public actions: () => ActionTree<S, R>  = () => {
     return {
       async [NotificationAction.ADD](context, notification: NotificationMessage) {
         context.commit(NotificationMutation.ADD, notification)

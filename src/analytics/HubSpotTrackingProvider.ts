@@ -14,12 +14,9 @@ export class HubSpotTrackingProvider implements TrackingProvider {
 
   public identify(user: string): void {
     if (!this.isInitialized) {
-      this.getHsq().push([
-        'identify',
-        {
-          email: user,
-        },
-      ])
+      this.getHsq().push(['identify', {
+        email: user,
+      }])
 
       this.init()
     }

@@ -91,17 +91,17 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'
 import { Guid } from '@vuescape/index'
 
 @Component({
-  components: { Multiselect },
+  components  : { Multiselect },
   inheritAttrs: false,
 })
 export default class MultipleSelect extends Vue {
   private id = ''
 
-  private areWatchersEnabled = false
-  private valueVal: any = {}
+  private areWatchersEnabled     = false
+  private valueVal: any          = {}
   private optionsVal: Array<any> = []
 
-  private placeholderVal: string = ''
+  private placeholderVal: string    = ''
   private oldPlaceholderVal: string = ''
 
   @Prop({ type: Boolean, default: false })
@@ -193,7 +193,7 @@ export default class MultipleSelect extends Vue {
 
   private onRemove(option: any) {
     if (this.canSelectMultiple) {
-      this.valueVal = (this.valueVal as Array<any>).filter(_ => _[this.trackBy] !== option[this.trackBy])
+      this.valueVal  = (this.valueVal as Array<any>).filter(_ => _[this.trackBy] !== option[this.trackBy])
       option.checked = false
       console.info(option)
       this.clearMultiselectSize()
@@ -201,8 +201,8 @@ export default class MultipleSelect extends Vue {
   }
 
   private clearMultiselectSize() {
-    const el = (this.$refs.multiselectDiv as unknown) as any
-    const child = el.children[0]
+    const el          = (this.$refs.multiselectDiv as unknown) as any
+    const child       = el.children[0]
     // TODO : Get padding
     child.style.width = ''
   }
@@ -217,11 +217,11 @@ export default class MultipleSelect extends Vue {
   private onMultiselectOpen(id: any) {
     if (this.canSelectMultiple) {
       this.oldPlaceholderVal = this.placeholderVal
-      this.placeholderVal = ''
+      this.placeholderVal    = ''
     }
-    const el = (this.$refs.multiselectDiv as unknown) as any
-    const child = el.children[0]
-    const rect = child.getBoundingClientRect()
+    const el          = (this.$refs.multiselectDiv as unknown) as any
+    const child       = el.children[0]
+    const rect        = child.getBoundingClientRect()
     child.style.width = rect.width + 'px'
     this.alignSelect(false, rect)
   }
@@ -233,18 +233,18 @@ export default class MultipleSelect extends Vue {
   private alignSelect(shouldUpdateAsync: boolean, rect?: any) {
     if (this.alignment !== 'left') {
       if (!rect) {
-        const el = (this.$refs.multiselectDiv as unknown) as any
+        const el    = (this.$refs.multiselectDiv as unknown) as any
         const child = el.children[0]
-        rect = child.getBoundingClientRect()
+        rect        = child.getBoundingClientRect()
       }
       const updateAlignment = () => {
         const dropDownElement = document.getElementsByClassName('multiselect__content-wrapper')[0] as any
         if (!shouldUpdateAsync) {
-          dropDownElement.style.left = '-99999px'
+          dropDownElement.style.left    = '-99999px'
           dropDownElement.style.display = ''
         }
         const selectRect = dropDownElement.getBoundingClientRect()
-        let adjustment = -1 * (selectRect.width - rect.width)
+        let adjustment   = -1 * (selectRect.width - rect.width)
         if (this.alignment === 'center') {
           adjustment = adjustment / 2.0
         }
@@ -265,8 +265,8 @@ export default class MultipleSelect extends Vue {
   private created() {
     this.id = Guid.newGuid()
 
-    this.valueVal = this.value
-    this.optionsVal = this.options
+    this.valueVal       = this.value
+    this.optionsVal     = this.options
     this.placeholderVal = this.placeholder
   }
 }

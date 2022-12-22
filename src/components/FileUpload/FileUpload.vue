@@ -99,7 +99,7 @@ export default class FileUpload extends Vue {
   private remove(fileName: string) {
     const fileInput = this.$refs.fileInput as any
     fileInput.value = ''
-    this.files = this.files.filter((file: any) => {
+    this.files      = this.files.filter((file: any) => {
       return file.name !== fileName
     })
   }

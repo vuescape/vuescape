@@ -43,14 +43,16 @@ import { ComponentBase } from '@vuescape/index'
 
 import { makeReportPaneNamespace, makeReportPaneNamespacePrefix, PaneKind } from '.'
 
-const ReportPane = () =>
-  import(/* webpackChunkName: 'report-pane' */ '@vuescape/components/Reporting/ReportPane.vue').then(m => m.default)
+const ReportPane = () => import(/* webpackChunkName: 'report-pane' */ '@vuescape/components/Reporting/ReportPane.vue').then(
+  m => m.default)
 
-const SlidingPanes = () =>
-  import(/* webpackChunkName: 'sliding-panes' */ '@vuescape/components/SlidingPanes').then(m => m.default)
+const SlidingPanes = () => import(/* webpackChunkName: 'sliding-panes' */ '@vuescape/components/SlidingPanes').then(m => m.default)
 
 @Component({
-  components: { ReportPane, SlidingPanes },
+  components: {
+    ReportPane,
+    SlidingPanes,
+  },
 })
 export default class ReportPanes extends ComponentBase {
   // Props passed in on route
@@ -64,7 +66,7 @@ export default class ReportPanes extends ComponentBase {
   private reportPaneActions: Array<SlidingPaneAction>
 
   private get slidingPaneEvent() {
-    const stateKey = makeStateKey(this.reportNamespace, 'slidingPaneEvent')
+    const stateKey    = makeStateKey(this.reportNamespace, 'slidingPaneEvent')
     const moduleState = getModuleStateByKey(stateKey, this.$store)
     if (moduleState && moduleState.value) {
       return moduleState.value as SlidingPaneEvent
@@ -92,71 +94,65 @@ export default class ReportPanes extends ComponentBase {
     return makeReportPaneNamespacePrefix(this.reportId)
   }
 
-  @namespace('window/availableHeight').State(state => state.value)
-  private availableHeight: Array<number>
+  @namespace('window/availableHeight').State(state => state.value) private availableHeight: Array<number>
 
   // TODO: Define all the sliding pane actions.
   // Also this should be passed into this component as prop
   // but needs some work (e.g. create a factory) because
   // this component has the context required to perform these
   // actions.  e.g. this.$refs to act on the paneCollection.
-  private slidingPaneActions: Array<SlidingPaneAction> = [
-    {
-      trigger: {
-        // Hard coding detail pane as pop out pane.
-        // TODO: make this configurable
-        namespace: `${this.reportNamespace}/navigation`,
-        getter: (state: any) => state.value,
-      },
-      action: this.handleSlidingPaneAction,
-      // putting pane index in context
-      context: 0,
+  private slidingPaneActions: Array<SlidingPaneAction> = [{
+    trigger: {
+      // Hard coding detail pane as pop out pane.
+      // TODO: make this configurable
+      namespace: `${this.reportNamespace}/navigation`,
+      getter   : (state: any) => state.value,
     },
-    {
-      trigger: {
-        // Hard coding detail pane as pop out pane.
-        // TODO: make this configurable
-        namespace: `${this.reportNamespace}/main`,
-        getter: (state: any) => state.value,
-      },
-      action: this.handleSlidingPaneAction,
-      context: 1,
+    action : this.handleSlidingPaneAction, // putting pane index in context
+    context: 0,
+  }, {
+    trigger: {
+      // Hard coding detail pane as pop out pane.
+      // TODO: make this configurable
+      namespace: `${this.reportNamespace}/main`,
+      getter   : (state: any) => state.value,
     },
-    {
-      trigger: {
-        // Hard coding detail pane as pop out pane.
-        // TODO: make this configurable
-        namespace: `${this.reportNamespace}/detail`,
-        getter: (state: any) => state.value,
-      },
-      action: this.handleSlidingPaneAction,
-      context: 2,
+    action : this.handleSlidingPaneAction,
+    context: 1,
+  }, {
+    trigger: {
+      // Hard coding detail pane as pop out pane.
+      // TODO: make this configurable
+      namespace: `${this.reportNamespace}/detail`,
+      getter   : (state: any) => state.value,
     },
-  ]
+    action : this.handleSlidingPaneAction,
+    context: 2,
+  }]
 
   private get isLoading() {
-    const mainState = getModuleStateByKey(this.mainNamespace, this.$store)
+    const mainState       = getModuleStateByKey(this.mainNamespace, this.$store)
     const navigationState = getModuleStateByKey(this.navigationNamespace, this.$store)
-    const detailState = getModuleStateByKey(this.detailNamespace, this.$store)
+    const detailState     = getModuleStateByKey(this.detailNamespace, this.$store)
 
     const result = mainState?.isPending || navigationState?.isPending || detailState?.isPending
     return result
   }
 
   private get mainReport() {
-    const state = getModuleStateByKey(this.mainNamespace, this.$store)
+    const state  = getModuleStateByKey(this.mainNamespace, this.$store)
     const result = state?.value
     return result
   }
 
   private get navigationReport() {
-    const state = getModuleStateByKey(this.navigationNamespace, this.$store)
+    const state  = getModuleStateByKey(this.navigationNamespace, this.$store)
     const result = state?.value
     return result
   }
 
   private get detailReport() {
-    const state = getModuleStateByKey(this.detailNamespace, this.$store)
+    const state  = getModuleStateByKey(this.detailNamespace, this.$store)
     const result = state?.value
     this.setPageTitle(result?.title)
     return result
@@ -178,7 +174,10 @@ export default class ReportPanes extends ComponentBase {
     if (value.id !== '') {
       const indexToOpen = paneCollection.slidingPaneConfig
         .map((v: any, index: number) => {
-          return { item: v, index }
+          return {
+            item: v,
+            index,
+          }
         })
         .filter((i: any) => i.item.initialWidth === 0)
         .map((i: any) => i.index)[0]

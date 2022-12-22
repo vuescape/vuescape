@@ -20,7 +20,12 @@ import { SlidingPaneAction } from './SlidingPaneAction'
 import { SlidingPaneConfig } from './SlidingPaneConfig'
 
 @Component({
-  components: { CloseIcon, FullscreenIcon, FullscreenExitIcon, Splitpanes },
+  components: {
+    CloseIcon,
+    FullscreenIcon,
+    FullscreenExitIcon,
+    Splitpanes,
+  },
 })
 export default class SlidingPanes extends ComponentBase {
   // Amount to adjust height (e.g. accounting for header & footer)
@@ -68,7 +73,7 @@ export default class SlidingPanes extends ComponentBase {
 
   private panes: Array<{ width: number; savedWidth: number }> = this.slidingPaneConfig.map(p => {
     return {
-      width: p.initialWidth !== undefined ? p.initialWidth : 0,
+      width     : p.initialWidth !== undefined ? p.initialWidth : 0,
       savedWidth: p.initialWidth !== undefined ? p.initialWidth : 0,
     }
   })
@@ -78,11 +83,10 @@ export default class SlidingPanes extends ComponentBase {
   // Saved vuex watchers so we can destroy watchers when component is destroyed
   private vuexWatchers = new Array<() => void>()
 
-  @namespace('window/availableHeight').Mutation(StoreOperation.Mutation.SET_VALUE)
-  private setAvailableHeight: (availableHeight: Array<number>) => void
+  @namespace('window/availableHeight')
+    .Mutation(StoreOperation.Mutation.SET_VALUE) private setAvailableHeight: (availableHeight: Array<number>) => void
 
-  @namespace('window/availableHeight').State(state => state.value)
-  private availableHeight: Array<number>
+  @namespace('window/availableHeight').State(state => state.value) private availableHeight: Array<number>
 
   //#region Public API
 
@@ -92,7 +96,7 @@ export default class SlidingPanes extends ComponentBase {
 
   public setWidth(index: number, width: number, savedWidth: number = -1) {
     this.panes[index].savedWidth = savedWidth === -1 ? this.panes[index].width : savedWidth
-    this.panes[index].width = width
+    this.panes[index].width      = width
   }
 
   public setWidths(...widths: Array<number>) {
@@ -113,7 +117,7 @@ export default class SlidingPanes extends ComponentBase {
     this.doMaximizeOrRestorePane(index)
     this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/SET_VALUE`, {
       eventType: EventType.PaneMaximized,
-      payload: index,
+      payload  : index,
     })
     this.onTransitionEndSetAvailableHeight()
   }
@@ -141,7 +145,7 @@ export default class SlidingPanes extends ComponentBase {
 
       this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/${StoreOperation.Mutation.SET_VALUE}`, {
         eventType: EventType.PaneClosed,
-        payload: index,
+        payload  : index,
       })
 
       this.onTransitionEndSetAvailableHeight()
@@ -186,10 +190,10 @@ export default class SlidingPanes extends ComponentBase {
       .filter(v => v.length === 2)
 
     // Hide all splitters
-    const splitters = document.getElementsByClassName('splitpanes__splitter')
+    const splitters     = document.getElementsByClassName('splitpanes__splitter')
     const splitterArray = [] as Array<Element>
     for (const splitter of splitters) {
-      const split = splitter as any
+      const split         = splitter as any
       split.style.display = 'none'
       splitterArray.push(splitter)
     }
@@ -197,7 +201,7 @@ export default class SlidingPanes extends ComponentBase {
     // Make all visible splitters visible
     visibleSplitterGroups.forEach((s, index) => {
       const splitterIndex = visibleSplitterGroups[index][0]
-      const splitter = splitterArray[splitterIndex] as any
+      const splitter      = splitterArray[splitterIndex] as any
       if (splitter && splitter.style) {
         splitter.style.display = 'block'
       }
@@ -205,34 +209,30 @@ export default class SlidingPanes extends ComponentBase {
   }
 
   private createSplitPanes(h: CreateElement) {
-    const self = this
-    const splitpanes = h(
-      'splitpanes',
-      {
+    const self       = this
+    const splitpanes = h('splitpanes', {
         class: self.slidingPaneCssClass,
         style: self.slidingPaneStyles,
         attrs: {
-          'watch-slots': self.areSlotsReactive,
-          'dbl-click-splitter': false,
-          circularReferencePropertyExclusions: ['_routerRoot'],
-          // 'push-other-panes': false
+          'watch-slots'                      : self.areSlotsReactive,
+          'dbl-click-splitter'               : false,
+          circularReferencePropertyExclusions: ['_routerRoot'], // 'push-other-panes': false
         },
-        on: {
-          resize: (event: any) => {
+        on   : {
+          resize         : (event: any) => {
             self.onResize(event)
           },
-          resized: (event: any) => {
+          resized        : (event: any) => {
             self.onResized(event)
           },
           'pane-maximize': (event: any) => {
             self.onPaneMaximized(event)
           },
-          'pane-click': (event: any) => {
+          'pane-click'   : (event: any) => {
             self.onPaneClick(event)
           },
         },
-      },
-      // Wrap all provided slots (components to display in the pane will be in the slots)
+      }, // Wrap all provided slots (components to display in the pane will be in the slots)
       (this.$slots.default || [])
         .filter(slot => (slot as any).width !== 0)
         .map((slot: any, index: number) => this.wrapSlot(h, slot, index)),
@@ -247,24 +247,20 @@ export default class SlidingPanes extends ComponentBase {
     const slidingPane = this.slidingPaneConfig[index]
     // Add maximize/restore and close buttons
     if (slidingPane.shouldShowMaximize || slidingPane.shouldShowClose) {
-      const header = h(
-        'div',
-        {
-          style: {
-            'z-index': 1000,
-            'position': this.slidingPaneHeaderPosition,
-            'text-align': 'right',
-            'top': 0,
-            'right': '20px',
-            'min-height': '30px',
-            'display': this.headerButtonCssDisplay,
-            'justify-content': 'right',
-            'align-items': 'center',
-            'float': this.headerButtonCssDisplay === 'inline' ? 'right' : 'none',
-          },
+      const header      = h('div', {
+        style: {
+          'z-index'        : 1000,
+          'position'       : this.slidingPaneHeaderPosition,
+          'text-align'     : 'right',
+          'top'            : 0,
+          'right'          : '20px',
+          'min-height'     : '30px',
+          'display'        : this.headerButtonCssDisplay,
+          'justify-content': 'right',
+          'align-items'    : 'center',
+          'float'          : this.headerButtonCssDisplay === 'inline' ? 'right' : 'none',
         },
-        this.createHeaderButtons(h, index),
-      )
+      }, this.createHeaderButtons(h, index))
       const wrappedSlot = this.wrapPane(h, index, [header, slot])
       return wrappedSlot
     }
@@ -285,19 +281,15 @@ export default class SlidingPanes extends ComponentBase {
       }
     }
 
-    const wrappedSlot = h(
-      'div',
-      {
-        ref: 'wrappedPane_' + index,
-        class: classes,
-        attrs: {
-          'splitpanes-size': this.panes[index].width,
-          'splitpanes-min': this.slidingPaneConfig[index].minWidth,
-          'splitpanes-max': this.slidingPaneConfig[index].maxWidth,
-        },
+    const wrappedSlot = h('div', {
+      ref  : 'wrappedPane_' + index,
+      class: classes,
+      attrs: {
+        'splitpanes-size': this.panes[index].width,
+        'splitpanes-min' : this.slidingPaneConfig[index].minWidth,
+        'splitpanes-max' : this.slidingPaneConfig[index].maxWidth,
       },
-      nodes,
-    )
+    }, nodes)
     return wrappedSlot
   }
 
@@ -305,39 +297,27 @@ export default class SlidingPanes extends ComponentBase {
     const links = []
     if (this.slidingPaneConfig[index].shouldShowMaximize) {
       const maximizeRestoreIcon = h(this.panes[index].width === 100 ? 'fullscreen-exit-icon' : 'fullscreen-icon')
-      const iconWrapper = h('span', { class: ['sliding-panes__material-icons--large'] }, [maximizeRestoreIcon])
+      const iconWrapper         = h('span', { class: ['sliding-panes__material-icons--large'] }, [maximizeRestoreIcon])
 
-      links.push(
-        h(
-          'a',
-          {
-            on: {
-              click: () => {
-                this.maximizeOrRestorePane(index)
-              },
-            },
+      links.push(h('a', {
+        on: {
+          click: () => {
+            this.maximizeOrRestorePane(index)
           },
-          [iconWrapper],
-        ),
-      )
+        },
+      }, [iconWrapper]))
     }
 
     if (this.slidingPaneConfig[index].shouldShowClose) {
-      const icon = h('close-icon')
+      const icon        = h('close-icon')
       const iconWrapper = h('span', { class: ['sliding-panes__material-icons--large'] }, [icon])
-      links.push(
-        h(
-          'a',
-          {
-            on: {
-              click: () => {
-                this.closePane(index)
-              },
-            },
+      links.push(h('a', {
+        on: {
+          click: () => {
+            this.closePane(index)
           },
-          [iconWrapper],
-        ),
-      )
+        },
+      }, [iconWrapper]))
     }
 
     return links
@@ -348,8 +328,8 @@ export default class SlidingPanes extends ComponentBase {
   private onTransitionEndSetAvailableHeight() {
     // SlidingPanes uses a transition to close the window so we need to wait for the transition to end before
     // re-rendering any components dependant on the height.
-    const el = this.$el
-    const self = this
+    const el              = this.$el
+    const self            = this
     // tslint:disable-next-line: only-arrow-functions
     const onTransitionEnd = function() {
       self.setAvailableHeight([self.availableHeight[0]])
@@ -384,28 +364,23 @@ export default class SlidingPanes extends ComponentBase {
       self.slidingPaneActions.forEach((paneAction, index: number) => {
         const paneIndex = index
         if (paneAction) {
-          this.vuexWatchers.push(
-            self.$store.watch(
-              (state: any) => {
-                if (state && state[paneAction.trigger.namespace]) {
-                  return paneAction.trigger.getter(state[paneAction.trigger.namespace])
-                }
-                return null
-              },
-              (value: any, oldValue: any) => {
-                if (value && oldValue !== value) {
-                  paneAction.action(value, oldValue, self.panes, paneAction.context)
-                }
-              },
-            ),
-          )
+          this.vuexWatchers.push(self.$store.watch((state: any) => {
+            if (state && state[paneAction.trigger.namespace]) {
+              return paneAction.trigger.getter(state[paneAction.trigger.namespace])
+            }
+            return null
+          }, (value: any, oldValue: any) => {
+            if (value && oldValue !== value) {
+              paneAction.action(value, oldValue, self.panes, paneAction.context)
+            }
+          }))
         }
       })
     }
 
     this.registerStoreModuleWithInitialValue(`${this.eventNamespace}/slidingPaneEvent`, {
       eventType: EventType.None,
-      payload: {},
+      payload  : {},
     })
   }
 
@@ -440,7 +415,7 @@ export default class SlidingPanes extends ComponentBase {
 
     this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/SET_VALUE`, {
       eventType: EventType.PaneResized,
-      payload: event,
+      payload  : event,
     })
 
     this.setAvailableHeight([this.availableHeight[0]])

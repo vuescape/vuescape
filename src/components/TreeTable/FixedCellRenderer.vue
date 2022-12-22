@@ -15,10 +15,14 @@ import { TreeTableCell } from '@vuescape/index'
 
 @Component({ components: {} })
 export default class FixedCellRenderer extends ComponentBase {
-  @Prop({ type: Object, required: true })
-  private cell: TreeTableCell
+  @Prop({
+    type    : Object,
+    required: true,
+  }) private cell: TreeTableCell
 
-  @Prop({ type: Boolean, default: false })
-  private isHovering: boolean
+  @Prop({
+    type   : Boolean,
+    default: false,
+  }) private isHovering: boolean
 }
 </script>

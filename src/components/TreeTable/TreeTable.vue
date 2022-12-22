@@ -64,7 +64,11 @@ import HeaderCellRenderer from './HeaderCellRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 
 @Component({
-  components: { HeaderCellRenderer, RowRenderer, VueScrollingTable },
+  components: {
+    HeaderCellRenderer,
+    RowRenderer,
+    VueScrollingTable,
+  },
 })
 export default class TreeTable extends ComponentBase {
   private idValue: string
@@ -170,18 +174,14 @@ export default class TreeTable extends ComponentBase {
       if (header.columnSorter.sortDirection === undefined || header.columnSorter.sortDirection === SortDirection.None) {
         newSortDirection = SortDirection.Ascending
       }
-      else if (
-        header.columnSorter.sortDirection === SortDirection.Ascending ||
-        header.columnSorter.sortDirection === SortDirection.Descending
-      ) {
+      else if (header.columnSorter.sortDirection === SortDirection.Ascending || header.columnSorter.sortDirection === SortDirection.Descending) {
         newSortDirection = header.columnSorter.sortDirection * -1
       }
       else {
         throw new Error('Unsupported SortDirection: ' + header.columnSorter.sortDirection)
       }
-      this.headers.forEach(_ =>
-        _.cells.forEach(col => (col.columnSorter ? (col.columnSorter.sortDirection = SortDirection.None) : undefined)),
-      )
+      this.headers.forEach(_ => _.cells.forEach(col => (col.columnSorter ?
+        (col.columnSorter.sortDirection = SortDirection.None) : undefined)))
       header.columnSorter.sortDirection = newSortDirection
       this.setRowsToDisplay()
     }
@@ -204,22 +204,19 @@ export default class TreeTable extends ComponentBase {
   private defaultTreeTableSorter(rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) {
     const sortHeader = getSortedHeaderCellWithIndex(headers)
     if (sortHeader) {
-      return rows.sort(
-        makeTreeTableCellPropertyCompare(
-          sortHeader.index,
-          sortHeader.cell.columnSorter!.sortDirection,
-          sortHeader.cell.columnSorter!.sortComparisonStrategy,
-        ),
-      )
+      return rows.sort(makeTreeTableCellPropertyCompare(sortHeader.index,
+        sortHeader.cell.columnSorter!.sortDirection,
+        sortHeader.cell.columnSorter!.sortComparisonStrategy,
+      ))
     }
 
     return rows
   }
 
   private async setRowsToDisplay() {
-    const rows = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
+    const rows         = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
     this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headers)
-    const tableBody = document.querySelector('table.scrolling tbody') as { scrollTop: number }
+    const tableBody    = document.querySelector('table.scrolling tbody') as { scrollTop: number }
     if (tableBody) {
       const scrollTop = tableBody.scrollTop
       await this.$nextTick()

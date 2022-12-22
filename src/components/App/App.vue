@@ -89,7 +89,13 @@ const DownloadSnackbar = () => import(/* webpackChunkName: 'download-snackbar' *
   m => m.default)
 
 @Component({
-  components: { AppInfoHandler, AppInfoPoller, DownloadSnackbar, TheHeader, TheFooter },
+  components: {
+    AppInfoHandler,
+    AppInfoPoller,
+    DownloadSnackbar,
+    TheHeader,
+    TheFooter,
+  },
 })
 export default class App extends ComponentBase {
   private userProfileModuleValue: string
@@ -184,8 +190,8 @@ export default class App extends ComponentBase {
   private async getAvailableHeight() {
     await this.$nextTick()
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-    const theHeader = this.$refs.theHeader as any
-    const theFooter = this.$refs.theFooter as any
+    const theHeader    = this.$refs.theHeader as any
+    const theFooter    = this.$refs.theFooter as any
     if (!theHeader?.$el?.getBoundingClientRect && !theFooter.$el.getBoundingClientRect) {
       return windowHeight
     }
@@ -195,8 +201,9 @@ export default class App extends ComponentBase {
     // The reason 0 height could be returned because the elements are not fully rendered yet.
     const theHeaderHeight = (theHeader?.$el?.getBoundingClientRect().height as number) || 37
     const theFooterHeight = (theFooter?.$el?.getBoundingClientRect().height as number) || 36
-    const contentPane = document.querySelector('main') as Element
-    const paddingTop = Number.parseFloat(window.getComputedStyle(contentPane, null).getPropertyValue('padding-top'))
+    const contentPane     = document.querySelector('main') as Element
+    const paddingTop      = Number.parseFloat(window.getComputedStyle(contentPane, null)
+      .getPropertyValue('padding-top'))
     const availableHeight = windowHeight - theHeaderHeight - theFooterHeight - paddingTop
 
     return availableHeight

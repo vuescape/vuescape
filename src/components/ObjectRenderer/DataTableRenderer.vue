@@ -62,7 +62,11 @@ export default class DataTableRenderer extends Vue {
         const firstItem = val[0]
         Object.keys(firstItem).forEach((key, index) => {
           const inferredColumnHeading = this.sentenceFromCamelCase(this.capitalizeFirstCharacter(key))
-          this.headers.push({ text: inferredColumnHeading, value: key, align: 'left' })
+          this.headers.push({
+            text : inferredColumnHeading,
+            value: key,
+            align: 'left',
+          })
         })
       }
     }
@@ -70,7 +74,11 @@ export default class DataTableRenderer extends Vue {
       if (val && val.length > 0) {
         const firstItem = val[0]
         Object.keys(firstItem).forEach((key, index) => {
-          this.headers.push({ text: key, value: key, align: 'left' })
+          this.headers.push({
+            text : key,
+            value: key,
+            align: 'left',
+          })
         })
       }
     }

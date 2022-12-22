@@ -30,8 +30,11 @@ import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 
 @Component
 export default class TheFooter extends Vue {
-  private static readonly DefaultFooterConfig = { copyrightName: '', logoAltText: '' }
-  private currentYear = new Date().getFullYear()
+  private static readonly DefaultFooterConfig = {
+    copyrightName: '',
+    logoAltText  : '',
+  }
+  private currentYear                         = new Date().getFullYear()
 
   private formattedVersion = ''
 

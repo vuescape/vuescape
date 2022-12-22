@@ -46,8 +46,7 @@ export default class ModuleStore extends ComponentBase {
   }
 
   private async created() {
-    this.registerStoreModule(
-      this.namespace,
+    this.registerStoreModule(this.namespace,
       this.httpMethod,
       this.endpointUrl,
       this.apiBaseUrl,
@@ -68,7 +67,7 @@ export default class ModuleStore extends ComponentBase {
     }
 
     const moduleState = this.$store.state[this.namespace] ? this.$store.state[this.namespace] : this.defaultModuleState
-    const result = this.$scopedSlots.default({
+    const result      = this.$scopedSlots.default({
       moduleState: this.$store.state[this.namespace],
     })
 

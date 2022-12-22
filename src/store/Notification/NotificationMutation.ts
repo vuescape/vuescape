@@ -1,5 +1,5 @@
 export class NotificationMutation {
-  public static readonly ADD = 'addNotification'
+  public static readonly ADD    = 'addNotification'
   public static readonly REMOVE = 'removeNotification'
-  public static readonly CLEAR = 'clearNotifications'
+  public static readonly CLEAR  = 'clearNotifications'
 }

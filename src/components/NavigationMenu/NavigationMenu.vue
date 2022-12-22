@@ -76,11 +76,10 @@ import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 import { Menu } from '@vuescape/types'
 
-const HamburgerMenu = () =>
-  import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
+const HamburgerMenu = () => import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
 
-const NavigationMenuItem = () =>
-  import(/* webpackChunkName: 'navigation-menu-item' */ './NavigationMenuItem.vue').then(m => m.default)
+const NavigationMenuItem = () => import(/* webpackChunkName: 'navigation-menu-item' */ './NavigationMenuItem.vue').then(
+  m => m.default)
 
 @Component({
   components: {
@@ -89,10 +88,10 @@ const NavigationMenuItem = () =>
   },
 })
 export default class NavigationMenu extends Vue {
-  private menusValue: Array<Menu> = []
-  private hasLeftNavigationItems = false
+  private menusValue: Array<Menu>  = []
+  private hasLeftNavigationItems   = false
   private hasCenterNavigationItems = false
-  private hasRightNavigationItems = false
+  private hasRightNavigationItems  = false
 
   @Prop({ type: String, default: '' })
   private toolbarStyle: string
@@ -103,7 +102,7 @@ export default class NavigationMenu extends Vue {
   @Prop()
   private helpComponent: any
 
-  private shouldShowHelp = false
+  private shouldShowHelp      = false
   private activeIndex: string = '/'
 
   @State
@@ -137,9 +136,9 @@ export default class NavigationMenu extends Vue {
   }
 
   private get shouldShowRightSection() {
-    const hasLeft = this.hasLeftNavigationItems
+    const hasLeft   = this.hasLeftNavigationItems
     const hasCenter = this.hasCenterNavigationItems
-    const hasRight = this.hasRightNavigationItems
+    const hasRight  = this.hasRightNavigationItems
     if ((hasLeft && !hasCenter && !hasRight) || (hasCenter && !hasLeft && !hasRight)) {
       return false
     }
@@ -162,15 +161,11 @@ export default class NavigationMenu extends Vue {
   }
 
   private get breakpoints() {
-    const hasLeft = this.hasLeftNavigationItems
+    const hasLeft   = this.hasLeftNavigationItems
     const hasCenter = this.hasCenterNavigationItems
-    const hasRight = this.hasRightNavigationItems
+    const hasRight  = this.hasRightNavigationItems
 
-    if (
-      (hasLeft && !hasCenter && !hasRight) ||
-      (hasCenter && !hasLeft && !hasRight) ||
-      (hasRight && !hasLeft && !hasCenter)
-    ) {
+    if ((hasLeft && !hasCenter && !hasRight) || (hasCenter && !hasLeft && !hasRight) || (hasRight && !hasLeft && !hasCenter)) {
       return 12
     }
 
@@ -183,9 +178,9 @@ export default class NavigationMenu extends Vue {
 
   @Watch('menus')
   private onMenusChanged(val: Array<Menu>, oldVal: Array<Menu>) {
-    this.menusValue = val
-    this.hasLeftNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
-    this.hasRightNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Right)
+    this.menusValue               = val
+    this.hasLeftNavigationItems   = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
+    this.hasRightNavigationItems  = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Right)
     this.hasCenterNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Center)
   }
 
@@ -199,9 +194,9 @@ export default class NavigationMenu extends Vue {
   }
 
   private created() {
-    this.menusValue = this.menus
-    this.hasLeftNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
-    this.hasRightNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Right)
+    this.menusValue               = this.menus
+    this.hasLeftNavigationItems   = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
+    this.hasRightNavigationItems  = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Right)
     this.hasCenterNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Center)
   }
 }

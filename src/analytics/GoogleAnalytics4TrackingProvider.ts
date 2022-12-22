@@ -48,15 +48,15 @@ gtag('config', '${this.trackingId}', { send_page_view: false })
 
   private addScript(scriptContent: string) {
     const script = document.createElement('script') as HTMLScriptElement
-    script.type = 'text/javascript'
-    script.text = scriptContent
+    script.type  = 'text/javascript'
+    script.text  = scriptContent
     document.head.appendChild(script)
   }
 
   private loadScriptFromUrl(src: string) {
     // return new Promise(function(resolve, reject) {
     const script = document.createElement('script') as HTMLScriptElement
-    script.src = src
+    script.src   = src
     script.async = true
     // script.onload = resolve
     // script.onerror = reject

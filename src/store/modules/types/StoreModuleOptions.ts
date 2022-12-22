@@ -1,10 +1,6 @@
 import { AsyncAction, HttpAsyncAction } from '@vuescape/http'
 import {
-  ErrorHandlerBuilder,
-  IsEmptyFunction,
-  ModuleOptions,
-  StoreModuleErrorHandlerBuilder,
-  ValueMapper,
+  ErrorHandlerBuilder, IsEmptyFunction, ModuleOptions, StoreModuleErrorHandlerBuilder, ValueMapper,
 } from '@vuescape/store/modules/types'
 import { Dictionary } from '@vuescape/types'
 
@@ -13,12 +9,7 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
     if (value !== null && value !== undefined && (value as any).length === 0) {
       return true
     }
-    else if (
-      typeof value !== 'string' &&
-      value &&
-      Object.keys(value).length === 0 &&
-      (value as any).constructor === Object
-    ) {
+    else if (typeof value !== 'string' && value && Object.keys(value).length === 0 && (value as any).constructor === Object) {
       // Empty object {} is also empty
       return true
     }
@@ -83,12 +74,12 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
       this.asyncActions = asyncActions
     }
 
-    this.isEmpty = isEmpty || StoreModuleOptions.defaultIsEmpty
-    this.mapToValue = mapToValue || StoreModuleOptions.identityMapper
-    this.initialValue = initialValue
-    this.isNamespaced = isNamespaced
+    this.isEmpty                      = isEmpty || StoreModuleOptions.defaultIsEmpty
+    this.mapToValue                   = mapToValue || StoreModuleOptions.identityMapper
+    this.initialValue                 = initialValue
+    this.isNamespaced                 = isNamespaced
     this.shouldUseGlobalNotifications = shouldUseGlobalNotifications
-    this.shouldUseGlobalSpinner = shouldUseGlobalSpinner
+    this.shouldUseGlobalSpinner       = shouldUseGlobalSpinner
 
     if (!Number.isInteger(spinnerDelay) || spinnerDelay < 0) {
       throw new TypeError('spinnerDelay must be a valid integer')

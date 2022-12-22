@@ -10,7 +10,10 @@ export function getSortedHeaderCellWithIndex(headers: Array<TreeTableHeaderRow>)
   const row = headers[headers.length - 1]
   sortHeader = row.cells
     .map((cell: TreeTableHeaderCell, index: number) => {
-      const result = { cell, index }
+      const result = {
+        cell,
+        index,
+      }
       return result
     })
     .filter(_ => _.cell.columnSorter && _.cell.columnSorter.sortDirection !== SortDirection.None)

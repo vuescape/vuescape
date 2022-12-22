@@ -29,7 +29,7 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
       this.context.commit(StoreOperation.Mutation.SET_ASYNC_RESULT, {
         status,
         statusText: error.response.statusText,
-        data: error.response.data,
+        data      : error.response.data,
       })
       if (status === 401) {
         // Global Action and redirect after it completes
@@ -43,8 +43,8 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
       }
       else if (status === 400) {
         const errorMessage: NotificationMessage = {
-          key: Guid.newGuid(),
-          type: NotificationType.Error,
+          key    : Guid.newGuid(),
+          type   : NotificationType.Error,
           message: error.response.data.message || error.response.data, // support different 'shapes' of response
         }
         this.context.commit(StoreOperation.Mutation.NotificationMutations.ADD, errorMessage, {
@@ -53,8 +53,8 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
       }
       else {
         const errorMessage: NotificationMessage = {
-          key: Guid.newGuid(),
-          type: NotificationType.Error,
+          key    : Guid.newGuid(),
+          type   : NotificationType.Error,
           message: error.response.data,
         }
         this.context.commit(StoreOperation.Mutation.NotificationMutations.ADD, errorMessage, {
@@ -67,18 +67,16 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
       // or if the server is down or potentially a client side network issue.
       // Add a message here instead of error.message being 'Network Error'
       const errorMessage: NotificationMessage = {
-        key: Guid.newGuid(),
-        type: NotificationType.Error,
-        message:
-          'Sorry, there was temporary problem connecting over the network. ' +
-          'Please verify you are connected to the internet and try again.',
+        key    : Guid.newGuid(),
+        type   : NotificationType.Error,
+        message: 'Sorry, there was temporary problem connecting over the network. ' + 'Please verify you are connected to the internet and try again.',
       }
       this.context.commit(StoreOperation.Mutation.NotificationMutations.ADD, errorMessage, {
         root: this.shouldUseGlobalNotifications,
       })
       // Origin is Unreachable
       this.context.commit(StoreOperation.Mutation.SET_ASYNC_RESULT, {
-        status: 523,
+        status    : 523,
         statusText: error.message,
       })
     }

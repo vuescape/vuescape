@@ -2,13 +2,7 @@ import { Module, Store } from 'vuex'
 
 import { AsyncAction, HttpAsyncAction, HttpMethod, RestPayloadStrategy, RestService } from '@vuescape/http'
 import {
-  IsEmptyFunction,
-  makeStoreModule,
-  ModuleState,
-  StoreModule,
-  StoreModuleOptions,
-  StoreOperation,
-  ValueMapper,
+  IsEmptyFunction, makeStoreModule, ModuleState, StoreModule, StoreModuleOptions, StoreOperation, ValueMapper,
 } from '@vuescape/store/modules'
 import { Dictionary } from '@vuescape/types'
 
@@ -59,8 +53,7 @@ export const isModuleDefined = (namespace: string, store: Store<any>) => {
   return result
 }
 
-export const registerDynamicModule = <S, R>(
-  store: Store<R>,
+export const registerDynamicModule = <S, R>(store: Store<R>,
   namespace: string,
   module: () => Module<S, R>,
   shouldUnregister = true,
@@ -84,8 +77,7 @@ export function registerStoreModuleWithInitialValue<S, R>(store: Store<R>, names
   registerDynamicModule<S, R>(store, namespace, module)
 }
 
-export function registerStoreModuleWithInitialValueIfNotExists<S, R>(
-  store: Store<R>,
+export function registerStoreModuleWithInitialValueIfNotExists<S, R>(store: Store<R>,
   namespace: string,
   initialValue: S,
 ) {
@@ -94,8 +86,7 @@ export function registerStoreModuleWithInitialValueIfNotExists<S, R>(
   }
 }
 
-export function registerStoreModuleWithAsyncActionsIfNotExists<S, R, P = {}>(
-  store: Store<R>,
+export function registerStoreModuleWithAsyncActionsIfNotExists<S, R, P = {}>(store: Store<R>,
   namespace: string,
   asyncActions: Dictionary<AsyncAction<S> | HttpAsyncAction<S>>,
   initialValue?: S,
@@ -105,20 +96,19 @@ export function registerStoreModuleWithAsyncActionsIfNotExists<S, R, P = {}>(
   shouldUseGlobalNotifications = true,
 ) {
   if (!isModuleDefined(namespace, store)) {
-    registerStoreModuleWithAsyncActions(
-      store,
+    registerStoreModuleWithAsyncActions(store,
       namespace,
       asyncActions,
       initialValue,
       mapper,
       isEmpty,
       props,
-      shouldUseGlobalNotifications)
+      shouldUseGlobalNotifications,
+    )
   }
 }
 
-export function registerStoreModuleWithAsyncActions<S, R, P = {}>(
-  store: Store<R>,
+export function registerStoreModuleWithAsyncActions<S, R, P = {}>(store: Store<R>,
   namespace: string,
   asyncActions: Dictionary<AsyncAction<S> | HttpAsyncAction<S>>,
   initialValue?: S,
@@ -130,24 +120,23 @@ export function registerStoreModuleWithAsyncActions<S, R, P = {}>(
   const moduleOptions = new StoreModuleOptions<S, P>({
     asyncActions,
     isEmpty,
-    mapToValue: mapper,
+    mapToValue            : mapper,
     initialValue,
     props,
-    spinnerDelay: 300,
+    spinnerDelay          : 300,
     shouldUseGlobalNotifications,
     shouldUseGlobalSpinner: true,
   })
-  const module = () => new StoreModule<S, ModuleState<S>, R>(moduleOptions)
+  const module        = () => new StoreModule<S, ModuleState<S>, R>(moduleOptions)
   registerDynamicModule(store, namespace, module)
 }
 
-export function registerStoreModuleIfNotExists<S, R, P = {}>(
-  store: Store<R>,
+export function registerStoreModuleIfNotExists<S, R, P = {}>(store: Store<R>,
   namespace: string,
   httpMethod: HttpMethod,
   endpoint: string,
   baseUrl?: string,
-  shouldUseCache = true,
+  shouldUseCache      = true,
   initialValue?: S,
   mapper?: ValueMapper<S>,
   isEmpty?: IsEmptyFunction<S>,
@@ -155,8 +144,7 @@ export function registerStoreModuleIfNotExists<S, R, P = {}>(
   restPayloadStrategy = RestPayloadStrategy.QueryString,
 ) {
   if (!isModuleDefined(namespace, store)) {
-    registerStoreModule(
-      store,
+    registerStoreModule(store,
       namespace,
       httpMethod,
       endpoint,
@@ -166,17 +154,17 @@ export function registerStoreModuleIfNotExists<S, R, P = {}>(
       mapper,
       isEmpty,
       props,
-      restPayloadStrategy)
+      restPayloadStrategy,
+    )
   }
 }
 
-export function registerStoreModule<S, R, P = {}>(
-  store: Store<R>,
+export function registerStoreModule<S, R, P = {}>(store: Store<R>,
   namespace: string,
   httpMethod: HttpMethod,
   endpoint: string,
   baseUrl?: string,
-  shouldUseCache = true,
+  shouldUseCache      = true,
   initialValue?: S,
   mapper?: ValueMapper<S>,
   isEmpty?: IsEmptyFunction<S>,

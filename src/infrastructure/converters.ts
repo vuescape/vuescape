@@ -1,5 +1,4 @@
-export function tryToEnum<T>(
-  enumType: T,
+export function tryToEnum<T>(enumType: T,
   enumString: string | undefined,
   shouldCapitalizeFirstCharacter = true,
 ): T[keyof T] | undefined {
@@ -35,11 +34,8 @@ export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirst
   // Must have a result now unless we couldn't find the enum. Don't have the enum name here
   // so just list out the values (should be able to determine the enum from those in the case of troubleshooting).
   if (result == null) {
-    throw new Error(
-      `The enum string, '${enumString}', was not found in the enum with values of: '${Object.values(enumType).filter(
-        v => isNaN(Number(v)),
-      )}'.`,
-    )
+    throw new Error(`The enum string, '${enumString}', was not found in the enum with values of: '${Object.values(
+      enumType).filter(v => isNaN(Number(v)))}'.`)
   }
 
   return result
@@ -47,7 +43,7 @@ export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirst
 
 export function decodeBase64String(base64String: string) {
   const byteCharacters = atob(base64String)
-  const byteNumbers = new Array(byteCharacters.length)
+  const byteNumbers    = new Array(byteCharacters.length)
   for (let i = 0; i < byteCharacters.length; i++) {
     byteNumbers[i] = byteCharacters.charCodeAt(i)
   }

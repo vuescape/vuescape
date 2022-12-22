@@ -43,30 +43,28 @@ export default class DateRangeSlider extends Vue {
   private rangeAxisFormatter: (value: number) => string
 
   private config = {
-    keyboardSupport: false,
-    animate: true,
+    keyboardSupport  : false,
+    animate          : true,
     animationDuration: 300,
-    start: [] as Array<number>, // [0, 4, 6, 10],
-    step: 1,
-    connect: [] as Array<boolean>, // [false, true, false, true, false],
-    margin: 0,
-    // limit: 4,
+    start            : [] as Array<number>, // [0, 4, 6, 10],
+    step             : 1,
+    connect          : [] as Array<boolean>, // [false, true, false, true, false],
+    margin           : 0, // limit: 4,
     behaviour: '',
-    range: {
+    range    : {
       min: 0,
       max: 0,
-    },
-    //  tooltips: [true, true, true, true, true, true],
+    }, //  tooltips: [true, true, true, true, true, true],
     // { from: function(value) { return 'a' }, to: function(value){ return 'A'}}, { to: function(value){
     //    return 'A'}},{ to: function(value){ return 'A'}},{ to: function(value){
     //    return 'A'}},{ to: function(value){ return 'A'}}],
     pips: {
-      mode: 'values' as 'range' | 'steps' | 'positions' | 'count' | 'values',
+      mode   : 'values' as 'range' | 'steps' | 'positions' | 'count' | 'values',
       density: 100,
-      values: [] as Array<number>, // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-      format: {
+      values : [] as Array<number>, // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      format : {
         // This will give the display value for the axis.  i.e. convert from index to display value
-        to: (value: number) => {
+        to  : (value: number) => {
           return ''
         },
         from: (value: string) => {
@@ -117,16 +115,19 @@ export default class DateRangeSlider extends Vue {
   }
 
   private async mounted() {
-    const configuration = this.config
-    this.previousValues = this.startingHandlePositions
-    configuration.start = this.startingHandlePositions
+    const configuration       = this.config
+    this.previousValues       = this.startingHandlePositions
+    configuration.start       = this.startingHandlePositions
     // Want array with length 1 longer than start with alternating false, true values
-    configuration.connect = [...Array(configuration.start.length + 1).keys()].map(val => val % 2 === 1)
-    configuration.behaviour = this.behavior
-    configuration.range = { min: this.startingRangeValue, max: this.startingRangeValue + this.numberOfRanges }
+    configuration.connect     = [...Array(configuration.start.length + 1).keys()].map(val => val % 2 === 1)
+    configuration.behaviour   = this.behavior
+    configuration.range       = {
+      min: this.startingRangeValue,
+      max: this.startingRangeValue + this.numberOfRanges,
+    }
     configuration.pips.values = [...Array(this.numberOfRanges).keys()].map(val => this.startingRangeValue + val)
     configuration.pips.format = {
-      to: this.rangeAxisFormatter || this.defaultRangeAxisFormatter,
+      to  : this.rangeAxisFormatter || this.defaultRangeAxisFormatter,
       from: (value: string) => 0,
     }
 
@@ -165,10 +166,10 @@ export default class DateRangeSlider extends Vue {
     const percentAdjustment = (Number(endOfPipPercentage) - Number(startOfPipPercentage)) / 2
     let pip: { style?: { left: string } } & Element
     for (pip of pips) {
-      const currentPipLeftPercent = pip.style!.left.replace('%', '').toString()
+      const currentPipLeftPercent       = pip.style!.left.replace('%', '').toString()
       const currentPipLeftPercentNumber = Number(currentPipLeftPercent)
       // Take the current pip location and add the adjustment to the right
-      pip.style!.left = currentPipLeftPercentNumber + percentAdjustment + '%'
+      pip.style!.left                   = currentPipLeftPercentNumber + percentAdjustment + '%'
     }
 
     this.slider.noUiSlider.set(this.startingHandlePositions)
@@ -187,7 +188,7 @@ export default class DateRangeSlider extends Vue {
 
   private onSliderChanged(values: any, handle: any, unencoded: any, tap: any, positions: any) {
     const isMatchingHandleToTheRight = handle % 2 === 0
-    const marginIndexAdjustment = isMatchingHandleToTheRight ? 1 : -1
+    const marginIndexAdjustment      = isMatchingHandleToTheRight ? 1 : -1
 
     // Handles from one grouping cannot be on top of each other
     if (values[handle] === values[handle + marginIndexAdjustment]) {
@@ -197,23 +198,23 @@ export default class DateRangeSlider extends Vue {
       // If we are looking right then to reset take the first index otherwise the 2nd.
       // Also adjust sign so that we move either left or right
       const stepAdjustment = steps[isMatchingHandleToTheRight ? 0 : 1] * marginIndexAdjustment * -1
-      const nextStepValue = unencoded[handle + marginIndexAdjustment] + stepAdjustment
+      const nextStepValue  = unencoded[handle + marginIndexAdjustment] + stepAdjustment
       this.slider.noUiSlider.setHandle(handle, nextStepValue)
     }
 
     if (Math.abs(values[handle] - values[handle + marginIndexAdjustment]) < this.minHandleSeparation) {
-      const steps = this.slider.noUiSlider.steps()[handle]
-      const stepAdjustment =
-        steps[isMatchingHandleToTheRight ? 1 : 0] * marginIndexAdjustment * -this.minHandleSeparation
-      const nextStepValue = unencoded[handle + marginIndexAdjustment] + stepAdjustment
+      const steps          = this.slider.noUiSlider.steps()[handle]
+      const stepAdjustment = steps[isMatchingHandleToTheRight ? 1 :
+        0] * marginIndexAdjustment * -this.minHandleSeparation
+      const nextStepValue  = unencoded[handle + marginIndexAdjustment] + stepAdjustment
       this.slider.noUiSlider.setHandle(handle, nextStepValue)
     }
 
     if (Math.abs(values[handle] - values[handle + marginIndexAdjustment]) > this.maxHandleSeparation) {
-      const steps = this.slider.noUiSlider.steps()[handle]
-      const stepAdjustment =
-        steps[isMatchingHandleToTheRight ? 1 : 0] * marginIndexAdjustment * -this.maxHandleSeparation
-      const nextStepValue = unencoded[handle + marginIndexAdjustment] + stepAdjustment
+      const steps          = this.slider.noUiSlider.steps()[handle]
+      const stepAdjustment = steps[isMatchingHandleToTheRight ? 1 :
+        0] * marginIndexAdjustment * -this.maxHandleSeparation
+      const nextStepValue  = unencoded[handle + marginIndexAdjustment] + stepAdjustment
       this.slider.noUiSlider.setHandle(handle, nextStepValue)
     }
   }

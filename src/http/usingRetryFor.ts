@@ -1,12 +1,11 @@
 import { AsyncAction } from './AsyncAction'
 
-export function usingRetryFor<T>(
-  asyncAction: AsyncAction<T>,
-  retryDelay: number = 250,
+export function usingRetryFor<T>(asyncAction: AsyncAction<T>,
+  retryDelay: number         = 250,
   maxNumberOfRetries: number = 3,
 ) {
   const wrappedAction: AsyncAction<T> = async (args: any) => {
-    let retryNumber = 0
+    let retryNumber     = 0
     const retryFunction = async () => {
       while (retryNumber <= maxNumberOfRetries) {
         try {

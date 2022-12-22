@@ -25,10 +25,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '0'
-      const formatKind = 'number'
+      const value         = '0'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -43,7 +43,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('0')
     })
@@ -51,10 +51,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '00'
-      const formatKind = 'number'
+      const value         = '00'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -69,7 +69,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('0')
     })
@@ -77,10 +77,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '0.'
-      const formatKind = 'number'
+      const value         = '0.'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -95,7 +95,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('0.')
     })
@@ -103,10 +103,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '0.0'
-      const formatKind = 'number'
+      const value         = '0.0'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -121,7 +121,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('0.0')
     })
@@ -129,10 +129,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '0.00'
-      const formatKind = 'number'
+      const value         = '0.00'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -147,7 +147,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('0')
     })
@@ -155,10 +155,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '1'
-      const formatKind = 'number'
+      const value         = '1'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -173,7 +173,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('1')
     })
@@ -181,10 +181,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '12'
-      const formatKind = 'number'
+      const value         = '12'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -199,7 +199,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('12')
     })
@@ -207,10 +207,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '123'
-      const formatKind = 'number'
+      const value         = '123'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -225,7 +225,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('123')
     })
@@ -233,10 +233,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '1234'
-      const formatKind = 'number'
+      const value         = '1234'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -251,7 +251,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('1,234')
     })
@@ -259,10 +259,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '12345678'
-      const formatKind = 'number'
+      const value         = '12345678'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -277,7 +277,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('12,345,678')
     })
@@ -285,10 +285,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '192.168.1.1'
-      const formatKind = 'number'
+      const value         = '192.168.1.1'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -303,7 +303,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('192.168.1.1')
     })
@@ -311,10 +311,10 @@ describe('NumericTextField.vue --', () => {
       // Arrange
       const localVue = createLocalVue()
       localVue.use(Vuetify)
-      const value = '1921.168.1.1'
-      const formatKind = 'number'
+      const value         = '1921.168.1.1'
+      const formatKind    = 'number'
       const formatOptions = {
-        shouldAllowDecimal: true,
+        shouldAllowDecimal   : true,
         numberOfDecimalPlaces: 0,
       }
 
@@ -329,7 +329,7 @@ describe('NumericTextField.vue --', () => {
       })
 
       // Assert
-      const vm = wrapper.vm as any
+      const vm             = wrapper.vm as any
       const formattedValue = vm.formattedValue
       expect(formattedValue).toEqual('1,921.168.1.1')
     })
@@ -338,10 +338,10 @@ describe('NumericTextField.vue --', () => {
         // Arrange
         const localVue = createLocalVue()
         localVue.use(Vuetify)
-        const value = ''
-        const formatKind = 'number'
+        const value         = ''
+        const formatKind    = 'number'
         const formatOptions = {
-          shouldAllowDecimal: true,
+          shouldAllowDecimal   : true,
           numberOfDecimalPlaces: 0,
         }
 
@@ -359,7 +359,7 @@ describe('NumericTextField.vue --', () => {
         textInput.setValue('1234')
 
         // Assert
-        const vm = wrapper.vm as any
+        const vm             = wrapper.vm as any
         const formattedValue = vm.formattedValue
         expect(formattedValue).toEqual('1,234')
       })
@@ -367,10 +367,10 @@ describe('NumericTextField.vue --', () => {
         // Arrange
         const localVue = createLocalVue()
         localVue.use(Vuetify)
-        const value = ''
-        const formatKind = 'number'
+        const value         = ''
+        const formatKind    = 'number'
         const formatOptions = {
-          shouldAllowDecimal: true,
+          shouldAllowDecimal   : true,
           numberOfDecimalPlaces: 0,
         }
 
@@ -388,7 +388,7 @@ describe('NumericTextField.vue --', () => {
         textInput.setValue('999,999999')
 
         // Assert
-        const vm = wrapper.vm as any
+        const vm             = wrapper.vm as any
         const formattedValue = vm.formattedValue
         expect(formattedValue).toEqual('999,999,999')
       })

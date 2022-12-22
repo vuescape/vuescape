@@ -90,18 +90,16 @@ export default class DataRowRenderer extends ComponentBase {
   private getCellClasses(cell: TreeTableCell, row: TreeTableRow, index: number) {
     const cssClasses = {} as any
 
-    cssClasses['tree-table-cell__td--clickable'] = typeof cell.onclick === typeof Function
-    cssClasses['tree-table-cell__selected-metric'] = row.isSelected
-    cssClasses['tree-table-cell__selected-metric--left'] = row.isSelected && index === 0
-    cssClasses['tree-table-cell__selected-metric--interior'] =
-      row.isSelected && index !== 0 && index !== row.cells.filter(_ => _.isVisible !== false).length - 1
-    cssClasses['tree-table-cell__selected-metric--right'] =
-      row.isSelected && index === row.cells.filter(_ => _.isVisible !== false).length - 1
-    cssClasses['tree-table-cell__td--focused-metric'] = row.isFocused === true
-    cssClasses['tree-table-cell__td--align-center'] =
-      cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Center
-    cssClasses['tree-table-cell__td--align-left'] = cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Left
-    cssClasses['tree-table-cell__td--align-right'] = cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Right
+    cssClasses['tree-table-cell__td--clickable']             = typeof cell.onclick === typeof Function
+    cssClasses['tree-table-cell__selected-metric']           = row.isSelected
+    cssClasses['tree-table-cell__selected-metric--left']     = row.isSelected && index === 0
+    cssClasses['tree-table-cell__selected-metric--interior'] = row.isSelected && index !== 0 && index !== row.cells.filter(
+      _ => _.isVisible !== false).length - 1
+    cssClasses['tree-table-cell__selected-metric--right']    = row.isSelected && index === row.cells.filter(_ => _.isVisible !== false).length - 1
+    cssClasses['tree-table-cell__td--focused-metric']        = row.isFocused === true
+    cssClasses['tree-table-cell__td--align-center']          = cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Center
+    cssClasses['tree-table-cell__td--align-left']            = cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Left
+    cssClasses['tree-table-cell__td--align-right']           = cell?.cellFormat?.horizontalAlignment === HorizontalAlignment.Right
 
     return cssClasses
   }
@@ -132,10 +130,10 @@ export default class DataRowRenderer extends ComponentBase {
 <style>
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
-  margin-right: 4px;
+  margin-right:  4px;
   margin-bottom: 1px;
-  font-size: 9px;
-  width: 0.875em !important;
+  font-size:     9px;
+  width:         0.875em !important;
 }
 .data-row-renderer__animation-enter-active,
 .data-row-renderer__animation-leave-active {

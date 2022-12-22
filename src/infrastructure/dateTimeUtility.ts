@@ -7,6 +7,6 @@ export function formatUtcDateTimeString(utcDateTimeString: string) {
   }
 
   const dateTime = new Date(utcDateTimeString)
-  const result = `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`
+  const result   = `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`
   return result
 }

@@ -143,20 +143,24 @@ export default class ChicletGrid extends ComponentBase {
     // TODO: Can use refs
     const chicletGridContainer = document.querySelector('.chiclet-grid__container')
     if (chicletGridContainer && chicletGridContainer.parentElement) {
-      const width = chicletGridContainer.parentElement.clientWidth
+      const width          = chicletGridContainer.parentElement.clientWidth
       this.numberOfColumns = Math.floor(width / 230)
-      this.breakpoints = Math.ceil(12 / this.numberOfColumns)
+      this.breakpoints     = Math.ceil(12 / this.numberOfColumns)
     }
   }
 
   private getChiclets(rowIndex: number, numberOfColumns: number) {
-    const results = this.visibleChiclets.slice(
-      (rowIndex - 1) * numberOfColumns,
+    const results             = this.visibleChiclets.slice((rowIndex - 1) * numberOfColumns,
       (rowIndex - 1) * numberOfColumns + numberOfColumns,
     )
     const numberOfColumnsLeft = results.length
     for (let i = 0; i < numberOfColumns - numberOfColumnsLeft; i++) {
-      results.push({ id: 'dummy' + i, title: '', icons: [], isVisible: false })
+      results.push({
+        id       : 'dummy' + i,
+        title    : '',
+        icons    : [],
+        isVisible: false,
+      })
     }
     return results
   }

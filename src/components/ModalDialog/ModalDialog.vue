@@ -65,19 +65,19 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-const VuescapeButton = () =>
-  import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
+const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
+  m => m.default)
 
 @Component({
   components: { VuescapeButton },
 })
 export default class ModalDialog extends Vue {
-  private idValue = ''
-  private isModalDialogShowingValue = false
-  private titleValue = ''
-  private okButtonTextValue = ''
-  private cancelButtonTextValue = ''
-  private shouldShowOKButtonValue = true
+  private idValue                     = ''
+  private isModalDialogShowingValue   = false
+  private titleValue                  = ''
+  private okButtonTextValue           = ''
+  private cancelButtonTextValue       = ''
+  private shouldShowOKButtonValue     = true
   private shouldShowCancelButtonValue = true
   private iconsValue: Array<string> = []
   private messageValue = ''
@@ -177,15 +177,15 @@ export default class ModalDialog extends Vue {
   }
 
   private created() {
-    this.idValue = this.id
-    this.isModalDialogShowingValue = this.isModalDialogShowing
-    this.titleValue = this.title
-    this.okButtonTextValue = this.okButtonText
-    this.cancelButtonTextValue = this.cancelButtonText
-    this.shouldShowOKButtonValue = this.shouldShowOKButton
+    this.idValue                     = this.id
+    this.isModalDialogShowingValue   = this.isModalDialogShowing
+    this.titleValue                  = this.title
+    this.okButtonTextValue           = this.okButtonText
+    this.cancelButtonTextValue       = this.cancelButtonText
+    this.shouldShowOKButtonValue     = this.shouldShowOKButton
     this.shouldShowCancelButtonValue = this.shouldShowCancelButton
-    this.iconsValue = this.icons
-    this.messageValue = this.message
+    this.iconsValue                  = this.icons
+    this.messageValue                = this.message
   }
 }
 </script>

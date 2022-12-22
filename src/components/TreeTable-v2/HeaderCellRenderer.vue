@@ -57,7 +57,7 @@ export default class HeaderCellRenderer extends ComponentBase {
   private get cssStyle() {
     const result: any = {
       '--tree-table__cell--font-color': this.header.cellFormat ? this.header.cellFormat.fontHexColor : 'inherit',
-      '--tree-table__cell--font-size': this.header.cellFormat ? this.header.cellFormat.fontSizeInPixels : 'inherit',
+      '--tree-table__cell--font-size' : this.header.cellFormat ? this.header.cellFormat.fontSizeInPixels : 'inherit',
     }
 
     if (this.header.cssStyles) {

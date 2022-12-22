@@ -20,13 +20,13 @@ export class StoreModuleState<T, P = {}> implements ModuleState<T, P> {
     value?: T,
     props?: P,
   ) {
-    this.isPending = isPending
-    this.isSpinning = isSpinning
-    this.isEmpty = isEmpty
-    this.hasValue = hasValue
-    this.asyncResult = asyncResult
+    this.isPending     = isPending
+    this.isSpinning    = isSpinning
+    this.isEmpty       = isEmpty
+    this.hasValue      = hasValue
+    this.asyncResult   = asyncResult
     this.notifications = notifications
-    this.value = value
-    this.props = props
+    this.value         = value
+    this.props         = props
   }
 }

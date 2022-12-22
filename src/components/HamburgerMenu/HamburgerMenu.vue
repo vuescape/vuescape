@@ -1,7 +1,7 @@
 <template>
   <v-toolbar
-    height="36"
     class="hamburger-menu__toolbar--size"
+    height="36"
   >
     <span
       :class="cssClass"
@@ -10,9 +10,9 @@
       @click="isSiteInMaintenanceMode ? () => {} : (hamburgerMenu = !hamburgerMenu)"
     >
       <font-awesome-icon
-        size="sm"
         :icon="['fas', 'bars']"
         class="hamburger-menu__hamburger-icon--layout"
+        size="sm"
       />
       <v-menu
         ref="hamburgerMenu"
@@ -23,9 +23,9 @@
         <v-card>
           <v-expansion-panel v-model="expansionPanelIndex">
             <v-expansion-panel-content
-              expand-icon
               v-for="(menu, index) in hamburgerMenus"
               :key="menu.id + '__hamburger'"
+              expand-icon
             >
               <template v-slot:header>
                 <div v-if="menu.items && menu.items.length">{{ menu.title }}</div>
@@ -36,13 +36,13 @@
                   >
                     <img
                       :id="menu.id"
-                      :class="menu.cssClass"
-                      :src="menu.imageSrc"
                       :alt="menu.ariaLabel || menu.title"
-                      :title="menu.ariaLabel || menu.title"
                       :aria-label="menu.ariaLabel || menu.title"
-                      @click="navigateFromHamburgerMenu(menu.path)"
+                      :class="menu.cssClass"
                       :disabled="isSiteInMaintenanceMode"
+                      :src="menu.imageSrc"
+                      :title="menu.ariaLabel || menu.title"
+                      @click="navigateFromHamburgerMenu(menu.path)"
                     />
                   </div>
                   <div
@@ -68,15 +68,15 @@
               <v-card>
                 <div v-if="menu.items && menu.items.length !== 0">
                   <v-list
-                    class="hamburger-menu__v-list--alignment"
                     v-if="menu.items"
+                    class="hamburger-menu__v-list--alignment"
                     light
                   >
                     <v-list-tile
-                      class="hamburger-menu__v-list-tile--font"
-                      :aria-label="menuItem.ariaLabel || menuItem.title"
                       v-for="menuItem in menu.items"
                       :key="menuItem.id"
+                      :aria-label="menuItem.ariaLabel || menuItem.title"
+                      class="hamburger-menu__v-list-tile--font"
                       @click="() => navigateFromHamburgerMenu(menuItem.path)"
                     >
                       <v-list-tile-title :aria-label="menuItem.ariaLabel || menuItem.title">{{
@@ -128,7 +128,7 @@ export default class HamburgerMenu extends Vue {
   }
 
   private navigateFromHamburgerMenu(path: string) {
-    this.hamburgerMenu = false
+    this.hamburgerMenu       = false
     this.expansionPanelIndex = null
     this.$router.push(path)
   }

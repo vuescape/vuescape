@@ -36,8 +36,8 @@ import { Guid } from '@vuescape/types/Guid'
 
 @Component
 export default class NumericTextField extends Vue {
-  private errorVal = false
-  private errorMessagesVal: Array<string> = []
+  private errorVal                         = false
+  private errorMessagesVal: Array<string>  = []
   private rawValue: Array<number | string> = []
 
   private key = Guid.newGuid()
@@ -117,16 +117,15 @@ export default class NumericTextField extends Vue {
     // decimal suffix
     let valueSuffix = ''
     if (value != null) {
-      const valueString = value.toString()
+      const valueString  = value.toString()
       const decimalIndex = valueString.indexOf('.')
       if (decimalIndex !== -1) {
-        value = valueString.substring(0, decimalIndex)
+        value       = valueString.substring(0, decimalIndex)
         valueSuffix = valueString.substring(decimalIndex)
       }
     }
 
-    let result = formatValue(
-      this.formatKind,
+    let result = formatValue(this.formatKind,
       value?.toString() ?? '',
       this.formatOptions.numberOfDecimalPlaces,
       this.valueWhenEmpty,
@@ -156,9 +155,9 @@ export default class NumericTextField extends Vue {
 
   private setFormattedValue(formattedValue: string) {
     // convert
-    formattedValue = this.toNumber(formattedValue)
+    formattedValue      = this.toNumber(formattedValue)
     const valueAsNumber = this.removeDecimalsEndingWithAtLeastTwoZeroes(formattedValue)!
-    this.rawValue = [valueAsNumber]
+    this.rawValue       = [valueAsNumber]
     this.$emit('input', valueAsNumber)
     this.validateTextField(valueAsNumber, this.rules)
   }
@@ -169,11 +168,11 @@ export default class NumericTextField extends Vue {
       return result
     }
 
-    const regex = RegExp(/\.0{2,}$/g)
+    const regex        = RegExp(/\.0{2,}$/g)
     let decimalMatches = result!.toString().match(regex)
 
     while (decimalMatches && decimalMatches.length === 1) {
-      result = result!.toString().replace(regex, '')
+      result         = result!.toString().replace(regex, '')
       decimalMatches = result!.toString().match(regex)
     }
 
@@ -223,10 +222,10 @@ export default class NumericTextField extends Vue {
     }
 
     const componentElement = component.$el
-    const el = componentElement.querySelector('input') as HTMLInputElement
+    const el               = componentElement.querySelector('input') as HTMLInputElement
 
-    const currentPositionFromEnd = el.value.length - (el.selectionEnd || 0)
-    const positionFromEnd = value.length - currentPositionFromEnd
+    const currentPositionFromEnd  = el.value.length - (el.selectionEnd || 0)
+    const positionFromEnd         = value.length - currentPositionFromEnd
     const adjustedPositionFromEnd = positionFromEnd >= 0 ? positionFromEnd : 0
 
     this.setCursor(el, adjustedPositionFromEnd)
@@ -258,21 +257,16 @@ export default class NumericTextField extends Vue {
       return this.valueWhenEmpty
     }
 
-    const characters = Array.from(formattedValue)
-    let result = ''
+    const characters        = Array.from(formattedValue)
+    let result              = ''
     let hasFoundLeadingZero = false
-    let index = 0
+    let index               = 0
 
     for (const character of characters) {
       if (this.isInteger(character)) {
         // Leading 0 if the character is a 0 and we haven't found any other characters
         // and the next character after is not a . (supports 0.01)
-        if (
-          character === '0' &&
-          result.length === 0 &&
-          characters.length >= index + 2 &&
-          characters[index + 1] !== '.'
-        ) {
+        if (character === '0' && result.length === 0 && characters.length >= index + 2 && characters[index + 1] !== '.') {
           hasFoundLeadingZero = true
         }
         else {
@@ -301,8 +295,8 @@ export default class NumericTextField extends Vue {
   }
 
   private created() {
-    this.rawValue = [this.value]
-    this.errorVal = this.error
+    this.rawValue         = [this.value]
+    this.errorVal         = this.error
     this.errorMessagesVal = this.errorMessages
   }
 }

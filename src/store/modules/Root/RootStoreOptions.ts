@@ -31,13 +31,8 @@ const mutations: MutationTree<RootState> = {
   [StoreMutation.CLEAR_ENTIRE_STORE](currentState) {
     Object.keys(currentState).forEach(property => {
       // TODO: handle config, auth and profile with a better approach instead of hard code here
-      if (
-        property === 'notifications' ||
-        property === 'authentication' ||
-        property === 'route' ||
-        property === 'userProfile' ||
-        property.endsWith('/configuration')
-      ) {
+      if (property === 'notifications' || property === 'authentication' || property === 'route' || property === 'userProfile' || property.endsWith(
+        '/configuration')) {
         // no-op
       }
       else if (property === 'isAuthenticated') {
@@ -62,11 +57,11 @@ export const rootStoreOptions: StoreOptions<RootState> = {
   actions,
   mutations,
   plugins: [],
-  state: {
+  state  : {
     hasExternalSessionsInitialized: false,
-    isAuthenticated: false,
-    notifications: [],
-    isSpinning: false,
+    isAuthenticated               : false,
+    notifications                 : [],
+    isSpinning                    : false,
   },
-  strict: process.env.NODE_ENV === 'development',
+  strict : process.env.NODE_ENV === 'development',
 }

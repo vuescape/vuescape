@@ -25,7 +25,7 @@ export function makeTreeTableCellPropertyCompare(
       return 1
     }
 
-    const leftItem = (left as TreeTableRow).cells
+    const leftItem  = (left as TreeTableRow).cells
       .filter(_ => _.isVisible !== false)
       .filter((_, index) => index === sortOnIndex)
     const rightItem = (right as TreeTableRow).cells
@@ -44,7 +44,7 @@ export function makeTreeTableCellPropertyCompare(
       return 1
     }
 
-    const leftItemValue = leftItem[0].value != null ? leftItem[0].value : leftItem[0].displayValue
+    const leftItemValue  = leftItem[0].value != null ? leftItem[0].value : leftItem[0].displayValue
     const rightItemValue = rightItem[0].value != null ? rightItem[0].value : rightItem[0].displayValue
 
     if (doNotSortValue != null) {

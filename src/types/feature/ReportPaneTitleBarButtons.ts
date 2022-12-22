@@ -1,5 +1,5 @@
 export enum ReportPaneTitleBarButtons {
-  None = 0,
+  None     = 0,
   Maximize = 1,
-  Close = 2,
+  Close    = 2,
 }

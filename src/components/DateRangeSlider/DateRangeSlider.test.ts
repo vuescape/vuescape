@@ -9,7 +9,10 @@ describe('DateRangeSlider.vue --', () => {
       const minHandleSeparation = 10
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: { minHandleSeparation, startingHandlePositions: [1] },
+        propsData: {
+          minHandleSeparation,
+          startingHandlePositions: [1],
+        },
       })
 
       // tslint:disable-next-line: no-string-literal
@@ -20,7 +23,10 @@ describe('DateRangeSlider.vue --', () => {
       const maxHandleSeparation = 10
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: { maxHandleSeparation, startingHandlePositions: [1] },
+        propsData: {
+          maxHandleSeparation,
+          startingHandlePositions: [1],
+        },
       })
 
       // tslint:disable-next-line: no-string-literal
@@ -31,7 +37,10 @@ describe('DateRangeSlider.vue --', () => {
       const startingRangeValue = 2019
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: { startingRangeValue, startingHandlePositions: [1] },
+        propsData: {
+          startingRangeValue,
+          startingHandlePositions: [1],
+        },
       })
 
       // tslint:disable-next-line: no-string-literal
@@ -42,7 +51,10 @@ describe('DateRangeSlider.vue --', () => {
       const numberOfRanges = 10
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: { numberOfRanges, startingHandlePositions: [1] },
+        propsData: {
+          numberOfRanges,
+          startingHandlePositions: [1],
+        },
       })
 
       // tslint:disable-next-line: no-string-literal
@@ -53,7 +65,10 @@ describe('DateRangeSlider.vue --', () => {
       const startingHandlePositions = [10, 20, 30, 40]
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: { startingHandlePositions, numberOfRanges: 200 },
+        propsData: {
+          startingHandlePositions,
+          numberOfRanges: 200,
+        },
       })
 
       // tslint:disable-next-line: no-string-literal
@@ -64,7 +79,10 @@ describe('DateRangeSlider.vue --', () => {
       const id = 'test-slider-id'
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: { id, startingHandlePositions: [1] },
+        propsData: {
+          id,
+          startingHandlePositions: [1],
+        },
       })
 
       // tslint:disable-next-line: no-string-literal

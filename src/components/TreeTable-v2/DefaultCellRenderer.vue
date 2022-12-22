@@ -28,7 +28,7 @@ export default class DefaultCellRenderer extends ComponentBase {
   private get cssStyle() {
     const result: any = {
       '--tree-table__cell--font-color': this.cell.cellFormat ? this.cell.cellFormat.fontHexColor : 'inherit',
-      '--tree-table__cell--font-size': this.cell.cellFormat ? this.cell.cellFormat.fontSizeInPixels : 'inherit',
+      '--tree-table__cell--font-size' : this.cell.cellFormat ? this.cell.cellFormat.fontSizeInPixels : 'inherit',
     }
 
     if (this.cell.cssStyles) {

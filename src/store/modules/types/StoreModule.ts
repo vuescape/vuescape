@@ -16,21 +16,20 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
   protected readonly moduleOptions: ModuleOptions<T, P>
 
   constructor(moduleOptions: ModuleOptions<T, P>) {
-    this.namespaced = moduleOptions.isNamespaced
-    this.moduleOptions = moduleOptions
-    this.namespaced = true
+    this.namespaced             = moduleOptions.isNamespaced
+    this.moduleOptions          = moduleOptions
+    this.namespaced             = true
     // TODO: as S is required to compile.  Is that correct?
-    this.state = this.defaultState(moduleOptions.initialValue, moduleOptions.props) as S
+    this.state                  = this.defaultState(moduleOptions.initialValue, moduleOptions.props) as S
     const notificationOperation = new NotificationOperation()
-    this.actions = this.createActions()
+    this.actions                = this.createActions()
     Object.assign(this.actions, notificationOperation.actions())
     this.mutations = this.createMutations()
     Object.assign(this.mutations, notificationOperation.mutations())
   }
 
   protected defaultState = (initialValue: T | undefined, props?: P): ModuleState<T, P> => {
-    const moduleState: ModuleState<T, P> = new StoreModuleState<T, P>(
-      false,
+    const moduleState: ModuleState<T, P> = new StoreModuleState<T, P>(false,
       false,
       true,
       false,
@@ -69,24 +68,23 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
     }
   }
 
-  protected executeAsyncAction = async (
-    asyncAction: AsyncAction<T> | HttpAsyncAction<T>,
+  protected executeAsyncAction = async (asyncAction: AsyncAction<T> | HttpAsyncAction<T>,
     payload: any,
     context: ActionContext<S, R>,
     moduleOptions: ModuleOptions<T, P>,
   ) => {
     // Instantiate StoreModuleOptions class to take advantage of default values
     const storeModuleOptions = new StoreModuleOptions({
-      asyncActions: moduleOptions.asyncActions,
-      isEmpty: moduleOptions.isEmpty,
-      mapToValue: moduleOptions.mapToValue,
-      initialValue: moduleOptions.initialValue,
-      props: moduleOptions.props,
-      spinnerDelay: moduleOptions.spinnerDelay,
-      isNamespaced: moduleOptions.isNamespaced,
+      asyncActions                : moduleOptions.asyncActions,
+      isEmpty                     : moduleOptions.isEmpty,
+      mapToValue                  : moduleOptions.mapToValue,
+      initialValue                : moduleOptions.initialValue,
+      props                       : moduleOptions.props,
+      spinnerDelay                : moduleOptions.spinnerDelay,
+      isNamespaced                : moduleOptions.isNamespaced,
       shouldUseGlobalNotifications: moduleOptions.shouldUseGlobalNotifications,
-      shouldUseGlobalSpinner: moduleOptions.shouldUseGlobalSpinner,
-      errorHandlerBuilder: moduleOptions.errorHandlerBuilder,
+      shouldUseGlobalSpinner      : moduleOptions.shouldUseGlobalSpinner,
+      errorHandlerBuilder         : moduleOptions.errorHandlerBuilder,
     })
     // context.commit(StoreOperation.Mutation.RESET)
     context.commit(StoreOperation.Mutation.PENDING, true)
@@ -101,7 +99,7 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
     try {
       result = await asyncAction(payload)
       context.commit(StoreOperation.Mutation.SET_ASYNC_RESULT, {
-        status: 200,
+        status    : 200,
         statusText: 'OK',
       })
       // Axios response has the response in the data property.
@@ -137,14 +135,14 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
   }
 
   protected createActions: () => ActionTree<S, R> = () => {
-    const moduleOptions = this.moduleOptions
-    const storeModule = this
+    const moduleOptions               = this.moduleOptions
+    const storeModule                 = this
     const myActions: ActionTree<S, R> = {}
     if (moduleOptions.asyncActions) {
       Object.keys(moduleOptions.asyncActions).map(endpoint => {
         // Quiet complaining about object being possibly undefined
         if (moduleOptions.asyncActions) {
-          const asyncAction = moduleOptions.asyncActions[endpoint]
+          const asyncAction   = moduleOptions.asyncActions[endpoint]
           myActions[endpoint] = async (context, payload) => {
             await storeModule.executeAsyncAction(asyncAction, payload, context, moduleOptions)
           }
@@ -155,17 +153,17 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
   }
 
   protected createMutations: () => MutationTree<S> = () => {
-    const moduleOptions = this.moduleOptions
+    const moduleOptions   = this.moduleOptions
     const getDefaultState = () => this.defaultState(moduleOptions.initialValue)
-    const endPending = (state: S) => {
-      state.isPending = false
+    const endPending      = (state: S) => {
+      state.isPending  = false
       state.isSpinning = false
     }
 
     return {
       [StoreOperation.Mutation.RESET](state) {
         const defaultState = getDefaultState()
-        state = Object.assign(state, defaultState)
+        state              = Object.assign(state, defaultState)
       },
       [StoreOperation.Mutation.PENDING](state, payload: boolean) {
         state.isPending = payload
@@ -175,21 +173,21 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
       },
       [StoreOperation.Mutation.SET_EMPTY](state) {
         endPending(state)
-        state.isEmpty = true
+        state.isEmpty  = true
         state.hasValue = false
       },
       [StoreOperation.Mutation.SET_ASYNC_RESULT](state, payload: AsyncResult) {
         endPending(state)
-        state.isEmpty = false
-        state.hasValue = false
-        state.value = undefined
+        state.isEmpty     = false
+        state.hasValue    = false
+        state.value       = undefined
         state.asyncResult = payload
       },
       [StoreOperation.Mutation.SET_VALUE](state, payload: T) {
         endPending(state)
-        state.isEmpty = false
+        state.isEmpty  = false
         state.hasValue = true
-        state.value = payload
+        state.value    = payload
       },
     }
   }

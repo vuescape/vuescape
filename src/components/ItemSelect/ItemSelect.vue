@@ -60,9 +60,11 @@ export default class ItemSelect extends Vue {
       this.beforeFilter()
     }
     const lowerCaseQueryText = queryText.toLowerCase()
-    const isFound = this.filterProperties.some(propertyName =>
-      this.compareProperty(item, propertyName, lowerCaseQueryText),
-    )
+    const isFound            = this.filterProperties.some(propertyName => this.compareProperty(
+      item,
+      propertyName,
+      lowerCaseQueryText,
+    ))
     return isFound
   }
 

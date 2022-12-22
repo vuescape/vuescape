@@ -1,7 +1,6 @@
 import { SortComparisonStrategy } from './SortComparisonStrategy'
 
-export function makePropertyComparer(
-  sortOnProperty: string,
+export function makePropertyComparer(sortOnProperty: string,
   sortComparisonStrategy: SortComparisonStrategy = SortComparisonStrategy.Default,
 ) {
   if (sortComparisonStrategy === SortComparisonStrategy.StringCaseInsensitive) {

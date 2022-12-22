@@ -28,15 +28,16 @@ import { Component, Prop } from 'vue-property-decorator'
 
 import { RenderKind } from './RenderKind'
 
-const DataTableRenderer = () =>
-  import(/* webpackChunkName: 'data-table-renderer' */ '@vuescape/components/ObjectRenderer').then(
-    m => m.DataTableRenderer,
-  )
-const TextRenderer = () =>
-  import(/* webpackChunkName: 'text-renderer' */ '@vuescape/components/ObjectRenderer').then(m => m.TextRenderer)
+const DataTableRenderer = () => import(/* webpackChunkName: 'data-table-renderer' */ '@vuescape/components/ObjectRenderer').then(
+  m => m.DataTableRenderer)
+const TextRenderer      = () => import(/* webpackChunkName: 'text-renderer' */ '@vuescape/components/ObjectRenderer').then(
+  m => m.TextRenderer)
 
 @Component({
-  components: { DataTableRenderer, TextRenderer },
+  components: {
+    DataTableRenderer,
+    TextRenderer,
+  },
 })
 export default class ObjectRenderer extends Vue {
   @Prop() private renderAs: RenderKind

@@ -3,8 +3,7 @@ import VueRouter, { NavigationGuard, RouteConfig } from 'vue-router'
 
 export let router: VueRouter
 
-export function makeRouter(
-  routes?: Array<RouteConfig>,
+export function makeRouter(routes?: Array<RouteConfig>,
   beforeResolveNavigationGuardFactories?: Array<(vueRouter: VueRouter) => NavigationGuard<Vue>>,
 ) {
   if (router && (!routes || routes.length === 0)) {
@@ -15,7 +14,10 @@ export function makeRouter(
   router = new VueRouter({
     mode: 'history',
     linkActiveClass: 'app__router--is-active',
-    scrollBehavior: () => ({ y: 0, x: 0 }),
+    scrollBehavior: () => ({
+      y: 0,
+      x: 0,
+    }),
     routes,
   })
 

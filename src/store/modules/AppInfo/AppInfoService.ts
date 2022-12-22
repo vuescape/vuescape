@@ -2,14 +2,10 @@ import { AsyncAction, HttpAsyncAction, HttpMethod, ServiceBase } from '@vuescape
 import { AppInfo } from '@vuescape/types'
 
 export class AppInfoService extends ServiceBase<AppInfo> {
-  constructor(
+  constructor(baseUrl?: string, asyncAction?: (httpMethod: HttpMethod,
+    endPoint: string,
     baseUrl?: string,
-    asyncAction?: (
-      httpMethod: HttpMethod,
-      endPoint: string,
-      baseUrl?: string,
-    ) => AsyncAction<AppInfo> | HttpAsyncAction<AppInfo>,
-  ) {
+  ) => AsyncAction<AppInfo> | HttpAsyncAction<AppInfo>) {
     super('/appInfo.json', baseUrl, false, asyncAction)
   }
 

@@ -90,41 +90,32 @@ export default class SiteMaintenance extends Vue {
       this.wasPreviouslyPerformingMaintenance = true
     }
 
-    if (
-      this.isPerformingMaintenance === '' &&
-      (this.isSiteInMaintenanceMode && this.isPerformingMaintenance !== this.isSiteInMaintenanceMode.toString())
-    ) {
-      this.isPerformingMaintenance = this.isSiteInMaintenanceMode.toString()
+    if (this.isPerformingMaintenance === '' && (this.isSiteInMaintenanceMode && this.isPerformingMaintenance !== this.isSiteInMaintenanceMode.toString())) {
+      this.isPerformingMaintenance           = this.isSiteInMaintenanceMode.toString()
       this.sitePerformanceMaintenanceMessage = this.siteMaintenanceMessage
     }
     else if (this.isSiteInMaintenanceMode === false && this.wasPreviouslyPerformingMaintenance) {
-      this.isPerformingMaintenance = this.isSiteInMaintenanceMode.toString()
+      this.isPerformingMaintenance           = this.isSiteInMaintenanceMode.toString()
       this.sitePerformanceMaintenanceMessage = this.siteMaintenanceMessage
     }
   }
 
   @Watch('siteMaintenanceMessage')
   private onSiteMaintenanceMessage(siteMaintenanceMessage: string, oldSiteMaintenanceMessage: string) {
-    if (
-      typeof siteMaintenanceMessage !== 'undefined' &&
-      siteMaintenanceMessage !== this.sitePerformanceMaintenanceMessage
-    ) {
+    if (typeof siteMaintenanceMessage !== 'undefined' && siteMaintenanceMessage !== this.sitePerformanceMaintenanceMessage) {
       this.sitePerformanceMaintenanceMessage = this.siteMaintenanceMessage
     }
   }
 
   private created() {
-    if (
-      (typeof this.isSiteInMaintenanceMode === 'undefined' || this.isSiteInMaintenanceMode === false) &&
-      this.wasPreviouslyPerformingMaintenance === false
-    ) {
+    if ((typeof this.isSiteInMaintenanceMode === 'undefined' || this.isSiteInMaintenanceMode === false) && this.wasPreviouslyPerformingMaintenance === false) {
       this.$router.push('/')
       return
     }
 
     if (this.isSiteInMaintenanceMode === true) {
-      this.sitePerformanceMaintenanceMessage = this.siteMaintenanceMessage
-      this.isPerformingMaintenance = this.isSiteInMaintenanceMode.toString()
+      this.sitePerformanceMaintenanceMessage  = this.siteMaintenanceMessage
+      this.isPerformingMaintenance            = this.isSiteInMaintenanceMode.toString()
       this.wasPreviouslyPerformingMaintenance = true
     }
   }

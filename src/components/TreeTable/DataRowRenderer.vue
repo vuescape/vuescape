@@ -92,21 +92,19 @@ export default class DataRowRenderer extends ComponentBase {
   }
 
   private getCellClasses(cell: TreeTableCell, row: TreeTableRow, index: number) {
-    const cssClasses = {} as any
+    const cssClasses                             = {} as any
     cssClasses['tree-table-item__td--clickable'] = typeof cell.onclick === typeof Function
-    cssClasses['selected-metric'] = row.isSelected
-    cssClasses['selected-metric-left'] = row.isSelected && index === 0
-    cssClasses['selected-metric-interior'] =
-      row.isSelected && index !== 0 && index !== row.cells.filter(_ => _.isVisible !== false).length - 1
-    cssClasses['selected-metric-right'] =
-      row.isSelected && index === row.cells.filter(_ => _.isVisible !== false).length - 1
-    cssClasses['focused-metric'] = row.isFocused === true
+    cssClasses['selected-metric']                = row.isSelected
+    cssClasses['selected-metric-left']           = row.isSelected && index === 0
+    cssClasses['selected-metric-interior']       = row.isSelected && index !== 0 && index !== row.cells.filter(_ => _.isVisible !== false).length - 1
+    cssClasses['selected-metric-right']          = row.isSelected && index === row.cells.filter(_ => _.isVisible !== false).length - 1
+    cssClasses['focused-metric']                 = row.isFocused === true
     return cssClasses
   }
 
   private getIndentStyle(depth: number, index: number, cell: any) {
     const amountToIndent = 12 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
-    const indentation = index === 0 ? { 'padding-left': `${amountToIndent}px` } : '{}'
+    const indentation    = index === 0 ? { 'padding-left': `${amountToIndent}px` } : '{}'
     return indentation
   }
 }
@@ -115,10 +113,10 @@ export default class DataRowRenderer extends ComponentBase {
 <style>
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
-  margin-right: 4px;
+  margin-right:  4px;
   margin-bottom: 2px;
-  font-size: 9px;
-  width: 0.875em !important;
+  font-size:     9px;
+  width:         0.875em !important;
 }
 .data-row-renderer__animation-enter-active,
 .data-row-renderer__animation-leave-active {

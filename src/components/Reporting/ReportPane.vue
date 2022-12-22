@@ -98,31 +98,26 @@ import { namespace } from 'vuex-class'
 import { dispatchAndAwaitAction, getModuleStateByKey, registerStoreModule } from '@vuescape/store/storeHelpers'
 
 import {
-  ComponentBase,
-  decodeBase64String,
-  Dictionary,
-  downloadFile,
-  HttpMethod,
-  Section,
-  toEnum,
+  ComponentBase, decodeBase64String, Dictionary, downloadFile, HttpMethod, Section, toEnum,
 } from '@vuescape/index'
 import { Link, PayloadEncodingKind, ResourceKind } from '@vuescape/reporting-domain'
 
-const DownloadMenu = () =>
-  import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default)
-const TreeTable = () =>
-  import(/* webpackChunkName: 'tree-table' */ '@vuescape/components/TreeTable-v2/').then(m => m.default)
+const DownloadMenu = () => import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default)
+const TreeTable    = () => import(/* webpackChunkName: 'tree-table' */ '@vuescape/components/TreeTable-v2/').then(m => m.default)
 
 @Component({
-  components: { DownloadMenu, TreeTable },
+  components: {
+    DownloadMenu,
+    TreeTable,
+  },
 })
 export default class ReportPane extends ComponentBase {
-  private isPerformingLongRunningOperation = false
-  private reportNamespaceValue = ''
+  private isPerformingLongRunningOperation                                            = false
+  private reportNamespaceValue                                                        = ''
   private scrollPositionsValue: Dictionary<{ scrollLeft: number; scrollTop: number }> = {}
 
   private selectedSection: any = { id: '' }
-  private treeTableHeight = 0
+  private treeTableHeight      = 0
 
   // Props passed in on route
   @Prop({ type: String, required: true })
@@ -161,20 +156,18 @@ export default class ReportPane extends ComponentBase {
   }
 
   private get cssStyles() {
-    const existingStyles = this.selectedSection.treeTable.content.cssStyles ?? {}
+    const existingStyles  = this.selectedSection.treeTable.content.cssStyles ?? {}
     existingStyles.height = this.treeTableHeight + 'px'
     return existingStyles
   }
 
   private get shouldDisplayExcelDownload() {
-    const result =
-      this.shouldDisplayDownloadMenu &&
-      this.report.downloadLinks.some((_: Link) => _.resourceKind === ResourceKind.Excel)
+    const result = this.shouldDisplayDownloadMenu && this.report.downloadLinks.some((_: Link) => _.resourceKind === ResourceKind.Excel)
     return result
   }
 
   private get report() {
-    const state = getModuleStateByKey(this.reportNamespaceValue, this.$store)
+    const state  = getModuleStateByKey(this.reportNamespaceValue, this.$store)
     const result = state?.value
     return result
   }
@@ -194,17 +187,14 @@ export default class ReportPane extends ComponentBase {
   }
 
   private get areNoResults() {
-    const result =
-      this.report &&
-      this.selectedSection?.treeTable?.content?.rows &&
-      this.selectedSection?.treeTable?.content?.rows.length !== 0
+    const result = this.report && this.selectedSection?.treeTable?.content?.rows && this.selectedSection?.treeTable?.content?.rows.length !== 0
 
     return !result
   }
 
   private get treeTableTbody() {
     const treeTableReference = this.treeTableReference
-    const treeTable = this.$refs[treeTableReference] as { $el: Element }
+    const treeTable          = this.$refs[treeTableReference] as { $el: Element }
     if (!treeTable) {
       return
     }
@@ -223,9 +213,9 @@ export default class ReportPane extends ComponentBase {
     const self = this
     setTimeout(() => {
       if (self.report && self.report.sections && id) {
-        const section = self.report.sections.find((_: { id: string }) => _.id === id)
+        const section                                      = self.report.sections.find((_: { id: string }) => _.id === id)
         self.scrollPositionsValue[self.selectedSection.id] = self.calculateScrollBarPositions()!
-        self.selectedSection = section
+        self.selectedSection                               = section
         setTimeout(() => {
           self.positionScrollBars()
         }, 1)
@@ -235,7 +225,7 @@ export default class ReportPane extends ComponentBase {
   }
 
   private changeSection() {
-    const self = this
+    const self                            = this
     self.isPerformingLongRunningOperation = true
     // setTimeout(() => self.isPerformingLongRunningOperation = true, 1)
   }
@@ -255,7 +245,7 @@ export default class ReportPane extends ComponentBase {
     this.isPerformingLongRunningOperation = true
     await this.$nextTick()
     const downloadNamespace = this.reportNamespaceValue + '/download'
-    const link = this.report.downloadLinks.find((_: Link) => _.resourceKind === resourceKind) as Link
+    const link              = this.report.downloadLinks.find((_: Link) => _.resourceKind === resourceKind) as Link
 
     const source = link.source
     registerStoreModule(this.$store, downloadNamespace, HttpMethod.Get, source, undefined, false)
@@ -266,23 +256,22 @@ export default class ReportPane extends ComponentBase {
 
     // TODO Use file name from the server?
     // available at data.metadata.name
-    const now = new Date()
-    const fileDate = `_${now.getFullYear()}-${('0' + (now.getMonth() + 1)).slice(-2)}-${('0' + now.getDate()).slice(
-      -2,
-    )}`
-    let filename = ''
+    const now                  = new Date()
+    const fileDate             = `_${now.getFullYear()}-${('0' + (now.getMonth() + 1)).slice(-2)}-${('0' + now.getDate()).slice(
+      -2)}`
+    let filename               = ''
     let shouldAddByteOrderMark = false
     if (resourceKind === ResourceKind.Excel) {
       filename = `${this.report.title}${fileDate}.xlsx`
     }
     else if (resourceKind === ResourceKind.Csv) {
-      filename = `${this.report.title}${fileDate}.csv`
+      filename               = `${this.report.title}${fileDate}.csv`
       shouldAddByteOrderMark = true
     }
 
-    const data = state?.value
+    const data            = state?.value
     const isBase64Encoded = toEnum(PayloadEncodingKind, data.payloadEncodingKind) === PayloadEncodingKind.Base64
-    const fileContents = isBase64Encoded ? decodeBase64String(data.payload) : data.payload
+    const fileContents    = isBase64Encoded ? decodeBase64String(data.payload) : data.payload
 
     downloadFile(fileContents, filename, shouldAddByteOrderMark)
     this.isPerformingLongRunningOperation = false
@@ -304,16 +293,16 @@ export default class ReportPane extends ComponentBase {
 
   private rightAlignHeaderImpl() {
     const treeTableReference = this.treeTableReference
-    const treeTable = this.$refs[treeTableReference] as { $el: Element }
+    const treeTable          = this.$refs[treeTableReference] as { $el: Element }
     if (!treeTable) {
       return
     }
 
     const clientWidth = treeTable.$el.clientWidth
-    const row = treeTable.$el.querySelector('tr')
+    const row         = treeTable.$el.querySelector('tr')
     if (row) {
       const rowWidth = row.clientWidth
-      let width = rowWidth
+      let width      = rowWidth
       if (clientWidth < rowWidth) {
         width = clientWidth
       }
@@ -327,28 +316,30 @@ export default class ReportPane extends ComponentBase {
 
   private setTreeTableHeight() {
     const reportHeaderRef = this.reportHeaderRef
-    const reportHeader = this.$refs[reportHeaderRef] as any
+    const reportHeader    = this.$refs[reportHeaderRef] as any
 
     if (!reportHeader || !this.availableHeight || this.availableHeight.length === 0) {
       return
     }
 
     const thisElement = this.$el as any
-    const paddingTop = Number.parseFloat(
-      window.getComputedStyle(thisElement.firstChild, null).getPropertyValue('padding-top'),
-    )
+    const paddingTop  = Number.parseFloat(window.getComputedStyle(thisElement.firstChild, null)
+      .getPropertyValue('padding-top'))
 
     const reportHeaderHeight = reportHeader.getBoundingClientRect().height as number
-    const treeTableHeight = this.availableHeight[0] - reportHeaderHeight - paddingTop - 20 // give some additional space
-    this.treeTableHeight = treeTableHeight
+    const treeTableHeight    = this.availableHeight[0] - reportHeaderHeight - paddingTop - 20 // give some additional space
+    this.treeTableHeight     = treeTableHeight
   }
 
   private calculateScrollBarPositions() {
     const tbody = this.treeTableTbody
     if (tbody) {
       const scrollLeft = tbody.scrollLeft
-      const scrollTop = tbody.scrollTop
-      return { scrollLeft, scrollTop }
+      const scrollTop  = tbody.scrollTop
+      return {
+        scrollLeft,
+        scrollTop,
+      }
     }
   }
 
@@ -356,10 +347,10 @@ export default class ReportPane extends ComponentBase {
     const tbody = this.treeTableTbody
     if (tbody) {
       const selectedSectionId = this.selectedSection.id!
-      const self = this
+      const self              = this
       setTimeout(() => {
         tbody.scrollLeft = self.scrollPositionsValue[selectedSectionId].scrollLeft
-        tbody.scrollTop = self.scrollPositionsValue[selectedSectionId].scrollTop
+        tbody.scrollTop  = self.scrollPositionsValue[selectedSectionId].scrollTop
       }, 1)
     }
   }
@@ -373,7 +364,10 @@ export default class ReportPane extends ComponentBase {
     this.reportNamespaceValue = this.reportNamespace
     if (this.report && this.report.sections) {
       this.report.sections.forEach((_: Section) => {
-        this.scrollPositionsValue[_.id!] = { scrollLeft: Number.MAX_SAFE_INTEGER, scrollTop: 0 }
+        this.scrollPositionsValue[_.id!] = {
+          scrollLeft: Number.MAX_SAFE_INTEGER,
+          scrollTop : 0,
+        }
       })
       this.selectedSection = this.report.sections[0]
     }
