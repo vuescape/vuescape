@@ -19,6 +19,8 @@ import { EventType } from './EventType'
 import { SlidingPaneAction } from './SlidingPaneAction'
 import { SlidingPaneConfig } from './SlidingPaneConfig'
 
+import { debounce } from 'ts-debounce'
+
 @Component({
   components: {
     CloseIcon,
@@ -156,11 +158,25 @@ export default class SlidingPanes extends ComponentBase {
 
   //#region render functions
   public render(h: CreateElement) {
-    const rootNode = h('div', [this.createSplitPanes(h)])
+    const rootNode = h('div', [this.createResizeObserver(h), this.createSplitPanes(h)])
 
     // After creating root node hide unnecessary splitters
     this.setSplitterDisplays()
     return rootNode
+  }
+
+  private createResizeObserver(h: CreateElement) {
+    const self = this
+
+    const resizeObserver = h('resize-observer', {
+      on: {
+        notify: debounce(() => {
+          const debouncedFunction = debounce(() => self.setAvailableHeight([self.availableHeight[0]]), 50)
+          debouncedFunction()
+        }),
+      },
+    })
+    return resizeObserver
   }
 
   private setSplitterDisplays() {
@@ -388,20 +404,14 @@ export default class SlidingPanes extends ComponentBase {
     this.vuexWatchers.forEach(watcher => watcher())
   }
 
-  private async onResize(event: Array<{ width: number }>) {
+  private onResize(event: Array<{ width: number }>) {
     if (this.shouldHandleResizeEvent) {
       const self = this
-      if (!self.resizeTimer) {
-        this.resizeTimer = setTimeout(() => {
-          self.setAvailableHeight([self.availableHeight[0]])
-
-          self.resizeTimer = undefined
-        }, 50)
-      }
+      debounce(() => self.setAvailableHeight([self.availableHeight[0]]), 50)()
     }
   }
 
-  private async onResized(event: Array<{ width: number }>) {
+  private onResized(event: Array<{ width: number }>) {
     // If we resize to a maximize scenario then use maximize logic
     const maximizeIndex = event.findIndex(item => item.width === 100)
     if (maximizeIndex >= 0) {
