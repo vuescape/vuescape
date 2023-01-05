@@ -33,45 +33,62 @@ export default class SlidingPanes extends ComponentBase {
   // Amount to adjust height (e.g. accounting for header & footer)
   // Is there a better way?  Could have array of ids and use document.getElementById to get height
   // to dynamically calc and take off of window height. Forces external elements to have unique IDs
-  @Prop({ type: Number, default: 0 })
-  public windowHeightAdjustmentPx: number
+  @Prop({
+    type   : Number,
+    default: 0,
+  }) public windowHeightAdjustmentPx: number
 
   // Configuration
-  @Prop({ type: Array, required: true })
-  public slidingPaneConfig: Array<SlidingPaneConfig>
+  @Prop({
+    type    : Array,
+    required: true,
+  }) public slidingPaneConfig: Array<SlidingPaneConfig>
 
   // Actions triggered by Vuex state state change
-  @Prop({ type: Array, required: true })
-  public slidingPaneActions: Array<SlidingPaneAction>
+  @Prop({
+    type    : Array,
+    required: true,
+  }) public slidingPaneActions: Array<SlidingPaneAction>
 
   // CSS class to apply to underlying splitpanes default is 'default-theme'
-  @Prop({ type: String, default: 'default-theme' })
-  public slidingPaneCssClass: string
+  @Prop({
+    type   : String,
+    default: 'default-theme',
+  }) public slidingPaneCssClass: string
 
   // CSS position to apply to the min/max/close header row. The default is 'static'.
-  @Prop({ type: String, default: 'static' })
-  public slidingPaneHeaderPosition: string
+  @Prop({
+    type   : String,
+    default: 'static',
+  }) public slidingPaneHeaderPosition: string
 
   // Styles to apply to underlying splitpanes
   @Prop({
-    type: Object,
+    type   : Object,
     default: () => {
       return { height: '100%' }
     },
-  })
-  public slidingPaneStyles: object
+  }) public slidingPaneStyles: object
 
-  @Prop({ type: Boolean, default: true })
-  public areSlotsReactive: boolean
+  @Prop({
+    type   : Boolean,
+    default: true,
+  }) public areSlotsReactive: boolean
 
-  @Prop({ type: Boolean, default: true })
-  public shouldHandleResizeEvent: boolean
+  @Prop({
+    type   : Boolean,
+    default: true,
+  }) public shouldHandleResizeEvent: boolean
 
-  @Prop({ type: String, required: true })
-  public eventNamespace: string
+  @Prop({
+    type    : String,
+    required: true,
+  }) public eventNamespace: string
 
-  @Prop({ type: String, default: 'flex' })
-  public headerButtonCssDisplay: 'flex' | 'inline'
+  @Prop({
+    type   : String,
+    default: 'flex',
+  }) public headerButtonCssDisplay: 'flex' | 'inline'
 
   private panes: Array<{ width: number; savedWidth: number }> = this.slidingPaneConfig.map(p => {
     return {
@@ -102,7 +119,6 @@ export default class SlidingPanes extends ComponentBase {
   }
 
   public setWidths(...widths: Array<number>) {
-    console.info(...widths)
     if (widths) {
       widths.forEach((width, index) => {
         this.setWidth(index, width)
