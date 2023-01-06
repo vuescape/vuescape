@@ -212,6 +212,10 @@ export default class App extends ComponentBase {
 </script>
 
 <style>
+main.v-content {
+  container-type: inline-size;
+  container-name: main;
+}
 div.v-menu__content.menuable__content__active {
   border-radius: 5px;
 }
@@ -357,9 +361,38 @@ table td.very-negative {
 i.material-icons {
   font-size: 16px;
 }
-.app__sliding-pane--multiple {
-  width: auto;
+@container main (min-width: 800px) {
+  .app__sliding-pane--single {
+    width: 100%;
+  }
+  .app__sliding-pane--multiple {
+    width: auto;
+  }
 }
+@container main (min-width: 1200px) {
+  .app__sliding-pane--single {
+    width: 1170px;
+  }
+  .app__sliding-pane--multiple {
+    width: auto;
+  }
+}
+@container main (min-width: 1700px) {
+  .app__sliding-pane--single {
+    width: 1500px;
+  }
+  .app__sliding-pane--multiple {
+    width: auto;
+  }
+}
+/*@container main (min-width: 1700px) {*/
+/*  .app__sliding-pane--single {*/
+/*    width: 1500px;*/
+/*  }*/
+/*  .app__sliding-pane--multiple {*/
+/*    width: auto;*/
+/*  }*/
+/*}*/
 .app__container--scroll .el-loading-mask svg.circular {
   display: none;
 }
