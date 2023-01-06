@@ -233,7 +233,7 @@ div.v-menu__content.menuable__content__active {
 .app__sliding-pane--multiple {
   padding-right: 0em;
   padding-left:  0em;
-  margin-right:  0px;
+  margin-right:  10px;
   margin-left:   10px;
 }
 div.container.fluid {
@@ -263,7 +263,7 @@ div.application {
   height:              100%;
   overflow-y:          auto;
   backface-visibility: hidden;
-  margin-left:         8px;
+  margin-left:         0px;
 }
 .app__component--transition-enter-active,
 .app__component--transition-leave-active {
