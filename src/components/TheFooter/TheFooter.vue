@@ -1,6 +1,6 @@
 ﻿<template>
   <!-- TODO: This class needs to be dynamic so will need to put in vuex -->
-  <div class="app__sliding-pane--single the-footer__styles">
+  <div class="the-footer__width the-footer__styles">
     <div class="the-footer__copyright">
       &copy; {{ currentYear }} {{ theFooterProps.copyrightName }}
       <span class="the-footer__overflow"> All rights reserved.</span>
@@ -67,6 +67,25 @@ export default class TheFooter extends Vue {
 
 // Using less here to avoid compile error building test when this module uses CSS
 <style lang="less">
+footer.v-footer {
+  container-type: inline-size;
+  container-name: footer;
+}
+@container footer (min-width: 800px) {
+  .the-footer__width {
+    width: 100%;
+  }
+}
+@container footer (min-width: 1200px) {
+  .the-footer__width {
+    width: 1170px;
+  }
+}
+//@container footer (min-width: 1700px) {
+//  .the-footer__width {
+//    width: 1500px;
+//  }
+//}
 .the-footer__logo--position {
   position: absolute;
   left: 50%;
