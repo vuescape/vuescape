@@ -357,29 +357,8 @@ table td.very-negative {
 i.material-icons {
   font-size: 16px;
 }
-@media (min-width: 800) {
-  .app__sliding-pane--single {
-    width: 770px;
-  }
-  .app__sliding-pane--multiple {
-    width: auto;
-  }
-}
-@media (min-width: 1200px) {
-  .app__sliding-pane--single {
-    width: 1170px;
-  }
-  .app__sliding-pane--multiple {
-    width: auto;
-  }
-}
-@media (min-width: 1700) {
-  .app__sliding-pane--single {
-    width: 1500px;
-  }
-  .app__sliding-pane--multiple {
-    width: auto;
-  }
+.app__sliding-pane--multiple {
+  width: auto;
 }
 .app__container--scroll .el-loading-mask svg.circular {
   display: none;
