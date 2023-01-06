@@ -377,14 +377,14 @@ i.material-icons {
     width: auto;
   }
 }
-@container main (min-width: 1700px) {
-  .app__sliding-pane--single {
-    width: 1500px;
-  }
-  .app__sliding-pane--multiple {
-    width: auto;
-  }
-}
+/*@container main (min-width: 1700px) {*/
+/*  .app__sliding-pane--single {*/
+/*    width: 1500px;*/
+/*  }*/
+/*  .app__sliding-pane--multiple {*/
+/*    width: auto;*/
+/*  }*/
+/*}*/
 /*@container main (min-width: 1700px) {*/
 /*  .app__sliding-pane--single {*/
 /*    width: 1500px;*/
