@@ -34,7 +34,7 @@
     "qs": "^6.10.3",
     "splitpanes": "https://github.com/vuescape/splitpanes/tarball/10d73244c8ee381b31245cb4a44557fd5131f854",
     "ts-debounce": "^4.0.0",
-    "vue": "^2.6.14",
+    "vue": "https://github.com/vuejs/vue/tarball/3d29ba863b89fd90dabd0856c0507eacdf5fef22",
     "vue-class-component": "^6.3.2",
     "vue-multiselect": "^2.1.6",
     "vue-property-decorator": "^7.3.0",
