@@ -98,7 +98,7 @@ export default class ComponentBase extends Vue {
     isEmpty?: IsEmptyFunction<T>,
     props?: P,
     restPayloadStrategy = RestPayloadStrategy.QueryString,
-    shouldDisableValueReactivity = true,
+    shouldDisableValueReactivity = false,
   ) {
     registerStoreModule(this.$store,
       namespace,

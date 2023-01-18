@@ -94,7 +94,7 @@ export function registerStoreModuleWithAsyncActionsIfNotExists<S, R, P = {}>(sto
   isEmpty?: IsEmptyFunction<S>,
   props?: P,
   shouldUseGlobalNotifications = true,
-  shouldDisableValueReactivity = true,
+  shouldDisableValueReactivity = false,
 ) {
   if (!isModuleDefined(namespace, store)) {
     registerStoreModuleWithAsyncActions(store,
@@ -118,7 +118,7 @@ export function registerStoreModuleWithAsyncActions<S, R, P = {}>(store: Store<R
   isEmpty?: IsEmptyFunction<S>,
   props?: P,
   shouldUseGlobalNotifications = true,
-  shouldDisableValueReactivity = true,
+  shouldDisableValueReactivity = false,
 ) {
   const moduleOptions = new StoreModuleOptions<S, P>({
     asyncActions,
@@ -146,7 +146,7 @@ export function registerStoreModuleIfNotExists<S, R, P = {}>(store: Store<R>,
   isEmpty?: IsEmptyFunction<S>,
   props?: P,
   restPayloadStrategy          = RestPayloadStrategy.QueryString,
-  shouldDisableValueReactivity = true,
+  shouldDisableValueReactivity = false,
 ) {
   if (!isModuleDefined(namespace, store)) {
     registerStoreModule(store,
@@ -170,13 +170,13 @@ export function registerStoreModule<S, R, P = {}>(store: Store<R>,
   httpMethod: HttpMethod,
   endpoint: string,
   baseUrl?: string,
-  shouldUseCache               = true,
+  shouldUseCache  = true,
   initialValue?: S,
   mapper?: ValueMapper<S>,
   isEmpty?: IsEmptyFunction<S>,
   props?: P,
   restPayloadStrategy          = RestPayloadStrategy.QueryString,
-  shouldDisableValueReactivity = true,
+  shouldDisableValueReactivity = false,
 ) {
   const restService = new RestService<S>(endpoint, baseUrl, shouldUseCache, undefined, restPayloadStrategy)
 
