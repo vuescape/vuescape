@@ -94,6 +94,7 @@ export function registerStoreModuleWithAsyncActionsIfNotExists<S, R, P = {}>(sto
   isEmpty?: IsEmptyFunction<S>,
   props?: P,
   shouldUseGlobalNotifications = true,
+  shouldDisableValueReactivity = true,
 ) {
   if (!isModuleDefined(namespace, store)) {
     registerStoreModuleWithAsyncActions(store,
@@ -104,6 +105,7 @@ export function registerStoreModuleWithAsyncActionsIfNotExists<S, R, P = {}>(sto
       isEmpty,
       props,
       shouldUseGlobalNotifications,
+      shouldDisableValueReactivity,
     )
   }
 }
@@ -116,6 +118,7 @@ export function registerStoreModuleWithAsyncActions<S, R, P = {}>(store: Store<R
   isEmpty?: IsEmptyFunction<S>,
   props?: P,
   shouldUseGlobalNotifications = true,
+  shouldDisableValueReactivity = true,
 ) {
   const moduleOptions = new StoreModuleOptions<S, P>({
     asyncActions,
@@ -126,6 +129,7 @@ export function registerStoreModuleWithAsyncActions<S, R, P = {}>(store: Store<R
     spinnerDelay          : 300,
     shouldUseGlobalNotifications,
     shouldUseGlobalSpinner: true,
+    shouldDisableValueReactivity,
   })
   const module        = () => new StoreModule<S, ModuleState<S>, R>(moduleOptions)
   registerDynamicModule(store, namespace, module)
@@ -136,12 +140,13 @@ export function registerStoreModuleIfNotExists<S, R, P = {}>(store: Store<R>,
   httpMethod: HttpMethod,
   endpoint: string,
   baseUrl?: string,
-  shouldUseCache      = true,
+  shouldUseCache               = true,
   initialValue?: S,
   mapper?: ValueMapper<S>,
   isEmpty?: IsEmptyFunction<S>,
   props?: P,
-  restPayloadStrategy = RestPayloadStrategy.QueryString,
+  restPayloadStrategy          = RestPayloadStrategy.QueryString,
+  shouldDisableValueReactivity = true,
 ) {
   if (!isModuleDefined(namespace, store)) {
     registerStoreModule(store,
@@ -155,6 +160,7 @@ export function registerStoreModuleIfNotExists<S, R, P = {}>(store: Store<R>,
       isEmpty,
       props,
       restPayloadStrategy,
+      shouldDisableValueReactivity,
     )
   }
 }
@@ -164,12 +170,13 @@ export function registerStoreModule<S, R, P = {}>(store: Store<R>,
   httpMethod: HttpMethod,
   endpoint: string,
   baseUrl?: string,
-  shouldUseCache      = true,
+  shouldUseCache               = true,
   initialValue?: S,
   mapper?: ValueMapper<S>,
   isEmpty?: IsEmptyFunction<S>,
   props?: P,
-  restPayloadStrategy = RestPayloadStrategy.QueryString,
+  restPayloadStrategy          = RestPayloadStrategy.QueryString,
+  shouldDisableValueReactivity = true,
 ) {
   const restService = new RestService<S>(endpoint, baseUrl, shouldUseCache, undefined, restPayloadStrategy)
 
@@ -185,5 +192,14 @@ export function registerStoreModule<S, R, P = {}>(store: Store<R>,
       throw new Error('Unsupported HttpMethod: ' + httpMethod)
   }
   const asyncActions = { [endpoint]: service }
-  registerStoreModuleWithAsyncActions(store, namespace, asyncActions, initialValue as any, mapper, isEmpty, props)
+  registerStoreModuleWithAsyncActions(store,
+    namespace,
+    asyncActions,
+    initialValue as any,
+    mapper,
+    isEmpty,
+    props,
+    true,
+    shouldDisableValueReactivity,
+  )
 }

@@ -44,8 +44,8 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
   public readonly shouldUseGlobalSpinner: boolean | undefined
   // Should notifications be placed in the global notifications property
   public readonly shouldUseGlobalNotifications: boolean | undefined
-
   public readonly errorHandlerBuilder: ErrorHandlerBuilder | undefined
+  public readonly shouldDisableValueReactivity: boolean | undefined
 
   constructor({
     asyncActions = {},
@@ -58,6 +58,7 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
     shouldUseGlobalNotifications = false,
     shouldUseGlobalSpinner = false,
     errorHandlerBuilder = new StoreModuleErrorHandlerBuilder(),
+    shouldDisableValueReactivity = false,
   }: {
     asyncActions?: Dictionary<AsyncAction<T> | HttpAsyncAction<T>>
     isEmpty?: IsEmptyFunction<T>
@@ -69,6 +70,7 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
     shouldUseGlobalNotifications?: boolean
     shouldUseGlobalSpinner?: boolean
     errorHandlerBuilder?: ErrorHandlerBuilder,
+    shouldDisableValueReactivity?: boolean,
   } = {}) {
     if (asyncActions !== undefined) {
       this.asyncActions = asyncActions
@@ -80,6 +82,7 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
     this.isNamespaced                 = isNamespaced
     this.shouldUseGlobalNotifications = shouldUseGlobalNotifications
     this.shouldUseGlobalSpinner       = shouldUseGlobalSpinner
+    this.shouldDisableValueReactivity      = shouldDisableValueReactivity
 
     if (!Number.isInteger(spinnerDelay) || spinnerDelay < 0) {
       throw new TypeError('spinnerDelay must be a valid integer')

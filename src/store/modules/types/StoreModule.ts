@@ -85,6 +85,7 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
       shouldUseGlobalNotifications: moduleOptions.shouldUseGlobalNotifications,
       shouldUseGlobalSpinner      : moduleOptions.shouldUseGlobalSpinner,
       errorHandlerBuilder         : moduleOptions.errorHandlerBuilder,
+      shouldDisableValueReactivity: moduleOptions.shouldDisableValueReactivity,
     })
     // context.commit(StoreOperation.Mutation.RESET)
     context.commit(StoreOperation.Mutation.PENDING, true)
@@ -184,6 +185,12 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
         state.asyncResult = payload
       },
       [StoreOperation.Mutation.SET_VALUE](state, payload: T) {
+        let value = payload
+
+        // Object.freeze will disable reactivity
+        if (moduleOptions.shouldDisableValueReactivity) {
+          value = Object.freeze(payload)
+        }
         endPending(state)
         state.isEmpty  = false
         state.hasValue = true

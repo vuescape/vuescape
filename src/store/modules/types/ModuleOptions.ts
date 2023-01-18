@@ -23,4 +23,6 @@ export interface ModuleOptions<T, P = {}> {
   shouldUseGlobalNotifications?: boolean
   // ErrorHandler builder
   errorHandlerBuilder?: ErrorHandlerBuilder
+  // Disable the default reactivity on the value of T that vuex applies
+  shouldDisableValueReactivity?: boolean
 }

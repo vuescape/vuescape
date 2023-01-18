@@ -98,6 +98,7 @@ export default class ComponentBase extends Vue {
     isEmpty?: IsEmptyFunction<T>,
     props?: P,
     restPayloadStrategy = RestPayloadStrategy.QueryString,
+    shouldDisableValueReactivity = true,
   ) {
     registerStoreModule(this.$store,
       namespace,
@@ -110,6 +111,7 @@ export default class ComponentBase extends Vue {
       isEmpty,
       props,
       restPayloadStrategy,
+      shouldDisableValueReactivity,
     )
   }
 }
