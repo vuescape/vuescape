@@ -9,6 +9,6 @@ export class StoreMutation {
 }
 
 export namespace StoreMutation {
-  export class NotificationAMutations extends NotificationMutation {
+  export class NotificationMutations extends NotificationMutation {
   }
 }
