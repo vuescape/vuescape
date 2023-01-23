@@ -7,7 +7,7 @@
       @mouseleave="onMouseLeave(cell)"
       @mouseover="onMouseEnter(cell)"
       v-for="(cell, index) in rowToDisplay.cells.filter(_ => _.isVisible !== false)"
-      :style="getIndentStyle(rowToDisplay.depth, index, cell)"
+      :style="getCssStyleObject(rowToDisplay.depth, index, cell)"
       class="cell--border"
       :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"
       :key="cell.id"
@@ -102,10 +102,22 @@ export default class DataRowRenderer extends ComponentBase {
     return cssClasses
   }
 
-  private getIndentStyle(depth: number, index: number, cell: any) {
-    const amountToIndent = 12 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
-    const indentation    = index === 0 ? { 'padding-left': `${amountToIndent}px` } : '{}'
-    return indentation
+  private getCssStyleObject(depth: number, index: number, cell: any) {
+    const result: any = {}
+
+    if (cell.cssStyles) {
+      const cssProperties = Object.keys(cell.cssStyles)
+      for (const cssProperty of cssProperties) {
+        result[cssProperty] = cell.cssStyles[cssProperty]
+      }
+    }
+
+    if (index === 0) {
+      const amountToIndent = 12 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
+      result['padding-left'] = `${amountToIndent}px`
+    }
+
+    return result
   }
 }
 </script>
