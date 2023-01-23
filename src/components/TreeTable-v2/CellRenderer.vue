@@ -1,7 +1,7 @@
 <template>
   <component
+    :is="cellToDisplay.renderer || 'TextCellRenderer'"
     :key="cellToDisplay.id"
-    :is="cellToDisplay.renderer || 'DefaultCellRenderer'"
     :cell="cellToDisplay"
     :isHovering="isHovering"
   ></component>
@@ -15,21 +15,25 @@ import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { TreeTableCell } from '@vuescape/index'
 
-import DefaultCellRenderer from './DefaultCellRenderer.vue'
 import FixedCellRenderer from './FixedCellRenderer.vue'
+import TextCellRenderer from './TextCellRenderer.vue'
 
 @Component({
   components: {
-    DefaultCellRenderer,
     FixedCellRenderer,
+    TextCellRenderer,
   },
 })
 export default class CellRenderer extends ComponentBase {
-  @Prop({ type: Object, required: true })
-  private cell: TreeTableCell
+  @Prop({
+    type    : Object,
+    required: true,
+  }) private cell: TreeTableCell
 
-  @Prop({ type: Boolean, default: false })
-  private isHovering: boolean
+  @Prop({
+    type   : Boolean,
+    default: false,
+  }) private isHovering: boolean
 
   private get cellToDisplay() {
     return this.cell

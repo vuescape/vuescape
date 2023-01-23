@@ -72,7 +72,7 @@ export default class DataRowRenderer extends ComponentBase {
   }
 
   private cellKey(cell: TreeTableCell) {
-    return cell.id + '_' + (cell.renderer ? cell.renderer.name : 'DefaultCellRenderer')
+    return cell.id + '_' + (cell.renderer ? cell.renderer.name : 'TextCellRenderer')
   }
 
   private onMouseEnter(cell: TreeTableCell) {
