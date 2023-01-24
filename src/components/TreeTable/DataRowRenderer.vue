@@ -1,18 +1,18 @@
 <template>
   <tr
-    :class="rowToDisplay.cssClasses"
     :key="rowToDisplay.id"
+    :class="rowToDisplay.cssClasses"
   >
     <td
-      @mouseleave="onMouseLeave(cell)"
-      @mouseover="onMouseEnter(cell)"
       v-for="(cell, index) in rowToDisplay.cells.filter(_ => _.isVisible !== false)"
+      :key="cell.id"
+      :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"
+      :colspan="cell.colspan"
       :style="getCssStyleObject(rowToDisplay.depth, index, cell)"
       class="cell--border"
-      :class="[getCellClasses(cell, rowToDisplay, index), cell.cssClasses]"
-      :key="cell.id"
-      :colspan="cell.colspan"
       @click="cell.onclick && cell.onclick(rowToDisplay, cell)"
+      @mouseleave="onMouseLeave(cell)"
+      @mouseover="onMouseEnter(cell)"
     >
       <span
         v-if="index === 0"
@@ -23,8 +23,8 @@
           <component
             :is="cell.hover.component"
             :cell="cell"
-            :row="rowToDisplay"
             :isHovering="isHovering"
+            :row="rowToDisplay"
           ></component>
           <!-- style="vertical-align: text-top;margin-right: 4px;position: absolute; right: 0;" -->
         </span>
@@ -32,19 +32,26 @@
         <span v-if="rowToDisplay.isExpandable">
           <font-awesome-icon
             v-if="rowToDisplay.isExpanded"
-            class="data-row-renderer__icon"
             :icon="['fal', 'chevron-down']"
+            class="data-row-renderer__icon"
           />
           <font-awesome-icon
             v-else
-            class="data-row-renderer__icon"
             :icon="['fal', 'chevron-right']"
+            class="data-row-renderer__icon"
           />
         </span>
-        <span v-if="!cell.hover || !cell.hover.component">&nbsp;</span>
+        <!--        <span v-if="!cell.hover || !cell.hover.component">&nbsp;</span>-->
       </span>
       <span class="data-row-renderer__span--vertical-align">
+        <functional-cell-renderer
+          v-if="shouldUseFunctionalRenderers"
+          :key="cellKey(cell)"
+          :cell="cell"
+          :isHovering="cell.hover && isHovering"
+        ></functional-cell-renderer>
         <cell-renderer
+          v-else
           :key="cellKey(cell)"
           :cell="cell"
           :isHovering="cell.hover && isHovering"
@@ -61,13 +68,24 @@ import { Prop } from 'vue-property-decorator'
 import { ComponentBase, TreeTableCell, TreeTableRow } from '@vuescape/index'
 
 import CellRenderer from './CellRenderer.vue'
+import FunctionalCellRenderer from './functional-renderers/CellRenderer.vue'
 
 @Component({
-  components: { CellRenderer },
+  components: {
+    CellRenderer,
+    FunctionalCellRenderer,
+  },
 })
 export default class DataRowRenderer extends ComponentBase {
-  @Prop({ type: Object, required: true })
-  private row: TreeTableRow
+  @Prop({
+    type    : Object,
+    required: true,
+  }) private row: TreeTableRow
+
+  @Prop({
+    type   : Boolean,
+    default: false,
+  }) private shouldUseFunctionalRenderers: boolean
 
   private isHovering = false
 
@@ -113,7 +131,9 @@ export default class DataRowRenderer extends ComponentBase {
     }
 
     if (index === 0) {
-      const amountToIndent = 12 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875)
+      // If there is no hover then adjust the indentation
+      const adjustment       = cell.hover?.component ? 0 : 3
+      const amountToIndent   = 12 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875) + adjustment
       result['padding-left'] = `${amountToIndent}px`
     }
 

@@ -24,6 +24,7 @@
             :key="header.id"
             :class="header.cssClasses"
             :colspan="header.colspan"
+            :style="header.cssStyles"
           >
             <component
               :is="header.renderer || 'HeaderCellRenderer'"
@@ -33,7 +34,14 @@
           </th>
         </tr>
       </template>
-      <template slot="tbody">
+      <template v-if="shouldUseFunctionalRenderers" slot="tbody">
+        <functional-row-renderer
+          v-for="row in rowsToDisplay"
+          :key="row.id"
+          :row="row"
+        ></functional-row-renderer>
+      </template>
+      <template v-else slot="tbody">
         <row-renderer
           v-for="row in rowsToDisplay"
           :key="row.id"
@@ -45,11 +53,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import VueScrollingTable from 'vue-scrolling-table'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
+// import FixedCellRenderer from './FixedCellRenderer.vue'
+// import HeaderCellRenderer from './HeaderCellRenderer.vue'
+// import TextCellRenderer from './TextCellRenderer.vue'
+//
+// Vue.component(FixedCellRenderer.name, FixedCellRenderer)
+// Vue.component(HeaderCellRenderer.name, HeaderCellRenderer)
+// Vue.component(TextCellRenderer.name, TextCellRenderer)
 import {
   getSortedHeaderCellWithIndex,
   Guid,
@@ -60,60 +75,108 @@ import {
   TreeTableRow,
 } from '@vuescape/index'
 
-import HeaderCellRenderer from './HeaderCellRenderer.vue'
+import FunctionalRowRenderer from './functional-renderers/RowRenderer.vue'
 import RowRenderer from './RowRenderer.vue'
 
 @Component({
   components: {
-    HeaderCellRenderer,
+    FunctionalRowRenderer,
     RowRenderer,
     VueScrollingTable,
   },
 })
 export default class TreeTable extends ComponentBase {
   private idValue: string
+  private rowRendererValue: any
 
-  @Prop({ type: String, required: false })
-  private id: string
+  @Prop({
+    type    : String,
+    required: false,
+  }) private id: string
 
-  @Prop({ type: Array, required: true })
-  private headers: Array<TreeTableHeaderRow>
+  @Prop({
+    type    : Array,
+    required: true,
+  }) private headers: Array<TreeTableHeaderRow>
 
-  @Prop({ type: Array, required: true })
-  private rows: Array<TreeTableRow>
+  @Prop({
+    type    : Array,
+    required: true,
+  }) private rows: Array<TreeTableRow>
 
-  @Prop({ type: Boolean, required: false, default: true })
-  private shouldScrollVertical: boolean
+  @Prop({
+    type    : Boolean,
+    required: false,
+    default : true,
+  }) private shouldScrollVertical: boolean
 
-  @Prop({ type: Boolean, required: false, default: true })
-  private shouldScrollHorizontal: boolean
+  @Prop({
+    type    : Boolean,
+    required: false,
+    default : true,
+  }) private shouldScrollHorizontal: boolean
 
-  @Prop({ type: Boolean, required: false, default: true })
-  private shouldSyncHeaderScroll: boolean
+  @Prop({
+    type    : Boolean,
+    required: false,
+    default : true,
+  }) private shouldSyncHeaderScroll: boolean
 
-  @Prop({ type: Boolean, required: false, default: true })
-  private shouldSyncFooterScroll: boolean
+  @Prop({
+    type    : Boolean,
+    required: false,
+    default : true,
+  }) private shouldSyncFooterScroll: boolean
 
-  @Prop({ type: Boolean, required: false, default: false })
-  private shouldIncludeFooter: boolean
+  @Prop({
+    type    : Boolean,
+    required: false,
+    default : false,
+  }) private shouldIncludeFooter: boolean
 
-  @Prop({ type: Boolean, required: false, default: true })
-  private shouldFreezeFirstColumn: boolean
+  @Prop({
+    type    : Boolean,
+    required: false,
+    default : true,
+  }) private shouldFreezeFirstColumn: boolean
 
-  @Prop({ type: String, required: false, default: '#ffffff' })
-  private deadAreaColor: string
+  @Prop({
+    type    : String,
+    required: false,
+    default : '#ffffff',
+  }) private deadAreaColor: string
 
-  @Prop({ type: Number, required: false, default: 100000 })
-  private maxRows: number
+  @Prop({
+    type    : Number,
+    required: false,
+    default : 100000,
+  }) private maxRows: number
 
-  @Prop({ type: String, required: false, default: '' })
-  private cssStyle: string
+  @Prop({
+    type    : String,
+    required: false,
+    default : '',
+  }) private cssStyle: string
 
-  @Prop({ type: Function, required: false })
-  private treeTableSorter?: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow>
+  @Prop({
+    type    : Function,
+    required: false,
+  }) private treeTableSorter?: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow>
 
-  private treeTableSorterImpl: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow> =
-    this.defaultTreeTableSorter
+  @Prop({
+    type    : Function,
+    required: false,
+  }) private postUpdateCallback?: () => void
+
+  @Prop({
+    type    : Boolean,
+    default: false,
+  }) private shouldUseFunctionalRenderers : boolean
+
+  private treeTableSorterImpl: (
+    rows: Array<TreeTableRow>,
+    headers: Array<TreeTableHeaderRow>,
+  ) => Array<TreeTableRow> = this.defaultTreeTableSorter
 
   private rowsToDisplay: Array<TreeTableRow> = []
 
