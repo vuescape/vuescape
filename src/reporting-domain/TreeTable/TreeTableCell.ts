@@ -9,7 +9,7 @@ export interface TreeTableCell {
   displayValue?: string
   value: any
   hover?: Hover
-  renderer?: string | any
+  renderer: string | any
   cssClasses?: string
   cssStyles?: Dictionary<string>
   colspan?: number

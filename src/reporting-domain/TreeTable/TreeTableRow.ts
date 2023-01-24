@@ -8,7 +8,7 @@ export interface TreeTableRow {
   id: string
   cells: Array<TreeTableCell>
   depth: number
-  renderer?: string | any
+  renderer: string | any
   cssClasses?: string
   isExpandable: boolean
   isExpanded: boolean

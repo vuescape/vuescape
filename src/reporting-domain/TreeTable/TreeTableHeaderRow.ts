@@ -5,5 +5,5 @@ export interface TreeTableHeaderRow {
   cells: Array<TreeTableHeaderCell>
   cssClasses?: string
   // can be a string or an object
-  renderer?: string | any
+  renderer: string | any
 }
