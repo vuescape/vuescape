@@ -49,6 +49,7 @@
           :key="cellKey(cell)"
           :cell="cell"
           :isHovering="cell.hover && isHovering"
+          :isExpandable="rowToDisplay.isExpandable"
         ></functional-cell-renderer>
         <cell-renderer
           v-else
@@ -132,7 +133,11 @@ export default class DataRowRenderer extends ComponentBase {
 
     if (index === 0) {
       // If there is no hover then adjust the indentation
-      const adjustment       = cell.hover?.component ? 0 : 3
+      let adjustment = 0
+      if (!cell.hover?.component && !this.rowToDisplay.isExpandable) {
+        adjustment = 4
+      }
+
       const amountToIndent   = 12 + ++depth * 8 + (this.rowToDisplay.isExpandable ? 0 : 11.875) + adjustment
       result['padding-left'] = `${amountToIndent}px`
     }

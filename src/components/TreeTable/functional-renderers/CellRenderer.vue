@@ -40,6 +40,7 @@
     :key="props.cell.id"
     :cell="props.cell"
     :isHovering="props.isHovering"
+    :isExpandable="props.isExpandable"
   ></component>
 </template>
 
@@ -60,6 +61,11 @@ export default class FunctionalCellRenderer extends Vue {
     type   : Boolean,
     default: false,
   }) private isHovering: boolean
+
+  @Prop({
+    type   : Boolean,
+    default: false,
+  }) private isExpandable: boolean
 
   private getCellRenderer(renderer: any) {
     if (typeof renderer === 'function') {

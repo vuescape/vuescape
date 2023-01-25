@@ -1,8 +1,15 @@
 <template functional>
   <span
+    v-if="props.isExpandable"
     :class="props.cell.cssClasses"
     :title="props.cell.value"
   > {{ props.cell.displayValue != null ? props.cell.displayValue : props.cell.value }}
+  </span>
+  <span
+    v-else
+    :class="props.cell.cssClasses"
+    :title="props.cell.value"
+  >{{ props.cell.displayValue != null ? props.cell.displayValue : props.cell.value }}
   </span>
 </template>
 
@@ -23,5 +30,10 @@ export default class FunctionalFixedCellRenderer extends Vue {
     type   : Boolean,
     default: false,
   }) private isHovering: boolean
+
+  @Prop({
+    type   : Boolean,
+    default: false,
+  }) private isExpandable: boolean
 }
 </script>
