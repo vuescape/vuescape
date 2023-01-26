@@ -72,7 +72,7 @@ export default class FunctionalCellRenderer extends Vue {
       return renderer
     }
 
-    const rendererValue = renderer || 'FunctionalTextCellRenderer'
+    const rendererValue = renderer || 'TextCellRenderer'
     const result        = require(`./${rendererValue}.vue`).default
     return result
   }
