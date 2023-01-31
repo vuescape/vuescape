@@ -94,11 +94,12 @@ export default class Tooltip extends ComponentBase {
   @Prop({
     type   : Object,
     default: () => ({
-      'margin-top' : '3px',
-      'margin-left': '-18px',
-      'font-size'  : '18px',
-      color        : '#ddd',
-      cursor       : 'pointer',
+      'margin-top'    : '3px',
+      'margin-left'   : '-18px',
+      'font-size'     : '18px',
+      color           : '#ddd',
+      cursor          : 'pointer',
+      'vertical-align': 'bottom',
     }),
   })
   private iconStyleObject: boolean

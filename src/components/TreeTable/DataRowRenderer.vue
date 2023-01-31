@@ -164,6 +164,6 @@ export default class DataRowRenderer extends ComponentBase {
   opacity: 0;
 }
 .data-row-renderer__span--vertical-align {
-  vertical-align: middle;
+  /*vertical-align: middle;*/
 }
 </style>

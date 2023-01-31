@@ -18,12 +18,12 @@
             :class="{ 'tooltip__icon--hover': isHoveringImpl }"
             :icon="['far', 'square-info']"
             style="
-              margin-top: 3px;
               margin-left: -18px;
               font-size: 18px;
               color: #ddd;
               cursor: pointer;
               display: inline-block;
+              vertical-align: bottom;
             "
             @click.stop="enableTooltip"
             v-on="on"
