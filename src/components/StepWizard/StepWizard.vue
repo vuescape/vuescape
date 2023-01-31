@@ -84,62 +84,48 @@
         ></component>
       </transition>
     </div>
-    <v-layout justify-center>
-      <v-container
-        fluid
-        grid-list-md
-      >
-        <v-layout
-          justify-center
-          row
-        >
-          <v-flex xs1></v-flex>
-          <v-flex
-            style="text-align: center; font-size: 22px; font-weight: 500;"
-            xs10
+    <div class="content">
+      <div class="bottom">
+        <!-- only-next -->
+        <div class="stepper-button previous">
+          <vuescape-button
+            v-if="currentStepIndex !== 0"
+            :disabled="false"
+            :icons="['fad', 'arrow-alt-circle-left']"
+            Depressed
+            @click="backStep()"
           >
-            <div :class="['bottom', currentStepIndex > 0 ? '' : '']">
-              <!-- only-next -->
-              <div class="stepper-button previous">
-                <vuescape-button
-                  v-if="currentStepIndex !== 0"
-                  :disabled="false"
-                  :icons="['fad', 'arrow-alt-circle-left']"
-                  Depressed
-                  @click="backStep()"
-                >
-                  &nbsp;Back
-                </vuescape-button>
-                <span
-                  v-if="cancelRouteOrCallback"
-                  style="margin-top: 7px;"
-                >
-                  <v-btn
-                    class="cancel"
-                    flat
-                    @click="cancel"
-                  >Cancel</v-btn>
-                  <!-- <a class="cancel" @click="cancel">Cancel</a> -->
-                </span>
-              </div>
-              <div class="stepper-button next">
-                <vuescape-button
-                  :class="{ finalStep: isFinalStep }"
-                  :icons="isFinalStep ? ['fad', 'arrow-alt-circle-right'] : ['fad', 'arrow-alt-circle-right']"
-                  :isDisabled="!canContinue"
-                  Depressed
-                  iconPosition="after"
-                  @click="nextStep()"
-                >
-                  {{ isFinalStep ? finalStepButtonTextValue : 'Next' }}&nbsp;
-                </vuescape-button>
-              </div>
-            </div>
-          </v-flex>
-          <v-flex xs1></v-flex>
-        </v-layout>
-      </v-container>
-    </v-layout>
+            &nbsp;Back
+          </vuescape-button>
+        </div>
+        <div
+          v-if="cancelRouteOrCallback"
+          class="cancel-div"
+        >
+          <v-btn
+            class="cancel"
+            flat
+            @click="cancel"
+          >Cancel
+          </v-btn>
+          <!-- <a class="cancel" @click="cancel">Cancel</a> -->
+        </div>
+        <div
+          class="stepper-button next"
+        >
+          <vuescape-button
+            :class="{ finalStep: isFinalStep }"
+            :icons="isFinalStep ? ['fad', 'arrow-alt-circle-right'] : ['fad', 'arrow-alt-circle-right']"
+            :isDisabled="!canContinue"
+            Depressed
+            iconPosition="after"
+            @click="nextStep()"
+          >
+            {{ isFinalStep ? finalStepButtonTextValue : 'Next' }}&nbsp;
+          </vuescape-button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -391,33 +377,6 @@ export default class StepWizard extends Vue {
   color: #333;
   left:  1%;
 }
-/* .step-wizard__stepper-box .top .divider-line {
-  border-bottom: 2px solid #ccc;
-  height: 2px;
-  position: absolute;
-} */
-
-/* @media (max-width: 767px) {
-  .step-wizard__stepper-box .top .steps-wrapper {
-    width: 90%;
-    justify-content: center;
-  }
-}
-@media (max-width: 767px) {
-  .step-wizard__stepper-box .top .divider-line {
-    width: 90%;
-  }
-}
-@media (max-width: 767px) {
-  .step-wizard__stepper-box .top .steps-wrapper .step {
-    width: 100% !important;
-  }
-}
-@media (max-width: 767px) {
-  .step-wizard__stepper-box .top .steps-wrapper .step.deactivated {
-    display: none;
-  }
-} */
 .step-wizard__stepper-box .top .steps-wrapper {
   display:         flex;
   align-items:     center;
@@ -497,55 +456,34 @@ export default class StepWizard extends Vue {
   overflow: hidden;
   margin:   2rem 0;
 }
-.step-wizard__stepper-box .bottom {
-  position:        fixed;
-  bottom:          40px;
-  justify-content: space-between;
-  align-items:     center;
-  padding-top:     2rem;
-  padding-top:     2rem;
-  padding-right:   0;
-  padding-left:    0;
-}
-.step-wizard__stepper-box .bottom.only-next {
-  right: calc(10vh);
-}
-.step-wizard__stepper-box .bottom .stepper-button {
-  padding-top:     0.5rem;
-  padding-bottom:  0.5rem;
-  padding-left:    0;
-  padding-right:   0;
-  display:         flex;
-  align-items:     center;
-  justify-content: space-between;
-}
 .step-wizard__stepper-box .bottom .stepper-button.next {
-  right:    calc(10vh);
-  position: fixed;
-  bottom:   40px;
+  position: absolute;
+  right:    5vw;
+  bottom:   11px;
 }
-/*
 .step-wizard__stepper-box .bottom .stepper-button.next.deactivated {
   background-color: #ccc !important;
   cursor: not-allowed !important;
 }
-*/
 .step-wizard__stepper-box .bottom .stepper-button.previous {
-  position: fixed;
-  bottom:   40px;
-  left:     calc(10vh);
+  position: absolute;
+  left:     5vw;
+  bottom:   11px;
 }
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
   height:    40px;
   font-size: 16px;
 }
+.step-wizard__stepper-box .bottom .cancel-div {
+  position: absolute;
+  left:     calc(50% - 50px);
+}
 .step-wizard__stepper-box .bottom .cancel {
   text-decoration: underline;
   font-size:       16px;
   height:          40px;
-  left:            calc(100% / 2 - 50px);
   position:        fixed;
-  bottom:          40px;
+  bottom:          41px;
 }
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
   border-color: #9bdddb !important;
