@@ -5,15 +5,15 @@
         :class="{ 'modal-tooltip__icon--hover': isHoveringImpl }"
         :icon="icons"
         :style="iconStyleObject"
-        @click.stop="enableTooltip"
         :title="hintText"
+        @click.stop="enableTooltip"
       />
       <v-dialog
-        origin="left center"
+        v-model="shouldShowDialog"
         :content-class="`modal-tooltip__dialog--${cell.id}`"
         :hide-overlay="true"
-        v-model="shouldShowDialog"
         max-width="500px"
+        origin="left center"
         width="50%"
         @input="v => v || stopVideo()"
       >
@@ -36,8 +36,8 @@
             <span v-if="contentKind === plaintextContentKind">{{ content }} </span>
             <span
               v-else
-              v-html="content"
               ref="hoverHtml"
+              v-html="content"
             ></span>
           </v-card-text>
         </v-card>
@@ -101,10 +101,25 @@ export default class Tooltip extends ComponentBase {
       cursor          : 'pointer',
       'vertical-align': 'bottom',
     }),
-  })
-  private iconStyleObject: boolean
+  }) private iconStyleObject: boolean
 
   private isHoveringImpl = false
+
+  private get title() {
+    return this.cell.hover ? this.cell.hover.title : ''
+  }
+
+  private get content() {
+    return this.cell.hover ? this.cell.hover.content : ''
+  }
+
+  private get contentKind() {
+    return this.cell.hover ? this.cell.hover.contentKind : HoverContentKind.None
+  }
+
+  private get plaintextContentKind() {
+    return HoverContentKind.Plaintext
+  }
 
   @Watch('isHovering')
   private onHoveringChanged(newValue: boolean, oldValue: boolean) {
@@ -128,22 +143,6 @@ export default class Tooltip extends ComponentBase {
         iframe.src = iframe.src
       }
     }
-  }
-
-  private get title() {
-    return this.cell.hover ? this.cell.hover.title : ''
-  }
-
-  private get content() {
-    return this.cell.hover ? this.cell.hover.content : ''
-  }
-
-  private get contentKind() {
-    return this.cell.hover ? this.cell.hover.contentKind : HoverContentKind.None
-  }
-
-  private get plaintextContentKind() {
-    return HoverContentKind.Plaintext
   }
 
   private async enableTooltip() {
