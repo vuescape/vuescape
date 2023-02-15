@@ -12,6 +12,7 @@
     <v-snackbar
       v-model="shouldShowDownloadCompleted"
       :timeout="10000"
+      absolute
       bottom
       color="primary"
       right
@@ -26,9 +27,10 @@
     </v-snackbar>
     <v-snackbar
       v-model="shouldShowDownloadCsvMessage"
-      :bottom="true"
-      :right="true"
       :timeout="10000"
+      absolute
+      bottom
+      right
     >
       Your file is being prepared for download.
       <v-btn
