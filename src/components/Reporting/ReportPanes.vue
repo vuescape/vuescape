@@ -142,24 +142,26 @@ export default class ReportPanes extends ComponentBase {
   private get mainReport() {
     const state  = getModuleStateByKey(this.mainNamespace, this.$store)
     const result = state?.value
+    this.setPageTitle(result?.title)
     return result
   }
 
   private get navigationReport() {
     const state  = getModuleStateByKey(this.navigationNamespace, this.$store)
     const result = state?.value
+    const title = result?.title?.toLowerCase()?.endsWith('Report') ? result?.title : result?.title + ' Report'
+    this.setPageTitle(title)
     return result
   }
 
   private get detailReport() {
     const state  = getModuleStateByKey(this.detailNamespace, this.$store)
     const result = state?.value
-    this.setPageTitle(result?.title)
     return result
   }
 
   private setPageTitle(title: string) {
-    if (document.title !== title) {
+    if (document.title !== title && title) {
       document.title = title
     }
   }
