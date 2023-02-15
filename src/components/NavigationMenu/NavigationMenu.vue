@@ -88,6 +88,7 @@ const NavigationMenuItem = () => import(/* webpackChunkName: 'navigation-menu-it
   },
 })
 export default class NavigationMenu extends Vue {
+  private areMenusSet = false
   private menusValue: Array<Menu>  = []
   private hasLeftNavigationItems   = false
   private hasCenterNavigationItems = false
@@ -161,6 +162,11 @@ export default class NavigationMenu extends Vue {
   }
 
   private get breakpoints() {
+    // If menus haven't been set then default to 12 -- full width
+    if (!this.areMenusSet) {
+      return 12
+    }
+
     const hasLeft   = this.hasLeftNavigationItems
     const hasCenter = this.hasCenterNavigationItems
     const hasRight  = this.hasRightNavigationItems
@@ -178,6 +184,10 @@ export default class NavigationMenu extends Vue {
 
   @Watch('menus')
   private onMenusChanged(val: Array<Menu>, oldVal: Array<Menu>) {
+    if (val && val.length) {
+      this.areMenusSet = true
+    }
+
     this.menusValue               = val
     this.hasLeftNavigationItems   = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
     this.hasRightNavigationItems  = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Right)
@@ -194,6 +204,9 @@ export default class NavigationMenu extends Vue {
   }
 
   private created() {
+    if (this.menus && this.menus.length) {
+      this.areMenusSet = true
+    }
     this.menusValue               = this.menus
     this.hasLeftNavigationItems   = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Left)
     this.hasRightNavigationItems  = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Right)
