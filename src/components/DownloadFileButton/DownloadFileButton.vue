@@ -2,7 +2,6 @@
   <div>
     <vuescape-button
       :color="color"
-      :data="data"
       :icons="icons"
       :isDisabled="isButtonDisabled"
       Depressed
