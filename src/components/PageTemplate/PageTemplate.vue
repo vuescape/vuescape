@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: calc(100vh - 72px); position: relative;">
     <page-header
       v-if="title"
       :title="title"
