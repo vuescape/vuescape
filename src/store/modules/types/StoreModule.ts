@@ -4,6 +4,7 @@ import { ActionContext, ActionTree, GetterTree, Module, ModuleTree, MutationTree
 import { AsyncResult, ModuleOptions, ModuleState, StoreModuleOptions, StoreModuleState, StoreOperation } from './'
 
 import { NotificationOperation } from '@vuescape/store/Notification'
+import { Guid } from '@vuescape/types'
 
 export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements Module<S, R> {
   public namespaced?: boolean
@@ -98,7 +99,7 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
     }, storeModuleOptions.spinnerDelay)
     let result: any
     try {
-      result = await asyncAction(payload)
+      result = await asyncAction(payload, context.state.abortController)
       context.commit(StoreOperation.Mutation.SET_ASYNC_RESULT, {
         status    : 200,
         statusText: 'OK',
@@ -110,6 +111,12 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
       }
     }
     catch (error) {
+      if (context.state.abortController?.signal?.aborted) {
+        // Request was canceled, so we will not treat as an error
+        // and continue since it is assumed this was done intentionally
+        // with the goal of continuing without showing an error
+        return
+      }
       const handleError = storeModuleOptions.errorHandlerBuilder!.build({
         context,
         shouldUseGlobalNotifications: moduleOptions.shouldUseGlobalNotifications,
@@ -171,6 +178,12 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
       },
       [StoreOperation.Mutation.SPINNING](state, payload: boolean) {
         state.isSpinning = payload
+      },
+      [StoreOperation.Mutation.SET_ABORT_CONTROLLER](state, payload: AbortController | undefined) {
+        state.abortController = payload
+      },
+      [StoreOperation.Mutation.ABORT_REQUEST](state) {
+        state?.abortController?.abort()
       },
       [StoreOperation.Mutation.SET_EMPTY](state) {
         endPending(state)

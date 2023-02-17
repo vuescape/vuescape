@@ -8,9 +8,9 @@ export function makeHttpAsyncAction<T>(
   shouldUseCache?: boolean,
   restPayloadStrategy?: RestPayloadStrategy,
 ) {
-  const asyncAction: HttpAsyncAction<T> = (args: any) => {
+  const asyncAction: HttpAsyncAction<T> = (args: any, abortController?: AbortController) => {
     const httpService = new HttpService(baseUrl, shouldUseCache, restPayloadStrategy)
-    return httpService.invoke<T>(httpMethod, endpoint, args)
+    return httpService.invoke<T>(httpMethod, endpoint, args, abortController)
   }
 
   return asyncAction

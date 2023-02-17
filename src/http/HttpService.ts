@@ -18,18 +18,18 @@ export class HttpService {
     this.restPayloadStrategy = restPayloadStrategy
   }
 
-  public invoke<T>(httpMethod: HttpMethod, endpoint: string, args?: {}) {
+  public invoke<T>(httpMethod: HttpMethod, endpoint: string, args?: {}, abortController?: AbortController) {
     if (httpMethod === HttpMethod.Get) {
-      return this.get<T>(endpoint, args)
+      return this.get<T>(endpoint, args, abortController)
     }
     else if (httpMethod === HttpMethod.Post) {
-      return this.post<T>(endpoint, args)
+      return this.post<T>(endpoint, args, abortController)
     }
 
     throw new Error(`Unsupported HttpMethod: ${httpMethod}`)
   }
 
-  public get<T>(endpoint: string, args?: any): AxiosPromise<T> {
+  public get<T>(endpoint: string, args?: any, abortController?: AbortController): AxiosPromise<T> {
     let queryString       = ''
     let formattedEndpoint = endpoint
     if (args) {
@@ -57,10 +57,13 @@ export class HttpService {
     } as any
     axiosConfig.headers = { 'Content-Type': 'application/json' }
     axiosConfig.data    = {}
+    if (abortController) {
+      axiosConfig.signal = abortController.signal
+    }
     return Axios.instance.get<T>(formattedEndpoint + queryString, axiosConfig)
   }
 
-  public post<T>(endpoint: string, args?: any): AxiosPromise<T> {
+  public post<T>(endpoint: string, args?: any, abortController?: AbortController): AxiosPromise<T> {
     let formattedArgs: any
     // tslint:disable-next-line: no-bitwise
     if ((this.restPayloadStrategy & RestPayloadStrategy.PostJson) === RestPayloadStrategy.PostJson) {
@@ -72,6 +75,9 @@ export class HttpService {
     const axiosConfig = {
       baseURL: this.baseUrl,
     } as any
+    if (abortController) {
+      axiosConfig.signal = abortController.signal
+    }
     if (this.restPayloadStrategy === RestPayloadStrategy.MultipartFormData) {
       axiosConfig.headers = { 'Content-Type': 'multipart/form-data' }
       formattedArgs       = args

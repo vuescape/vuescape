@@ -18,4 +18,5 @@ export interface ModuleState<T, Props = {}> {
   props: Props | undefined
   // The value
   value: T | undefined
+  abortController? : AbortController
 }

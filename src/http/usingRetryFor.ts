@@ -4,12 +4,12 @@ export function usingRetryFor<T>(asyncAction: AsyncAction<T>,
   retryDelay: number         = 250,
   maxNumberOfRetries: number = 3,
 ) {
-  const wrappedAction: AsyncAction<T> = async (args: any) => {
+  const wrappedAction: AsyncAction<T> = async (args: any, abortController?: AbortController) => {
     let retryNumber     = 0
     const retryFunction = async () => {
       while (retryNumber <= maxNumberOfRetries) {
         try {
-          const result = await asyncAction(args)
+          const result = await asyncAction(args, abortController)
           return result as T
         }
         catch (error) {

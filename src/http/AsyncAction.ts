@@ -1,1 +1,1 @@
-export type AsyncAction<T> = (args: any) => Promise<T>
+export type AsyncAction<T> = (args: any, abortController?: AbortController) => Promise<T>

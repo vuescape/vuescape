@@ -9,6 +9,7 @@ export class StoreModuleState<T, P = {}> implements ModuleState<T, P> {
   public readonly notifications: Array<NotificationMessage>
   public readonly value: T | undefined
   public readonly props: P | undefined
+  public readonly abortController: AbortController | undefined
 
   constructor(
     isPending: boolean,
@@ -19,14 +20,16 @@ export class StoreModuleState<T, P = {}> implements ModuleState<T, P> {
     notifications: Array<NotificationMessage>,
     value?: T,
     props?: P,
+    abortController?: AbortController,
   ) {
-    this.isPending     = isPending
-    this.isSpinning    = isSpinning
-    this.isEmpty       = isEmpty
-    this.hasValue      = hasValue
-    this.asyncResult   = asyncResult
-    this.notifications = notifications
-    this.value         = value
-    this.props         = props
+    this.isPending       = isPending
+    this.isSpinning      = isSpinning
+    this.isEmpty         = isEmpty
+    this.hasValue        = hasValue
+    this.asyncResult     = asyncResult
+    this.notifications   = notifications
+    this.value           = value
+    this.props           = props
+    this.abortController = abortController
   }
 }
