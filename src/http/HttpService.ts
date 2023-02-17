@@ -8,14 +8,12 @@ import { HttpMethod } from './HttpMethod'
 import { RestPayloadStrategy } from './RestPayloadStrategy'
 
 export class HttpService {
-  private baseUrl = ''
-  private shouldUseCache: boolean
-  private restPayloadStrategy: RestPayloadStrategy
+  private readonly baseUrl: string | undefined = ''
+  private readonly shouldUseCache: boolean
+  private readonly restPayloadStrategy: RestPayloadStrategy
 
   public constructor(baseUrl?: string, shouldUseCache = false, restPayloadStrategy = RestPayloadStrategy.None) {
-    if (baseUrl) {
-      this.baseUrl = baseUrl
-    }
+    this.baseUrl             = baseUrl || ''
     this.shouldUseCache      = shouldUseCache
     this.restPayloadStrategy = restPayloadStrategy
   }
