@@ -415,4 +415,8 @@ i.material-icons {
 .v-toolbar__items {
   font-size: 13px;
 }
+/* Force dialog on top -- of pinned navigator */
+.v-dialog__content.v-dialog__content--active {
+  z-index: 4000!important;
+}
 </style>
