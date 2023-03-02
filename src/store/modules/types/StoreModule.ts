@@ -111,7 +111,7 @@ export class StoreModule<T, S extends ModuleState<T, P>, R, P = {}> implements M
       }
     }
     catch (error) {
-      if (context.state.abortController?.signal?.aborted) {
+      if (error.message === 'canceled' || context.state.abortController?.signal?.aborted) {
         // Request was canceled, so we will not treat as an error
         // and continue since it is assumed this was done intentionally
         // with the goal of continuing without showing an error
