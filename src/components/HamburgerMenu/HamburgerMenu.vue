@@ -141,9 +141,6 @@ export default class HamburgerMenu extends Vue {
 </script>
 
 <style>
-.hamburger-menu__toolbar--size div.v-toolbar__content {
-  float: right;
-}
 .hamburger-menu__v-menu--size .v-expansion-panel .v-expansion-panel__container {
   border-top: 1px solid #9bdddb;
   /* height: 36px; */
