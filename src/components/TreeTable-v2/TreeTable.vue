@@ -235,6 +235,7 @@ export default class TreeTable extends ComponentBase {
   }
 
   private defaultTreeTableSorter(rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) {
+    debugger
     const sortHeader = getSortedHeaderCellWithIndex(headers)
     if (this.sortLevel === SortLevel.None || !sortHeader) {
       return rows
@@ -245,7 +246,7 @@ export default class TreeTable extends ComponentBase {
       sortHeader.cell.columnSorter!.sortComparisonStrategy,
     )
 
-    const hasChildren = rows.filter(_ => _.children!.length > 0).length > 0
+    const hasChildren = rows.some(_ => _.children && _.children.length > 0)
     if (this.sortLevel === SortLevel.Children && !hasChildren) {
       console.warn(`sortLevel set to ${SortLevel.Children.toString()} but there are no children.`)
     }
