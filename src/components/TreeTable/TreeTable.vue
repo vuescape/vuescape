@@ -15,7 +15,7 @@
     >
       <template slot="thead">
         <tr
-          v-for="headerRow in headersToDisplay"
+          v-for="headerRow in theHeaders"
           :key="headerRow.id"
           :class="headerRow.cssClasses"
         >
@@ -28,20 +28,27 @@
           >
             <component
               :is="header.renderer || 'HeaderCellRenderer'"
+              :key="header.columnSorter ? header.columnSorter.sortDirection : 0"
               :header="header"
               @toggle-sort="toggleSort($event)"
             ></component>
           </th>
         </tr>
       </template>
-      <template v-if="shouldUseFunctionalRenderers" slot="tbody">
+      <template
+        v-if="shouldUseFunctionalRenderers"
+        slot="tbody"
+      >
         <functional-row-renderer
           v-for="row in rowsToDisplay"
           :key="row.id"
           :row="row"
         ></functional-row-renderer>
       </template>
-      <template v-else slot="tbody">
+      <template
+        v-else
+        slot="tbody"
+      >
         <row-renderer
           v-for="row in rowsToDisplay"
           :key="row.id"
@@ -53,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import VueScrollingTable from 'vue-scrolling-table'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
@@ -87,7 +94,9 @@ import RowRenderer from './RowRenderer.vue'
 })
 export default class TreeTable extends ComponentBase {
   private idValue: string
+  private headerId = Guid.newGuid()
   private rowRendererValue: any
+  private headersValue: Array<TreeTableHeaderRow>
 
   @Prop({
     type    : String,
@@ -169,12 +178,11 @@ export default class TreeTable extends ComponentBase {
   }) private postUpdateCallback?: () => void
 
   @Prop({
-    type    : Boolean,
+    type   : Boolean,
     default: false,
-  }) private shouldUseFunctionalRenderers : boolean
+  }) private shouldUseFunctionalRenderers: boolean
 
-  private treeTableSorterImpl: (
-    rows: Array<TreeTableRow>,
+  private treeTableSorterImpl: (rows: Array<TreeTableRow>,
     headers: Array<TreeTableHeaderRow>,
   ) => Array<TreeTableRow> = this.defaultTreeTableSorter
 
@@ -182,10 +190,6 @@ export default class TreeTable extends ComponentBase {
 
   private get cssStyleValue() {
     return this.cssStyle
-  }
-
-  private get headersToDisplay() {
-    return this.headers
   }
 
   private get shouldScrollVerticalValue() {
@@ -225,10 +229,22 @@ export default class TreeTable extends ComponentBase {
     this.idValue = val
   }
 
+  private get theHeaders() {
+    if (this.headerId) {
+      return this.headersValue
+    }
+  }
+
   @Watch('rows')
   private rowsWatcher(val: Array<TreeTableRow>, oldVal: Array<TreeTableRow>) {
     this.rows = val
     this.setRowsToDisplay()
+  }
+
+  @Watch('headers')
+  private headersWatcher(val: Array<TreeTableHeaderRow>, oldVal: Array<TreeTableHeaderRow>) {
+    this.headersValue = val
+    this.headerId     = Guid.newGuid()
   }
 
   private toggleSort(header: TreeTableHeaderCell) {
@@ -243,7 +259,7 @@ export default class TreeTable extends ComponentBase {
       else {
         throw new Error('Unsupported SortDirection: ' + header.columnSorter.sortDirection)
       }
-      this.headers.forEach(_ => _.cells.forEach(col => (col.columnSorter ?
+      this.headersValue.forEach(_ => _.cells.forEach(col => (col.columnSorter ?
         (col.columnSorter.sortDirection = SortDirection.None) : undefined)))
       header.columnSorter.sortDirection = newSortDirection
       this.setRowsToDisplay()
@@ -278,7 +294,7 @@ export default class TreeTable extends ComponentBase {
 
   private async setRowsToDisplay() {
     const rows         = this.rows.slice(0, this.maxRows).filter(row => row.isVisible)
-    this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headers)
+    this.rowsToDisplay = this.treeTableSorterImpl(rows, this.headersValue)
     const tableBody    = document.querySelector('table.scrolling tbody') as { scrollTop: number }
     if (tableBody) {
       const scrollTop = tableBody.scrollTop
@@ -288,7 +304,9 @@ export default class TreeTable extends ComponentBase {
   }
 
   private created() {
-    this.idValue = this.id ? this.id : Guid.newGuid.toString()
+    console.info('created with headers ', this.headers)
+    this.idValue      = this.id ? this.id : Guid.newGuid()
+    this.headersValue = this.headers
 
     if (this.treeTableSorter) {
       this.treeTableSorterImpl = this.treeTableSorter

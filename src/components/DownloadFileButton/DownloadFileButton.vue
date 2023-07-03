@@ -17,7 +17,7 @@
       color="primary"
       right
     >
-      <font-awesome-icon :icon="['fad', 'check-circle']"></font-awesome-icon>&nbsp;&nbsp; Your file is downloading
+      <i class="fa-duotone fa-check-circle"></i>&nbsp;&nbsp; Your file is downloading
       <v-btn
         color="primary"
         flat

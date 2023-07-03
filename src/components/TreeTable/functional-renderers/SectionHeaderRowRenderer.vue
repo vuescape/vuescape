@@ -14,16 +14,14 @@
       @click="cell.onclick && cell.onclick(props.row, cell)"
     >
       <span v-if="index === 0 && props.row.isExpandable">
-        <font-awesome-icon
+        <i
           v-if="props.row.isExpanded"
-          :icon="['fal', 'chevron-down']"
-          class="section-header-row-renderer__icon"
+          class="section-header-row-renderer__icon fa-light fa-chevron-down"
         />
         <!-- <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i> -->
-        <font-awesome-icon
+        <i
           v-if="!props.row.isExpanded"
-          :icon="['fal', 'chevron-right']"
-          class="section-header-row-renderer__icon"
+          class="section-header-row-renderer__icon fa-light fa-chevron-right"
         />
         <!-- <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i> -->
       </span>
@@ -53,11 +51,15 @@ export default class FunctionalSectionHeaderRowRenderer extends Vue {
 }
 </script>
 <style scoped>
+.section-header-row-renderer__icon.fa-chevron-down {
+  margin-top: 6px;
+}
 .section-header-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
   /* margin-left: -2px; */
-  font-size:     9px;
-  margin-bottom: 1px;
+  font-size:     10px;
+  margin-top: 6px;
+  vertical-align: top;
   width:         0.875em !important;
 }
 </style>

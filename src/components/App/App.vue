@@ -254,6 +254,9 @@ div.theme--light.application {
 div.application {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+.app__v-alert--margin i.v-icon {
+  font-weight: 600;
+}
 .app__v-alert--margin {
   margin-top:   1em;
   margin-right: 10px;

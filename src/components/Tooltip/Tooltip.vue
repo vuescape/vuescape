@@ -14,9 +14,9 @@
         origin="bottom left"
       >
         <template v-slot:activator="{ on }">
-          <font-awesome-icon
+          <i
             :class="{ 'tooltip__icon--hover': isHoveringImpl }"
-            :icon="['far', 'square-info']"
+            class="fa-regular fa-square-info"
             style="
               margin-left: -18px;
               font-size: 18px;
@@ -36,8 +36,8 @@
             <span class="tooltop__title--font">{{ title }}</span>
             <v-spacer></v-spacer>
             <span class="tooltip__title--close">
-              <font-awesome-icon
-                :icon="['fal', 'times']"
+              <i
+                class="fa-light fa-times"
                 style="cursor: pointer; font-size: 18px"
                 @click="
                   stopVideo()

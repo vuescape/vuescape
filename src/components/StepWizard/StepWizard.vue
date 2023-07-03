@@ -11,7 +11,7 @@
             class="stepper-button-top previous"
             @click="backStep()"
           >
-            <font-awesome-icon :icon="['fad', 'arrow-alt-circle-left']" />
+            <i class="fa-duotone fa-arrow-alt-circle-left" />
           </div>
         </template>
         <template v-for="(step, index) in steps">
@@ -26,7 +26,7 @@
             >
               <!-- <div class="divider-line" :style="{ width: `${(100 / steps.length) * (steps.length - 1) - 10}%` }"></div> -->
               <!-- TODO: -->
-              <!-- <font-awesome-icon :icon="['fal', 'chevron-down']" /> -->
+              <!-- <font-awesome-icon :icon="['fa-light', 'chevron-down']" /> -->
               <!-- <i class="material-icons md-18">
                 {{ step.completed ? 'done' : step.icon }}
               </i> -->
@@ -42,7 +42,7 @@
           :class="['stepper-button-top next', !canContinue ? 'deactivated' : '']"
           @click="nextStep()"
         >
-          <font-awesome-icon :icon="['fad', 'arrow-alt-circle-right']" />
+          <i class="fa-duotone fa-arrow-alt-circle-right" />
         </div>
       </div>
     </div>
@@ -91,7 +91,7 @@
           <vuescape-button
             v-if="currentStepIndex !== 0"
             :disabled="false"
-            :icons="['fad', 'arrow-alt-circle-left']"
+            :icons="['fa-duotone', 'arrow-alt-circle-left']"
             Depressed
             @click="backStep()"
           >
@@ -115,7 +115,7 @@
         >
           <vuescape-button
             :class="{ finalStep: isFinalStep }"
-            :icons="isFinalStep ? ['fad', 'arrow-alt-circle-right'] : ['fad', 'arrow-alt-circle-right']"
+            :icons="isFinalStep ? ['fa-duotone', 'arrow-alt-circle-right'] : ['fa-duotone', 'arrow-alt-circle-right']"
             :isDisabled="!canContinue"
             Depressed
             iconPosition="after"

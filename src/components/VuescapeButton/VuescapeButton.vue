@@ -9,16 +9,16 @@
     :disabled="isButtonDisabled"
     :value="value"
   >
-    <font-awesome-icon
+    <i
       v-if="icons.length && iconPosition === 'before'"
-      :icon="icons"
+      :class="icons.join(' ')"
       class="vuescape-button__v-icon--font"
       :style="isButtonDisabled ? { color: 'rgb(85, 85, 85, 0.26)' } : { color: 'rgb(85, 85, 85)' }"
     />
     <slot></slot>
-    <font-awesome-icon
+    <i
       v-if="icons.length && iconPosition === 'after'"
-      :icon="icons"
+      :class="icons.join(' ')"
       class="vuescape-button__v-icon--font"
       :style="isButtonDisabled ? { color: 'rgb(85, 85, 85, 0.26)' } : { color: 'rgb(85, 85, 85)' }"
     />

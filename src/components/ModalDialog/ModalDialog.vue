@@ -22,15 +22,15 @@
             wrap
           >
             <v-flex xs2>
-              <font-awesome-icon
-                :icon="iconsValue"
+              <i
+                :class="iconsValue.join(' ')"
                 :style="{
                       '--fa-secondary-color': '#FDB833',
                       '--fa-secondary-opacity': '1',
                       '--fa-primary-opacity': '0',
                       'font-size': '46px',
                     }"
-              />
+              ></i>
             </v-flex>
             <v-flex xs10>
               <div>
@@ -103,7 +103,7 @@ export default class ModalDialog extends Vue {
   @Prop({ type: Boolean, default: true })
   private shouldShowCancelButton: boolean
 
-  @Prop({ type: Array, default: () => ['fad', 'exclamation-circle'] })
+  @Prop({ type: Array, default: () => ['fa-duotone', 'exclamation-circle'] })
   private icons: Array<string>
 
   @Prop({ type: String, required: false })

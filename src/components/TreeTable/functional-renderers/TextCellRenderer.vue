@@ -1,5 +1,8 @@
 <template functional>
-  <span :class="props.cell.cssClasses">
+  <span
+    :class="props.cell.cssClasses"
+    :title="props.cell.displayValue != null ? props.cell.displayValue : props.cell.value"
+  >
     {{ props.cell.displayValue != null ? props.cell.displayValue : props.cell.value }}
   </span>
 </template>

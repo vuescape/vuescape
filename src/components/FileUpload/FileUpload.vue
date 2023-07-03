@@ -23,9 +23,8 @@
         <span class="file-upload__span--title">Drag and drop or click to choose your Excel survey file.</span>
       </v-card-title>
       <v-card-text>
-        <font-awesome-icon
-          :icon="['fad', 'cloud-upload-alt']"
-          class="vuescape-button__v-icon--font"
+        <i
+          class="vuescape-button__v-icon--font fa-duotone fa-cloud-upload-alt"
           style="color: #555; font-size: 120px;"
         />
       </v-card-text>
@@ -44,9 +43,8 @@
           :key="file.name"
         >
           <v-list-tile-action>
-            <font-awesome-icon
-              :icon="['fad', 'file-excel']"
-              class="vuescape-button__v-icon--font"
+            <i
+              class="vuescape-button__v-icon--font fa-duotone file-excel"
               style="color: #555; font-size: 40px;"
             />
           </v-list-tile-action>
@@ -58,9 +56,8 @@
               style="cursor: pointer;"
               @click.stop="remove(file.name)"
             >
-              <font-awesome-icon
-                :icon="['fal', 'times-square']"
-                class="vuescape-button__v-icon--font file-upload__close"
+              <i
+                class="vuescape-button__v-icon--font file-upload__close fa-light fa-times-square"
                 style="color: #555; font-size: 25px;"
               />
             </span>

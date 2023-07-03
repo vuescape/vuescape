@@ -1,16 +1,12 @@
 <template functional>
   <span> {{ $options.methods.valueToDisplay(props.header) }}
-    <span
-      v-if="props.header.columnSorter"
-      @click="listeners['toggle-sort'](props.header)"
-    >&nbsp;
-      <font-awesome-icon
-        :icon="$options.methods.getIconArray(props.header.columnSorter.sortDirection)"
-        class=""
+      <i
+        v-if="props.header.columnSorter"
+        :class="$options.methods.getIconArray(props.header.columnSorter.sortDirection).join(' ')"
         :style="$options.methods.iconStyle(props.header)"
         style="color: #fff; font-size: 16px; vertical-align: middle; cursor: hand"
+        @click="listeners['toggle-sort'](props.header)"
       />
-    </span>
   </span>
 </template>
 
@@ -24,18 +20,20 @@ import { SortDirection, TreeTableHeaderCell } from '@vuescape/index'
 
 @Component({})
 export default class FunctionalHeaderCellRenderer extends ComponentBase {
-  @Prop({ type: Object, required: true })
-  private header: TreeTableHeaderCell
+  @Prop({
+    type    : Object,
+    required: true,
+  }) private header: TreeTableHeaderCell
 
   private getIconArray(sortDirection: SortDirection = SortDirection.None) {
     if (sortDirection === SortDirection.None) {
-      return ['fad', 'sort']
+      return ['fa-duotone', 'fa-sort']
     }
     if (sortDirection === SortDirection.Ascending) {
-      return ['fad', 'sort-up']
+      return ['fa-duotone', 'fa-sort-up']
     }
     if (sortDirection === SortDirection.Descending) {
-      return ['fad', 'sort-down']
+      return ['fa-duotone', 'fa-sort-down']
     }
   }
 

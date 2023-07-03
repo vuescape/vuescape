@@ -14,6 +14,7 @@
       <component
         :is="header.renderer || 'HeaderCellRenderer'"
         :header="header"
+        :key="header.columnSorter ? header.columnSorter.sortDirection : '0'"
         @toggle-sort="toggleSort($event)"
       ></component>
     </th>

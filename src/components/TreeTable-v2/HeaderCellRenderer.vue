@@ -1,21 +1,17 @@
 <template>
   <span
-    class="tree-table__rendered-cell"
-    :style="cssStyle"
     :class="header.cssClasses"
+    :style="cssStyle"
+    class="tree-table__rendered-cell"
   >
     {{ valueToDisplay }}
-    <span
-      v-if="header.columnSorter"
-      @click="$emit('toggle-sort', header)"
-    >&nbsp;
-      <font-awesome-icon
-        :icon="getIconArray(header.columnSorter.sortDirection)"
-        class=""
+      <i
+        v-if="header.columnSorter"
+        :class="getIconArray(header.columnSorter.sortDirection).join(' ')"
         :style="iconStyle"
         style="color: #fff; font-size: 16px; vertical-align: middle; cursor: hand"
+        @click="$emit('toggle-sort', header)"
       />
-    </span>
   </span>
 </template>
 
@@ -29,20 +25,10 @@ import { SortDirection, TreeTableHeaderCell } from '@vuescape/index'
 
 @Component({})
 export default class HeaderCellRenderer extends ComponentBase {
-  @Prop({ type: Object, required: true })
-  private header: TreeTableHeaderCell
-
-  private getIconArray(sortDirection: SortDirection = SortDirection.None) {
-    if (sortDirection === SortDirection.None) {
-      return ['fad', 'sort']
-    }
-    if (sortDirection === SortDirection.Ascending) {
-      return ['fad', 'sort-up']
-    }
-    if (sortDirection === SortDirection.Descending) {
-      return ['fad', 'sort-down']
-    }
-  }
+  @Prop({
+    type    : Object,
+    required: true,
+  }) private header: TreeTableHeaderCell
 
   private get iconStyle() {
     if (this.header?.columnSorter?.sortDirection === SortDirection.None) {
@@ -75,6 +61,18 @@ export default class HeaderCellRenderer extends ComponentBase {
     }
 
     return this.header.value
+  }
+
+  private getIconArray(sortDirection: SortDirection = SortDirection.None) {
+    if (sortDirection === SortDirection.None) {
+      return ['fa-duotone', 'fa-sort']
+    }
+    if (sortDirection === SortDirection.Ascending) {
+      return ['fa-duotone', 'fa-sort-up']
+    }
+    if (sortDirection === SortDirection.Descending) {
+      return ['fa-duotone', 'fa-sort-down']
+    }
   }
 }
 </script>

@@ -9,15 +9,15 @@
         color="primary"
         class="download-button__v-btn--style"
       >
-        <font-awesome-icon
-          :icon="['fad', 'cloud-download-alt']"
-          class="download-button__v-icon--font"
-          :style="{ color: '#555', marginRight: '7px;' }"
-        />&nbsp; download &nbsp;
+        <i
+          class="download-button__v-icon--font download-menu__v-icon--dropdown fa-duotone fa-cloud-download-alt"
+          style="color: #555; margin-right: 7px;"
+        />download &nbsp;
         <v-icon
           small
           class="download-menu__v-icon--dropdown"
-        >fas fa-caret-down
+          style="font-size: 10px; font-weight: bolder;"
+        >fa-solid fa-caret-down
         </v-icon>
       </v-btn>
     </template>
@@ -27,10 +27,9 @@
         @click="clickHandlers.clickChart"
       >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <font-awesome-icon
-            :icon="['fad', 'file-image']"
-            class="download-button__v-icon--font"
-            :style="{ color: '#555' }"
+          <i
+            class="download-button__v-icon--font fa-duotone fa-file-image"
+            style="color: #555;"
           />
         </v-list-tile-action>
         <v-list-tile-content class="download-menu__v-list-tile-content--layout">
@@ -42,10 +41,9 @@
         @click="clickHandlers.clickExcel"
       >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <font-awesome-icon
-            :icon="['fad', 'file-excel']"
-            class="download-button__v-icon--font"
-            :style="{ color: '#555' }"
+          <i
+            class="download-button__v-icon--font fa-duotone fa-file-excel"
+            style="color: #555;"
           />
         </v-list-tile-action>
 
@@ -58,10 +56,9 @@
         @click="clickHandlers.clickCsv"
       >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <font-awesome-icon
-            :icon="['fad', 'file-download']"
-            class="download-button__v-icon--font"
-            :style="{ color: '#555' }"
+          <i
+            class="download-button__v-icon--font fa-duotone fa-file-download"
+            style="color: #555;"
           />
         </v-list-tile-action>
 
@@ -74,10 +71,9 @@
         @click="clickHandlers.clickPdf"
       >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <font-awesome-icon
-            :icon="['fad', 'file-pdf']"
-            class="download-button__v-icon--font"
-            :style="{ color: '#555' }"
+          <i
+            class="download-button__v-icon--font fa-duotone fa-file-pdf"
+            style="color: #555;"
           />
         </v-list-tile-action>
         <v-list-tile-content class="download-menu__v-list-tile-content--layout">
@@ -89,10 +85,9 @@
         @click="clickHandlers.clickZip"
       >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <font-awesome-icon
-            :icon="['fad', 'file-archive']"
-            class="download-button__v-icon--font"
-            :style="{ color: '#555' }"
+          <i
+            class="download-button__v-icon--font fa-duotone fa-file-archive"
+            style="color: #555;"
           />
         </v-list-tile-action>
         <v-list-tile-content class="download-menu__v-list-tile-content--layout">
@@ -104,10 +99,9 @@
         @click="clickHandlers.clickRaw"
       >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <font-awesome-icon
-            :icon="['fad', 'file-code']"
-            class="download-button__v-icon--font"
-            :style="{ color: '#555' }"
+          <i
+            class="download-button__v-icon--font fa-duotone fa-file-code"
+            style="color: #555;"
           />
         </v-list-tile-action>
         <v-list-tile-content class="download-menu__v-list-tile-content--layout">
@@ -158,10 +152,9 @@ export default class DownloadMenu extends Vue {
 }
 .download-button__v-icon--font {
   font-size: 15px;
-  /* margin-top: -1px; */
+  vertical-align: text-bottom;
 }
 .download-menu__v-icon--dropdown {
-  font-size:  10px !important;
   margin-top: 2px !important;
 }
 .download-menu__v-list--layout {

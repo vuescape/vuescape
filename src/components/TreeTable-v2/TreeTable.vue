@@ -235,7 +235,6 @@ export default class TreeTable extends ComponentBase {
   }
 
   private defaultTreeTableSorter(rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) {
-    debugger
     const sortHeader = getSortedHeaderCellWithIndex(headers)
     if (this.sortLevel === SortLevel.None || !sortHeader) {
       return rows

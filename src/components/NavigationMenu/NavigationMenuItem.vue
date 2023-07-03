@@ -26,10 +26,9 @@
           v-if="menu.prefixHtml"
           v-html="menu.prefixHtml"
         ></span>
-        <!-- <font-awesome-icon v-if="menu.icon" :icon="getIconArray(menu.icon)" class="navigation-menu__v-icon--layout" :style="{ color: '#555' }" /> -->
-        <font-awesome-icon
+        <i
           v-if="menu.icon"
-          :icon="getIconArray(menu.icon)"
+          :class="getIconArray(menu.icon).join(' ')"
           class="navigation-menu__v-icon--layout"
           :style="{ color: '#555' }"
         />&nbsp;{{ menu.title }} &nbsp;
@@ -38,7 +37,7 @@
           small
           color="#555"
           class="navigation-menu__v-icon--dropdown"
-        >fas fa-caret-down</v-icon
+        >fa-solid fa-caret-down</v-icon
         >
       </v-btn>
       <v-list
@@ -83,11 +82,11 @@
         :disabled="isSiteInMaintenanceMode"
         @click="handleNavigation($event, menu)"
       >
-        <font-awesome-icon
+        <i
           class="navigation-menu__v-icon--layout"
           v-if="menu.icon"
           :style="{ color: '#555' }"
-          :icon="getIconArray(menu.icon)"
+          :class="getIconArray(menu.icon).join(' ')"
         />
         &nbsp;{{ menu.title }}
       </v-btn>

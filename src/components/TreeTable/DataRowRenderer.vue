@@ -30,15 +30,13 @@
         </span>
 
         <span v-if="rowToDisplay.isExpandable">
-          <font-awesome-icon
+          <i
             v-if="rowToDisplay.isExpanded"
-            :icon="['fal', 'chevron-down']"
-            class="data-row-renderer__icon"
+            class="data-row-renderer__icon fa-light fa-chevron-down"
           />
-          <font-awesome-icon
+          <i
             v-else
-            :icon="['fal', 'chevron-right']"
-            class="data-row-renderer__icon"
+            class="data-row-renderer__icon fa-light fa-chevron-right"
           />
         </span>
         <!--        <span v-if="!cell.hover || !cell.hover.component">&nbsp;</span>-->
@@ -150,10 +148,11 @@ export default class DataRowRenderer extends ComponentBase {
 <style>
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
-  margin-right:  4px;
+  margin-right:  3px;
   margin-bottom: 2px;
-  font-size:     9px;
+  font-size:     10px;
   width:         0.875em !important;
+  vertical-align: text-bottom;
 }
 .data-row-renderer__animation-enter-active,
 .data-row-renderer__animation-leave-active {

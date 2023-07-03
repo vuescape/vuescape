@@ -87,7 +87,7 @@ export default class TheHeader extends ComponentBase {
       isDivider          : false,
       ariaLabel          : 'Sign Out',
       path               : '/sign-out',
-      icon               : 'fa sign-out-alt',
+      icon               : 'fa-solid fa-sign-out-alt',
       horizontalAlignment: HorizontalAlignment.Right,
     }
     this.consolidatedMenus.push(...[signOutDivider, signOutMenuItem])

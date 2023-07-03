@@ -16,11 +16,12 @@
           class="legend-table__v-btn--style"
           title="Click for more information"
         >
-          <font-awesome-icon
-            :icon="['fas', 'info']"
-            class="legend-table__font-awesome-icon--style"
-          />
-          <!-- <v-icon>fas fa-info</v-icon> -->
+          <span class="legend-table__font-awesome-icon--style">
+            <i
+              class="fa-solid fa-info"
+            />
+          </span>
+          <!-- <v-icon>fa-solid fa-info</v-icon> -->
         </v-btn>
       </template>
 

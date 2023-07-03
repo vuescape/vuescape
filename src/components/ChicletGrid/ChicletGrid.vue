@@ -33,14 +33,12 @@
               :height="chicletHeight"
               style="margin-top: -10px; border-radius: 20px; background-color: #eeeeee"
             >
-              <font-awesome-icon
-                :title="chiclet.title"
-                :icon="chiclet.icons"
-                :style="{
+              <i
+                :title="chiclet.title"                 :style="{
                     'font-size': '8em',
                     'margin-top': '.22em',
                     color: '#555555',
-                  }"
+                  }"                :class="chiclet.icons.join(' ')"
               />
             </v-card>
           </a>
@@ -56,10 +54,10 @@
             :height="chicletHeight"
             :style="chiclet.isVisible ? 'visibility: visible;' : 'visibility: hidden;'"
           >
-            <font-awesome-icon
+            <i
               v-if="chiclet.icons && chiclet.icons.length"
               :title="chiclet.title"
-              :icon="chiclet.icons"
+              :class="chiclet.icons.join(' ')"
               :style="{
                   'font-size': '8em',
                   'margin-top': '.22em',

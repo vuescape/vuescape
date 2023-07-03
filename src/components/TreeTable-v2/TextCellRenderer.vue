@@ -1,5 +1,5 @@
 <template>
-  <span :class="cell.cssClasses">{{ cellValue }}</span>
+  <span :class="cell.cssClasses" :title="cellValue">{{ cellValue }}</span>
 </template>
 
 <script lang="ts">

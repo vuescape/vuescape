@@ -1,13 +1,14 @@
 <template>
   <span class="modal-tooltip__container">
-    <span style="display: inline-block">
-      <font-awesome-icon
-        :class="{ 'modal-tooltip__icon--hover': isHoveringImpl }"
-        :icon="icons"
+    <span
+      :title="hintText"
+      style="display: inline-block"
+      @click.stop="enableTooltip"
+    >
+      <i
+        :class="[{ 'modal-tooltip__icon--hover': isHoveringImpl }, icons.join(' ')]"
         :style="iconStyleObject"
-        :title="hintText"
-        @click.stop="enableTooltip"
-      />
+      ></i>
       <v-dialog
         v-model="shouldShowDialog"
         :content-class="`modal-tooltip__dialog--${cell.id}`"
@@ -21,15 +22,17 @@
           <v-card-title class="modal-tooltip__v-card--title">
             <span class="modal-tooltop__title--font">{{ title }}</span>
             <v-spacer></v-spacer>
-            <span class="modal-tooltip__title--close">
-              <font-awesome-icon
-                :icon="['fal', 'times']"
-                style="cursor: pointer; font-size: 18px"
-                @click="
+            <span
+              class="modal-tooltip__title--close"
+              style="cursor: pointer; font-size: 18px"
+              @click="
                   stopVideo()
                   shouldShowDialog = false
                 "
-              />
+            >
+              <i
+                class="fa-light fa-times"
+              ></i>
             </span>
           </v-card-title>
           <v-card-text>
@@ -56,40 +59,33 @@ import { ModuleState, StoreOperation } from '@vuescape/store/modules'
 export default class Tooltip extends ComponentBase {
   private shouldShowDialog = false
 
-  @State('tooltipSingleton')
-  private tooltipSingleton: ModuleState<Array<boolean>>
+  @State('tooltipSingleton') private tooltipSingleton: ModuleState<Array<boolean>>
 
   @namespace('tooltipSingleton')
-    .State((state: ModuleState<Array<boolean>>) => state.value)
-  private tooltipSingletonValue: Array<boolean>
+    .State((state: ModuleState<Array<boolean>>) => state.value) private tooltipSingletonValue: Array<boolean>
 
   @namespace('tooltipSingleton')
-    .Mutation(StoreOperation.Mutation.SET_VALUE)
-  private setTooltipSingleton: (val: Array<boolean>) => void
+    .Mutation(StoreOperation.Mutation.SET_VALUE) private setTooltipSingleton: (val: Array<boolean>) => void
 
   @Prop({
     type    : Object,
     required: true,
-  })
-  private cell: TreeTableCell
+  }) private cell: TreeTableCell
 
   @Prop({
     type   : Boolean,
     default: false,
-  })
-  private isHovering: boolean
+  }) private isHovering: boolean
 
   @Prop({
     type   : String,
     default: 'Click for Details about this Metric',
-  })
-  private hintText: boolean
+  }) private hintText: boolean
 
   @Prop({
     type   : Array,
-    default: () => ['far', 'square-info'],
-  })
-  private icons: boolean
+    default: () => ['fa-regular', 'fa-square-info'],
+  }) private icons: Array<string>
 
   @Prop({
     type   : Object,

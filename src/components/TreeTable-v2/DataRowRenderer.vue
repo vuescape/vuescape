@@ -27,15 +27,13 @@
           <!-- style="vertical-align: text-top;margin-right: 4px;position: absolute; right: 0;" -->
         </span>
         <span v-if="rowToDisplay.isExpandable">
-          <font-awesome-icon
+          <i
             v-if="rowToDisplay.isExpanded"
-            class="data-row-renderer__icon"
-            :icon="['fal', 'chevron-down']"
+            class="data-row-renderer__icon fa-light chevron-down"
           />
-          <font-awesome-icon
+          <i
             v-else
-            class="data-row-renderer__icon"
-            :icon="['fal', 'chevron-right']"
+            class="data-row-renderer__icon fa-light chevron-right"
           />
         </span>
       </span>
@@ -132,7 +130,7 @@ export default class DataRowRenderer extends ComponentBase {
   /* color: rgba(0, 0, 0, 0.87); */
   margin-right:  4px;
   margin-bottom: 1px;
-  font-size:     9px;
+  font-size:     10px;
   width:         0.875em !important;
 }
 .data-row-renderer__animation-enter-active,

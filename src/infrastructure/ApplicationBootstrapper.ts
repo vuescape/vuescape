@@ -166,7 +166,7 @@ export class ApplicationBootstrapper {
       vuetifyOptions.iconfont = this.iconfont
     }
     else {
-      vuetifyOptions.iconfont = 'faSvg'
+      vuetifyOptions.iconfont = 'fa'
     }
     Vue.use(Vuetify, vuetifyOptions)
 

@@ -9,10 +9,8 @@
       style="height: 100%"
       @click="isSiteInMaintenanceMode ? () => {} : (hamburgerMenu = !hamburgerMenu)"
     >
-      <font-awesome-icon
-        :icon="['fas', 'bars']"
-        class="hamburger-menu__hamburger-icon--layout"
-        size="sm"
+      <i
+        class="hamburger-menu__hamburger-icon--layout fa-solid fa-bars fa-sm"
       />
       <v-menu
         ref="hamburgerMenu"
@@ -54,14 +52,14 @@
                 </div>
               </template>
               <template v-slot:actions>
-                <font-awesome-icon
+                <i
                   v-if="menu.items && menu.items.length"
-                  :icon="expansionPanelIndex === index + 1 ? ['fal', 'chevron-down'] : ['fal', 'chevron-right']"
+                  :class="expansionPanelIndex === index + 1 ? ['fa-light', 'fa-chevron-down'] : ['fa-light', 'fa-chevron-right']"
                   class="hamburger-menu__hamburger-menu__icon"
                 />
-                <font-awesome-icon
+                <i
                   v-if="!(menu.items && menu.items.length) && menu.icon"
-                  :icon="getIconArray(menu.icon)"
+                  :class="getIconArray(menu.icon).join(' ')"
                   @click="() => navigateFromHamburgerMenu(menu.path)"
                 />
               </template>
