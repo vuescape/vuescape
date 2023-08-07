@@ -57,7 +57,7 @@
       >
         <v-list-tile-action class="download-menu__v-list-tile-action--layout">
           <i
-            class="download-button__v-icon--font fa-duotone fa-file-download"
+            class="download-button__v-icon--font fa-duotone fa-file-csv"
             style="color: #555;"
           />
         </v-list-tile-action>
