@@ -6,6 +6,7 @@
       <span class="the-footer__overflow"> All rights reserved.</span>
     </div>
     <div class="the-footer__links">
+      <a v-if="isAuthenticated" href="/legal-agreement">Privacy</a>
       <a href="/privacy-policy">Privacy</a>
       <a>Help Center</a>
       <span class="the-footer__overflow"><a href="/">Home</a></span>
@@ -24,7 +25,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { namespace, State } from 'vuex-class'
 
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 
@@ -37,6 +38,9 @@ export default class TheFooter extends Vue {
   private currentYear                         = new Date().getFullYear()
 
   private formattedVersion = ''
+
+  @State
+  private isAuthenticated: boolean
 
   @(namespace(AppInfoModuleName).State(state => {
     return state && state.asyncResult && state.asyncResult.status === 200 && state.value

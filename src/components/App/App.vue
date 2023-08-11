@@ -1,9 +1,23 @@
 <template>
-  <div v-on="globalClickHandler ? { click: globalClickHandler } : {}">
+  <div
+    v-on="globalClickHandler ? { click: globalClickHandler } : {}"
+  >
     <resize-observer @notify="handleResize"></resize-observer>
     <v-app>
       <component :is="navigationComponentValue"></component>
       <transition
+        v-if="shouldDisplayHeader && hasCustomHeader"
+        mode="out-in"
+        name="app__component--transition"
+      >
+        <component
+          :is="headerComponent"
+          v-if="shouldDisplayHeader && hasCustomHeader"
+          ref="theHeader"
+        ></component>
+      </transition>
+      <transition
+        v-else
         mode="out-in"
         name="app__component--transition"
       >
@@ -45,6 +59,13 @@
               >
               </router-view>
             </transition>
+            <div
+              v-if="isHandling"
+              v-loading="true"
+              :style="`height:${windowHeight}px`"
+              class="app__container--scroll"
+            >
+            </div>
           </v-container>
         </div>
       </v-content>
@@ -63,13 +84,19 @@
       :is="appConfig.value.initializationComponent"
       v-if="appConfig && appConfig.value && appConfig.value.initializationComponent"
     />
-    <app-info-poller></app-info-poller>
+    <component
+      :key="additionalAppComponent.name"
+      v-for="additionalAppComponent in additionalAppComponents"
+      :is="additionalAppComponent"
+      v-if="additionalAppComponents && additionalAppComponents.length"
+    />
+<!--    <app-info-poller></app-info-poller>-->
     <app-info-handler :siteMaintenanceRoutePath="siteMaintenanceRoutePath"></app-info-handler>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { VueConstructor } from 'vue'
 import { Component, Inject, Prop, Watch } from 'vue-property-decorator'
 import { Route } from 'vue-router'
 import { Action, namespace, State } from 'vuex-class'
@@ -104,12 +131,16 @@ export default class App extends ComponentBase {
 
   @Inject('navigationComponent') private navigationComponent: Vue
 
+  @Inject('additionalAppComponents')   private additionalAppComponents?: Array<VueConstructor<Vue>>
+
   @Inject('globalClickHandler') private globalClickHandler: (e: MouseEvent) => void
 
-  @Prop({ type: String, default: '/site-maintenance' }) private siteMaintenanceRoutePath: string
+  @Prop({
+    type   : String,
+    default: '/site-maintenance',
+  }) private siteMaintenanceRoutePath: string
 
   @State private isAuthenticated: boolean
-  @State private hasExternalSessionsInitialized: boolean
   @State private notifications: Array<NotificationMessage>
   @Action(RootOperation.Action.NotificationActions.REMOVE) private removeNotification: any
 
@@ -117,8 +148,10 @@ export default class App extends ComponentBase {
     .Mutation(StoreOperation.Mutation.SET_VALUE) private setAvailableHeight: (availableHeight: Array<number>) => void
 
   @State('appConfig/configuration') private appConfig: ModuleState<any>
+  @State('authentication/configuration') private authConfig: ModuleState<any>
 
   @State('theFooter/configuration') private footerConfiguration: ModuleState<any>
+  @State('theHeader/configuration') private headerConfiguration: ModuleState<any>
 
   @State((state: ModuleState<any>) => {
     return state && state.value ? state.value : undefined
@@ -129,12 +162,32 @@ export default class App extends ComponentBase {
     }
   }) private theHeaderProps: any
 
+  private get isHandling() {
+    const handlerRoutes = this.authConfig.value.handlerRoutes
+    if (handlerRoutes) {
+      const result = handlerRoutes.some((_ : string) => this.$route.path?.startsWith(_))
+      return result
+    }
+
+    return false
+  }
+
   private get navigationComponentValue() {
     return this.navigationComponent
   }
 
+  private get headerComponent() {
+    const result = this.headerConfiguration?.value?.headerComponentName
+    return result
+  }
+
+  private get hasCustomHeader() {
+    const result = !!this.headerConfiguration?.value?.headerComponentName
+    return result
+  }
+
   private get shouldDisplayHeader() {
-    return ((this.isAuthenticated && this.hasExternalSessionsInitialized) || this.theHeaderProps?.shouldShowHeader === true)
+    return (this.isAuthenticated  || this.theHeaderProps?.shouldShowHeader === true)
   }
 
   private get footerComponent() {
@@ -142,6 +195,11 @@ export default class App extends ComponentBase {
       return this.footerConfiguration.value.footerComponentOverride
     }
     return 'the-footer'
+  }
+
+  private get windowHeight() {
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+    return windowHeight
   }
 
   @Watch('$route')
@@ -188,11 +246,11 @@ export default class App extends ComponentBase {
   }
 
   private async getAvailableHeight() {
+    const windowHeight = this.windowHeight
     await this.$nextTick()
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-    const theHeader    = this.$refs.theHeader as any
-    const theFooter    = this.$refs.theFooter as any
-    if (!theHeader?.$el?.getBoundingClientRect && !theFooter.$el.getBoundingClientRect) {
+    const theHeader = this.$refs.theHeader as any
+    const theFooter = this.$refs.theFooter as any
+    if (!theHeader?.$el?.getBoundingClientRect && !theFooter?.$el?.getBoundingClientRect) {
       return windowHeight
     }
     // A bit of hack here to default these values if no height found.
@@ -420,6 +478,6 @@ i.material-icons {
 }
 /* Force dialog on top -- of pinned navigator */
 .v-dialog__content.v-dialog__content--active {
-  z-index: 4000!important;
+  z-index: 4000 !important;
 }
 </style>

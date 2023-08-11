@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Inject } from 'vue-property-decorator'
+import { Component, Inject, Watch } from 'vue-property-decorator'
 import { Getter, namespace } from 'vuex-class'
 
 import { ns } from '@vuescape/store/modules/types'
@@ -51,6 +51,19 @@ export default class TheHeader extends ComponentBase {
 
   @Inject('featureService')
   private featureService: FeatureService
+
+  @namespace('userProfile').State(state => {
+    if (state && state.value) {
+      return state.value.authorizationToken
+    }
+    return undefined
+  })
+  private authToken: string
+
+  @Watch('authToken')
+  private async onAuthTokenChanged(newVal: string, oldVal: string) {
+    await this.populateConsolidatedMenus()
+  }
 
   private async populateConsolidatedMenus() {
     const menuSources                    = this.theHeaderProps.menuSources as MenuSources
