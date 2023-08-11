@@ -9,7 +9,7 @@ import { Axios, CacheOptions } from '@vuescape/http'
 import { setStore } from '@vuescape/store'
 import { ModuleState, StoreModule } from '@vuescape/store/modules/types'
 import { RootState } from '@vuescape/store/RootState'
-import { Dictionary, FeatureService, NullFeatureService } from '@vuescape/types'
+import { Dictionary, FeatureService, InitFunctionResult, NullFeatureService } from '@vuescape/types'
 
 import 'vue-resize/dist/vue-resize.css'
 
@@ -31,10 +31,12 @@ export class ApplicationBootstrapper {
   private globalClickHandler: (e: MouseEvent) => void
 
   private navigationComponent?: VueConstructor<Vue>
+  private additionalAppComponents?: Array<VueConstructor<Vue>>
 
-  private initFunction = async () => {
-    return
+  private initFunction : () => Promise<InitFunctionResult> = async () => {
+    return { redirectUrl: '' }
   }
+
   private cacheOptions: CacheOptions
 
   private validate() {
@@ -80,7 +82,7 @@ export class ApplicationBootstrapper {
     return this
   }
 
-  public withInit(initFunction: () => Promise<void>) {
+  public withInit(initFunction: () => Promise<InitFunctionResult>) {
     this.initFunction = initFunction
     return this
   }
@@ -136,6 +138,14 @@ export class ApplicationBootstrapper {
     return this
   }
 
+  public withAdditionalComponents(additionalAppComponents: Array<VueConstructor<Vue>>) {
+    this.additionalAppComponents = additionalAppComponents
+    for(const additionalAppComponent of additionalAppComponents) {
+      Vue.component(additionalAppComponent.name, additionalAppComponent)
+    }
+    return this
+  }
+
   public withRootComponent(el: string, componentName: string, rootComponent: VueConstructor<Vue>, props?: any) {
     this.rootComponentOptions = {
       el,
@@ -184,14 +194,20 @@ export class ApplicationBootstrapper {
       const { sync } = await import('vuex-router-sync')
       sync(this.vuexStore, this.router)
 
-      await this.initFunction()
-      // tslint:disable-next-line:no-unused-expression
+      const result = await this.initFunction()
+      if (result?.redirectUrl) {
+        window.location.href = result.redirectUrl
+        return
+      }
+
+       // tslint:disable-next-line:no-unused-expression
       new Vue({
         provide   : () => ({
           trackingService    : this.trackingService,
           featureService     : this.featureService,
           navigationComponent: this.navigationComponent,
           globalClickHandler : this.globalClickHandler,
+          additionalAppComponents: this.additionalAppComponents,
         }),
         el        : this.rootComponentOptions.el,
         store     : this.vuexStore,
