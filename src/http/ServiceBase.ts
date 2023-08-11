@@ -24,13 +24,14 @@ export class ServiceBase<T> {
     this.restPayloadStrategy = restPayloadStrategy || RestPayloadStrategy.None
   }
 
-  protected createAction(httpMethod: HttpMethod) {
+  protected createAction(httpMethod: HttpMethod, shouldDisableApiUseTracking = false) {
     const action = usingRetryFor(makeHttpAsyncAction<T>(
       httpMethod,
       this.endpoint,
       this.baseUrl,
       this.shouldUseCache,
       this.restPayloadStrategy,
+      shouldDisableApiUseTracking,
     ))
     return action as AsyncAction<T> | HttpAsyncAction<T>
   }

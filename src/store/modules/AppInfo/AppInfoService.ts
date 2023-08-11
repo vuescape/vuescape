@@ -10,7 +10,7 @@ export class AppInfoService extends ServiceBase<AppInfo> {
   }
 
   public get() {
-    const action = this.createAction(HttpMethod.Get)
+    const action = this.createAction(HttpMethod.Get, true)
     return action as AsyncAction<AppInfo> | HttpAsyncAction<AppInfo>
   }
 }

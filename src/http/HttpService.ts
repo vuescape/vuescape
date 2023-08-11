@@ -4,29 +4,52 @@ import { Axios } from '.'
 
 import qs from 'qs'
 
+import { ApiServiceCallInfo } from './ApiServiceCallInfo'
 import { HttpMethod } from './HttpMethod'
 import { RestPayloadStrategy } from './RestPayloadStrategy'
 
+// We will use local storage instead of vuex because of the difficulty in
+// trying to untangle circular references that occur by including storeHelpers.ts and store/index.ts
+import ls from 'localstorage-slim'
+
 export class HttpService {
+  public static ApiServiceCallNamespace = 'CoMetrics.ApiServiceCall'
   private readonly baseUrl: string | undefined = ''
   private readonly shouldUseCache: boolean
   private readonly restPayloadStrategy: RestPayloadStrategy
+private readonly shouldDisableApiUseTracking: boolean
 
-  public constructor(baseUrl?: string, shouldUseCache = false, restPayloadStrategy = RestPayloadStrategy.None) {
+  public constructor(
+    baseUrl?: string,
+    shouldUseCache = false,
+    restPayloadStrategy = RestPayloadStrategy.None,
+    shouldDisableApiUseTracking = false) {
     this.baseUrl             = baseUrl || ''
     this.shouldUseCache      = shouldUseCache
     this.restPayloadStrategy = restPayloadStrategy
+    this.shouldDisableApiUseTracking = shouldDisableApiUseTracking
+
+    if (!this.shouldDisableApiUseTracking) {
+      ls.set<ApiServiceCallInfo>(HttpService.ApiServiceCallNamespace,{ lastCallTime: new Date().getTime() })
+    }
   }
 
   public invoke<T>(httpMethod: HttpMethod, endpoint: string, args?: {}, abortController?: AbortController) {
+    let result
     if (httpMethod === HttpMethod.Get) {
-      return this.get<T>(endpoint, args, abortController)
+      result = this.get<T>(endpoint, args, abortController)
     }
     else if (httpMethod === HttpMethod.Post) {
-      return this.post<T>(endpoint, args, abortController)
+      result = this.post<T>(endpoint, args, abortController)
+    }
+    else {
+      throw new Error(`Unsupported HttpMethod: ${httpMethod}`)
     }
 
-    throw new Error(`Unsupported HttpMethod: ${httpMethod}`)
+    if (!this.shouldDisableApiUseTracking) {
+      ls.set<ApiServiceCallInfo>(HttpService.ApiServiceCallNamespace, { lastCallTime: new Date().getTime() })
+    }
+    return result
   }
 
   public get<T>(endpoint: string, args?: any, abortController?: AbortController): AxiosPromise<T> {
