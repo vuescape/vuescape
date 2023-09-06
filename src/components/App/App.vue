@@ -22,7 +22,7 @@
         name="app__component--transition"
       >
         <the-header
-          v-if="shouldDisplayHeader"
+          v-if="!hasCustomHeader"
           ref="theHeader"
         ></the-header>
       </transition>
