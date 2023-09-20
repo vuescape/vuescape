@@ -33,7 +33,8 @@ export class StoreModuleErrorHandlerBuilder<S, R> implements ErrorHandlerBuilder
       })
       if (status === 401) {
         // Global Action and redirect after it completes
-        await this.context.dispatch(`${AuthenticationModuleName}/${AuthenticationOperation.Action.SIGN_OUT}`, null, {
+        await this.context.dispatch(
+          `${AuthenticationModuleName}/${AuthenticationOperation.Action.UNAUTHORIZED}`, null, {
           root: true,
         })
         // Instead of routing to sign-in do an entire app reload from the current URL.

@@ -8,7 +8,12 @@ export class StoreAction {
   /**
    * Signs out.
    */
-  public static readonly SIGN_OUT                 = 'signOut'
+  public static readonly UNAUTHORIZED = 'unauthorized'
+
+  /**
+   * Signs out.
+   */
+  public static readonly SIGN_OUT = 'signOut'
 
   /**
    * Signs in using username/password credentials.
@@ -18,7 +23,7 @@ export class StoreAction {
   /**
    * Signs in using an issued auth token.
    */
-  public static readonly SIGN_IN_WITH_TOKEN       = 'signInWithToken'
+  public static readonly SIGN_IN_WITH_TOKEN = 'signInWithToken'
 
   /**
    * Handles the callback from the Auth provider.  e.g. sets a token or some other handling.
@@ -34,7 +39,7 @@ export class StoreAction {
   /**
    * Perform setup after being called back by an external auth provider.
    */
-  public static readonly SETUP_FROM_PROVIDER      = 'setupFromProvider'
+  public static readonly SETUP_FROM_PROVIDER = 'setupFromProvider'
 }
 
 // Use namespace to simulate inner class on StoreAction to make NotificationActions easy to find
