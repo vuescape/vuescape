@@ -480,7 +480,7 @@ i.material-icons {
 .v-dialog__content.v-dialog__content--active {
   z-index: 4000 !important;
 }
-i.v-icon {
+i.v-icon.v-alert__icon {
   font-weight: 900 !important;
 }
 </style>
