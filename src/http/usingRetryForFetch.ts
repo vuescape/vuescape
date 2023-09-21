@@ -4,13 +4,14 @@ const RETRY_DELAY_MS = 250
 export async function usingRetryForFetch(url: string, init: RequestInit | undefined) {
   let retryNumber = 0
   while (true) {
+    ++retryNumber
     try {
       const response = await fetch(url, init)
       if (response.ok || response.status === 400 || response.status === 401) {
         return response
       }
 
-      if (++retryNumber > MAX_NB_RETRY) {
+      if (retryNumber > MAX_NB_RETRY) {
         console.error(`Max retries exceeded calling ${url}.`)
         return response
       }
