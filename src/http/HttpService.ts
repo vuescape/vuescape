@@ -13,24 +13,25 @@ import { RestPayloadStrategy } from './RestPayloadStrategy'
 import ls from 'localstorage-slim'
 
 export class HttpService {
-  public static ApiServiceCallNamespace = 'CoMetrics.ApiServiceCall'
+  public static LAST_API_SERVICE_CALL_KEY      = 'CoMetrics.LastApiServiceCall'
   private readonly baseUrl: string | undefined = ''
   private readonly shouldUseCache: boolean
   private readonly restPayloadStrategy: RestPayloadStrategy
-private readonly shouldDisableApiUseTracking: boolean
+  private readonly shouldDisableApiUseTracking: boolean
 
   public constructor(
     baseUrl?: string,
-    shouldUseCache = false,
-    restPayloadStrategy = RestPayloadStrategy.None,
-    shouldDisableApiUseTracking = false) {
-    this.baseUrl             = baseUrl || ''
-    this.shouldUseCache      = shouldUseCache
-    this.restPayloadStrategy = restPayloadStrategy
+    shouldUseCache              = false,
+    restPayloadStrategy         = RestPayloadStrategy.None,
+    shouldDisableApiUseTracking = false,
+  ) {
+    this.baseUrl                     = baseUrl || ''
+    this.shouldUseCache              = shouldUseCache
+    this.restPayloadStrategy         = restPayloadStrategy
     this.shouldDisableApiUseTracking = shouldDisableApiUseTracking
 
     if (!this.shouldDisableApiUseTracking) {
-      ls.set<ApiServiceCallInfo>(HttpService.ApiServiceCallNamespace,{ lastCallTime: new Date().getTime() })
+      ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
     }
   }
 
@@ -47,7 +48,7 @@ private readonly shouldDisableApiUseTracking: boolean
     }
 
     if (!this.shouldDisableApiUseTracking) {
-      ls.set<ApiServiceCallInfo>(HttpService.ApiServiceCallNamespace, { lastCallTime: new Date().getTime() })
+      ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
     }
     return result
   }
