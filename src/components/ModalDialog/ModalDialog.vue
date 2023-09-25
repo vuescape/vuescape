@@ -103,7 +103,7 @@ export default class ModalDialog extends Vue {
   @Prop({ type: Boolean, default: true })
   private shouldShowCancelButton: boolean
 
-  @Prop({ type: Array, default: () => ['fa-duotone', 'exclamation-circle'] })
+  @Prop({ type: Array, default: () => ['fa-duotone', 'fa-circle-exclamation'] })
   private icons: Array<string>
 
   @Prop({ type: String, required: false })
@@ -201,7 +201,6 @@ export default class ModalDialog extends Vue {
   height:          40px;
 }
 div.v-card__actions button.modal-dialog__v-btn--ok {
-  width:            50px;
   height:           40px;
   background-color: #16a5c6 !important;
   color:            white !important;
