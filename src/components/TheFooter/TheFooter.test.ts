@@ -5,8 +5,8 @@ import Vuex from 'vuex'
 
 import { AppInfoModuleName, AppInfoStore } from '@vuescape/store/modules/AppInfo'
 import { rootStoreOptions } from '@vuescape/store/modules/Root'
-import { registerDynamicModule } from '@vuescape/store/storeHelpers'
 import { makeStoreModule } from '@vuescape/store/modules/types'
+import { registerDynamicModule } from '@vuescape/store/storeHelpers'
 
 import TheFooter from '.'
 
