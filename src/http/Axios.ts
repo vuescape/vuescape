@@ -40,6 +40,7 @@ export class Axios {
 
 // tslint:disable-next-line: member-ordering
   public static async initCaching(cacheOptions: CacheOptions) {
+    // tslint:disable-next-line: max-line-length
     const cacheAdapter = (await import(/* webpackChunkName: 'axios-extensions' */ 'axios-extensions')).cacheAdapterEnhancer
     const Cache        = (await import(/* webpackChunkName: 'lru-cache' */'lru-cache')).default
 

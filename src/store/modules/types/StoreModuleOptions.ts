@@ -9,6 +9,7 @@ export class StoreModuleOptions<T, P = {}> implements ModuleOptions<T, P> {
     if (value !== null && value !== undefined && (value as any).length === 0) {
       return true
     }
+    // tslint:disable-next-line: max-line-length
     else if (typeof value !== 'string' && value && Object.keys(value).length === 0 && (value as any).constructor === Object) {
       // Empty object {} is also empty
       return true

@@ -13,7 +13,7 @@ import { RestPayloadStrategy } from './RestPayloadStrategy'
 import ls from 'localstorage-slim'
 
 export class HttpService {
-  public static LAST_API_SERVICE_CALL_KEY      = 'CoMetrics.LastApiServiceCall'
+  public static LAST_API_SERVICE_CALL_KEY      = 'LastApiServiceCall'
   private readonly baseUrl: string | undefined = ''
   private readonly shouldUseCache: boolean
   private readonly restPayloadStrategy: RestPayloadStrategy

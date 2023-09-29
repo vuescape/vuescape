@@ -76,6 +76,7 @@ import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 import { Menu } from '@vuescape/types'
 
+// tslint:disable-next-line: max-line-length
 const HamburgerMenu = () => import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
 
 const NavigationMenuItem = () => import(/* webpackChunkName: 'navigation-menu-item' */ './NavigationMenuItem.vue').then(
@@ -171,6 +172,7 @@ export default class NavigationMenu extends Vue {
     const hasCenter = this.hasCenterNavigationItems
     const hasRight  = this.hasRightNavigationItems
 
+    // tslint:disable-next-line: max-line-length
     if ((hasLeft && !hasCenter && !hasRight) || (hasCenter && !hasLeft && !hasRight) || (hasRight && !hasLeft && !hasCenter)) {
       return 12
     }
