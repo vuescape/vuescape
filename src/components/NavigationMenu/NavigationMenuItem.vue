@@ -169,9 +169,11 @@ div.navigation-menu__v-list--alignment a.v-list__tile {
   max-height: 36px;
 }
 
+/*
 i.v-icon {
   font-weight: normal;
 }
+*/
 .v-btn__content {
   font-weight: normal;
 }
