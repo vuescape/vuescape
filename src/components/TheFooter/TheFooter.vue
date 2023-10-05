@@ -6,9 +6,6 @@
       <span class="the-footer__overflow"> All rights reserved.</span>
     </div>
     <div class="the-footer__links">
-      <a v-if="isAuthenticated" href="/legal-agreement">Privacy</a>
-      <a href="/privacy-policy">Privacy</a>
-      <a>Help Center</a>
       <span class="the-footer__overflow"><a href="/">Home</a></span>
     </div>
     <div class="the-footer__logo--position">
