@@ -1,7 +1,7 @@
 const MAX_NUMBER_RETRIES = 3
 const RETRY_DELAY_MS     = 250
 
-export async function usingRetryForFetch(url: string, init: RequestInit | undefined) {
+export async function usingRetryForFetch(url: string, init?: RequestInit) {
   let retryNumber        = 0
   let response: Response = new Response(undefined,
     {
