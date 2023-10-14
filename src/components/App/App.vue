@@ -62,7 +62,7 @@
             <div
               v-if="isHandling"
               v-loading="true"
-              :style="`height:${windowHeight}px`"
+              :style="`height:${getWindowHeight()}px`"
               class="app__container--scroll"
             >
             </div>
@@ -197,7 +197,7 @@ export default class App extends ComponentBase {
     return 'the-footer'
   }
 
-  private get windowHeight() {
+  private getWindowHeight() {
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
     return windowHeight
   }
@@ -246,7 +246,7 @@ export default class App extends ComponentBase {
   }
 
   private async getAvailableHeight() {
-    const windowHeight = this.windowHeight
+    const windowHeight = this.getWindowHeight()
     await this.$nextTick()
     const theHeader = this.$refs.theHeader as any
     const theFooter = this.$refs.theFooter as any
