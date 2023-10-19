@@ -349,6 +349,7 @@ export default class TreeTable extends ComponentBase {
     element.style.left           = leftPosition
     element.style.position       = 'sticky'
     element.style.backgroundClip = 'padding-box'
+    element.style.zIndex         = '1001' // prevent icons from showing in front of frozen cell
   }
 
   private setElementWidth(element: HTMLTableCellElement, width: string, leftPosition?: string) {
