@@ -31,7 +31,6 @@ function gtag() { dataLayer.push(arguments) }
 gtag('js', new Date())
 gtag('config', '${this.trackingId}', { send_page_view: false })
 `
-      // app_name: 'CoMetrics Secure', //^^^
       addScript(scriptContent)
       this.isInitialized = true
     }
