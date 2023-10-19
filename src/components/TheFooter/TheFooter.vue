@@ -107,6 +107,10 @@ footer.v-footer {
   position: relative;
   height: 100%;
   clear: both;
+  padding-right: 1em;
+  padding-left: 1em;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .the-footer__copyright {
