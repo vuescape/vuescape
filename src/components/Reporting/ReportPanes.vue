@@ -218,7 +218,7 @@ export default class ReportPanes extends ComponentBase {
 
   // TODO: reset state as appropriate
   private async onPaneClosed(index: number) {
-    console.info(index)
+    console.info('pane closed', index)
   }
 }
 </script>

@@ -186,7 +186,6 @@ export default class MultipleSelect extends Vue {
     if (this.canSelectMultiple) {
       option.checked = true
       this.valueVal.push(option)
-      console.info(option)
       this.clearMultiselectSize()
     }
   }
@@ -195,7 +194,6 @@ export default class MultipleSelect extends Vue {
     if (this.canSelectMultiple) {
       this.valueVal  = (this.valueVal as Array<any>).filter(_ => _[this.trackBy] !== option[this.trackBy])
       option.checked = false
-      console.info(option)
       this.clearMultiselectSize()
     }
   }

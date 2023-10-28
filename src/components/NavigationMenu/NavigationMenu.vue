@@ -122,7 +122,6 @@ export default class NavigationMenu extends Vue {
   private isSiteInMaintenanceMode: boolean
 
   @namespace('window/availableHeight').State(state => {
-    console.info(state.value[0])
     return state.value[0]
   })
   private availableHeight: Array<number>

@@ -58,9 +58,5 @@ export default class HeaderCellRenderer extends ComponentBase {
 
     return []
   }
-
-  private created() {
-    console.info(this.header)
-  }
 }
 </script>

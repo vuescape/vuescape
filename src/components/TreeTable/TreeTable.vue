@@ -304,7 +304,6 @@ export default class TreeTable extends ComponentBase {
   }
 
   private created() {
-    console.info('created with headers ', this.headers)
     this.idValue      = this.id ? this.id : Guid.newGuid()
     this.headersValue = this.headers
 
