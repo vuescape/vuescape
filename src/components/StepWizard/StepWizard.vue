@@ -188,22 +188,22 @@ export default class StepWizard extends Vue {
 
   private get enterAnimation() {
     return 'step-wizard__animation'
-    if (this.currentStepIndex < this.previousStepIndex) {
-      return 'step-wizard__animation-slide-out'
-    }
-    else {
-      return 'step-wizard__animation-slide-in'
-    }
+    // if (this.currentStepIndex < this.previousStepIndex) {
+    //   return 'step-wizard__animation-slide-out'
+    // }
+    // else {
+    //   return 'step-wizard__animation-slide-in'
+    // }
   }
 
   private get leaveAnimation() {
     return 'step-wizard__animation'
-    if (this.currentStepIndex > this.previousStepIndex) {
-      return 'step-wizard__animation-slide-in'
-    }
-    else {
-      return 'step-wizard__animation-slide-out'
-    }
+    // if (this.currentStepIndex > this.previousStepIndex) {
+    //   return 'step-wizard__animation-slide-in'
+    // }
+    // else {
+    //   return 'step-wizard__animation-slide-out'
+    // }
   }
 
   @Watch('shouldShowProgressBar')
@@ -226,7 +226,7 @@ export default class StepWizard extends Vue {
     this.activateStep(0)
   }
 
-  private getStepStatus(index: number, step: number) {
+  private getStepStatus(index: number, step: Step) {
     if (this.currentStepIndex === index) {
       return 'activated'
     }
