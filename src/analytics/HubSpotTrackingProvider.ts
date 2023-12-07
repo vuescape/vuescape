@@ -42,7 +42,7 @@ export class HubSpotTrackingProvider implements TrackingProvider {
     if (this.isInitialized) {
       const hsq = this.getHsq()
       hsq.push(['setPath', urlFragment])
-      hsq.push(['trackPageView'])
+      hsq.push(['trackPageView', true])
     }
   }
 

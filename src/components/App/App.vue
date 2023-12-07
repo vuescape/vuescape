@@ -125,7 +125,6 @@ const DownloadSnackbar = () => import(/* webpackChunkName: 'download-snackbar' *
   },
 })
 export default class App extends ComponentBase {
-  private userProfileModuleValue: string
 
   @Inject('trackingService') private trackingService: TrackingService
 
@@ -144,6 +143,11 @@ export default class App extends ComponentBase {
   @State private notifications: Array<NotificationMessage>
   @Action(RootOperation.Action.NotificationActions.REMOVE) private removeNotification: any
 
+  @State((state: ModuleState<any>) => {
+    return state && state.value ? state.value : undefined
+  }, { namespace: UserProfileModuleName })
+  private userProfileModuleValue: string
+
   @namespace('window/availableHeight')
     .Mutation(StoreOperation.Mutation.SET_VALUE) private setAvailableHeight: (availableHeight: Array<number>) => void
 
@@ -153,9 +157,7 @@ export default class App extends ComponentBase {
   @State('theFooter/configuration') private footerConfiguration: ModuleState<any>
   @State('theHeader/configuration') private headerConfiguration: ModuleState<any>
 
-  @State((state: ModuleState<any>) => {
-    return state && state.value ? state.value : undefined
-  }, { namespace: UserProfileModuleName }) @namespace('theHeader/configuration').State(state => {
+ @namespace('theHeader/configuration').State(state => {
     if (state && state.value) {
       const headerProps: any = state.value
       return headerProps
