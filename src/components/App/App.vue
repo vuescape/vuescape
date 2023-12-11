@@ -146,7 +146,7 @@ export default class App extends ComponentBase {
   @State((state: ModuleState<any>) => {
     return state && state.value ? state.value : undefined
   }, { namespace: UserProfileModuleName })
-  private userProfileModuleValue: string
+  private userProfileModuleValue: any
 
   @namespace('window/availableHeight')
     .Mutation(StoreOperation.Mutation.SET_VALUE) private setAvailableHeight: (availableHeight: Array<number>) => void
@@ -210,7 +210,7 @@ export default class App extends ComponentBase {
   }
 
   @Watch('userProfileModuleValue')
-  private onUserProfileModuleValueChanged(to?: string, from?: string) {
+  private onUserProfileModuleValueChanged(to?: any, from?: any) {
     // if !from then there was no user profile previously so this is the first time having it loaded
     if (to && !from) {
       this.trackingService.identifyUser(to)
