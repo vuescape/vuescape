@@ -140,7 +140,7 @@ export const toTextDisplay = (value: any, emptyDisplay = '-') => {
   return emptyDisplay
 }
 
-export type presentationFormatKind = 'currency' | 'percentage' | 'number' | 'ratio' | 'accounting' | 'mmcurrency'
+export type presentationFormatKind = 'currency' | 'percentage' | 'number' | 'ratio' | 'accounting' | 'mmcurrency' | 'none'
 
 export const presentationFormatMap: Dictionary<(value: any, places: number, emptyDisplay: string) => string> = {
   currency  : toCurrencyDisplay,
@@ -149,6 +149,7 @@ export const presentationFormatMap: Dictionary<(value: any, places: number, empt
   ratio     : toNumberDisplay,
   accounting: toAccountingDisplay,
   mmcurrency: toMMCurrencyDisplay,
+  none: (value: any, places: number, emptyDisplay: string) => value,
 }
 
 export const presentationFormatKindToSymbolMap = new Map<presentationFormatKind, string>([['currency', '$'], ['percentage', '%'], ['number', '#'], ['ratio', '/'], ['accounting', '$'], ['mmcurrency', '$']])
