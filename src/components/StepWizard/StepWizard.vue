@@ -457,18 +457,18 @@ export default class StepWizard extends Vue {
   margin:   2rem 0;
 }
 .step-wizard__stepper-box .bottom .stepper-button.next {
-  position: absolute;
+  position: fixed;
   right:    5vw;
-  bottom:   11px;
+  bottom:   47px;
 }
 .step-wizard__stepper-box .bottom .stepper-button.next.deactivated {
   background-color: #ccc !important;
   cursor: not-allowed !important;
 }
 .step-wizard__stepper-box .bottom .stepper-button.previous {
-  position: absolute;
+  position: fixed;
   left:     5vw;
-  bottom:   11px;
+  bottom:   47px;
 }
 .step-wizard__stepper-box .bottom .vuescape-button__v-btn--style {
   height:    40px;
