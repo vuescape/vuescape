@@ -106,11 +106,15 @@ export default class NumericTextField extends Vue {
   private additionalTextFieldProperties: any
 
   private get formattedValue() {
-    if (this.formatKind !== 'number') {
+    if (this.formatKind !== 'number' && this.formatKind !== 'none') {
       throw Error('Unsupported formatKind: ' + this.formatKind)
     }
 
     let value = this.rawValue[0]
+
+    if (this.formatKind === 'none') {
+      return value
+    }
 
     // Used for any text to the right of a decimal.
     // Will format the left portion and then append the
