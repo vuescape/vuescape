@@ -4,9 +4,9 @@ import Vuetify from 'vuetify'
 
 import DownloadFileButton from './DownloadFileButton.vue'
 
-import VueScapeButton from '../VuescapeButton'
+import VuescapeButton from '../VuescapeButton'
 
-console.log(VueScapeButton.version)
+console.log(VuescapeButton.version)
 
 describe('DownloadFileButton.vue --', () => {
   describe('props --', () => {
