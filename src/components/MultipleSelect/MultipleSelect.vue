@@ -332,6 +332,8 @@ export default class MultipleSelect extends Vue {
   display:      inline-block;
 }
 .multiselect__placeholder {
+  color: #000;
   padding-left: 10px;
+  font-size: var(--custom-font-size);
 }
 </style>
