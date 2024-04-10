@@ -1,4 +1,4 @@
-import { AxiosPromise } from 'axios'
+import { AxiosPromise, AxiosResponse } from 'axios'
 
 import { Axios } from '.'
 
@@ -13,11 +13,16 @@ import { RestPayloadStrategy } from './RestPayloadStrategy'
 import ls from 'localstorage-slim'
 
 export class HttpService {
-  public static LAST_API_SERVICE_CALL_KEY      = 'LastApiServiceCall'
+  public static LAST_API_SERVICE_CALL_KEY                         = 'LastApiServiceCall'
+  // Check every 25 minutes to see if the last API call was made
+  private static readonly LONG_RUNNING_METHOD_KEEP_ALIVE_INTERVAL = 1000 * 60 * 25
+
   private readonly baseUrl: string | undefined = ''
   private readonly shouldUseCache: boolean
   private readonly restPayloadStrategy: RestPayloadStrategy
   private readonly shouldDisableApiUseTracking: boolean
+
+  private httpCallMethodInterval: number
 
   public constructor(
     baseUrl?: string,
@@ -29,27 +34,40 @@ export class HttpService {
     this.shouldUseCache              = shouldUseCache
     this.restPayloadStrategy         = restPayloadStrategy
     this.shouldDisableApiUseTracking = shouldDisableApiUseTracking
-
-    if (!this.shouldDisableApiUseTracking) {
-      ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
-    }
   }
 
-  public invoke<T>(httpMethod: HttpMethod, endpoint: string, args?: {}, abortController?: AbortController) {
-    let result
-    if (httpMethod === HttpMethod.Get) {
-      result = this.get<T>(endpoint, args, abortController)
+  public async invoke<T>(httpMethod: HttpMethod, endpoint: string, args?: {}, abortController?: AbortController) {
+    let result: AxiosResponse<T>
+    try {
+      if (!this.shouldDisableApiUseTracking) {
+        ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
+        this.httpCallMethodInterval = setInterval(() => {
+          console.info('Keep alive for long running method for ' + endpoint)
+          ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
+        }, HttpService.LONG_RUNNING_METHOD_KEEP_ALIVE_INTERVAL)
+      }
+
+      if (httpMethod === HttpMethod.Get) {
+        result = await this.get<T>(endpoint, args, abortController)
+      }
+      else if (httpMethod === HttpMethod.Post) {
+        result = await this.post<T>(endpoint, args, abortController)
+      }
+      else {
+        throw new Error(`Unsupported HttpMethod: ${httpMethod}`)
+      }
     }
-    else if (httpMethod === HttpMethod.Post) {
-      result = this.post<T>(endpoint, args, abortController)
-    }
-    else {
-      throw new Error(`Unsupported HttpMethod: ${httpMethod}`)
+    finally {
+      if (this.httpCallMethodInterval) {
+        console.info('Clearing keep alive for long running method for ' + endpoint)
+        clearInterval(this.httpCallMethodInterval)
+      }
+      if (!this.shouldDisableApiUseTracking) {
+        console.info('Setting last call time for ' + endpoint)
+        ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
+      }
     }
 
-    if (!this.shouldDisableApiUseTracking) {
-      ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
-    }
     return result
   }
 
