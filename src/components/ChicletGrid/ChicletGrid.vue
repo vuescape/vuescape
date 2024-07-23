@@ -43,7 +43,7 @@
             </v-card>
           </a>
           <v-card
-            @click="chiclet.onclick"
+            @click="chiclet.onclick($event)"
             v-else
             flat
             tile

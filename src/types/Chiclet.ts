@@ -5,5 +5,5 @@ export interface Chiclet {
   icons?: Array<string>
   isVisible: boolean
   link?: { href: string; target: string }
-  onclick?: () => void
+  onclick?: (e: MouseEvent) => void
 }
