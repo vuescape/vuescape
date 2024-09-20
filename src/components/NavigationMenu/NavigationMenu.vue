@@ -1,18 +1,18 @@
 <template>
   <span>
     <v-layout
+      class="navigation-menu__container hidden-sm-and-down"
       row
       style="height: 100%"
-      class="navigation-menu__container hidden-sm-and-down"
     >
       <v-flex
         v-if="shouldShowLeftSection"
-        v-bind="{ [`lg${breakpoints}`]: true }"
+        v-bind="{ [`lg${leftBreakpoint}`]: true }"
       >
         <v-toolbar
-          height="36"
-          class="navigation-menu__toolbar--size"
           :style="toolbarStyle"
+          class="navigation-menu__toolbar--size"
+          height="36"
         >
           <navigation-menu-item
             v-for="menu in leftMenuItems"
@@ -23,12 +23,12 @@
       </v-flex>
       <v-flex
         v-if="shouldShowCenterSection"
-        v-bind="{ [`lg${breakpoints}`]: true }"
+        v-bind="{ [`lg${centerBreakpoint}`]: true }"
       >
         <v-toolbar
-          height="36"
-          class="navigation-menu__toolbar--size"
           :style="toolbarStyle"
+          class="navigation-menu__toolbar--size"
+          height="36"
         >
           <v-layout justify-center>
             <navigation-menu-item
@@ -41,12 +41,12 @@
       </v-flex>
       <v-flex
         v-if="shouldShowRightSection"
-        v-bind="{ [`lg${breakpoints}`]: true }"
+        v-bind="{ [`lg${rightBreakpoint}`]: true }"
       >
         <v-toolbar
-          height="36"
-          class="navigation-menu__toolbar--size"
           :style="toolbarStyle"
+          class="navigation-menu__toolbar--size"
+          height="36"
         >
           <v-spacer></v-spacer>
           <navigation-menu-item
@@ -89,14 +89,22 @@ const NavigationMenuItem = () => import(/* webpackChunkName: 'navigation-menu-it
   },
 })
 export default class NavigationMenu extends Vue {
-  private areMenusSet = false
+  private areMenusSet              = false
   private menusValue: Array<Menu>  = []
   private hasLeftNavigationItems   = false
   private hasCenterNavigationItems = false
   private hasRightNavigationItems  = false
 
-  @Prop({ type: String, default: '' })
+  @Prop({
+    type   : String,
+    default: '',
+  })
   private toolbarStyle: string
+
+  @Prop({
+    type: Object,
+  })
+  private menuBreakpoints: { left: number, center: number, right: number } | undefined
 
   @Prop({ required: true })
   private menus: Array<Menu>
@@ -159,6 +167,27 @@ export default class NavigationMenu extends Vue {
   private get rightMenuItems() {
     const result = this.menusValue.filter(_ => _.horizontalAlignment === HorizontalAlignment.Right)
     return result
+  }
+
+  private get leftBreakpoint() {
+    if (this.menuBreakpoints?.left !== undefined) {
+      return this.menuBreakpoints.left
+    }
+    return this.breakpoints
+  }
+
+  private get centerBreakpoint() {
+    if (this.menuBreakpoints?.center !== undefined) {
+      return this.menuBreakpoints.center
+    }
+    return this.breakpoints
+  }
+
+  private get rightBreakpoint() {
+    if (this.menuBreakpoints?.right !== undefined) {
+      return this.menuBreakpoints.right
+    }
+    return this.breakpoints
   }
 
   private get breakpoints() {
