@@ -58,7 +58,7 @@
       </v-flex>
     </v-layout>
     <hamburger-menu
-      :menus="menus"
+      :menus="hamburgerMenus"
       :style="toolbarStyle"
       class="hidden-md-and-up"
     ></hamburger-menu>
@@ -133,6 +133,17 @@ export default class NavigationMenu extends Vue {
     return state.value[0]
   })
   private availableHeight: Array<number>
+
+  private get hamburgerMenus() {
+    const filterMenus = (alignment: HorizontalAlignment) =>
+      this.menusValue.filter(menu => menu.horizontalAlignment === alignment && !menu.isDivider)
+
+    const result: Array<Menu> = []
+    result.push(...filterMenus(HorizontalAlignment.Left))
+    result.push(...filterMenus(HorizontalAlignment.Center))
+    result.push(...filterMenus(HorizontalAlignment.Right))
+    return result
+  }
 
   private get shouldShowLeftSection() {
     const result = this.hasLeftNavigationItems || (this.hasCenterNavigationItems && this.hasRightNavigationItems)
