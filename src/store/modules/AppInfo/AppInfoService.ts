@@ -1,8 +1,13 @@
-import { AsyncAction, HttpAsyncAction, HttpMethod, ServiceBase } from '@vuescape/http'
+import { AsyncAction } from '@vuescape/http/AsyncAction'
+import { HttpAsyncAction } from '@vuescape/http/HttpAsyncAction'
+import { HttpMethod } from '@vuescape/http/HttpMethod'
+import { ServiceBase } from '@vuescape/http/ServiceBase'
+
 import { AppInfo } from '@vuescape/types'
 
 export class AppInfoService extends ServiceBase<AppInfo> {
-  constructor(baseUrl?: string, asyncAction?: (httpMethod: HttpMethod,
+  constructor(baseUrl?: string, asyncAction?: (
+    httpMethod: HttpMethod,
     endPoint: string,
     baseUrl?: string,
   ) => AsyncAction<AppInfo> | HttpAsyncAction<AppInfo>) {
