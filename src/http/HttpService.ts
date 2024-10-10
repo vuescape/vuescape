@@ -4,13 +4,12 @@ import { Axios } from '.'
 
 import qs from 'qs'
 
-import { ApiServiceCallInfo } from './ApiServiceCallInfo'
 import { HttpMethod } from './HttpMethod'
 import { RestPayloadStrategy } from './RestPayloadStrategy'
 
-// We will use local storage instead of vuex because of the difficulty in
-// trying to untangle circular references that occur by including storeHelpers.ts and store/index.ts
-import ls from 'localstorage-slim'
+ import { store } from '../store/index'
+
+import { RootOperation } from '@vuescape/store/modules'
 
 export class HttpService {
   public static LAST_API_SERVICE_CALL_KEY                         = 'LastApiServiceCall'
@@ -40,10 +39,10 @@ export class HttpService {
     let result: AxiosResponse<T>
     try {
       if (!this.shouldDisableApiUseTracking) {
-        ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
+        store.commit(RootOperation.Mutation.LAST_ACTIVITY_TIMESTAMP, Date.now(), { root: true })
         this.httpCallMethodInterval = setInterval(() => {
           console.info('Keep alive for long running method for ' + endpoint)
-          ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
+          store.commit(RootOperation.Mutation.LAST_ACTIVITY_TIMESTAMP, Date.now(), { root: true })
         }, HttpService.LONG_RUNNING_METHOD_KEEP_ALIVE_INTERVAL)
       }
 
@@ -64,7 +63,7 @@ export class HttpService {
       }
       if (!this.shouldDisableApiUseTracking) {
         console.info('Setting last call time for ' + endpoint)
-        ls.set<ApiServiceCallInfo>(HttpService.LAST_API_SERVICE_CALL_KEY, { lastCallTime: new Date().getTime() })
+        store.commit(RootOperation.Mutation.LAST_ACTIVITY_TIMESTAMP, Date.now(), { root: true })
       }
     }
 
