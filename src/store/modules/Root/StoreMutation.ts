@@ -6,6 +6,7 @@ export class StoreMutation {
   public static readonly IS_AUTHENTICATED                  = 'isAuthenticated'
   public static readonly CLEAR_ENTIRE_STORE                = 'clearEntireStore'
   public static readonly SPINNING                          = 'SPINNING'
+  public static readonly LAST_ACTIVITY_TIMESTAMP           = 'lastActivityTimestamp'
 }
 
 export namespace StoreMutation {

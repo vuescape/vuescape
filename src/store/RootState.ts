@@ -5,4 +5,5 @@ export interface RootState {
   isAuthenticated: boolean
   notifications: Array<NotificationMessage>
   isSpinning: boolean
+  lastActivityTimestamp: number
 }

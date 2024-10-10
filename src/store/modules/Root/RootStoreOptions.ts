@@ -28,6 +28,9 @@ const mutations: MutationTree<RootState> = {
   [StoreMutation.SPINNING](currentState, payload: boolean) {
     currentState.isSpinning = payload
   },
+  [StoreMutation.LAST_ACTIVITY_TIMESTAMP](currentState, payload: number) {
+    currentState.lastActivityTimestamp = payload
+  },
   [StoreMutation.CLEAR_ENTIRE_STORE](currentState) {
     Object.keys(currentState).forEach(property => {
       // TODO: handle config, auth and profile with a better approach instead of hard code here
@@ -62,6 +65,7 @@ export const rootStoreOptions: StoreOptions<RootState> = {
     isAuthenticated               : false,
     notifications                 : [],
     isSpinning                    : false,
+    lastActivityTimestamp                  : Date.now(),
   },
-  strict : process.env.NODE_ENV === 'development',
+  strict : process.env.NODE_ENV === '1development',
 }
