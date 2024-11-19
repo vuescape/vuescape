@@ -184,4 +184,7 @@ div.hamburger-menu__v-list--alignment a.v-list__tile {
   height:        36px;
   border-bottom: 100px;
 }
+.menuable__content__active.hamburger-menu__v-menu--size {
+  height: 100vh;
+}
 </style>
