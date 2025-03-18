@@ -11,7 +11,7 @@
     </vuescape-button>
     <v-snackbar
       v-model="shouldShowDownloadCompleted"
-      :timeout="10000"
+      :timeout="20000"
       absolute
       bottom
       color="primary"
@@ -104,6 +104,13 @@ export default class DownloadFileButton extends Vue {
   }
 
   private async click() {
+    if (this.shouldShowCompletedMessage) {
+      const component = this
+      setTimeout(() => {
+        component.shouldShowDownloadCompleted = true
+      }, 200)
+    }
+
     await this.onClick()
     // If not uses Vuex and updating data in the onClick function then will need
     // to call nextTick to allow changes to the data property to propagate.
@@ -111,12 +118,11 @@ export default class DownloadFileButton extends Vue {
 
     const data = this.isBase64EncodedBinary ? decodeBase64String(this.data) : this.data
     downloadFile(data, this.createFilename(), this.shouldAddByteOrderMark)
-
     if (this.shouldShowCompletedMessage) {
       const component = this
       setTimeout(() => {
-        component.shouldShowDownloadCompleted = true
-      }, 200)
+        component.shouldShowDownloadCompleted = false
+      }, 1000)
     }
   }
 
