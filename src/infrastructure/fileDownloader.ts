@@ -7,8 +7,14 @@ export function downloadFile(
   mimeType               = 'application/octet-stream',
   charset                = 'utf-8',
 ) {
-  if (data) {
-    const blob = new Blob([shouldAddByteOrderMark ? '\ufeff' : '', data], { type: `${mimeType}; charset=${charset}` })
-    FileSaver.saveAs(blob, filename)
+  const isEmpty =
+          (typeof data === 'string' && data.length === 0) ||
+          (data instanceof Uint8Array && data.length === 0)
+
+  if (isEmpty) {
+    return
   }
+
+  const blob = new Blob([shouldAddByteOrderMark ? '\ufeff' : '', data], { type: `${mimeType}; charset=${charset}` })
+  FileSaver.saveAs(blob, filename)
 }
