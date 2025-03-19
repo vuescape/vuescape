@@ -32,6 +32,8 @@ describe('DownloadFileButton.vue --', () => {
             wasClicked = true
           },
           isDisabled: false,
+          data: '',
+          shouldShowCompletedMessage: false,
         },
         localVue,
       })
