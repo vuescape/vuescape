@@ -11,7 +11,7 @@
     </vuescape-button>
     <v-snackbar
       v-model="shouldShowDownloadCompleted"
-      :timeout="20000"
+      :timeout="60000"
       absolute
       bottom
       color="primary"
