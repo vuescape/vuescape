@@ -13,9 +13,9 @@
         v-model="shouldShowDialog"
         :content-class="`modal-tooltip__dialog--${cell.id}`"
         :hide-overlay="true"
-        max-width="500px"
+        max-width="maxWidthValue"
         origin="left center"
-        width="50%"
+        :width="widthValue"
         @input="v => v || stopVideo()"
       >
         <v-card flat>
@@ -58,6 +58,8 @@ import { ModuleState, StoreOperation } from '@vuescape/store/modules'
 @Component({})
 export default class Tooltip extends ComponentBase {
   private shouldShowDialog = false
+  private maxWidthValue = ''
+  private widthValue = ''
 
   @State('tooltipSingleton') private tooltipSingleton: ModuleState<Array<boolean>>
 
@@ -98,6 +100,11 @@ export default class Tooltip extends ComponentBase {
       'vertical-align': 'bottom',
     }),
   }) private iconStyleObject: boolean
+
+  @Prop({
+    type   : String,
+    required: false,
+  }) private maxWidth: string
 
   private isHoveringImpl = false
 
@@ -153,6 +160,14 @@ export default class Tooltip extends ComponentBase {
 
   private created() {
     this.isHoveringImpl = this.isHovering
+
+    // If no maxWidth is set, set default values
+    if (!this.maxWidth) {
+      this.maxWidthValue = '500px'
+      this.widthValue = '50%'
+    } else {
+      this.widthValue = 'auto!important'
+    }
 
     if (!this.tooltipSingleton) {
       this.registerStoreModuleWithInitialValue<Array<boolean>>('tooltipSingleton', [false])
