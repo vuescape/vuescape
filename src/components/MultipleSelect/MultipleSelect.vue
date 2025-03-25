@@ -32,7 +32,7 @@
         deselectLabel=""
         selectedLabel=""
         :optionsLimit="10000"
-        :disabled="shouldSingleItemSelectBeDisabled && options && options.length === 1"
+        :disabled="isSelectDisabled"
       >
         <span
           v-if="canSelectMultiple"
@@ -100,6 +100,7 @@ export default class MultipleSelect extends Vue {
   private areWatchersEnabled     = false
   private valueVal: any          = {}
   private optionsVal: Array<any> = []
+  private isDisabledVal: boolean = false
 
   private placeholderVal: string    = ''
   private oldPlaceholderVal: string = ''
@@ -154,6 +155,9 @@ export default class MultipleSelect extends Vue {
   @Prop({ type: Function })
   private optionFormatter: (option: any) => string
 
+  @Prop({ type: Boolean, default: false })
+  private isDisabled: boolean
+
   @Watch('value')
   private onValueChanged(val: any, oldVal: any) {
     // Might not work for arbitrary objects (e.g. if they contain circular references)
@@ -180,6 +184,16 @@ export default class MultipleSelect extends Vue {
   @Watch('placeholder')
   private onPlaceholderChanged(val: any, oldVal: any) {
     this.placeholderVal = val
+  }
+
+  @Watch('isDisabled')
+  private onIsDisableChanged(val: boolean, oldVal: boolean) {
+    this.isDisabledVal = val
+  }
+
+  private get isSelectDisabled() {
+    const result = (this.isDisabledVal) || (this.shouldSingleItemSelectBeDisabled && this.options && this.options.length === 1)
+    return result
   }
 
   private async onSelect(option: any) {
@@ -266,6 +280,7 @@ export default class MultipleSelect extends Vue {
     this.valueVal       = this.value
     this.optionsVal     = this.options
     this.placeholderVal = this.placeholder
+    this.isDisabledVal     = this.isDisabled
   }
 }
 </script>
