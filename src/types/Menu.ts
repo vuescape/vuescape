@@ -17,8 +17,8 @@ export interface Menu {
   imageSrc?: string
 
   // This is not used for navigation.
-  // Override path to use if this item should be considered active
+  // Override paths to use if this item should be considered active
   // when the actual route in the browser differs from the Menu path.
-  // If not specified the path is used to determine if a route is active.
-  pathIsActiveWhen?: string
+  // If not specified then the path is used to determine if a route is active.
+  pathIsActiveWhen?: Array<string>
 }

@@ -140,9 +140,18 @@ export default class NavigationMenuItem extends Vue {
     return isActive
   }
 
-  public isItemActive(menu: Menu) {
-    const path   = this.$route.path
-    const result = path.startsWith(menu?.path) || path.startsWith(menu?.pathIsActiveWhen!)
+  public isItemActive(menu: Menu): boolean {
+    const path = this.$route.path
+
+    // Always check the main menu.path
+    const isBaseActive = path.startsWith(menu.path)
+
+    // Then check any of the additional prefixes
+    const isAdditionalActive = Array.isArray(menu.pathIsActiveWhen)
+      ? menu.pathIsActiveWhen.some(prefix => path.startsWith(prefix))
+      : false
+
+    const result = isBaseActive || isAdditionalActive
     return result
   }
 
