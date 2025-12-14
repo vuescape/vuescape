@@ -162,7 +162,13 @@ export default class NavigationMenuItem extends Vue {
       e.stopPropagation()
     }
 
-    this.$router.push({ path: menuItem.path })
+    // If the menu item starts with http then treat it as absolute path
+    if (menuItem.path.startsWith('http')) {
+      document.location.href = menuItem.path
+    }
+    else {
+      this.$router.push({ path: menuItem.path })
+    }
   }
 
   private getIconArray(iconString: string) {
