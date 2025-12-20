@@ -42,12 +42,12 @@ export class Axios {
   public static async initCaching(cacheOptions: CacheOptions) {
     // tslint:disable-next-line: max-line-length
     const cacheAdapter = (await import(/* webpackChunkName: 'axios-extensions' */ 'axios-extensions')).cacheAdapterEnhancer
-    const Cache        = (await import(/* webpackChunkName: 'lru-cache' */'lru-cache')).default
+    const Cache        = (await import(/* webpackChunkName: 'lru-cache' */'lru-cache' as any)).default
 
     Axios.cacheAdapterFactory = () => cacheAdapter(axios.defaults.adapter!, {
       enabledByDefault: cacheOptions.shouldCacheAllRequests,
       cacheFlag       : cacheOptions.cacheFlag,
-      defaultCache    : new Cache<string, AxiosPromise>({
+      defaultCache    : new (Cache as any)({
         maxAge: cacheOptions.maxAgeMinutes * 60 * 1000,
         max   : cacheOptions.maxSize,
       }),
