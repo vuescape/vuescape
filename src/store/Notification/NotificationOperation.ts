@@ -15,10 +15,21 @@ export class NotificationOperation<S, R> {
   public mutations: () => MutationTree<S> = () => {
     return {
       [NotificationMutation.ADD](currentState: any, notification: NotificationMessage) {
-        currentState.notifications.push(notification)
+        const notifications = currentState.notifications as Array<NotificationMessage>
+        // Do not display the same message twice.  A notification is considered a duplicate when it
+        // has the same key or when it has the same type and message as an existing notification.
+        const isDuplicate   = notifications.some(
+          n => n.key === notification.key || (n.type === notification.type && n.message === notification.message))
+        if (isDuplicate) {
+          return
+        }
+        notifications.push(notification)
       },
       [NotificationMutation.REMOVE](currentState: any, key: string) {
         const index = (currentState.notifications as Array<NotificationMessage>).findIndex(n => n.key === key)
+        if (index === -1) {
+          return
+        }
         currentState.notifications.splice(index, 1)
       },
       [NotificationMutation.CLEAR](currentState) {
