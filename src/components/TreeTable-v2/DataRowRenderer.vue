@@ -38,11 +38,12 @@
         </span>
       </span>
       <span class="tree-table__rendered-cell">
-        <cell-renderer
+        <component
+          :is="cell.renderer || 'TextCellRenderer'"
           :key="cellKey(cell)"
           :cell="cell"
           :isHovering="cell.hover && isHovering"
-        ></cell-renderer>
+        ></component>
       </span>
     </td>
   </tr>
@@ -54,10 +55,14 @@ import { Prop } from 'vue-property-decorator'
 
 import { ComponentBase, HorizontalAlignment, TreeTableCell, TreeTableRow } from '@vuescape/index'
 
-import CellRenderer from './CellRenderer.vue'
+import FixedCellRenderer from './FixedCellRenderer.vue'
+import TextCellRenderer from './TextCellRenderer.vue'
 
 @Component({
-  components: { CellRenderer },
+  components: {
+    FixedCellRenderer,
+    TextCellRenderer,
+  },
 })
 export default class DataRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
