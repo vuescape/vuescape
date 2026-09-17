@@ -5,6 +5,7 @@
       :key="rowToDisplay.id"
       :is="rowToDisplay.renderer || 'DataRowRenderer'"
       :row="rowToDisplay"
+      :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
     ></component>
     <template
       v-if="rowToDisplay.children && rowToDisplay.children.length > 0 && (rowToDisplay.isExpanded || rowToDisplay.shouldDisplayChildren)"
@@ -13,6 +14,7 @@
         v-for="childRow in rowToDisplay.children"
         :key="childRow.id"
         :row="childRow"
+        :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
       ></row-renderer>
     </template>
     <template
@@ -22,6 +24,7 @@
         v-for="expandedRow in rowToDisplay.expandedSummaryRows"
         :key="expandedRow.id"
         :row="expandedRow"
+        :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
       ></row-renderer>
     </template>
   </div>
@@ -45,6 +48,9 @@ Vue.component('DataRowRenderer', DataRowRenderer)
 export default class RowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
+
+  @Prop({ type: Boolean, default: false })
+  private shouldUseFunctionalRenderers: boolean
 
   private get rowToDisplay() {
     return this.row

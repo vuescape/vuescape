@@ -76,6 +76,7 @@
       :sortLevel="selectedSection.treeTable.content.sortLevel"
       :cssStyles="cssStyles"
       :cssClass="selectedSection.treeTable.content.cssClass"
+      :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
       @columns-resized="rightAlignHeader"
     ></tree-table>
     <v-alert
@@ -125,6 +126,9 @@ export default class ReportPane extends ComponentBase {
 
   @Prop({ type: String, default: '' })
   private divStyle: string
+
+  @Prop({ type: Boolean, default: false })
+  private shouldUseFunctionalRenderers: boolean
 
   @namespace('window/availableHeight').State(state => state.value)
   private availableHeight: Array<number>

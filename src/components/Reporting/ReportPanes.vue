@@ -15,18 +15,21 @@
       v-if="navigationReport"
       :style="divStyle"
       :reportNamespace="navigationNamespace"
+      :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
     />
     <div v-else></div>
     <report-pane
       v-if="mainReport"
       :style="divStyle"
       :reportNamespace="mainNamespace"
+      :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
     />
     <div v-else></div>
     <report-pane
       v-if="detailReport"
       :style="divStyle"
       :reportNamespace="detailNamespace"
+      :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
     />
   </SlidingPanes>
 </template>
@@ -64,6 +67,9 @@ export default class ReportPanes extends ComponentBase {
 
   @Prop({ type: Array, required: false })
   private reportPaneActions: Array<SlidingPaneAction>
+
+  @Prop({ type: Boolean, default: false })
+  private shouldUseFunctionalRenderers: boolean
 
   private get slidingPaneEvent() {
     const stateKey    = makeStateKey(this.reportNamespace, 'slidingPaneEvent')

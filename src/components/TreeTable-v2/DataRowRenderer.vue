@@ -39,6 +39,14 @@
       </span>
       <span class="tree-table__rendered-cell">
         <component
+          v-if="shouldUseFunctionalRenderers"
+          :is="toFunctionalRenderer(cell)"
+          :key="cellKey(cell)"
+          :cell="cell"
+          :isHovering="cell.hover && isHovering"
+        ></component>
+        <component
+          v-else
           :is="cell.renderer || 'TextCellRenderer'"
           :key="cellKey(cell)"
           :cell="cell"
@@ -56,6 +64,7 @@ import { Prop } from 'vue-property-decorator'
 import { ComponentBase, HorizontalAlignment, TreeTableCell, TreeTableRow } from '@vuescape/index'
 
 import FixedCellRenderer from './FixedCellRenderer.vue'
+import { resolveFunctionalCellRenderer } from './functional-renderers'
 import TextCellRenderer from './TextCellRenderer.vue'
 
 @Component({
@@ -68,6 +77,9 @@ export default class DataRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
 
+  @Prop({ type: Boolean, default: false })
+  private shouldUseFunctionalRenderers: boolean
+
   private isHovering = false
 
   private get rowToDisplay() {
@@ -75,7 +87,11 @@ export default class DataRowRenderer extends ComponentBase {
   }
 
   private cellKey(cell: TreeTableCell) {
-    return cell.id + '_' + (cell.renderer ? cell.renderer.name : 'TextCellRenderer')
+    return cell.id + '_' + (cell.renderer ? (cell.renderer.name || cell.renderer) : 'TextCellRenderer')
+  }
+
+  private toFunctionalRenderer(cell: TreeTableCell) {
+    return resolveFunctionalCellRenderer(cell.renderer)
   }
 
   private onMouseEnter(cell: TreeTableCell) {

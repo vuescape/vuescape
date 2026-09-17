@@ -28,6 +28,7 @@
           v-for="row in rowsToDisplay"
           :key="row.id"
           :row="row"
+          :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
         ></row-renderer>
       </template>
       <template slot="tfoot">
@@ -35,6 +36,7 @@
           v-for="footer in footersToDisplay"
           :key="footer.id"
           :row="footer"
+          :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
         ></row-renderer>
       </template>
     </vue-scrolling-table>
@@ -121,6 +123,9 @@ export default class TreeTable extends ComponentBase {
 
   @Prop({ type: Function, required: false })
   private treeTableSorter?: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow>
+
+  @Prop({ type: Boolean, default: false })
+  private shouldUseFunctionalRenderers: boolean
 
   @namespace('window/availableHeight').State(state => state.value)
   private availableHeight: Array<number>

@@ -51,6 +51,10 @@ export default class SectionHeaderRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
 
+  // Declared so that RowRenderer passing it down does not leak onto the rendered element.
+  @Prop({ type: Boolean, default: false })
+  private shouldUseFunctionalRenderers: boolean
+
   private get rowToDisplay() {
     return this.row
   }
