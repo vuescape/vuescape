@@ -28,7 +28,7 @@ export default class ModuleStore extends ComponentBase {
   private shouldUseCache: boolean
 
   @Prop()
-  private initialValue: any
+  private initialValue!: any
 
   @Prop({ type: Object, required: false })
   private args: object

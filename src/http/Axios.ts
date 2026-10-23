@@ -44,7 +44,8 @@ export class Axios {
     const cacheAdapter = (await import(/* webpackChunkName: 'axios-extensions' */ 'axios-extensions')).cacheAdapterEnhancer
     const Cache        = (await import(/* webpackChunkName: 'lru-cache' */'lru-cache' as any)).default
 
-    Axios.cacheAdapterFactory = () => cacheAdapter(axios.defaults.adapter!, {
+    // axios 1.x defaults.adapter is a list of adapter names; resolve it to the adapter function
+    Axios.cacheAdapterFactory = () => cacheAdapter(axios.getAdapter(axios.defaults.adapter), {
       enabledByDefault: cacheOptions.shouldCacheAllRequests,
       cacheFlag       : cacheOptions.cacheFlag,
       defaultCache    : new (Cache as any)({

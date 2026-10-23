@@ -116,6 +116,10 @@ export class HttpService {
     const axiosConfig = {
       baseURL: this.baseUrl,
     } as any
+    if (typeof formattedArgs === 'string') {
+      // axios 1.x no longer defaults POST bodies to form encoding
+      axiosConfig.headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }
     if (abortController) {
       axiosConfig.signal = abortController.signal
     }

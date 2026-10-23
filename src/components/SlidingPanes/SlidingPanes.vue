@@ -42,7 +42,7 @@ export default class SlidingPanes extends ComponentBase {
   @Prop({
     type    : Array,
     required: true,
-  }) public slidingPaneConfig: Array<SlidingPaneConfig>
+  }) public slidingPaneConfig!: Array<SlidingPaneConfig>
 
   // Actions triggered by Vuex state state change
   @Prop({
