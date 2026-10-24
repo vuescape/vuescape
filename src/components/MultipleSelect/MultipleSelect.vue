@@ -36,6 +36,7 @@
         selectedLabel=""
         :optionsLimit="10000"
         :disabled="isSelectDisabled"
+        :filteringSortFunc="keepOptionOrder"
       >
         <template v-slot:option="scope">
           <span
@@ -197,6 +198,11 @@ class MultipleSelect extends Vue {
     const result =
       this.isDisabledVal || (this.shouldSingleItemSelectBeDisabled && this.options && this.options.length === 1)
     return result
+  }
+
+  // vue-multiselect 3 sorts search results by label length; version 2 kept the options' order
+  private keepOptionOrder() {
+    return 0
   }
 
   private async onSelect(option: any) {
