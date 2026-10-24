@@ -1,4 +1,3 @@
-import { Vue } from '@vuescape/decorators'
 import { NavigationGuard, RouteLocationNormalized } from 'vue-router'
 
 export const makeNavigationGuard = (

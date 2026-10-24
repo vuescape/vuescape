@@ -1,4 +1,3 @@
-import { Vue } from '@vuescape/decorators'
 import { NavigationGuard } from 'vue-router'
 
 export const makeDocumentTitleSetter = (title: string) => {
