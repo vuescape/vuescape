@@ -136,6 +136,22 @@
   line-height: inherit;
 }
 
+/* Vuetify 1.5 alert icons were 24px, with the close icon (set in ApplicationBootstrapper) not padded like a button */
+.v-alert__prepend {
+  min-height: 24px;
+}
+.v-alert__prepend > .v-icon {
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+}
+.v-alert__close .v-icon {
+  font-size: 24px;
+}
+.v-alert__close > .v-btn {
+  margin: -4px;
+}
+
 /*
  * Vuetify 1.5's `flat hover` card: no shadow until hovered. Vuetify 4 ignores hover on flat cards,
  * so use this class instead of the hover prop. It also drops Vuetify 4's clickable card overlay.

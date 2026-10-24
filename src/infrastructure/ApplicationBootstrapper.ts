@@ -99,6 +99,10 @@ export class ApplicationBootstrapper {
     }
 
     return createVuetify({
+      defaults: {
+        // Vuetify 1.5 closed alerts with its cancel icon
+        VAlert: { closeIcon: '$cancel' },
+      },
       icons: {
         defaultSet: this.iconfont,
         aliases   : iconSet.aliases,
