@@ -1,7 +1,8 @@
 <template>
   <v-card
     flat
-    hover
+    :ripple="false"
+    class="vuetify1-card--flat-hover"
     style="border: 2px dashed #9bdddb; text-align: center; height: 100%; text-align: center;"
     :style="files.length === 0 ? 'cursor: pointer;' : 'cursor : unset;'"
     @click="files.length === 0 && $refs.fileInput.click()"
@@ -43,18 +44,19 @@
           :key="file.name"
         >
           <template v-slot:prepend>
-            <v-list-item-action>
+            <v-list-item-action class="file-upload__v-list-item-action--layout">
               <i
                 class="vuescape-button__v-icon--font fa-duotone file-excel"
                 style="color: #555; font-size: 40px;"
               />
             </v-list-item-action>
           </template>
-          <div>
+          <div class="file-upload__div--file-name">
             <v-list-item-title v-text="file.name"></v-list-item-title>
           </div>
           <template v-slot:append>
             <span
+              class="file-upload__span--remove"
               style="cursor: pointer;"
               @click.stop="remove(file.name)"
             >
@@ -135,6 +137,18 @@ export default toNative(FileUpload)
 <style>
 .file-upload__close:hover {
   background-color: #f5f5f5;
+}
+/* Vuetify 1.5's list tile sizes: a 56px action and a 40px avatar, with left-aligned content */
+.file-upload__v-list-item-action--layout {
+  min-width: 56px;
+}
+.file-upload__div--file-name {
+  text-align: left;
+}
+.file-upload__span--remove {
+  display:    inline-block;
+  width:      40px;
+  text-align: center;
 }
 .file-upload__span--title {
   font-size:      20px;
