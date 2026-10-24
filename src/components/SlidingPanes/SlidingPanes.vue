@@ -310,13 +310,17 @@ class SlidingPanes extends ComponentBase {
       }
     }
 
-    // splitpanes 4 keeps panes at their minimum size, so closed panes can't have one. The classes go on a div in
-    // the pane, as with splitpanes 2, so they can size the content without competing with the pane's own width.
-    const wrappedSlot = h(Pane, {
+    // splitpanes 2 only applied the min and max widths when dragging; splitpanes 4 always keeps panes within them, so
+    // widen them to include the width set here (e.g. closed panes, or a pane filling the space others left).
+    // The classes go on a div in the pane, as with splitpanes 2, so they can size the content without competing
+    // with the pane's own width.
+    const { minWidth, maxWidth } = this.slidingPaneConfig[index]
+    const width                  = this.panes[index].width
+    const wrappedSlot            = h(Pane, {
       ref    : 'wrappedPane_' + index,
-      size   : this.panes[index].width,
-      minSize: this.panes[index].width === 0 ? 0 : this.slidingPaneConfig[index].minWidth,
-      maxSize: this.slidingPaneConfig[index].maxWidth,
+      size   : width,
+      minSize: minWidth === undefined ? undefined : Math.min(minWidth, width),
+      maxSize: maxWidth === undefined ? undefined : Math.max(maxWidth, width),
     }, () => [h('div', { class: classes }, nodes)])
     return wrappedSlot
   }
