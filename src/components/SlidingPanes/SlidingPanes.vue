@@ -265,6 +265,10 @@ class SlidingPanes extends ComponentBase {
       onPaneClick   : (event: any) => {
         self.onPaneClick(event)
       },
+      // splitpanes 4 recreates its splitters when it mounts and when panes are added or removed, after this renders
+      onReady       : () => self.setSplitterDisplays(),
+      onPaneAdd     : () => self.setSplitterDisplays(),
+      onPaneRemove  : () => self.setSplitterDisplays(),
     }, panes)
 
     // Wrap the splitpanes and set the div to the correct height to allow 100% to fill parent div
