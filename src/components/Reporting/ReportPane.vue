@@ -381,6 +381,10 @@ export default toNative(ReportPane)
   opacity:          1 !important;
   border-radius:    5px 5px 0 0 !important;
 }
+/* Vuetify 1.5's active-class replaced its active state; Vuetify 4 also tints selected buttons */
+.report-pane__v-btn--active > .v-btn__overlay {
+  opacity: 0;
+}
 .report-pane__v-btn--inactive {
   border-radius: 5px 5px 0 0 !important;
 }
