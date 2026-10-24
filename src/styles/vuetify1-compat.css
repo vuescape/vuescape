@@ -109,6 +109,12 @@
   line-height: inherit;
 }
 
+/* Vuetify 1.5 always showed text field prefixes and suffixes, not just once the field was active */
+.v-text-field__prefix,
+.v-text-field__suffix {
+  opacity: 1;
+}
+
 .v-card-text {
   padding: 16px;
   letter-spacing: normal;
