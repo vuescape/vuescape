@@ -46,6 +46,7 @@
 <script lang="ts">
 import { Component, namespace, Prop, toNative, Watch } from '@vuescape/decorators'
 import VueScrollingTable from 'vue-scrolling-table'
+import 'vue-scrolling-table/style.css'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
