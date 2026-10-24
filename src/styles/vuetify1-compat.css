@@ -1036,3 +1036,37 @@
     text-align: right !important;
   }
 }
+
+/* Vuetify 1.5 radio groups: 24px radios with the label 8px after, spaced like its selection controls */
+.v-radio-group {
+  margin-top: 16px;
+  padding-top: 4px;
+}
+.v-radio-group > .v-input__control {
+  margin-bottom: 12px;
+}
+.v-radio-group > .v-input__details {
+  min-height: 12px;
+  padding-top: 0;
+}
+.v-radio-group > .v-input__details .v-messages {
+  min-height: 12px;
+  line-height: 12px;
+}
+.v-radio-group .v-selection-control {
+  min-height: 24px;
+}
+.v-radio-group .v-selection-control-group--inline .v-selection-control {
+  margin-right: 16px;
+}
+.v-radio-group .v-selection-control__wrapper,
+.v-radio-group .v-selection-control__input {
+  width: 24px;
+  height: 24px;
+}
+.v-radio-group .v-selection-control .v-label {
+  margin-left: 8px;
+  height: 20px;
+  line-height: 20px;
+  letter-spacing: normal;
+}
