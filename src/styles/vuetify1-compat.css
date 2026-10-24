@@ -61,8 +61,9 @@
   background: #f5f5f5;
 }
 
-/* Vuetify 1.5 buttons had margins, except in toggles and groups; Vuetify 4 uses icon buttons inside its own components */
-.v-btn:not(.v-btn--icon) {
+/* Vuetify 1.5 buttons had margins, except in toggles and groups; Vuetify 4 uses icon buttons inside its own components.
+   :where keeps this at .v-btn's specificity so app classes can still override the margins */
+.v-btn:where(:not(.v-btn--icon)) {
   margin: 6px 8px;
 }
 .v-btn-toggle > .v-btn,
