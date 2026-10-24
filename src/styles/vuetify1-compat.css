@@ -104,6 +104,25 @@
 .v-btn-toggle > .v-btn.v-btn--active {
   opacity: 1;
 }
+/* ...with 2px corners, a 1px gap between buttons and dark grey text; :where lets app styles override these,
+   and the overrides layer lets color utilities such as text-black (from base-color) override the text color */
+.v-btn-toggle {
+  border-radius: 2px;
+}
+.v-btn-toggle > :where(.v-btn:not(:last-child)) {
+  border-right: 1px solid transparent;
+}
+.v-btn-toggle > :where(.v-btn:first-child) {
+  border-radius: 2px 0 0 2px;
+}
+.v-btn-toggle > :where(.v-btn:last-child) {
+  border-radius: 0 2px 2px 0;
+}
+@layer vuetify-overrides {
+  .v-theme--light.v-btn-toggle > .v-btn {
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
 
 /* Vuetify 1.5 card titles were a wrapping flex row (so v-spacer works) that inherited their text style */
 .v-card-title {
