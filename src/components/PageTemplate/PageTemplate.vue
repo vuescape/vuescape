@@ -26,19 +26,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 const PageHeader = () => import(/* webpackChunkName: 'page-header' */ '@vuescape/components/PageHeader').then(m => m.default)
 
 @Component({
   components: { PageHeader },
 })
-export default class PageTemplate extends Vue {
+class PageTemplate extends Vue {
   @Prop({ default: '' })
   private title: string
 
   @Prop({ type: Boolean, default: false })
   private shouldFixFooterAtBottom: boolean
 }
+
+export default toNative(PageTemplate)
 </script>

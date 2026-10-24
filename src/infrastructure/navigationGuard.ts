@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import { NavigationGuard, RawLocation, Route } from 'vue-router'
+import { ComponentPublicInstance } from 'vue'
+import { NavigationGuard, RouteLocationNormalized, RouteLocationRaw } from 'vue-router'
 
 import { store } from '../store'
 
-const authenticatedNavigationGuardImpl: any = (to: Route,
-  from: Route,
-  next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void,
+const authenticatedNavigationGuardImpl: any = (to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+  next: (to?: RouteLocationRaw | false | ((vm: ComponentPublicInstance) => any) | void) => void,
   signInPath: string,
 ) => {
   const doesRouteRequireAuthentication = to.matched.some(record => record.meta.requiresAuth)
@@ -31,7 +31,7 @@ const authenticatedNavigationGuardImpl: any = (to: Route,
 }
 
 export const makeAuthenticatedNavigationGuard = (signInPath: string) => {
-  const authenticatedNavigationGuard: NavigationGuard<Vue> = (to, from, next) => {
+  const authenticatedNavigationGuard: NavigationGuard = (to, from, next) => {
     authenticatedNavigationGuardImpl(to, from, next, signInPath)
   }
   return authenticatedNavigationGuard

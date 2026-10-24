@@ -62,8 +62,7 @@
   </v-layout>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
 
 const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
   m => m.default)
@@ -71,7 +70,7 @@ const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@
 @Component({
   components: { VuescapeButton },
 })
-export default class ModalDialog extends Vue {
+class ModalDialog extends Vue {
   private idValue                     = ''
   private isModalDialogShowingValue   = false
   private titleValue                  = ''
@@ -188,6 +187,8 @@ export default class ModalDialog extends Vue {
     this.messageValue                = this.message
   }
 }
+
+export default toNative(ModalDialog)
 </script>
 
 <style>

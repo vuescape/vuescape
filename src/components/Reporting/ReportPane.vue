@@ -93,8 +93,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component, namespace, Prop, toNative, Watch } from '@vuescape/decorators'
 
 import { dispatchAndAwaitAction, getModuleStateByKey, registerStoreModule } from '@vuescape/store/storeHelpers'
 
@@ -112,7 +111,7 @@ const TreeTable    = () => import(/* webpackChunkName: 'tree-table' */ '@vuescap
     TreeTable,
   },
 })
-export default class ReportPane extends ComponentBase {
+class ReportPane extends ComponentBase {
   private isPerformingLongRunningOperation                                            = false
   private reportNamespaceValue                                                        = ''
   private scrollPositionsValue: Dictionary<{ scrollLeft: number; scrollTop: number }> = {}
@@ -377,6 +376,8 @@ export default class ReportPane extends ComponentBase {
     }
   }
 }
+
+export default toNative(ReportPane)
 </script>
 
 <style>

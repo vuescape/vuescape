@@ -72,14 +72,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
 
 const VuescapeButton = () =>
   import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
 
 @Component({ components: { VuescapeButton } })
-export default class FileUpload extends Vue {
+class FileUpload extends Vue {
   @Prop({ type: String, required: false, default: 'Select an Item' })
   private label: string
   @Prop({ type: String, required: false, default: 'No Items Found' })
@@ -126,6 +125,8 @@ export default class FileUpload extends Vue {
     this.onFilesChanged(this.files, this.files)
   }
 }
+
+export default toNative(FileUpload)
 </script>
 
 <style>

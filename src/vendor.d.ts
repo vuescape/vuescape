@@ -1,6 +1,4 @@
-declare module 'element-loading'
 declare module 'expect'
-declare module 'vue-resize'
 declare module '*.png'
 declare module 'splitpanes'
 declare module 'vue-scrolling-table'

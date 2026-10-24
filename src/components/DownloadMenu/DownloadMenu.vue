@@ -112,11 +112,10 @@
   </v-menu>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 @Component({})
-export default class DownloadMenu extends Vue {
+class DownloadMenu extends Vue {
   @Prop({ type: Boolean, default: false })
   private shouldDisplayRaw: boolean
   @Prop({ type: Boolean, default: false })
@@ -139,6 +138,8 @@ export default class DownloadMenu extends Vue {
     clickZip?: () => void, clickExcel?: () => void, clickRaw?: () => void,
   }
 }
+
+export default toNative(DownloadMenu)
 </script>
 
 <style>

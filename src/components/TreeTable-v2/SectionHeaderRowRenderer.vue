@@ -39,15 +39,14 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { TreeTableRow } from '@vuescape/index'
 
 @Component({})
-export default class SectionHeaderRowRenderer extends ComponentBase {
+class SectionHeaderRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
 
@@ -64,6 +63,8 @@ export default class SectionHeaderRowRenderer extends ComponentBase {
     return indentation
   }
 }
+
+export default toNative(SectionHeaderRowRenderer)
 </script>
 <style scoped>
 .section-header-row-renderer__icon.fa-chevron-down {

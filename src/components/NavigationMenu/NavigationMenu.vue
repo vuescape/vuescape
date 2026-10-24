@@ -66,10 +66,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, namespace, Prop, State, toNative, Vue, Watch } from '@vuescape/decorators'
 
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { namespace, State } from 'vuex-class'
 
 import { HorizontalAlignment } from '@vuescape/reporting-domain/TreeTable/HorizontalAlignment'
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
@@ -87,7 +85,7 @@ const NavigationMenuItem = () => import(/* webpackChunkName: 'navigation-menu-it
     NavigationMenuItem,
   },
 })
-export default class NavigationMenu extends Vue {
+class NavigationMenu extends Vue {
   private areMenusSet              = false
   private menusValue: Array<Menu>  = []
   private hasLeftNavigationItems   = false
@@ -252,6 +250,8 @@ export default class NavigationMenu extends Vue {
     this.hasCenterNavigationItems = this.menusValue.some(_ => _.horizontalAlignment === HorizontalAlignment.Center)
   }
 }
+
+export default toNative(NavigationMenu)
 </script>
 
 <style>

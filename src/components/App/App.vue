@@ -96,10 +96,9 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue'
-import { Component, Inject, Prop, Watch } from 'vue-property-decorator'
-import { Route } from 'vue-router'
-import { Action, namespace, State } from 'vuex-class'
+import { Action, Component, Inject, namespace, Prop, State, toNative, Vue, Watch } from '@vuescape/decorators'
+import type { Component as VueComponent } from 'vue'
+import { RouteLocationNormalized } from 'vue-router'
 
 import { TrackingService } from '@vuescape/analytics'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
@@ -124,13 +123,13 @@ const DownloadSnackbar = () => import(/* webpackChunkName: 'download-snackbar' *
     TheFooter,
   },
 })
-export default class App extends ComponentBase {
+class App extends ComponentBase {
 
   @Inject('trackingService') private trackingService: TrackingService
 
-  @Inject('navigationComponent') private navigationComponent: Vue
+  @Inject('navigationComponent') private navigationComponent: VueComponent
 
-  @Inject('additionalAppComponents')   private additionalAppComponents?: Array<VueConstructor<Vue>>
+  @Inject('additionalAppComponents')   private additionalAppComponents?: Array<VueComponent>
 
   @Inject('globalClickHandler') private globalClickHandler: (e: MouseEvent) => void
 
@@ -205,7 +204,7 @@ export default class App extends ComponentBase {
   }
 
   @Watch('$route')
-  private onRouteChanged(to: Route, from: Route) {
+  private onRouteChanged(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     this.trackingService.handleRouteChanged(to, from)
   }
 
@@ -269,6 +268,8 @@ export default class App extends ComponentBase {
     return availableHeight
   }
 }
+
+export default toNative(App)
 </script>
 
 <style>

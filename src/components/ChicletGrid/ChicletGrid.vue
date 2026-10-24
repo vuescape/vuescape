@@ -6,11 +6,13 @@
     style="display: inline"
     class="chiclet-grid__container"
   >
-    <template v-for="rowIndex in Math.ceil(visibleChiclets.length / numberOfColumns)">
+    <template
+      v-for="rowIndex in Math.ceil(visibleChiclets.length / numberOfColumns)"
+      v-bind:key="rowIndex + '_icon'"
+    >
       <v-layout
         justify-center
         row
-        v-bind:key="rowIndex + '_icon'"
       >
         <v-flex
           v-for="chiclet in getChiclets(rowIndex, numberOfColumns)"
@@ -99,14 +101,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component, namespace, Prop, toNative, Watch } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { Chiclet } from '@vuescape/types'
 
 @Component
-export default class ChicletGrid extends ComponentBase {
+class ChicletGrid extends ComponentBase {
   private get visibleChiclets() {
     const result = this.chicletsValue.filter((_: any) => _.isVisible)
     return result
@@ -171,6 +172,8 @@ export default class ChicletGrid extends ComponentBase {
     this.chicletsValue = this.chiclets
   }
 }
+
+export default toNative(ChicletGrid)
 </script>
 
 <style>

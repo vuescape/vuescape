@@ -20,14 +20,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { namespace, State } from 'vuex-class'
+import { Component, namespace, State, toNative, Vue, Watch } from '@vuescape/decorators'
 
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 
 @Component
-export default class TheFooter extends Vue {
+class TheFooter extends Vue {
   private static readonly DefaultFooterConfig = {
     copyrightName: '',
     logoAltText  : '',
@@ -64,6 +62,8 @@ export default class TheFooter extends Vue {
     }
   }
 }
+
+export default toNative(TheFooter)
 </script>
 
 // Using less here to avoid compile error building test when this module uses CSS

@@ -93,18 +93,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Getter, Prop, State, toNative, Vue } from '@vuescape/decorators'
 
-import { Component, Prop } from 'vue-property-decorator'
 import { isNavigationFailure } from 'vue-router'
-import { Getter, State } from 'vuex-class'
 
 import { AppInfoModuleName, AppInfoOperation } from '@vuescape/store/modules/AppInfo'
 import { ns } from '@vuescape/store/modules/types'
 import { Menu } from '@vuescape/types'
 
 @Component
-export default class HamburgerMenu extends Vue {
+class HamburgerMenu extends Vue {
   private hamburgerMenu = false
   private expansionPanelIndex = null
 
@@ -142,6 +140,8 @@ export default class HamburgerMenu extends Vue {
     return iconArray
   }
 }
+
+export default toNative(HamburgerMenu)
 </script>
 
 <style>

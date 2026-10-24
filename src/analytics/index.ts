@@ -1,4 +1,4 @@
-export { TrackingProvider } from './TrackingProvider'
+export { type TrackingProvider } from './TrackingProvider'
 export { TrackingProviderFactory } from './TrackingProviderFactory'
 
 export { GoogleAnalytics4TrackingProvider } from './GoogleAnalytics4TrackingProvider'
@@ -8,4 +8,4 @@ export { NullTrackingProvider } from './NullTrackingProvider'
 
 export { DefaultTrackingService } from './DefaultTrackingService'
 export { NullTrackingService } from './NullTrackingService'
-export { TrackingService } from './TrackingService'
+export { type TrackingService } from './TrackingService'

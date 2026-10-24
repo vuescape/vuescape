@@ -44,9 +44,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, namespace, Prop, toNative, Watch } from '@vuescape/decorators'
 import VueScrollingTable from 'vue-scrolling-table'
-import { namespace } from 'vuex-class'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
@@ -73,7 +72,7 @@ import RowRenderer from './RowRenderer.vue'
     VueScrollingTable,
   },
 })
-export default class TreeTable extends ComponentBase {
+class TreeTable extends ComponentBase {
   private uniqueId: string
 
   @Prop({ type: String, required: false })
@@ -570,6 +569,8 @@ export default class TreeTable extends ComponentBase {
   }
 }
 // https://stackoverflow.com/questions/41882616/why-border-is-not-visible-with-position-sticky-when-background-color-exists
+
+export default toNative(TreeTable)
 </script>
 <style>
 .tree-table-cell__td.font-weight__bold {

@@ -22,8 +22,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
+import { registerGlobalComponent } from '@vuescape/infrastructure/globalComponents'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
@@ -31,10 +31,10 @@ import { TreeTableHeaderCell, TreeTableHeaderRow } from '@vuescape/index'
 
 import HeaderCellRenderer from '@vuescape/components/TreeTable-v2/HeaderCellRenderer.vue'
 
-Vue.component('HeaderCellRenderer', HeaderCellRenderer)
+registerGlobalComponent('HeaderCellRenderer', HeaderCellRenderer)
 
 @Component({})
-export default class HeaderRowRenderer extends ComponentBase {
+class HeaderRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableHeaderRow
 
@@ -57,4 +57,6 @@ export default class HeaderRowRenderer extends ComponentBase {
     return result
   }
 }
+
+export default toNative(HeaderRowRenderer)
 </script>

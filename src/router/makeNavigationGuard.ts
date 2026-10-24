@@ -1,16 +1,16 @@
-import Vue from 'vue'
-import { NavigationGuard, Route } from 'vue-router'
+import { Vue } from '@vuescape/decorators'
+import { NavigationGuard, RouteLocationNormalized } from 'vue-router'
 
 export const makeNavigationGuard = (
-  isAuthorized: (to: Route, from: Route) => boolean,
-  onNotAuthorized?: (to: Route, from: Route) => void,
-  onAuthorized?: (to: Route, from: Route) => void,
+  isAuthorized: (to: RouteLocationNormalized, from: RouteLocationNormalized) => boolean,
+  onNotAuthorized?: (to: RouteLocationNormalized, from: RouteLocationNormalized) => void,
+  onAuthorized?: (to: RouteLocationNormalized, from: RouteLocationNormalized) => void,
 ) => {
   if (!isAuthorized) {
     throw new Error('isAuthorized must not be undefined, or null.')
   }
 
-  const isAuthorizedNavigationGuard: NavigationGuard<Vue> = (to, from, next) => {
+  const isAuthorizedNavigationGuard: NavigationGuard = (to, from, next) => {
     if (isAuthorized(to, from)) {
       if (onAuthorized) {
         onAuthorized(to, from)

@@ -1,2 +1,2 @@
 export { default } from './StepWizard.vue'
-export { Step } from './Step'
+export { type Step } from './Step'

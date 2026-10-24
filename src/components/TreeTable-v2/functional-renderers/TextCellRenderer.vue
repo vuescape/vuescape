@@ -1,22 +1,23 @@
-<template functional>
+<template>
   <span
-    :class="props.cell.cssClasses"
-    :title="props.cell.displayValue != null ? props.cell.displayValue : props.cell.value"
-  >{{ props.cell.displayValue != null ? props.cell.displayValue : props.cell.value }}</span>
+    :class="cell.cssClasses"
+    :title="cell.displayValue != null ? cell.displayValue : cell.value"
+  >{{ cell.displayValue != null ? cell.displayValue : cell.value }}</span>
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 import { TreeTableCell } from '@vuescape/index'
 
 @Component
-export default class FunctionalTextCellRenderer extends Vue {
+class FunctionalTextCellRenderer extends Vue {
   @Prop({ type: Object, required: true })
   private cell: TreeTableCell
 
   @Prop({ type: Boolean, default: false })
   private isHovering: boolean
 }
+
+export default toNative(FunctionalTextCellRenderer)
 </script>

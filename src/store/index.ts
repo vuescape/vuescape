@@ -1,7 +1,4 @@
-import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
-
-Vue.use(Vuex)
+import { Store } from 'vuex'
 
 export let store: Store<any>
 
@@ -18,4 +15,4 @@ export {
   makeStateKey,
   registerDynamicModule,
 } from './storeHelpers'
-export { RootState } from './RootState'
+export { type RootState } from './RootState'

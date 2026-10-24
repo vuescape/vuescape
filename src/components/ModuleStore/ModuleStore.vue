@@ -1,12 +1,12 @@
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import { HttpMethod } from '@vuescape/http'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { ns, StoreModuleState, ValueMapper } from '@vuescape/store/modules/types'
 
 @Component
-export default class ModuleStore extends ComponentBase {
+class ModuleStore extends ComponentBase {
   private static validateHttpMethod(val: string) {
     const result = (Object as any).values(HttpMethod).includes(val)
     return result
@@ -62,16 +62,18 @@ export default class ModuleStore extends ComponentBase {
 
   private render() {
     // Suppress Typescript errors, TS2532 & TS2722
-    if (!this.$scopedSlots || !this.$scopedSlots.default) {
+    if (!this.$slots || !this.$slots.default) {
       return null
     }
 
     const moduleState = this.$store.state[this.namespace] ? this.$store.state[this.namespace] : this.defaultModuleState
-    const result      = this.$scopedSlots.default({
+    const result      = this.$slots.default({
       moduleState: this.$store.state[this.namespace],
     })
 
     return result
   }
 }
+
+export default toNative(ModuleStore)
 </script>

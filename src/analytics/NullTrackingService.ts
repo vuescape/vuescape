@@ -1,4 +1,4 @@
-import { Route } from 'vue-router'
+import { RouteLocationNormalized } from 'vue-router'
 
 import { TrackingProvider } from './TrackingProvider'
 import { TrackingService } from './TrackingService'
@@ -13,7 +13,7 @@ export class NullTrackingService implements TrackingService {
     // no-op
   }
 
-  public handleRouteChanged(to: Route, from: Route): void {
+  public handleRouteChanged(to: RouteLocationNormalized, from: RouteLocationNormalized): void {
     // no-op
   }
 

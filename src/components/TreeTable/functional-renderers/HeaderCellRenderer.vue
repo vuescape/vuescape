@@ -1,25 +1,24 @@
-<template functional>
-  <span> {{ $options.methods.valueToDisplay(props.header) }}
+<template>
+  <span> {{ valueToDisplay(header) }}
       <i
-        v-if="props.header.columnSorter"
-        :class="$options.methods.getIconArray(props.header.columnSorter.sortDirection).join(' ')"
-        :style="$options.methods.iconStyle(props.header)"
+        v-if="header.columnSorter"
+        :class="getIconArray(header.columnSorter.sortDirection).join(' ')"
+        :style="iconStyle(header)"
         style="color: #fff; font-size: 16px; vertical-align: middle; cursor: hand"
-        @click="listeners['toggle-sort'](props.header)"
+        @click="$emit('toggle-sort', header)"
       />
   </span>
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { SortDirection, TreeTableHeaderCell } from '@vuescape/index'
 
 @Component({})
-export default class FunctionalHeaderCellRenderer extends ComponentBase {
+class FunctionalHeaderCellRenderer extends ComponentBase {
   @Prop({
     type    : Object,
     required: true,
@@ -55,4 +54,6 @@ export default class FunctionalHeaderCellRenderer extends ComponentBase {
     return header.value
   }
 }
+
+export default toNative(FunctionalHeaderCellRenderer)
 </script>

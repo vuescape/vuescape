@@ -26,11 +26,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
 
 @Component
-export default class VuescapeButton extends Vue {
+class VuescapeButton extends Vue {
   private isButtonDisabled = false
 
   @Prop({ type: Array, default: () => [] })
@@ -60,6 +59,8 @@ export default class VuescapeButton extends Vue {
     this.isButtonDisabled = this.isDisabled
   }
 }
+
+export default toNative(VuescapeButton)
 </script>
 
 <style>

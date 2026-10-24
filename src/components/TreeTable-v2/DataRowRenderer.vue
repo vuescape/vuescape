@@ -58,8 +58,7 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import { ComponentBase, HorizontalAlignment, TreeTableCell, TreeTableRow } from '@vuescape/index'
 
@@ -73,7 +72,7 @@ import TextCellRenderer from './TextCellRenderer.vue'
     TextCellRenderer,
   },
 })
-export default class DataRowRenderer extends ComponentBase {
+class DataRowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
 
@@ -144,6 +143,8 @@ export default class DataRowRenderer extends ComponentBase {
     return result
   }
 }
+
+export default toNative(DataRowRenderer)
 </script>
 
 <style>

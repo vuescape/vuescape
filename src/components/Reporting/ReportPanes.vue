@@ -35,9 +35,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Route } from 'vue-router'
-import { namespace } from 'vuex-class'
+import { Component, namespace, Prop, toNative, Watch } from '@vuescape/decorators'
+import { RouteLocationNormalized } from 'vue-router'
 
 import { getModuleStateByKey, makeStateKey } from '@vuescape/store/storeHelpers'
 
@@ -57,7 +56,7 @@ const SlidingPanes = () => import(/* webpackChunkName: 'sliding-panes' */ '@vues
     SlidingPanes,
   },
 })
-export default class ReportPanes extends ComponentBase {
+class ReportPanes extends ComponentBase {
   // Props passed in on route
   @Prop({ type: String, required: true })
   private reportId: string
@@ -213,7 +212,7 @@ export default class ReportPanes extends ComponentBase {
 
   // TODO: implement this as needed
   @Watch('$route')
-  private async onRouteChanged(to: Route, from: Route) {
+  private async onRouteChanged(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     console.info('route changed')
   }
 
@@ -227,6 +226,8 @@ export default class ReportPanes extends ComponentBase {
     console.info('pane closed', index)
   }
 }
+
+export default toNative(ReportPanes)
 </script>
 
 <style>

@@ -6,15 +6,14 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { TreeTableCell } from '@vuescape/index'
 
 @Component({ components: {} })
-export default class FixedCellRenderer extends ComponentBase {
+class FixedCellRenderer extends ComponentBase {
   @Prop({
     type    : Object,
     required: true,
@@ -25,4 +24,6 @@ export default class FixedCellRenderer extends ComponentBase {
     default: false,
   }) private isHovering: boolean
 }
+
+export default toNative(FixedCellRenderer)
 </script>

@@ -1,4 +1,4 @@
-import { NavigationGuard } from 'vue-router'
+import { NavigationGuard, NavigationGuardNext } from 'vue-router'
 
 export function withNavigationGuards(...guards: Array<NavigationGuard>): NavigationGuard {
   if (!Array.isArray(guards)) {
@@ -8,12 +8,12 @@ export function withNavigationGuards(...guards: Array<NavigationGuard>): Navigat
   return (to, from, next) => {
     let hasCompleted = false
 
-    const nextHook = (value: any) => {
+    const nextHook = ((value: any) => {
       hasCompleted = value !== undefined
       if (hasCompleted) {
         next(value)
       }
-    }
+    }) as NavigationGuardNext
 
     for (const guard of guards) {
       guard(to, from, nextHook)

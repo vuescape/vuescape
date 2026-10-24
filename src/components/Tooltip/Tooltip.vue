@@ -40,7 +40,7 @@
                 class="fa-light fa-times"
                 style="cursor: pointer; font-size: 18px"
                 @click="
-                  stopVideo()
+                  stopVideo();
                   shouldShowDialog = false
                 "
               />
@@ -61,14 +61,13 @@
   </span>
 </template>
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { namespace, State } from 'vuex-class'
+import { Component, namespace, Prop, State, toNative, Watch } from '@vuescape/decorators'
 
 import { ComponentBase, HoverContentKind, TreeTableCell, TreeTableRow } from '@vuescape/index'
 import { ModuleState, StoreOperation } from '@vuescape/store/modules'
 
 @Component({})
-export default class Tooltip extends ComponentBase {
+class Tooltip extends ComponentBase {
   private shouldShowDialog = false
 
   @State('tooltipSingleton')
@@ -145,7 +144,7 @@ export default class Tooltip extends ComponentBase {
     this.shouldShowDialog = true
   }
 
-  private beforeDestroy() {
+  private beforeUnmount() {
     this.stopVideo()
   }
 
@@ -157,6 +156,8 @@ export default class Tooltip extends ComponentBase {
     }
   }
 }
+
+export default toNative(Tooltip)
 </script>
 
 <style>

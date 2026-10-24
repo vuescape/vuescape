@@ -1,4 +1,4 @@
-import { Route } from 'vue-router'
+import { RouteLocationNormalized } from 'vue-router'
 
 import { TrackingProvider } from './TrackingProvider'
 import { TrackingService } from './TrackingService'
@@ -25,7 +25,7 @@ export class DefaultTrackingService implements TrackingService {
     this.trackingProviders.forEach(_ => _.identify(user))
   }
 
-  public handleRouteChanged(to: Route, from: Route): void {
+  public handleRouteChanged(to: RouteLocationNormalized, from: RouteLocationNormalized): void {
     this.trackingProviders.forEach(_ => _.trackPageView(to.path))
   }
 

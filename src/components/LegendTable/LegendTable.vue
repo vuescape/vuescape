@@ -43,14 +43,15 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 @Component({})
-export default class LegendTable extends Vue {
+class LegendTable extends Vue {
   @Prop({ type: Number, default: 315 })
   private nudgeLeft: number
 }
+
+export default toNative(LegendTable)
 </script>
 
 <style>

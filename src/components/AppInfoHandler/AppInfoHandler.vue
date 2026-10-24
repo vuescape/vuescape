@@ -43,15 +43,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Component, Getter, Prop, toNative, Watch } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { AppInfoModuleName, AppInfoOperation } from '@vuescape/store/modules/AppInfo'
 import { ns } from '@vuescape/store/modules/types'
 
 @Component
-export default class AppInfoPoller extends ComponentBase {
+class AppInfoPoller extends ComponentBase {
   private shouldUpdate = false
   private changedVersion = ''
 
@@ -85,12 +84,14 @@ export default class AppInfoPoller extends ComponentBase {
   @Watch('isSiteInMaintenanceMode')
   private async onisSiteInMaintenanceModeChanged(isSiteInMaintenanceMode: string, oldisSiteInMaintenanceMode: string) {
     // First time loaded
-    if (isSiteInMaintenanceMode && this.$router.currentRoute.path !== this.siteMaintenanceRoutePath) {
+    if (isSiteInMaintenanceMode && this.$router.currentRoute.value.path !== this.siteMaintenanceRoutePath) {
       await this.$nextTick()
       this.$router.push(this.siteMaintenanceRoutePath)
     }
   }
 }
+
+export default toNative(AppInfoPoller)
 </script>
 
 <style>

@@ -42,14 +42,12 @@
   </v-layout>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component, namespace, toNative, Vue, Watch } from '@vuescape/decorators'
 
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 
 @Component
-export default class SiteMaintenance extends Vue {
+class SiteMaintenance extends Vue {
   private isPerformingMaintenance: string = ''
   private wasPreviouslyPerformingMaintenance = false
   private sitePerformanceMaintenanceMessage = ''
@@ -120,6 +118,8 @@ export default class SiteMaintenance extends Vue {
     }
   }
 }
+
+export default toNative(SiteMaintenance)
 </script>
 
 <style>

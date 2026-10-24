@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
+import { registerGlobalComponent } from '@vuescape/infrastructure/globalComponents'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
@@ -40,12 +40,12 @@ import { TreeTableRow } from '@vuescape/index'
 
 import DataRowRenderer from '@vuescape/components/TreeTable-v2/DataRowRenderer.vue'
 
-Vue.component('DataRowRenderer', DataRowRenderer)
+registerGlobalComponent('DataRowRenderer', DataRowRenderer)
 
 @Component({
   name: 'row-renderer',
 })
-export default class RowRenderer extends ComponentBase {
+class RowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
 
@@ -56,4 +56,6 @@ export default class RowRenderer extends ComponentBase {
     return this.row
   }
 }
+
+export default toNative(RowRenderer)
 </script>

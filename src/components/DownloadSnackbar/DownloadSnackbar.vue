@@ -33,8 +33,7 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component, namespace, toNative } from '@vuescape/decorators'
 
 import { StoreOperation } from '@vuescape/store/modules/types'
 
@@ -43,7 +42,7 @@ import { ComponentBase } from '@vuescape/index'
 import { DownloadSnackbarNamespace } from './DownloadSnackbarNamespace'
 
 @Component({})
-export default class DownloadSnackbar extends ComponentBase {
+class DownloadSnackbar extends ComponentBase {
   public static DownloadSnackbarNamespace = DownloadSnackbarNamespace
 
   @(namespace(DownloadSnackbar.DownloadSnackbarNamespace).State(state => {
@@ -69,4 +68,6 @@ export default class DownloadSnackbar extends ComponentBase {
     )
   }
 }
+
+export default toNative(DownloadSnackbar)
 </script>

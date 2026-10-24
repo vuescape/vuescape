@@ -9,15 +9,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
-import { Component, Prop } from 'vue-property-decorator'
 
 import * as noUiSlider from 'nouislider'
 import 'nouislider/distribute/nouislider.css'
 
 @Component
-export default class DateRangeSlider extends Vue {
+class DateRangeSlider extends Vue {
   @Prop({ type: String })
   private id: string
 
@@ -219,6 +218,8 @@ export default class DateRangeSlider extends Vue {
     }
   }
 }
+
+export default toNative(DateRangeSlider)
 </script>
 
 <style>

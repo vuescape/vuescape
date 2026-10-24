@@ -82,8 +82,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
 
 import Multiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
@@ -94,7 +93,7 @@ import { Guid } from '@vuescape/index'
   components: { Multiselect },
   inheritAttrs: false,
 })
-export default class MultipleSelect extends Vue {
+class MultipleSelect extends Vue {
   private id = ''
 
   private areWatchersEnabled = false
@@ -414,6 +413,8 @@ export default class MultipleSelect extends Vue {
     this.isDisabledVal = this.isDisabled
   }
 }
+
+export default toNative(MultipleSelect)
 </script>
 
 <style>

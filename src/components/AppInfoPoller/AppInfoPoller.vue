@@ -1,6 +1,5 @@
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Action } from 'vuex-class'
+import { Action, Component, toNative } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { AppInfoModuleName, AppInfoOperation, AppInfoStore } from '@vuescape/store/modules/AppInfo'
@@ -8,7 +7,7 @@ import { ns } from '@vuescape/store/modules/types'
 import { registerDynamicModule } from '@vuescape/store/storeHelpers'
 
 @Component
-export default class AppInfoHandler extends ComponentBase {
+class AppInfoHandler extends ComponentBase {
   private poller: any
 
   @Action(ns(AppInfoModuleName, AppInfoOperation.Action.FetchAppInfo))
@@ -26,7 +25,7 @@ export default class AppInfoHandler extends ComponentBase {
     }, 60000) // wait 1 minute.  TODO: this can be props driven
   }
 
-  private beforeDestroy() {
+  private beforeUnmount() {
     clearInterval(this.poller)
   }
 
@@ -34,4 +33,6 @@ export default class AppInfoHandler extends ComponentBase {
   private render() {
   }
 }
+
+export default toNative(AppInfoHandler)
 </script>

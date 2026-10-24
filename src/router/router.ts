@@ -1,24 +1,22 @@
-import Vue from 'vue'
-import VueRouter, { NavigationGuard, RouteConfig } from 'vue-router'
+import { createRouter, createWebHistory, NavigationGuard, Router, RouteRecordRaw } from 'vue-router'
 
-export let router: VueRouter
+export let router: Router
 
-export function makeRouter(routes?: Array<RouteConfig>,
-  beforeResolveNavigationGuardFactories?: Array<(vueRouter: VueRouter) => NavigationGuard<Vue>>,
+export function makeRouter(routes?: Array<RouteRecordRaw>,
+  beforeResolveNavigationGuardFactories?: Array<(vueRouter: Router) => NavigationGuard>,
 ) {
   if (router && (!routes || routes.length === 0)) {
     return router
   }
 
-  Vue.use(VueRouter)
-  router = new VueRouter({
-    mode: 'history',
+  router = createRouter({
+    history: createWebHistory(),
     linkActiveClass: 'app__router--is-active',
     scrollBehavior: () => ({
-      y: 0,
-      x: 0,
+      top: 0,
+      left: 0,
     }),
-    routes,
+    routes: routes ?? [],
   })
 
   if (beforeResolveNavigationGuardFactories) {

@@ -28,14 +28,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
+import type { ComponentPublicInstance } from 'vue'
 
 import { formatValue, presentationFormatKind } from '@vuescape/infrastructure/presentationFormatter'
 import { Guid } from '@vuescape/types/Guid'
 
 @Component
-export default class NumericTextField extends Vue {
+class NumericTextField extends Vue {
   private errorVal                         = false
   private errorMessagesVal: Array<string>  = []
   private rawValue: Array<number | string> = []
@@ -220,7 +220,7 @@ export default class NumericTextField extends Vue {
   }
 
   private repositionCursor(value: string) {
-    const component = this.$refs[this.uniqueId] as Vue
+    const component = this.$refs[this.uniqueId] as ComponentPublicInstance
     if (!component) {
       return
     }
@@ -304,6 +304,8 @@ export default class NumericTextField extends Vue {
     this.errorMessagesVal = this.errorMessages
   }
 }
+
+export default toNative(NumericTextField)
 </script>
 
 <style>

@@ -26,11 +26,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 @Component
-export default class TextRenderer extends Vue {
+class TextRenderer extends Vue {
   @Prop() private item: Array<object>
 }
+
+export default toNative(TextRenderer)
 </script>

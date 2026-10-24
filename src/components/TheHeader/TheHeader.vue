@@ -7,8 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Inject, Watch } from 'vue-property-decorator'
-import { Getter, namespace } from 'vuex-class'
+import { Component, Getter, Inject, namespace, toNative, Watch } from '@vuescape/decorators'
 
 import { ns } from '@vuescape/store/modules/types'
 import { FeatureService, Guid, Menu, MenuSources } from '@vuescape/types'
@@ -20,7 +19,7 @@ import { HorizontalAlignment } from '@vuescape/reporting-domain/TreeTable/Horizo
 @Component({
   components: { NavigationMenu },
 })
-export default class TheHeader extends ComponentBase {
+class TheHeader extends ComponentBase {
   private static readonly DefaultHeaderConfig = {
     logoAltText      : '',
     toolbarStyle     : '',
@@ -151,6 +150,8 @@ export default class TheHeader extends ComponentBase {
     await this.populateConsolidatedMenus()
   }
 }
+
+export default toNative(TheHeader)
 </script>
 <style>
 img.the-header__img--layout {

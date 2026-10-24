@@ -1,6 +1,6 @@
-import { RouteConfig } from 'vue-router'
+import { RouteRecordRaw } from 'vue-router'
 
-const route: RouteConfig = {
+const route: RouteRecordRaw = {
   path     : '*',
   name     : 'not-found',
   component: () => import(/* webpackChunkName: 'not-found' */

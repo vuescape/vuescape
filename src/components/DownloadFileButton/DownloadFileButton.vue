@@ -44,9 +44,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
 
-import { Component, Prop, Watch } from 'vue-property-decorator'
 
 import { decodeBase64String, downloadFile } from '@vuescape/infrastructure'
 
@@ -56,7 +55,7 @@ const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@
 @Component({
   components: { VuescapeButton },
 })
-export default class DownloadFileButton extends Vue {
+class DownloadFileButton extends Vue {
   @Prop({ default: false })
   private isBase64EncodedBinary: boolean
   // Make this a function because we want it to be reactive
@@ -129,4 +128,6 @@ export default class DownloadFileButton extends Vue {
     this.isButtonDisabled = this.isDisabled
   }
 }
+
+export default toNative(DownloadFileButton)
 </script>

@@ -30,13 +30,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 @Component({
   inheritAttrs: false,
 })
-export default class ItemSelect extends Vue {
+class ItemSelect extends Vue {
   @Prop({ type: String, required: false, default: 'Select an Item' })
   private label: string
   @Prop({ type: String, required: false, default: 'No Items Found' })
@@ -72,6 +71,8 @@ export default class ItemSelect extends Vue {
     return item[propertyName] && item[propertyName].toLowerCase().indexOf(query) !== -1
   }
 }
+
+export default toNative(ItemSelect)
 </script>
 
 <style>

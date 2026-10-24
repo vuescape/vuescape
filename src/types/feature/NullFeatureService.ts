@@ -1,4 +1,4 @@
-import VueRouter from 'vue-router'
+import { Router } from 'vue-router'
 
 import { Chiclet, Menu } from '@vuescape/types'
 
@@ -27,7 +27,7 @@ export class NullFeatureService implements FeatureService {
     return []
   }
 
-  public async getChiclets(router: VueRouter): Promise<Array<Chiclet>> {
+  public async getChiclets(router: Router): Promise<Array<Chiclet>> {
     return []
   }
 }

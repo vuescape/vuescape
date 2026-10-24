@@ -57,15 +57,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 @Component
-export default class CardGrid extends ComponentBase {
+class CardGrid extends ComponentBase {
   @Prop({ type: Array, required: true })
   private cards: Array<any>
 }
+
+export default toNative(CardGrid)
 </script>
 
 <style>

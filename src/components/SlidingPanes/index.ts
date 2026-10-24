@@ -1,6 +1,6 @@
 export { default } from './SlidingPanes.vue'
 
 export { EventType } from './EventType'
-export { SlidingPaneConfig } from './SlidingPaneConfig'
-export { SlidingPaneAction } from './SlidingPaneAction'
-export { SlidingPaneEvent } from './SlidingPaneEvent'
+export { type SlidingPaneConfig } from './SlidingPaneConfig'
+export { type SlidingPaneAction } from './SlidingPaneAction'
+export { type SlidingPaneEvent } from './SlidingPaneEvent'

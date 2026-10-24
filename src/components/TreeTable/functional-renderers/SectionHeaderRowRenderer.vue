@@ -1,31 +1,31 @@
-<template functional>
+<template>
   <tr
-    :key="props.row.id"
-    :class="props.row.cssClasses"
+    :key="row.id"
+    :class="row.cssClasses"
   >
     <td
-      v-for="(cell, index) in props.row.cells.filter(_ => _.isVisible !== false)"
+      v-for="(cell, index) in row.cells.filter(_ => _.isVisible !== false)"
       :key="cell.id"
       :class="[
-        { 'tree-table-item__td--clickable': index === 0 ? props.row.isExpandable && cell.onclick : cell.onclick },
+        { 'tree-table-item__td--clickable': index === 0 ? row.isExpandable && cell.onclick : cell.onclick },
         cell.cssClasses,
       ]"
       :colspan="cell.colspan"
-      @click="cell.onclick && cell.onclick(props.row, cell)"
+      @click="cell.onclick && cell.onclick(row, cell)"
     >
-      <span v-if="index === 0 && props.row.isExpandable">
+      <span v-if="index === 0 && row.isExpandable">
         <i
-          v-if="props.row.isExpanded"
+          v-if="row.isExpanded"
           class="section-header-row-renderer__icon fa-light fa-chevron-down"
         />
         <!-- <i v-if="rowToDisplay.isExpanded" class="material-icons">expand_less</i> -->
         <i
-          v-if="!props.row.isExpanded"
+          v-if="!row.isExpanded"
           class="section-header-row-renderer__icon fa-light fa-chevron-right"
         />
         <!-- <i v-if="!rowToDisplay.isExpanded" class="material-icons">chevron_right</i> -->
       </span>
-      <span :style="`'text-indent': ${props.row.depth}em;`">
+      <span :style="`'text-indent': ${row.depth}em;`">
         <span
           v-if="index === 0"
           :class="cell.cssClasses"
@@ -37,18 +37,19 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 import { TreeTableRow } from '@vuescape/index'
 
 @Component({})
-export default class FunctionalSectionHeaderRowRenderer extends Vue {
+class FunctionalSectionHeaderRowRenderer extends Vue {
   @Prop({
     type    : Object,
     required: true,
   }) private row: TreeTableRow
 }
+
+export default toNative(FunctionalSectionHeaderRowRenderer)
 </script>
 <style scoped>
 .section-header-row-renderer__icon.fa-chevron-down {

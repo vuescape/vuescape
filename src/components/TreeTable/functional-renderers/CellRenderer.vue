@@ -1,57 +1,56 @@
-<template functional>
+<template>
 <!--    <FunctionalTextCellRenderer-->
-<!--      v-if="$options.methods.getCellRenderer(props.cell.renderer).name === 'FunctionalTextCellRenderer'"-->
-<!--      :key="props.cell.id"-->
-<!--      :cell="props.cell"-->
-<!--      :isHovering="props.isHovering"-->
+<!--      v-if="getCellRenderer(cell.renderer).name === 'FunctionalTextCellRenderer'"-->
+<!--      :key="cell.id"-->
+<!--      :cell="cell"-->
+<!--      :isHovering="isHovering"-->
 <!--    >-->
 <!--    </FunctionalTextCellRenderer>-->
 <!--  <FunctionalFixedCellRenderer-->
-<!--    v-else-if="$options.methods.getCellRenderer(props.cell.renderer).name === 'FunctionalFixedCellRenderer'"-->
-<!--    :key="props.cell.id"-->
-<!--    :cell="props.cell"-->
-<!--    :isHovering="props.isHovering"-->
+<!--    v-else-if="getCellRenderer(cell.renderer).name === 'FunctionalFixedCellRenderer'"-->
+<!--    :key="cell.id"-->
+<!--    :cell="cell"-->
+<!--    :isHovering="isHovering"-->
 <!--  >-->
 <!--  </FunctionalFixedCellRenderer>-->
 <!--  <FunctionalEmptyCellRenderer-->
-<!--    v-else-if="$options.methods.getCellRenderer(props.cell.renderer).name === 'FunctionalEmptyCellRenderer'"-->
-<!--    :key="props.cell.id"-->
-<!--    :cell="props.cell"-->
-<!--    :isHovering="props.isHovering"-->
+<!--    v-else-if="getCellRenderer(cell.renderer).name === 'FunctionalEmptyCellRenderer'"-->
+<!--    :key="cell.id"-->
+<!--    :cell="cell"-->
+<!--    :isHovering="isHovering"-->
 <!--  >-->
 <!--  </FunctionalEmptyCellRenderer>-->
 <!--  <FunctionalHeaderCellRenderer-->
-<!--    v-else-if="$options.methods.getCellRenderer(props.cell.renderer).name === 'FunctionalHeaderCellRenderer'"-->
-<!--    :key="props.cell.id"-->
-<!--    :cell="props.cell"-->
-<!--    :isHovering="props.isHovering"-->
+<!--    v-else-if="getCellRenderer(cell.renderer).name === 'FunctionalHeaderCellRenderer'"-->
+<!--    :key="cell.id"-->
+<!--    :cell="cell"-->
+<!--    :isHovering="isHovering"-->
 <!--  >-->
 <!--  </FunctionalHeaderCellRenderer>-->
 <!--  <FunctionalHtmlCellRenderer-->
-<!--    v-else-if="$options.methods.getCellRenderer(props.cell.renderer).name === 'FunctionalHtmlCellRenderer'"-->
-<!--    :key="props.cell.id"-->
-<!--    :cell="props.cell"-->
-<!--    :isHovering="props.isHovering"-->
+<!--    v-else-if="getCellRenderer(cell.renderer).name === 'FunctionalHtmlCellRenderer'"-->
+<!--    :key="cell.id"-->
+<!--    :cell="cell"-->
+<!--    :isHovering="isHovering"-->
 <!--  >-->
 <!--  </FunctionalHtmlCellRenderer>-->
 <!--  <div v-else>Oops</div>-->
   <component
-    :is="$options.methods.getCellRenderer(props.cell.renderer)"
-    :key="props.cell.id"
-    :cell="props.cell"
-    :isHovering="props.isHovering"
-    :isExpandable="props.isExpandable"
+    :is="getCellRenderer(cell.renderer)"
+    :key="cell.id"
+    :cell="cell"
+    :isHovering="isHovering"
+    :isExpandable="isExpandable"
   ></component>
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 import { TreeTableCell } from '@vuescape/index'
 
 @Component
-export default class FunctionalCellRenderer extends Vue {
+class FunctionalCellRenderer extends Vue {
   @Prop({
     type    : Object,
     required: true,
@@ -79,4 +78,6 @@ export default class FunctionalCellRenderer extends Vue {
     return result
   }
 }
+
+export default toNative(FunctionalCellRenderer)
 </script>

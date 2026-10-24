@@ -1,4 +1,4 @@
-import VueRouter from 'vue-router'
+import { Router } from 'vue-router'
 
 import { Chiclet } from '../Chiclet'
 import { Menu } from '../Menu'
@@ -17,5 +17,5 @@ export interface FeatureService {
 
   getMenus(): Promise<Array<Menu & { menuTitlePath: string }>>
 
-  getChiclets(router: VueRouter): Promise<Array<Chiclet>>
+  getChiclets(router: Router): Promise<Array<Chiclet>>
 }

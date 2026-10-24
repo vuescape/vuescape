@@ -36,11 +36,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
 
 @Component
-export default class DataTableRenderer extends Vue {
+class DataTableRenderer extends Vue {
   // TODO: what type is data table header
   private headers: Array<any> = []
 
@@ -92,4 +91,6 @@ export default class DataTableRenderer extends Vue {
     return text.replace(/([A-Z])/g, ' $1').slice(1)
   }
 }
+
+export default toNative(DataTableRenderer)
 </script>

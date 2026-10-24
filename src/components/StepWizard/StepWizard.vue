@@ -14,9 +14,11 @@
             <i class="fa-duotone fa-arrow-alt-circle-left" />
           </div>
         </template>
-        <template v-for="(step, index) in steps">
+        <template
+          v-for="(step, index) in steps"
+          :key="index"
+        >
           <div
-            :key="index"
             :class="['step', getStepStatus(index, step)]"
             :style="{ width: `${100 / steps.length}%` }"
           >
@@ -71,10 +73,10 @@
             @change-next="changeNextBtnValue"
           ></component>
         </keep-alive>
-        <!--If not show component and destroy it in each step change. Instead of v-else use another v-if with the opposite logic to avoid a script error.-->
+        <!--If not show component and destroy it in each step change.-->
         <component
           :is="steps[currentStepIndex].component"
-          v-if="steps[currentStepIndex] && !steps[currentStepIndex].shouldKeepComponentAlive"
+          v-else-if="steps[currentStepIndex] && !steps[currentStepIndex].shouldKeepComponentAlive"
           :key="steps[currentStepIndex].name + currentStepIndex"
           :clickedNext="nextButton[currentStepIndex]"
           :current-step="steps[currentStepIndex]"
@@ -129,8 +131,7 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
 import { Step } from './Step'
 
 const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
@@ -139,7 +140,7 @@ const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@
 @Component({
   components: { VuescapeButton },
 })
-export default class StepWizard extends Vue {
+class StepWizard extends Vue {
   private isSpinning = false
   @Prop({
     type   : Boolean,
@@ -275,7 +276,8 @@ export default class StepWizard extends Vue {
   }
 
   private nextStep() {
-    if (!this.$listeners || !this.$listeners['before-next-step']) {
+    // Vue 3 passes listeners for events the component doesn't declare in $attrs
+    if (!this.$attrs.onBeforeNextStep) {
       this.nextStepAction()
     }
     this.canContinue = false
@@ -320,6 +322,8 @@ export default class StepWizard extends Vue {
     this.init()
   }
 }
+
+export default toNative(StepWizard)
 </script>
 
 <style>

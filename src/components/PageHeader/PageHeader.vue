@@ -15,14 +15,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 @Component
-export default class PageHeader extends Vue {
+class PageHeader extends Vue {
   @Prop({ default: '' })
   private title: string
 }
+
+export default toNative(PageHeader)
 </script>
 
 <style>

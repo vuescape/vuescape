@@ -95,11 +95,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, namespace, Prop, toNative, Vue } from '@vuescape/decorators'
 
-import { Component, Prop } from 'vue-property-decorator'
 import { isNavigationFailure } from 'vue-router'
-import { namespace } from 'vuex-class'
 
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { Menu } from '@vuescape/types'
@@ -111,7 +109,7 @@ const HamburgerMenu = () => import(/* webpackChunkName: 'hamburger-menu' */ '@vu
     HamburgerMenu,
   },
 })
-export default class NavigationMenuItem extends Vue {
+class NavigationMenuItem extends Vue {
   // private isMenuDisabled = false
   private menusValue: Array<Menu> = []
 
@@ -183,6 +181,8 @@ export default class NavigationMenuItem extends Vue {
     return iconArray
   }
 }
+
+export default toNative(NavigationMenuItem)
 </script>
 
 <style>

@@ -23,8 +23,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 import { RenderKind } from './RenderKind'
 
@@ -39,10 +38,12 @@ const TextRenderer      = () => import(/* webpackChunkName: 'text-renderer' */ '
     TextRenderer,
   },
 })
-export default class ObjectRenderer extends Vue {
+class ObjectRenderer extends Vue {
   @Prop() private renderAs: RenderKind
   @Prop() private item: any
   private readonly RenderText = RenderKind.Text
   private readonly RenderDataTable = RenderKind.DataTable
 }
+
+export default toNative(ObjectRenderer)
 </script>

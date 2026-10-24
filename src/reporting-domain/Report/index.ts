@@ -1,3 +1,3 @@
-export { Section } from './Section'
-export { Report } from './Report'
+export { type Section } from './Section'
+export { type Report } from './Report'
 export { ReportValueMapperFactory } from './ReportValueMapperFactory'

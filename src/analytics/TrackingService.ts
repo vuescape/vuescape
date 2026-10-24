@@ -1,4 +1,4 @@
-import { Route } from 'vue-router'
+import { RouteLocationNormalized } from 'vue-router'
 
 import { TrackingProvider } from './TrackingProvider'
 
@@ -7,7 +7,7 @@ export interface TrackingService {
 
   identifyUser(user: any): void
 
-  handleRouteChanged(to: Route, from: Route): void
+  handleRouteChanged(to: RouteLocationNormalized, from: RouteLocationNormalized): void
 
   getTrackingProvider(name?: string): TrackingProvider | undefined
 }

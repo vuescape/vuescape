@@ -8,8 +8,7 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
@@ -24,7 +23,7 @@ import TextCellRenderer from './TextCellRenderer.vue'
     TextCellRenderer,
   },
 })
-export default class CellRenderer extends ComponentBase {
+class CellRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private cell: TreeTableCell
 
@@ -35,4 +34,6 @@ export default class CellRenderer extends ComponentBase {
     return this.cell
   }
 }
+
+export default toNative(CellRenderer)
 </script>

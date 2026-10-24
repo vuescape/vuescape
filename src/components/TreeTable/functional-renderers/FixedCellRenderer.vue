@@ -1,26 +1,25 @@
-<template functional>
+<template>
   <span
-    v-if="props.isExpandable"
-    :class="props.cell.cssClasses"
-    :title="props.cell.value"
-  > {{ props.cell.displayValue != null ? props.cell.displayValue : props.cell.value }}
+    v-if="isExpandable"
+    :class="cell.cssClasses"
+    :title="cell.value"
+  > {{ cell.displayValue != null ? cell.displayValue : cell.value }}
   </span>
   <span
     v-else
-    :class="props.cell.cssClasses"
-    :title="props.cell.value"
-  >{{ props.cell.displayValue != null ? props.cell.displayValue : props.cell.value }}
+    :class="cell.cssClasses"
+    :title="cell.value"
+  >{{ cell.displayValue != null ? cell.displayValue : cell.value }}
   </span>
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
 
 import { TreeTableCell } from '@vuescape/index'
 
 @Component
-export default class FunctionalFixedCellRenderer extends Vue {
+class FunctionalFixedCellRenderer extends Vue {
   @Prop({
     type    : Object,
     required: true,
@@ -36,4 +35,6 @@ export default class FunctionalFixedCellRenderer extends Vue {
     default: false,
   }) private isExpandable: boolean
 }
+
+export default toNative(FunctionalFixedCellRenderer)
 </script>

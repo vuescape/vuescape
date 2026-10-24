@@ -1,16 +1,14 @@
 <script lang="ts">
-import { CreateElement, VNodeData } from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component, namespace, Prop, toNative } from '@vuescape/decorators'
+import { Fragment, h, StyleValue, VNode } from 'vue'
 
+import ResizeObserver from '@vuescape/components/ResizeObserver'
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 import { StoreOperation } from '@vuescape/store/modules'
 
-import CloseIcon from 'mdi-vue/Close.vue'
-import FullscreenIcon from 'mdi-vue/Fullscreen.vue'
-import FullscreenExitIcon from 'mdi-vue/FullscreenExit.vue'
+import { mdiClose, mdiFullscreen, mdiFullscreenExit } from '@mdi/js'
 
-import Splitpanes from 'splitpanes'
+import { Pane, Splitpanes } from 'splitpanes'
 
 import 'splitpanes/dist/splitpanes.css'
 
@@ -21,15 +19,22 @@ import { SlidingPaneConfig } from './SlidingPaneConfig'
 
 import { debounce } from 'ts-debounce'
 
-@Component({
-  components: {
-    CloseIcon,
-    FullscreenIcon,
-    FullscreenExitIcon,
-    Splitpanes,
-  },
-})
-export default class SlidingPanes extends ComponentBase {
+type PaneSizes = { panes: Array<{ min: number; max: number; size: number }> }
+
+// Flattens v-for fragments so each pane's content lines up with its slidingPaneConfig entry
+function flattenFragments(nodes: Array<VNode>): Array<VNode> {
+  return nodes.flatMap(node => node.type === Fragment ? flattenFragments(node.children as Array<VNode>) : [node])
+}
+
+// Same markup as the mdi-vue icon components this replaces
+function renderIcon(path: string) {
+  return h('span', { class: 'material-design-icon' }, [
+    h('svg', { fill: 'currentColor', width: 24, height: 24, viewBox: '0 0 24 24' }, [h('path', { d: path })]),
+  ])
+}
+
+@Component
+class SlidingPanes extends ComponentBase {
   // Amount to adjust height (e.g. accounting for header & footer)
   // Is there a better way?  Could have array of ids and use document.getElementById to get height
   // to dynamically calc and take off of window height. Forces external elements to have unique IDs
@@ -68,8 +73,9 @@ export default class SlidingPanes extends ComponentBase {
     default: () => {
       return { height: '100%' }
     },
-  }) public slidingPaneStyles: VNodeData['style']
+  }) public slidingPaneStyles: StyleValue
 
+  // No longer used: splitpanes 4 always tracks its panes
   @Prop({
     type   : Boolean,
     default: true,
@@ -173,24 +179,22 @@ export default class SlidingPanes extends ComponentBase {
   //#endregion
 
   //#region render functions
-  public render(h: CreateElement) {
-    const rootNode = h('div', [this.createResizeObserver(h), this.createSplitPanes(h)])
+  public render() {
+    const rootNode = h('div', [this.createResizeObserver(), this.createSplitPanes()])
 
     // After creating root node hide unnecessary splitters
     this.setSplitterDisplays()
     return rootNode
   }
 
-  private createResizeObserver(h: CreateElement) {
+  private createResizeObserver() {
     const self = this
 
-    const resizeObserver = h('resize-observer', {
-      on: {
-        notify: debounce(() => {
-          const debouncedFunction = debounce(() => self.setAvailableHeight([self.availableHeight[0]]), 50)
-          debouncedFunction()
-        }),
-      },
+    const resizeObserver = h(ResizeObserver, {
+      onNotify: debounce(() => {
+        const debouncedFunction = debounce(() => self.setAvailableHeight([self.availableHeight[0]]), 50)
+        debouncedFunction()
+      }),
     })
     return resizeObserver
   }
@@ -240,42 +244,34 @@ export default class SlidingPanes extends ComponentBase {
     })
   }
 
-  private createSplitPanes(h: CreateElement) {
-    const self       = this
-    const splitpanes = h('splitpanes', {
-        class: self.slidingPaneCssClass,
-        style: self.slidingPaneStyles,
-        attrs: {
-          'watch-slots'                      : self.areSlotsReactive,
-          'dbl-click-splitter'               : false,
-          circularReferencePropertyExclusions: ['_routerRoot'], // 'push-other-panes': false
-        },
-        on   : {
-          resize         : (event: any) => {
-            self.onResize(event)
-          },
-          resized        : (event: any) => {
-            self.onResized(event)
-          },
-          'pane-maximize': (event: any) => {
-            self.onPaneMaximized(event)
-          },
-          'pane-click'   : (event: any) => {
-            self.onPaneClick(event)
-          },
-        },
-      }, // Wrap all provided slots (components to display in the pane will be in the slots)
-      (this.$slots.default || [])
-        .filter(slot => (slot as any).width !== 0)
-        .map((slot: any, index: number) => this.wrapSlot(h, slot, index)),
-    )
+  private createSplitPanes() {
+    const self = this
+    // Wrap all provided slots (components to display in the pane will be in the slots)
+    const panes      = flattenFragments(this.$slots.default?.() ?? []).map((slot, index) => this.wrapSlot(slot, index))
+    const splitpanes = h(Splitpanes, {
+      class         : self.slidingPaneCssClass,
+      style         : self.slidingPaneStyles,
+      maximizePanes : false,
+      onResize      : (event: PaneSizes) => {
+        self.onResize(event)
+      },
+      onResized     : (event: PaneSizes) => {
+        self.onResized(event)
+      },
+      onPaneMaximize: (event: any) => {
+        self.onPaneMaximized(event)
+      },
+      onPaneClick   : (event: any) => {
+        self.onPaneClick(event)
+      },
+    }, () => panes)
 
     // Wrap the splitpanes and set the div to the correct height to allow 100% to fill parent div
     const wrapperDiv = h('div', { style: { height: '100%' } }, [splitpanes])
     return wrapperDiv
   }
 
-  private wrapSlot(h: CreateElement, slot: any, index: number) {
+  private wrapSlot(slot: VNode, index: number) {
     const slidingPane = this.slidingPaneConfig[index]
     // Add maximize/restore and close buttons
     if (slidingPane.shouldShowMaximize || slidingPane.shouldShowClose) {
@@ -292,15 +288,15 @@ export default class SlidingPanes extends ComponentBase {
           'align-items'    : 'center',
           'float'          : this.headerButtonCssDisplay === 'inline' ? 'right' : 'none',
         },
-      }, this.createHeaderButtons(h, index))
-      const wrappedSlot = this.wrapPane(h, index, [header, slot])
+      }, this.createHeaderButtons(index))
+      const wrappedSlot = this.wrapPane(index, [header, slot])
       return wrappedSlot
     }
 
-    return this.wrapPane(h, index, [slot])
+    return this.wrapPane(index, [slot])
   }
 
-  private wrapPane(h: CreateElement, index: number, nodes: Array<any>) {
+  private wrapPane(index: number, nodes: Array<VNode>) {
     const classes = []
     if (this.panes.filter(item => item.width !== 0).length === 1 && this.panes[index].width !== 0) {
       if (this.slidingPaneConfig[index].singlePaneCssClass) {
@@ -313,41 +309,35 @@ export default class SlidingPanes extends ComponentBase {
       }
     }
 
-    const wrappedSlot = h('div', {
-      ref  : 'wrappedPane_' + index,
-      class: classes,
-      attrs: {
-        'splitpanes-size': this.panes[index].width,
-        'splitpanes-min' : this.slidingPaneConfig[index].minWidth,
-        'splitpanes-max' : this.slidingPaneConfig[index].maxWidth,
-      },
-    }, nodes)
+    const wrappedSlot = h(Pane, {
+      ref    : 'wrappedPane_' + index,
+      class  : classes,
+      size   : this.panes[index].width,
+      minSize: this.slidingPaneConfig[index].minWidth,
+      maxSize: this.slidingPaneConfig[index].maxWidth,
+    }, () => nodes)
     return wrappedSlot
   }
 
-  private createHeaderButtons(h: CreateElement, index: number) {
+  private createHeaderButtons(index: number) {
     const links = []
     if (this.slidingPaneConfig[index].shouldShowMaximize) {
-      const maximizeRestoreIcon = h(this.panes[index].width === 100 ? 'fullscreen-exit-icon' : 'fullscreen-icon')
+      const maximizeRestoreIcon = renderIcon(this.panes[index].width === 100 ? mdiFullscreenExit : mdiFullscreen)
       const iconWrapper         = h('span', { class: ['sliding-panes__material-icons--large'] }, [maximizeRestoreIcon])
 
       links.push(h('a', {
-        on: {
-          click: () => {
-            this.maximizeOrRestorePane(index)
-          },
+        onClick: () => {
+          this.maximizeOrRestorePane(index)
         },
       }, [iconWrapper]))
     }
 
     if (this.slidingPaneConfig[index].shouldShowClose) {
-      const icon        = h('close-icon')
+      const icon        = renderIcon(mdiClose)
       const iconWrapper = h('span', { class: ['sliding-panes__material-icons--large'] }, [icon])
       links.push(h('a', {
-        on: {
-          click: () => {
-            this.closePane(index)
-          },
+        onClick: () => {
+          this.closePane(index)
         },
       }, [iconWrapper]))
     }
@@ -414,32 +404,32 @@ export default class SlidingPanes extends ComponentBase {
     })
   }
 
-  private destroyed() {
+  private unmounted() {
     this.vuexWatchers.forEach(watcher => watcher())
   }
 
-  private onResize(event: Array<{ width: number }>) {
+  private onResize(event: PaneSizes) {
     if (this.shouldHandleResizeEvent) {
       const self = this
       debounce(() => self.setAvailableHeight([self.availableHeight[0]]), 50)()
     }
   }
 
-  private onResized(event: Array<{ width: number }>) {
+  private onResized(event: PaneSizes) {
     // If we resize to a maximize scenario then use maximize logic
-    const maximizeIndex = event.findIndex(item => item.width === 100)
+    const maximizeIndex = event.panes.findIndex(pane => pane.size === 100)
     if (maximizeIndex >= 0) {
       this.maximizeOrRestorePane(maximizeIndex)
       return
     }
 
     for (let i = 0; i < this.panes.length; i++) {
-      this.setWidth(i, event[i].width, this.panes[i].savedWidth)
+      this.setWidth(i, event.panes[i].size, this.panes[i].savedWidth)
     }
 
     this.$store.commit(`${this.eventNamespace}/slidingPaneEvent/SET_VALUE`, {
       eventType: EventType.PaneResized,
-      payload  : event,
+      payload  : event.panes.map(pane => ({ min: pane.min, max: pane.max, width: pane.size })),
     })
 
     this.setAvailableHeight([this.availableHeight[0]])
@@ -454,6 +444,8 @@ export default class SlidingPanes extends ComponentBase {
     this.maximizeOrRestorePane(event.index)
   }
 }
+
+export default toNative(SlidingPanes)
 </script>
 <style>
 .splitpanes__pane {

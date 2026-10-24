@@ -16,15 +16,14 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
 import { SortDirection, TreeTableHeaderCell } from '@vuescape/index'
 
 @Component({})
-export default class HeaderCellRenderer extends ComponentBase {
+class HeaderCellRenderer extends ComponentBase {
   @Prop({
     type    : Object,
     required: true,
@@ -75,4 +74,6 @@ export default class HeaderCellRenderer extends ComponentBase {
     }
   }
 }
+
+export default toNative(HeaderCellRenderer)
 </script>

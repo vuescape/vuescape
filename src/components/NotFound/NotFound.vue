@@ -19,12 +19,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component, namespace, toNative, Vue } from '@vuescape/decorators'
 
 @Component
-export default class NotFound extends Vue {
+class NotFound extends Vue {
   @(namespace('notFound/configuration').State(state => {
     if (state && state.value) {
       const notFoundConfiguration: any = state.value
@@ -34,4 +32,6 @@ export default class NotFound extends Vue {
   }))
   private notFoundConfiguration: any
 }
+
+export default toNative(NotFound)
 </script>

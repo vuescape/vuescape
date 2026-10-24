@@ -1,2 +1,2 @@
-export { CssStyles } from './CssStyles'
-export { CssStyleWrapper } from './CssStyleWrapper'
+export { type CssStyles } from './CssStyles'
+export { type CssStyleWrapper } from './CssStyleWrapper'

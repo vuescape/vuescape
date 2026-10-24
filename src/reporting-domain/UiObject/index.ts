@@ -1,2 +1,2 @@
-export { UiObject } from './UiObject'
+export { type UiObject } from './UiObject'
 export { UiObjectType } from './UiObjectType'

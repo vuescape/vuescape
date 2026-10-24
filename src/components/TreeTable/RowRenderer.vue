@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, toNative } from '@vuescape/decorators'
 
 import ComponentBase from '@vuescape/infrastructure/ComponentBase'
 
@@ -26,7 +26,7 @@ import { TreeTableRow } from '@vuescape/index'
   // name is required to avoid error with recursion
   name: 'row-renderer',
 })
-export default class RowRenderer extends ComponentBase {
+class RowRenderer extends ComponentBase {
   @Prop({ type: Object, required: true })
   private row: TreeTableRow
 
@@ -34,4 +34,6 @@ export default class RowRenderer extends ComponentBase {
     return this.row
   }
 }
+
+export default toNative(RowRenderer)
 </script>
