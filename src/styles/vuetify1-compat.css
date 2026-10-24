@@ -47,6 +47,17 @@
   padding: 0 8px;
 }
 
+/* Vuetify 1.5 greyed out disabled buttons with a background, whatever their color */
+.v-theme--light.v-btn--disabled.v-btn--variant-flat,
+.v-theme--light.v-btn--disabled.v-btn--variant-elevated {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+}
+.v-btn--disabled.v-btn--variant-flat > .v-btn__overlay,
+.v-btn--disabled.v-btn--variant-elevated > .v-btn__overlay {
+  opacity: 0;
+}
+
 /* Vuetify 1.5 toggles were as tall as a button, with narrower buttons and faded unselected ones */
 .v-btn-toggle.v-btn-group--density-default {
   height: 36px;
