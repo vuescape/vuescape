@@ -170,7 +170,10 @@ class App extends ComponentBase {
   private get isHandling() {
     const handlerRoutes = this.authConfig.value.handlerRoutes
     if (handlerRoutes) {
-      const result = handlerRoutes.some((_ : string) => this.$route.path?.startsWith(_))
+      // Handler routes' guards finish before their navigation does, so until the first navigation completes
+      // (no route matched yet) use the browser's path, which the sign in provider redirected to
+      const path   = this.$route.matched.length ? this.$route.path : window.location.pathname
+      const result = handlerRoutes.some((_ : string) => path?.startsWith(_))
       return result
     }
 
