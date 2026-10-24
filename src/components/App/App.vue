@@ -31,7 +31,10 @@
           ref="appContainer"
           class="app__container--scroll"
         >
-          <div class="container fluid">
+          <div
+            ref="appContent"
+            class="container fluid"
+          >
             <v-alert
               v-for="notification in notifications"
               :key="notification.key"
@@ -103,6 +106,8 @@ import { RootOperation } from '@vuescape/store/modules/Root'
 import { ModuleState, NotificationMessage, StoreOperation } from '@vuescape/store/modules/types'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 
+import { debounce } from 'ts-debounce'
+
 import AppInfoHandler from '@vuescape/components/AppInfoHandler'
 import AppInfoPoller from '@vuescape/components/AppInfoPoller'
 import TheFooter from '@vuescape/components/TheFooter'
@@ -129,6 +134,8 @@ class App extends ComponentBase {
   @Inject('additionalAppComponents')   private additionalAppComponents?: Array<VueComponent>
 
   @Inject('globalClickHandler') private globalClickHandler: (e: MouseEvent) => void
+
+  private contentResizeObserver?: ResizeObserver
 
   @Prop({
     type   : String,
@@ -230,6 +237,13 @@ class App extends ComponentBase {
   private async mounted() {
     const availableHeight = await this.getAvailableHeight()
     this.registerStoreModuleWithInitialValue<Array<number>>('window/availableHeight', [availableHeight])
+
+    // Pages size themselves when window/availableHeight changes, so publish it again whenever the page content's
+    // size changes. Pages and their lazily loaded components render after the app mounts, and with Vue 2 they
+    // happened to see a later change; publishing an unchanged height doesn't change the layout, so this settles.
+    const republishAvailableHeight = debounce(() => this.handleResize(), 50)
+    this.contentResizeObserver     = new ResizeObserver(() => republishAvailableHeight())
+    this.contentResizeObserver.observe(this.$refs.appContent as Element)
     // If mounted and user profile exists and tracking provider then identify user
     // This is required because watch of userProfileEmail does not fire if email address was already set so we need to
     // identify/init here as well as in the watcher
@@ -241,6 +255,10 @@ class App extends ComponentBase {
       // even if not signed in (with an email)
       this.trackingService.initializeProvider()
     }
+  }
+
+  private beforeUnmount() {
+    this.contentResizeObserver?.disconnect()
   }
 
   private async getAvailableHeight() {
