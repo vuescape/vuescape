@@ -28,22 +28,22 @@ export default class TheHeader extends ComponentBase {
   }
   private consolidatedMenus: Array<Menu>      = []
 
-  @namespace('theHeader/configuration').State(state => {
+  @(namespace('theHeader/configuration').State(state => {
     if (state && state.value) {
       const headerProps: any = state.value
       return headerProps || TheHeader.DefaultHeaderConfig
     }
     return TheHeader.DefaultHeaderConfig
-  })
+  }))
   // TODO: define type for header state
   private theHeaderProps: any
 
-  @namespace('menu/configuration').State(state => {
+  @(namespace('menu/configuration').State(state => {
     if (state && state.value) {
       return state.value
     }
     return []
-  })
+  }))
   private menuConfiguration: Array<Menu>
 
   @Getter(ns('userProfile', 'Menus'))
@@ -52,12 +52,12 @@ export default class TheHeader extends ComponentBase {
   @Inject('featureService')
   private featureService: FeatureService
 
-  @namespace('userProfile').State(state => {
+  @(namespace('userProfile').State(state => {
     if (state && state.value) {
       return state.value.authorizationToken
     }
     return undefined
-  })
+  }))
   private authToken: string
 
   @Watch('authToken')
@@ -69,7 +69,7 @@ export default class TheHeader extends ComponentBase {
     const menuSources                    = this.theHeaderProps.menuSources as MenuSources
     const consolidatedMenus: Array<Menu> = []
 
-    // tslint:disable:no-bitwise
+    /* eslint-disable no-bitwise */
     if ((menuSources & MenuSources.RoleBased) === MenuSources.RoleBased && this.userProfileMenus) {
       consolidatedMenus.push(...this.userProfileMenus)
     }

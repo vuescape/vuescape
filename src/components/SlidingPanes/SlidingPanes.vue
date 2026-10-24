@@ -102,10 +102,10 @@ export default class SlidingPanes extends ComponentBase {
   // Saved vuex watchers so we can destroy watchers when component is destroyed
   private vuexWatchers = new Array<() => void>()
 
-  @namespace('window/availableHeight')
-    .Mutation(StoreOperation.Mutation.SET_VALUE) private setAvailableHeight: (availableHeight: Array<number>) => void
+  @(namespace('window/availableHeight')
+    .Mutation(StoreOperation.Mutation.SET_VALUE)) private setAvailableHeight: (availableHeight: Array<number>) => void
 
-  @namespace('window/availableHeight').State(state => state.value) private availableHeight: Array<number>
+  @(namespace('window/availableHeight').State(state => state.value)) private availableHeight: Array<number>
 
   //#region Public API
 
@@ -362,7 +362,6 @@ export default class SlidingPanes extends ComponentBase {
     // re-rendering any components dependant on the height.
     const el              = this.$el
     const self            = this
-    // tslint:disable-next-line: only-arrow-functions
     const onTransitionEnd = function() {
       self.setAvailableHeight([self.availableHeight[0]])
       // We only want to listen now...don't want to respond to all transitionend events
@@ -374,7 +373,6 @@ export default class SlidingPanes extends ComponentBase {
   private doMaximizeOrRestorePane(index: number) {
     const isMaximized = this.panes[index].width === 100
     if (isMaximized) {
-      // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < this.panes.length; i++) {
         if (this.panes[i].width !== this.panes[i].savedWidth) {
           this.setWidth(i, this.panes[i].savedWidth)

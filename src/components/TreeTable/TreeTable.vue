@@ -315,7 +315,6 @@ export default class TreeTable extends ComponentBase {
     }
   }
 }
-// tslint:disable-next-line:max-line-length
 // https://stackoverflow.com/questions/41882616/why-border-is-not-visible-with-position-sticky-when-background-color-exists
 </script>
 <style>

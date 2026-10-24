@@ -15,6 +15,6 @@ export function downloadFile(
     return
   }
 
-  const blob = new Blob([shouldAddByteOrderMark ? '\ufeff' : '', data], { type: `${mimeType}; charset=${charset}` })
+  const blob = new Blob([shouldAddByteOrderMark ? '\ufeff' : '', data as BlobPart], { type: `${mimeType}; charset=${charset}` })
   FileSaver.saveAs(blob, filename)
 }

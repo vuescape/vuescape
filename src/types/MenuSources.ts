@@ -1,4 +1,4 @@
-// tslint:disable:no-bitwise
+/* eslint-disable no-bitwise */
 export enum MenuSources {
   None          = 0,
   Configuration = 1 << 0,

@@ -46,7 +46,6 @@ const mutations: MutationTree<RootState> = {
       }
       else {
         // TODO: formalize this reset into a module state mutation
-        // tslint:disable-next-line:semicolon
         ;(currentState as any)[property] = {}
         console.log(`Clear module state ${property}.`)
       }

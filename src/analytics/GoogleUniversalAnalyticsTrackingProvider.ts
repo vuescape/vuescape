@@ -1,7 +1,7 @@
 import { TrackingProvider } from './TrackingProvider'
 
-// tslint:disable-next-line: ban-types
-declare var ga: Function
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+declare const ga: Function
 
 export class GoogleUniversalAnalyticsTrackingProvider implements TrackingProvider {
   private trackingId: string

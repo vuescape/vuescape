@@ -73,6 +73,8 @@ export default class FunctionalCellRenderer extends Vue {
     }
 
     const rendererValue = renderer || 'TextCellRenderer'
+    // Renderer components are resolved by name at runtime
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const result        = require(`./${rendererValue}.vue`).default
     return result
   }

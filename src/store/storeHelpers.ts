@@ -62,7 +62,6 @@ export const registerDynamicModule = <S, R>(store: Store<R>,
     console.log(`registering module: ${namespace}`)
   }
   else {
-    // tslint:disable-next-line: semicolon
     store.commit(makeStateKey(namespace, StoreOperation.Mutation.SET_VALUE), null)
     console.log(`reusing module: ${namespace}`)
     if (shouldUnregister) {
@@ -131,7 +130,7 @@ export function registerStoreModuleWithAsyncActions<S, R, P = {}>(store: Store<R
     shouldUseGlobalSpinner: true,
     shouldDisableValueReactivity,
   })
-  const module        = () => new StoreModule<S, ModuleState<S>, R>(moduleOptions)
+  const module        = () => new StoreModule<S, ModuleState<S, P>, R, P>(moduleOptions)
   registerDynamicModule(store, namespace, module)
 }
 

@@ -31,7 +31,6 @@ export default class AppInfoHandler extends ComponentBase {
   }
 
   // Since no template noop render function keeps things from blowing up
-  // tslint:disable-next-line:no-empty
   private render() {
   }
 }

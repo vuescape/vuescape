@@ -15,7 +15,7 @@ describe('DateRangeSlider.vue --', () => {
         },
       })
 
-      // tslint:disable-next-line: no-string-literal
+      // eslint-disable-next-line dot-notation
       expect(wrapper.props()['minHandleSeparation']).toBe(minHandleSeparation)
     })
 
@@ -29,7 +29,7 @@ describe('DateRangeSlider.vue --', () => {
         },
       })
 
-      // tslint:disable-next-line: no-string-literal
+      // eslint-disable-next-line dot-notation
       expect(wrapper.props()['maxHandleSeparation']).toBe(maxHandleSeparation)
     })
 
@@ -43,7 +43,7 @@ describe('DateRangeSlider.vue --', () => {
         },
       })
 
-      // tslint:disable-next-line: no-string-literal
+      // eslint-disable-next-line dot-notation
       expect(wrapper.props()['startingRangeValue']).toBe(startingRangeValue)
     })
 
@@ -57,7 +57,7 @@ describe('DateRangeSlider.vue --', () => {
         },
       })
 
-      // tslint:disable-next-line: no-string-literal
+      // eslint-disable-next-line dot-notation
       expect(wrapper.props()['numberOfRanges']).toBe(numberOfRanges)
     })
 
@@ -71,7 +71,7 @@ describe('DateRangeSlider.vue --', () => {
         },
       })
 
-      // tslint:disable-next-line: no-string-literal
+      // eslint-disable-next-line dot-notation
       expect(wrapper.props()['startingHandlePositions']).toBe(startingHandlePositions)
     })
 
@@ -85,7 +85,7 @@ describe('DateRangeSlider.vue --', () => {
         },
       })
 
-      // tslint:disable-next-line: no-string-literal
+      // eslint-disable-next-line dot-notation
       expect(wrapper.props()['id']).toBe(id)
     })
   })

@@ -130,7 +130,7 @@ export default class ReportPane extends ComponentBase {
   @Prop({ type: Boolean, default: false })
   private shouldUseFunctionalRenderers: boolean
 
-  @namespace('window/availableHeight').State(state => state.value)
+  @(namespace('window/availableHeight').State(state => state.value))
   private availableHeight: Array<number>
 
   private get subheaderStyle() {

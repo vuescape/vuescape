@@ -12,7 +12,7 @@ export function usingRetryFor<T>(asyncAction: AsyncAction<T>,
           const result = await asyncAction(args, abortController)
           return result as T
         }
-        catch (error) {
+        catch (error: any) {
           if (retryNumber++ >= maxNumberOfRetries) {
             throw error
           }

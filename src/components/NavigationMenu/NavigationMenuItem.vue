@@ -118,10 +118,10 @@ export default class NavigationMenuItem extends Vue {
   @Prop({ type: Object, required: true })
   private menu: string
 
-  @namespace(AppInfoModuleName).State(state => {
+  @(namespace(AppInfoModuleName).State(state => {
     const isSiteInMaintenanceMode = state.asyncResult.status === 200 ? state.value.isSiteInMaintenanceMode : false
     return isSiteInMaintenanceMode
-  })
+  }))
   private isSiteInMaintenanceMode: boolean
 
   public isSubItemActive(menu: Menu) {

@@ -27,18 +27,15 @@ export class Axios {
     return this.axiosInstance
   }
 
-// tslint:disable-next-line: member-ordering
   public static useAuthenticationToken(authToken: string) {
     Axios.instance.defaults.headers.common.Authorization = `Bearer ${authToken}`
   }
 
-// tslint:disable-next-line: member-ordering
   public static useAuthorizationToken(authToken: string) {
-    // tslint:disable-next-line: no-string-literal
+    // eslint-disable-next-line dot-notation
     Axios.instance.defaults.headers.common['AuthZ'] = authToken
   }
 
-// tslint:disable-next-line: member-ordering
   public static async initCaching(cacheOptions: CacheOptions) {
     // Cache is axios-extensions' own lru-cache dependency, not whichever lru-cache is hoisted
     const { cacheAdapterEnhancer: cacheAdapter, Cache } =

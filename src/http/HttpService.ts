@@ -75,7 +75,7 @@ export class HttpService {
     let formattedEndpoint = endpoint
     if (args) {
       const formattedArgs: any = JSON.parse(JSON.stringify(args))
-      if (// tslint:disable-next-line: no-bitwise
+      if ( // eslint-disable-next-line no-bitwise
         (this.restPayloadStrategy & RestPayloadStrategy.Url) === RestPayloadStrategy.Url) {
         const keys = Object.keys(formattedArgs)
         for (const key of keys) {
@@ -86,7 +86,7 @@ export class HttpService {
         }
       }
 
-      if (this.restPayloadStrategy === RestPayloadStrategy.None || // tslint:disable-next-line: no-bitwise
+      if (this.restPayloadStrategy === RestPayloadStrategy.None || // eslint-disable-next-line no-bitwise
         (this.restPayloadStrategy & RestPayloadStrategy.QueryString) === RestPayloadStrategy.QueryString) {
         queryString = '?' + qs.stringify(formattedArgs, { arrayFormat: 'repeat' })
       }
@@ -106,7 +106,7 @@ export class HttpService {
 
   public post<T>(endpoint: string, args?: any, abortController?: AbortController): AxiosPromise<T> {
     let formattedArgs: any
-    // tslint:disable-next-line: no-bitwise
+    // eslint-disable-next-line no-bitwise
     if ((this.restPayloadStrategy & RestPayloadStrategy.PostJson) === RestPayloadStrategy.PostJson) {
       formattedArgs = args
     }

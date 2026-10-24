@@ -41,7 +41,7 @@ const toNumber = (value: any, places: number) => {
     }, '')
 
   if (p > 0) {
-    let digitsAfterDecimal = parts.length > 1 && parseInt(parts[1], undefined) ? parts[1] : ('' + factor).substring(1)
+    let digitsAfterDecimal = parts.length > 1 && parseInt(parts[1], 10) ? parts[1] : ('' + factor).substring(1)
     digitsAfterDecimal     = digitsAfterDecimal + ('' + factor).substring(1 + digitsAfterDecimal.length)
     result += '.' + digitsAfterDecimal
   }

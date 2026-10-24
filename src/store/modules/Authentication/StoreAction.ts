@@ -1,9 +1,9 @@
+/* eslint-disable max-classes-per-file */
 import { NotificationAction } from '@vuescape/store/Notification'
 
 /**
  * Authentication actions that can be performed.
  */
-// tslint:disable:max-classes-per-file
 export class StoreAction {
   /**
    * Signs out.

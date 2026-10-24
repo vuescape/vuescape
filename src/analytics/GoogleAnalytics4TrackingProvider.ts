@@ -1,8 +1,8 @@
 import { addScript, loadScriptFromUrl } from '@vuescape/infrastructure'
 import { TrackingProvider } from './TrackingProvider'
 
-// tslint:disable-next-line: ban-types
-declare var gtag: Function
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+declare const gtag: Function
 
 export class GoogleAnalytics4TrackingProvider implements TrackingProvider {
   private trackingId: string

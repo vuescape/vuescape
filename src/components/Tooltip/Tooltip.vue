@@ -74,10 +74,10 @@ export default class Tooltip extends ComponentBase {
   @State('tooltipSingleton')
   private tooltipSingleton: ModuleState<Array<boolean>>
 
-  @namespace('tooltipSingleton').State((state: ModuleState<Array<boolean>>) => state.value)
+  @(namespace('tooltipSingleton').State((state: ModuleState<Array<boolean>>) => state.value))
   private tooltipSingletonValue: Array<boolean>
 
-  @namespace('tooltipSingleton').Mutation(StoreOperation.Mutation.SET_VALUE)
+  @(namespace('tooltipSingleton').Mutation(StoreOperation.Mutation.SET_VALUE))
   private setTooltipSingleton: (val: Array<boolean>) => void
 
   @Prop({ type: Object, required: true })

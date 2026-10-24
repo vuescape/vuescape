@@ -1,6 +1,6 @@
+/* eslint-disable max-classes-per-file */
 import { NotificationMutation } from '@vuescape/store/Notification'
 
-// tslint:disable:max-classes-per-file
 export class StoreMutation {
   public static readonly HAS_EXTERNAL_SESSIONS_INITIALIZED = 'hasExternalSessionsInitialized'
   public static readonly IS_AUTHENTICATED                  = 'isAuthenticated'

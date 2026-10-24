@@ -100,7 +100,7 @@ export default class ReportPanes extends ComponentBase {
     return makeReportPaneNamespacePrefix(this.reportId)
   }
 
-  @namespace('window/availableHeight').State(state => state.value) private availableHeight: Array<number>
+  @(namespace('window/availableHeight').State(state => state.value)) private availableHeight: Array<number>
 
   // TODO: Define all the sliding pane actions.
   // Also this should be passed into this component as prop

@@ -14,7 +14,7 @@ describe('DownloadFileButton.vue --', () => {
       const shouldShowCompletedMessage = true
       const wrapper                    = mount(DownloadFileButton, { propsData: { shouldShowCompletedMessage } })
 
-      // tslint:disable-next-line: no-string-literal
+      // eslint-disable-next-line dot-notation
       expect(wrapper.props()['shouldShowCompletedMessage']).toBe(shouldShowCompletedMessage)
     })
   })

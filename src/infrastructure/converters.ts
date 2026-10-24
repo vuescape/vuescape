@@ -1,4 +1,4 @@
-export function tryToEnum<T>(enumType: T,
+export function tryToEnum<T extends object>(enumType: T,
   enumString: string | undefined,
   shouldCapitalizeFirstCharacter = true,
 ): T[keyof T] | undefined {
@@ -9,7 +9,7 @@ export function tryToEnum<T>(enumType: T,
   return toEnum(enumType, enumString, shouldCapitalizeFirstCharacter)
 }
 
-export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirstCharacter = true): T[keyof T] {
+export function toEnum<T extends object>(enumType: T, enumString: string, shouldCapitalizeFirstCharacter = true): T[keyof T] {
   // Split to handle flags
   const enumStrings = enumString
     .split('|')
@@ -26,7 +26,7 @@ export function toEnum<T>(enumType: T, enumString: string, shouldCapitalizeFirst
     }
     else {
       // Add value if flags
-      // tslint:disable-next-line: no-bitwise
+      // eslint-disable-next-line no-bitwise
       (result as any) |= enumValue as any
     }
   }

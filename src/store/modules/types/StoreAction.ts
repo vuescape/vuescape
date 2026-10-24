@@ -1,6 +1,6 @@
+/* eslint-disable max-classes-per-file */
 import { NotificationAction } from '@vuescape/store/Notification'
 
-// tslint:disable:max-classes-per-file
 export class StoreAction {
   public static readonly GET  = 'GET'
   public static readonly POST = 'POST'

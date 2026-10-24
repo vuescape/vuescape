@@ -1,7 +1,5 @@
-// tslint:disable: member-ordering
 import Vue, { CreateElement, VueConstructor } from 'vue'
 import VueRouter from 'vue-router'
-import { ErrorHandler } from 'vue-router/types/router'
 import { Store } from 'vuex'
 
 import { NullTrackingService, TrackingService } from '@vuescape/analytics'
@@ -16,6 +14,8 @@ import 'vue-resize/dist/vue-resize.css'
 import { VuetifyTheme } from 'vuetify'
 import Vuetify from 'vuetify/lib'
 import 'vuetify/src/stylus/app.styl'
+
+type ErrorHandler = (err: Error, vm: Vue, info: string) => void
 
 export class ApplicationBootstrapper {
   private iconfont: string
@@ -200,7 +200,6 @@ export class ApplicationBootstrapper {
         return
       }
 
-       // tslint:disable-next-line:no-unused-expression
       new Vue({
         provide   : () => ({
           trackingService    : this.trackingService,

@@ -148,8 +148,8 @@ export default class App extends ComponentBase {
   }, { namespace: UserProfileModuleName })
   private userProfileModuleValue: any
 
-  @namespace('window/availableHeight')
-    .Mutation(StoreOperation.Mutation.SET_VALUE) private setAvailableHeight: (availableHeight: Array<number>) => void
+  @(namespace('window/availableHeight')
+    .Mutation(StoreOperation.Mutation.SET_VALUE)) private setAvailableHeight: (availableHeight: Array<number>) => void
 
   @State('appConfig/configuration') private appConfig: ModuleState<any>
   @State('authentication/configuration') private authConfig: ModuleState<any>
@@ -157,12 +157,12 @@ export default class App extends ComponentBase {
   @State('theFooter/configuration') private footerConfiguration: ModuleState<any>
   @State('theHeader/configuration') private headerConfiguration: ModuleState<any>
 
- @namespace('theHeader/configuration').State(state => {
+ @(namespace('theHeader/configuration').State(state => {
     if (state && state.value) {
       const headerProps: any = state.value
       return headerProps
     }
-  }) private theHeaderProps: any
+  })) private theHeaderProps: any
 
   private get isHandling() {
     const handlerRoutes = this.authConfig.value.handlerRoutes

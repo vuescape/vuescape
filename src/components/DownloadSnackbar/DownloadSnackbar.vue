@@ -46,15 +46,15 @@ import { DownloadSnackbarNamespace } from './DownloadSnackbarNamespace'
 export default class DownloadSnackbar extends ComponentBase {
   public static DownloadSnackbarNamespace = DownloadSnackbarNamespace
 
-  @namespace(DownloadSnackbar.DownloadSnackbarNamespace).State(state => {
+  @(namespace(DownloadSnackbar.DownloadSnackbarNamespace).State(state => {
     if (state && state.value) {
       return state.value.shouldShowDownloadSnackbar
     }
     return false
-  })
+  }))
   private shouldShowDownloadSnackbar: boolean
 
-  @namespace(DownloadSnackbar.DownloadSnackbarNamespace).Mutation(StoreOperation.Mutation.SET_VALUE)
+  @(namespace(DownloadSnackbar.DownloadSnackbarNamespace).Mutation(StoreOperation.Mutation.SET_VALUE))
   private setShouldShowDownloadSnackbarValue: any
 
   private setShouldShowDownloadSnackbar(shouldShowDownloadSnackbar: boolean) {

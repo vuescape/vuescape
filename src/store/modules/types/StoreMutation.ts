@@ -1,6 +1,6 @@
+/* eslint-disable max-classes-per-file */
 import { NotificationMutation } from '@vuescape/store/Notification'
 
-// tslint:disable:max-classes-per-file
 export class StoreMutation {
   public static readonly RESET                = 'RESET'
   public static readonly PENDING              = 'PENDING'

@@ -127,7 +127,7 @@ export default class TreeTable extends ComponentBase {
   @Prop({ type: Boolean, default: false })
   private shouldUseFunctionalRenderers: boolean
 
-  @namespace('window/availableHeight').State(state => state.value)
+  @(namespace('window/availableHeight').State(state => state.value))
   private availableHeight: Array<number>
 
   private treeTableSorterImpl: (rows: Array<TreeTableRow>, headers: Array<TreeTableHeaderRow>) => Array<TreeTableRow> =
@@ -569,7 +569,6 @@ export default class TreeTable extends ComponentBase {
     }
   }
 }
-// tslint:disable-next-line:max-line-length
 // https://stackoverflow.com/questions/41882616/why-border-is-not-visible-with-position-sticky-when-background-color-exists
 </script>
 <style>

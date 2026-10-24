@@ -64,7 +64,6 @@ export default class DownloadFileButton extends Vue {
   private isDisabled: boolean
   @Prop({ default: 'primary' })
   private color: string
-  // tslint:disable-next-line:no-empty
   @Prop({
     default: () => { /* no-op */
     },
