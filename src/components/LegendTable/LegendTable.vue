@@ -2,19 +2,18 @@
   <div>
     <v-menu
       :close-on-content-click="false"
-      offset-x
-      :nudge-left="nudgeLeft"
+      location="end"
+      :offset="-nudgeLeft"
       origin="center right"
       transition="scale-transition"
     >
-      <template v-slot:activator="{ on }">
+      <template v-slot:activator="{ props }">
         <v-btn
           color="primary"
-          outline
-          depressed
-          v-on="on"
+          v-bind="props"
           class="legend-table__v-btn--style"
           title="Click for more information"
+          variant="outlined"
         >
           <span class="legend-table__font-awesome-icon--style">
             <i

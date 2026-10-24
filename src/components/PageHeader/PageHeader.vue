@@ -1,15 +1,13 @@
 <template>
   <div>
-    <v-layout
+    <div
+      class="layout row justify-space-between page-header__header--separation"
       v-if="title"
-      row
-      justify-space-between
-      class="page-header__header--separation"
     >
-      <v-flex md8>
+      <div class="flex md8">
         <span>{{ title }}</span>
-      </v-flex>
-    </v-layout>
+      </div>
+    </div>
     <slot></slot>
   </div>
 </template>

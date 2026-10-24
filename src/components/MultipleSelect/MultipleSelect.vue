@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <!-- Vue 3 leaves class and style in $attrs when inheritAttrs is false; Vue 2 applied them to the root -->
+  <div
+    :class="$attrs.class"
+    :style="$attrs.style"
+  >
     <span
       v-if="prefixText"
       class="multiselect__tags multiple-select__span--prefix"
@@ -16,9 +20,9 @@
         :close-on-select="!canSelectMultiple"
         :style="`--custom-font-size: ${customFontSize}; --border-style: ${borderStyle}`"
         :placeholder="placeholderVal"
-        :value="valueVal"
+        :model-value="valueVal"
         :options="optionsVal"
-        @input="itemChanged"
+        @update:model-value="itemChanged"
         @open="onMultiselectOpen"
         @close="onMultiselectClose"
         @search-change="onSearchChange"
@@ -34,46 +38,38 @@
         :optionsLimit="10000"
         :disabled="isSelectDisabled"
       >
-        <span
-          v-if="canSelectMultiple"
-          class="checkbox-label"
-          slot="option"
-          slot-scope="scope"
-        >
-          <input
-            class=""
-            type="checkbox"
-            v-model="scope.option.checked"
-            @focus.prevent
-            style="margin-right: 6px"
-          />
-          <span v-html="scope.option[label]"></span>
-        </span>
-        <span
-          v-else
-          slot="option"
-          v-html="scope.option[label]"
-        >
-        </span>
+        <template v-slot:option="scope">
+          <span
+            v-if="canSelectMultiple"
+            class="checkbox-label"
+          >
+            <input
+              class=""
+              type="checkbox"
+              v-model="scope.option.checked"
+              @focus.prevent
+              style="margin-right: 6px"
+            />
+            <span v-html="scope.option[label]"></span>
+          </span>
+          <span
+            v-else
+            v-html="scope.option[label]"
+          >
+          </span>
+        </template>
         <!-- https://stackoverflow.com/questions/50891858/vue-how-to-pass-down-slots-inside-wrapper-component -->
         <!-- Pass on all named slots -->
-        <template slot="noResult">
+        <template v-slot:noResult>
           {{ noSearchResults }}
         </template>
-        <slot
-          v-for="slot in Object.keys($slots)"
-          :name="slot"
-          :slot="slot"
-        />
-        <!-- Pass on all scoped slots -->
         <template
-          v-for="slot in Object.keys($scopedSlots)"
-          :slot="slot"
-          slot-scope="scope"
+          v-for="(_, slot) in $slots"
+          v-slot:[slot]="scope"
         >
           <slot
             :name="slot"
-            v-bind="scope"
+            v-bind="scope || {}"
           />
         </template>
       </multiselect>

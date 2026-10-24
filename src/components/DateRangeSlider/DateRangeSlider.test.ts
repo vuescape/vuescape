@@ -9,84 +9,72 @@ describe('DateRangeSlider.vue --', () => {
       const minHandleSeparation = 10
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: {
+        props: {
           minHandleSeparation,
           startingHandlePositions: [1],
         },
       })
-
-      // eslint-disable-next-line dot-notation
-      expect(wrapper.props()['minHandleSeparation']).toBe(minHandleSeparation)
+      expect((wrapper.props() as Record<string, unknown>).minHandleSeparation).toBe(minHandleSeparation)
     })
 
     it('should set maxHandleSeparation', () => {
       const maxHandleSeparation = 10
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: {
+        props: {
           maxHandleSeparation,
           startingHandlePositions: [1],
         },
       })
-
-      // eslint-disable-next-line dot-notation
-      expect(wrapper.props()['maxHandleSeparation']).toBe(maxHandleSeparation)
+      expect((wrapper.props() as Record<string, unknown>).maxHandleSeparation).toBe(maxHandleSeparation)
     })
 
     it('should set startingRangeValue', () => {
       const startingRangeValue = 2019
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: {
+        props: {
           startingRangeValue,
           startingHandlePositions: [1],
         },
       })
-
-      // eslint-disable-next-line dot-notation
-      expect(wrapper.props()['startingRangeValue']).toBe(startingRangeValue)
+      expect((wrapper.props() as Record<string, unknown>).startingRangeValue).toBe(startingRangeValue)
     })
 
     it('should set numberOfRanges', () => {
       const numberOfRanges = 10
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: {
+        props: {
           numberOfRanges,
           startingHandlePositions: [1],
         },
       })
-
-      // eslint-disable-next-line dot-notation
-      expect(wrapper.props()['numberOfRanges']).toBe(numberOfRanges)
+      expect((wrapper.props() as Record<string, unknown>).numberOfRanges).toBe(numberOfRanges)
     })
 
     it('should set startingHandlePositions', () => {
       const startingHandlePositions = [10, 20, 30, 40]
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: {
+        props: {
           startingHandlePositions,
           numberOfRanges: 200,
         },
       })
-
-      // eslint-disable-next-line dot-notation
-      expect(wrapper.props()['startingHandlePositions']).toBe(startingHandlePositions)
+      expect((wrapper.props() as Record<string, unknown>).startingHandlePositions).toEqual(startingHandlePositions)
     })
 
     it('should set id', () => {
       const id = 'test-slider-id'
 
       const wrapper = shallowMount(DateRangeSlider, {
-        propsData: {
+        props: {
           id,
           startingHandlePositions: [1],
         },
       })
-
-      // eslint-disable-next-line dot-notation
-      expect(wrapper.props()['id']).toBe(id)
+      expect((wrapper.props() as Record<string, unknown>).id).toBe(id)
     })
   })
 })

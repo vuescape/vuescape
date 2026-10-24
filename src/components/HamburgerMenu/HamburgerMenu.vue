@@ -17,15 +17,15 @@
         v-model="hamburgerMenu"
         :close-on-content-click="false"
         content-class="hamburger-menu__v-menu--size"
+        target="parent"
       >
         <v-card>
-          <v-expansion-panel v-model="expansionPanelIndex">
-            <v-expansion-panel-content
+          <v-expansion-panels v-model="expansionPanelIndex">
+            <v-expansion-panel
               v-for="(menu, index) in hamburgerMenus"
               :key="menu.id + '__hamburger'"
-              expand-icon
             >
-              <template v-slot:header>
+              <v-expansion-panel-title>
                 <div v-if="menu.items && menu.items.length">{{ menu.title }}</div>
                 <div v-else>
                   <div
@@ -50,42 +50,43 @@
                     {{ menu.title }}
                   </div>
                 </div>
-              </template>
-              <template v-slot:actions>
-                <i
-                  v-if="menu.items && menu.items.length"
-                  :class="expansionPanelIndex === index + 1 ? ['fa-light', 'fa-chevron-down'] : ['fa-light', 'fa-chevron-right']"
-                  class="hamburger-menu__hamburger-menu__icon"
-                />
-                <i
-                  v-if="!(menu.items && menu.items.length) && menu.icon"
-                  :class="getIconArray(menu.icon).join(' ')"
-                  @click="() => navigateFromHamburgerMenu(menu.path)"
-                />
-              </template>
-              <v-card>
-                <div v-if="menu.items && menu.items.length !== 0">
-                  <v-list
-                    v-if="menu.items"
-                    class="hamburger-menu__v-list--alignment"
-                    light
-                  >
-                    <v-list-tile
-                      v-for="menuItem in menu.items"
-                      :key="menuItem.id"
-                      :aria-label="menuItem.ariaLabel || menuItem.title"
-                      class="hamburger-menu__v-list-tile--font"
-                      @click="() => navigateFromHamburgerMenu(menuItem.path)"
+                <template v-slot:actions>
+                  <i
+                    v-if="menu.items && menu.items.length"
+                    :class="expansionPanelIndex === index + 1 ? ['fa-light', 'fa-chevron-down'] : ['fa-light', 'fa-chevron-right']"
+                    class="hamburger-menu__hamburger-menu__icon"
+                  />
+                  <i
+                    v-if="!(menu.items && menu.items.length) && menu.icon"
+                    :class="getIconArray(menu.icon).join(' ')"
+                    @click="() => navigateFromHamburgerMenu(menu.path)"
+                  />
+                </template>
+              </v-expansion-panel-title>
+              <v-expansion-panel-text>
+                <v-card>
+                  <div v-if="menu.items && menu.items.length !== 0">
+                    <v-list
+                      v-if="menu.items"
+                      class="hamburger-menu__v-list--alignment"
                     >
-                      <v-list-tile-title :aria-label="menuItem.ariaLabel || menuItem.title">{{
-                          menuItem.title
-                                                                                            }}</v-list-tile-title>
-                    </v-list-tile>
-                  </v-list>
-                </div>
-              </v-card>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
+                      <v-list-item
+                        v-for="menuItem in menu.items"
+                        :key="menuItem.id"
+                        :aria-label="menuItem.ariaLabel || menuItem.title"
+                        class="hamburger-menu__v-list-tile--font"
+                        @click="() => navigateFromHamburgerMenu(menuItem.path)"
+                      >
+                        <v-list-item-title :aria-label="menuItem.ariaLabel || menuItem.title">{{
+                            menuItem.title
+                                                                                              }}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </div>
+                </v-card>
+              </v-expansion-panel-text>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-card>
       </v-menu>
     </span>
@@ -145,7 +146,7 @@ export default toNative(HamburgerMenu)
 </script>
 
 <style>
-.hamburger-menu__v-menu--size .v-expansion-panel .v-expansion-panel__container {
+.hamburger-menu__v-menu--size .v-expansion-panels .v-expansion-panel {
   border-top: 1px solid #9bdddb;
   /* height: 36px; */
   font-size:  13px;
@@ -165,7 +166,7 @@ export default toNative(HamburgerMenu)
   cursor:     pointer;
 }
 
-div.hamburger-menu__v-list--alignment a.v-list__tile {
+div.hamburger-menu__v-list--alignment a.v-list-item {
   height:     36px;
   max-height: 36px;
 }
@@ -174,7 +175,7 @@ div.hamburger-menu__v-list--alignment a.v-list__tile {
   font-size: 13px;
   color:     unset;
 }
-.hamburger-menu__v-list-tile--font a.v-list__tile--active div {
+.hamburger-menu__v-list-tile--font a.v-list-item--active div {
   font-size:   13px;
   font-weight: 600;
   color:       rgba(0, 0, 0, 0.87);
@@ -190,7 +191,7 @@ div.hamburger-menu__v-list--alignment a.v-list__tile {
   height:        36px;
   border-bottom: 100px;
 }
-.menuable__content__active.hamburger-menu__v-menu--size {
+.hamburger-menu__v-menu--size {
   height: 100vh;
 }
 </style>

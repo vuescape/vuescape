@@ -1,8 +1,7 @@
 <template>
-  <v-layout
+  <div
+    class="layout row justify-center"
     :key="idValue"
-    row
-    justify-center
   >
     <v-dialog
       v-model="isModalDialogShowingValue"
@@ -17,11 +16,10 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
-          <v-layout
-            row
-            wrap
+          <div
+            class="layout row wrap"
           >
-            <v-flex xs2>
+            <div class="flex xs2">
               <i
                 :class="iconsValue.join(' ')"
                 :style="{
@@ -31,13 +29,13 @@
                       'font-size': '46px',
                     }"
               ></i>
-            </v-flex>
-            <v-flex xs10>
+            </div>
+            <div class="flex xs10">
               <div>
                 {{ messageValue }}
               </div>
-            </v-flex>
-          </v-layout>
+            </div>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -45,7 +43,7 @@
             v-if="shouldShowCancelButtonValue"
             @click="onCancelClicked"
             class="modal-dialog__v-btn--cancel"
-            flat
+            variant="text"
           >{{ cancelButtonTextValue }}
           </v-btn>
           <vuescape-button
@@ -59,13 +57,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-layout>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 
-const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
-  m => m.default)
+const VuescapeButton = defineAsyncComponent(() => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
+  m => m.default))
 
 @Component({
   components: { VuescapeButton },
@@ -201,7 +200,7 @@ export default toNative(ModalDialog)
   font-size:       16px;
   height:          40px;
 }
-div.v-card__actions button.modal-dialog__v-btn--ok {
+div.v-card-actions button.modal-dialog__v-btn--ok {
   height:           40px;
   background-color: #16a5c6 !important;
   color:            white !important;

@@ -1,7 +1,7 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { expect } from 'expect'
-import Vuetify from 'vuetify'
-import Vuex from 'vuex'
+import { createVuetify } from 'vuetify'
+import { createStore } from 'vuex'
 
 import { AppInfoModuleName, AppInfoStore } from '@vuescape/store/modules/AppInfo'
 import { rootStoreOptions } from '@vuescape/store/modules/Root'
@@ -29,7 +29,7 @@ describe('TheFooter.vue --', () => {
   // registerDynamicModule call so pass false to not unregister.
   // let store: Store<RootState>
   before(() => {
-    // const store = new Vuex.Store(new RootStore())
+    // const store = createStore(new RootStore())
     // registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), store, false)
   })
 
@@ -37,17 +37,13 @@ describe('TheFooter.vue --', () => {
     it('should contain the current year as the copyright year', async () => {
       // Arrange
       const currentYear = new Date().getFullYear()
-      const localVue    = createLocalVue()
-      localVue.use(Vuetify)
-      localVue.use(Vuex)
-      const store = new Vuex.Store(rootStoreOptions)
+      const store = createStore(rootStoreOptions)
       registerDynamicModule(store, 'theFooter/configuration', makeStoreModule(theFooterConfiguration), false)
 
       // Act
       const wrapper = shallowMount(TheFooter,
         {
-          store,
-          localVue,
+          global: { plugins: [createVuetify(), store] },
         },
       )
 
@@ -57,20 +53,16 @@ describe('TheFooter.vue --', () => {
       expect(footerText).toContain(currentYear.toString())
     })
 
-    it('should contain the copyright symbol', async done => {
+    it('should contain the copyright symbol', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
-      localVue.use(Vuex)
-      const store = new Vuex.Store(rootStoreOptions)
+      const store = createStore(rootStoreOptions)
       registerDynamicModule(store, AppInfoModuleName, () => new AppInfoStore(), false)
       registerDynamicModule(store, 'theFooter/configuration', makeStoreModule(theFooterConfiguration), false)
 
       // Act
       const wrapper = shallowMount(TheFooter,
         {
-          store,
-          localVue,
+          global: { plugins: [createVuetify(), store] },
         },
       )
 
@@ -78,7 +70,6 @@ describe('TheFooter.vue --', () => {
       const footerHtml      = wrapper.find('.the-footer__copyright')
       const copyrightSymbol = footerHtml.text().substring(0, 1)
       expect(copyrightSymbol).toBe('©')
-      done()
     })
   })
 })

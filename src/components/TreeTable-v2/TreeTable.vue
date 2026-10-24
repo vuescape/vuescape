@@ -15,7 +15,7 @@
       :dead-area-color="deadAreaColorValue"
       :class="cssClass"
     >
-      <template slot="thead">
+      <template v-slot:thead>
         <header-row-renderer
           v-for="headerRow in headersToDisplay"
           :key="headerRow.id"
@@ -23,7 +23,7 @@
           @toggle-sort="toggleSort($event)"
         ></header-row-renderer>
       </template>
-      <template slot="tbody">
+      <template v-slot:tbody>
         <row-renderer
           v-for="row in rowsToDisplay"
           :key="row.id"
@@ -31,7 +31,7 @@
           :shouldUseFunctionalRenderers="shouldUseFunctionalRenderers"
         ></row-renderer>
       </template>
-      <template slot="tfoot">
+      <template v-slot:tfoot>
         <row-renderer
           v-for="footer in footersToDisplay"
           :key="footer.id"

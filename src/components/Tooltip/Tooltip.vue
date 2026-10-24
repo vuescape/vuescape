@@ -5,15 +5,13 @@
         :content-class="`tooltip__menu--${cell.id}`"
         v-model="shouldShowDialog"
         :close-on-content-click="false"
-        top
-        right
-        :nudge-top="30"
-        :nudge-right="20"
+        location="top start"
+        :offset="[30, 20]"
         max-width="500"
         transition="scale-transition"
         origin="bottom left"
       >
-        <template v-slot:activator="{ on }">
+        <template v-slot:activator="{ props }">
           <i
             :class="{ 'tooltip__icon--hover': isHoveringImpl }"
             class="fa-regular fa-square-info"
@@ -26,7 +24,7 @@
               vertical-align: bottom;
             "
             @click.stop="enableTooltip"
-            v-on="on"
+            v-bind="props"
             title="Click for Details about this Metric"
           />
         </template>

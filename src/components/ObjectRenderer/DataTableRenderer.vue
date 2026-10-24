@@ -9,24 +9,24 @@
       :headers="headers"
       :items="items"
       :search="search"
-      hide-actions
+      hide-default-footer
+      :items-per-page="-1"
     >
-      <template
-        slot="items"
-        slot-scope="props"
-      >
-        <!-- // eslint-disable-line require-v-for-key -->
-        <td
-          v-for="(value) in props.item"
-          class="text-xs-left"
-        >{{ value }}
-        </td>
+      <template v-slot:item="props">
+        <tr>
+          <td
+            v-for="(value, key) in props.item"
+            :key="key"
+            class="text-left"
+          >{{ value }}
+          </td>
+        </tr>
       </template>
-      <template slot="no-data">
+      <template v-slot:no-data>
         <v-alert
-          :value="!areResultsFound"
-          outline
+          :model-value="!areResultsFound"
           color="primary"
+          variant="outlined"
         >
           No Results Found
         </v-alert>
@@ -62,9 +62,9 @@ class DataTableRenderer extends Vue {
         Object.keys(firstItem).forEach((key, index) => {
           const inferredColumnHeading = this.sentenceFromCamelCase(this.capitalizeFirstCharacter(key))
           this.headers.push({
-            text : inferredColumnHeading,
-            value: key,
-            align: 'left',
+            title: inferredColumnHeading,
+            key,
+            align: 'start',
           })
         })
       }
@@ -74,9 +74,9 @@ class DataTableRenderer extends Vue {
         const firstItem = val[0]
         Object.keys(firstItem).forEach((key, index) => {
           this.headers.push({
-            text : key,
-            value: key,
-            align: 'left',
+            title: key,
+            key,
+            align: 'start',
           })
         })
       }

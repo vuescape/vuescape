@@ -26,39 +26,36 @@
           ref="theHeader"
         ></the-header>
       </transition>
-      <v-content class="app__content--height">
+      <v-main class="app__content--height">
         <div
           ref="appContainer"
           class="app__container--scroll"
         >
-          <v-container fluid>
+          <div class="container fluid">
             <v-alert
               v-for="notification in notifications"
               :key="notification.key"
               :type="notification.type"
-              :value="notification"
+              :model-value="notification"
               class="app__v-alert--margin"
-              dismissible
-              outline
+              closable
               transition="fade-transition"
               @click="notificationClosed(notification.key)"
+              variant="outlined"
             >
               {{ notification.message }}
             </v-alert>
-            <transition
-              mode="out-in"
-              name="app__component--transition"
-            >
-              <router-view
-                v-if="$route.meta && $route.meta.useNewInstance"
-                :key="$route.path"
-              ></router-view>
-              <router-view
-                v-else
-                :key="`${$route.name}-${$route.params.portfolioStrategyId}`"
+            <router-view v-slot="{ Component, route }">
+              <transition
+                mode="out-in"
+                name="app__component--transition"
               >
-              </router-view>
-            </transition>
+                <component
+                  :is="Component"
+                  :key="route.meta && route.meta.useNewInstance ? route.path : `${String(route.name)}-${route.params.portfolioStrategyId}`"
+                />
+              </transition>
+            </router-view>
             <div
               v-if="isHandling"
               v-loading="true"
@@ -66,16 +63,15 @@
               class="app__container--scroll"
             >
             </div>
-          </v-container>
+          </div>
         </div>
-      </v-content>
+      </v-main>
       <download-snackbar></download-snackbar>
       <v-footer
         ref="theFooter"
         :height="36"
         app
         class="v-footer__layout--border"
-        fixed
       >
         <component :is="footerComponent" />
       </v-footer>
@@ -97,6 +93,7 @@
 
 <script lang="ts">
 import { Action, Component, Inject, namespace, Prop, State, toNative, Vue, Watch } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 import type { Component as VueComponent } from 'vue'
 import { RouteLocationNormalized } from 'vue-router'
 
@@ -111,8 +108,8 @@ import AppInfoPoller from '@vuescape/components/AppInfoPoller'
 import TheFooter from '@vuescape/components/TheFooter'
 import TheHeader from '@vuescape/components/TheHeader'
 
-const DownloadSnackbar = () => import(/* webpackChunkName: 'download-snackbar' */ '@vuescape/components/DownloadSnackbar').then(
-  m => m.default)
+const DownloadSnackbar = defineAsyncComponent(() => import(/* webpackChunkName: 'download-snackbar' */ '@vuescape/components/DownloadSnackbar').then(
+  m => m.default))
 
 @Component({
   components: {
@@ -273,11 +270,11 @@ export default toNative(App)
 </script>
 
 <style>
-main.v-content {
+main.v-main {
   container-type: inline-size;
   container-name: main;
 }
-div.v-menu__content.menuable__content__active {
+div.v-menu > .v-overlay__content {
   border-radius: 5px;
 }
 .v-tab {
@@ -286,7 +283,7 @@ div.v-menu__content.menuable__content__active {
 .v-btn {
   text-transform: none;
 }
-.v-content {
+.v-main {
   flex: unset;
 }
 .app__sliding-pane--single {
@@ -305,14 +302,14 @@ div.container.fluid {
   padding:  0 !important;
   overflow: hidden;
 }
-div.theme--light.application {
+div.v-theme--light.v-application {
   background-color: white;
 }
-.v-select__selections {
+.v-select__selection {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-size:   16.8px !important;
 }
-div.application {
+div.v-application {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .app__v-alert--margin i.v-icon {
@@ -483,7 +480,7 @@ i.material-icons {
 .v-dialog__content.v-dialog__content--active {
   z-index: 4000 !important;
 }
-i.v-icon.v-alert__icon {
+i.v-icon.v-alert__prepend {
   font-weight: 900 !important;
 }
 </style>

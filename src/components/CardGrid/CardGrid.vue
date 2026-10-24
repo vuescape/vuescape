@@ -1,20 +1,18 @@
 <template>
-  <v-layout justify-center>
-    <v-flex
-      xs12
-      sm6
+  <div class="layout justify-center">
+    <div
+      class="flex xs12 sm6"
     >
-      <v-container
-        fluid
-        grid-list-md
+      <div
+        class="container fluid grid-list-md"
       >
-        <v-layout
-          row
-          wrap
+        <div
+          class="layout row wrap"
         >
-          <v-flex
+          <div
+            class="flex"
+            :class="`xs${card.flex}`"
             v-for="card in cards"
-            v-bind="{ [`xs${card.flex}`]: true }"
             :key="card.title"
           >
             <a
@@ -29,31 +27,27 @@
                   height="100px"
                   class="card-grid__resource-image--response"
                 />
-                <v-container
-                  fill-height
-                  fluid
-                  pa-2
+                <div
+                  class="container fill-height fluid pa-2"
                 >
-                  <v-layout fill-height>
-                    <v-flex
-                      xs12
-                      align-end
-                      flexbox
+                  <div class="layout fill-height">
+                    <div
+                      class="flex xs12 align-end flexbox"
                     >
                       <span
-                        class="headline"
+                        class="text-headline-small"
                         v-text="card.title"
                       ></span>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
+                    </div>
+                  </div>
+                </div>
               </v-card>
             </a>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-flex>
-  </v-layout>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

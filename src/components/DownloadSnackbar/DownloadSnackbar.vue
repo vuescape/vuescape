@@ -1,33 +1,30 @@
 <template>
   <v-snackbar
     absolute
-    :timeout="0"
-    :bottom="true"
-    :right="true"
+    :timeout="-1"
     v-model="shouldShowDownloadSnackbar"
+    location="bottom end"
   >
     <div>
-      <v-layout row>
-        <v-flex xs12>
+      <div class="layout row">
+        <div class="flex xs12">
           <v-progress-linear :indeterminate="true"></v-progress-linear>
-        </v-flex
-        >
-      </v-layout>
-      <v-layout
-        row
+        </div>
+      </div>
+      <div
+        class="layout row"
         style="margin-top: -10px"
       >
-        <v-flex xs12>
+        <div class="flex xs12">
           <slot> Your file is being prepared for download.</slot>
           <v-btn
-            flat
             color="primary"
             @click="() => setShouldShowDownloadSnackbar(false)"
+            variant="text"
           >Close
           </v-btn>
-        </v-flex>
-      </v-layout
-      >
+        </div>
+      </div>
     </div>
   </v-snackbar>
 </template>

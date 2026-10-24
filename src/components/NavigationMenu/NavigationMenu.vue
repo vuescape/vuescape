@@ -1,13 +1,13 @@
 <template>
   <span>
-    <v-layout
-      class="navigation-menu__container hidden-sm-and-down"
-      row
+    <div
+      class="layout navigation-menu__container hidden-sm-and-down row"
       style="height: 100%"
     >
-      <v-flex
+      <div
+        class="flex"
+        :class="`lg${leftBreakpoint}`"
         v-if="shouldShowLeftSection"
-        v-bind="{ [`lg${leftBreakpoint}`]: true }"
       >
         <v-toolbar
           :style="toolbarStyle"
@@ -20,28 +20,30 @@
             :menu="menu"
           ></navigation-menu-item>
         </v-toolbar>
-      </v-flex>
-      <v-flex
+      </div>
+      <div
+        class="flex"
+        :class="`lg${centerBreakpoint}`"
         v-if="shouldShowCenterSection"
-        v-bind="{ [`lg${centerBreakpoint}`]: true }"
       >
         <v-toolbar
           :style="toolbarStyle"
           class="navigation-menu__toolbar--size"
           height="36"
         >
-          <v-layout justify-center>
+          <div class="layout justify-center">
             <navigation-menu-item
               v-for="menu in centerMenuItems"
               :key="menu.id"
               :menu="menu"
             ></navigation-menu-item>
-          </v-layout>
+          </div>
         </v-toolbar>
-      </v-flex>
-      <v-flex
+      </div>
+      <div
+        class="flex"
+        :class="`lg${rightBreakpoint}`"
         v-if="shouldShowRightSection"
-        v-bind="{ [`lg${rightBreakpoint}`]: true }"
       >
         <v-toolbar
           :style="toolbarStyle"
@@ -55,8 +57,8 @@
             :menu="menu"
           ></navigation-menu-item>
         </v-toolbar>
-      </v-flex>
-    </v-layout>
+      </div>
+    </div>
     <hamburger-menu
       :menus="hamburgerMenus"
       :style="toolbarStyle"
@@ -67,6 +69,7 @@
 
 <script lang="ts">
 import { Component, namespace, Prop, State, toNative, Vue, Watch } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 
 
 import { HorizontalAlignment } from '@vuescape/reporting-domain/TreeTable/HorizontalAlignment'
@@ -74,10 +77,10 @@ import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { UserProfileModuleName } from '@vuescape/store/modules/UserProfile'
 import { Menu } from '@vuescape/types'
 
-const HamburgerMenu = () => import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
+const HamburgerMenu = defineAsyncComponent(() => import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default))
 
-const NavigationMenuItem = () => import(/* webpackChunkName: 'navigation-menu-item' */ './NavigationMenuItem.vue').then(
-  m => m.default)
+const NavigationMenuItem = defineAsyncComponent(() => import(/* webpackChunkName: 'navigation-menu-item' */ './NavigationMenuItem.vue').then(
+  m => m.default))
 
 @Component({
   components: {

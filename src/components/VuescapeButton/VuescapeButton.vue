@@ -1,13 +1,12 @@
 <template>
   <v-btn
     @click="onButtonClick"
-    small
-    outline
-    depressed
     color="primary"
     class="vuescape-button__v-btn--style"
     :disabled="isButtonDisabled"
     :value="value"
+    variant="outlined"
+    size="small"
   >
     <i
       v-if="icons.length && iconPosition === 'before'"
@@ -28,7 +27,7 @@
 <script lang="ts">
 import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
 
-@Component
+@Component({ emits: ['click'] })
 class VuescapeButton extends Vue {
   private isButtonDisabled = false
 

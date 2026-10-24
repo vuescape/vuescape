@@ -1,113 +1,124 @@
 <template>
-  <v-menu offset-y>
-    <template v-slot:activator="{ on }">
+  <v-menu location="bottom">
+    <template v-slot:activator="{ props }">
       <v-btn
-        v-on="on"
-        small
-        outline
-        depressed
+        v-bind="props"
         color="primary"
         class="download-button__v-btn--style"
+        variant="outlined"
+        size="small"
       >
         <i
           class="download-button__v-icon--font download-menu__v-icon--dropdown fa-duotone fa-cloud-download-alt"
           style="color: #555; margin-right: 7px;"
         />download &nbsp;
         <v-icon
-          small
           class="download-menu__v-icon--dropdown"
           style="font-size: 10px; font-weight: bolder;"
+          size="small"
         >fa-solid fa-caret-down
         </v-icon>
       </v-btn>
     </template>
     <v-list class="download-menu__v-list--layout">
-      <v-list-tile
+      <v-list-item
         v-if="shouldDisplayChart"
         @click="clickHandlers.clickChart"
       >
-        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <i
-            class="download-button__v-icon--font fa-duotone fa-file-image"
-            style="color: #555;"
-          />
-        </v-list-tile-action>
-        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
-          <v-list-tile-title>Chart</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile
+        <template v-slot:prepend>
+          <v-list-item-action class="download-menu__v-list-tile-action--layout">
+            <i
+              class="download-button__v-icon--font fa-duotone fa-file-image"
+              style="color: #555;"
+            />
+          </v-list-item-action>
+        </template>
+        <div class="download-menu__v-list-tile-content--layout">
+          <v-list-item-title>Chart</v-list-item-title>
+        </div>
+      </v-list-item>
+      <v-list-item
         v-if="shouldDisplayExcel"
         @click="clickHandlers.clickExcel"
       >
-        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <i
-            class="download-button__v-icon--font fa-duotone fa-file-excel"
-            style="color: #555;"
-          />
-        </v-list-tile-action>
+        <template v-slot:prepend>
+          <v-list-item-action class="download-menu__v-list-tile-action--layout">
+            <i
+              class="download-button__v-icon--font fa-duotone fa-file-excel"
+              style="color: #555;"
+            />
+          </v-list-item-action>
+        </template>
 
-        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
-          <v-list-tile-title>Excel</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile
+        <div class="download-menu__v-list-tile-content--layout">
+          <v-list-item-title>Excel</v-list-item-title>
+        </div>
+      </v-list-item>
+      <v-list-item
         v-if="shouldDisplayCsv"
         @click="clickHandlers.clickCsv"
       >
-        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <i
-            class="download-button__v-icon--font fa-duotone fa-file-csv"
-            style="color: #555;"
-          />
-        </v-list-tile-action>
+        <template v-slot:prepend>
+          <v-list-item-action class="download-menu__v-list-tile-action--layout">
+            <i
+              class="download-button__v-icon--font fa-duotone fa-file-csv"
+              style="color: #555;"
+            />
+          </v-list-item-action>
+        </template>
 
-        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
-          <v-list-tile-title>CSV</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile
+        <div class="download-menu__v-list-tile-content--layout">
+          <v-list-item-title>CSV</v-list-item-title>
+        </div>
+      </v-list-item>
+      <v-list-item
         v-if="shouldDisplayPdf"
         @click="clickHandlers.clickPdf"
       >
-        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <i
-            class="download-button__v-icon--font fa-duotone fa-file-pdf"
-            style="color: #555;"
-          />
-        </v-list-tile-action>
-        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
-          <v-list-tile-title>PDF</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile
+        <template v-slot:prepend>
+          <v-list-item-action class="download-menu__v-list-tile-action--layout">
+            <i
+              class="download-button__v-icon--font fa-duotone fa-file-pdf"
+              style="color: #555;"
+            />
+          </v-list-item-action>
+        </template>
+        <div class="download-menu__v-list-tile-content--layout">
+          <v-list-item-title>PDF</v-list-item-title>
+        </div>
+      </v-list-item>
+      <v-list-item
         v-if="shouldDisplayZip"
         @click="clickHandlers.clickZip"
       >
-        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <i
-            class="download-button__v-icon--font fa-duotone fa-file-archive"
-            style="color: #555;"
-          />
-        </v-list-tile-action>
-        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
-          <v-list-tile-title>{{ zipText || 'Zip' }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile
+        <template v-slot:prepend>
+          <v-list-item-action class="download-menu__v-list-tile-action--layout">
+            <i
+              class="download-button__v-icon--font fa-duotone fa-file-archive"
+              style="color: #555;"
+            />
+          </v-list-item-action>
+        </template>
+        <div class="download-menu__v-list-tile-content--layout">
+          <v-list-item-title>{{ zipText || 'Zip' }}</v-list-item-title>
+        </div>
+      </v-list-item>
+      <v-list-item
         v-if="shouldDisplayRaw"
         @click="clickHandlers.clickRaw"
       >
-        <v-list-tile-action class="download-menu__v-list-tile-action--layout">
-          <i
-            class="download-button__v-icon--font fa-duotone fa-file-code"
-            style="color: #555;"
-          />
-        </v-list-tile-action>
-        <v-list-tile-content class="download-menu__v-list-tile-content--layout">
-          <v-list-tile-title>Raw</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+        <template v-slot:prepend>
+          <v-list-item-action class="download-menu__v-list-tile-action--layout">
+            <i
+              class="download-button__v-icon--font fa-duotone fa-file-code"
+              style="color: #555;"
+            />
+          </v-list-item-action>
+        </template>
+        <div class="download-menu__v-list-tile-content--layout">
+          <v-list-item-title>Raw</v-list-item-title>
+        </div>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
@@ -162,7 +173,7 @@ export default toNative(DownloadMenu)
   padding-top:    0;
   padding-bottom: 0;
 }
-div.download-menu__v-list--layout a.v-list__tile {
+div.download-menu__v-list--layout a.v-list-item {
   height:     24px;
   max-height: 24px;
 }

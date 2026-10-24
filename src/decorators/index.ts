@@ -40,6 +40,14 @@ export const Vue = class extends Base {
   }
 } as typeof Base
 
+// vue-facing-decorator always declares emits, which makes Vue warn about every event a component emits without
+// declaring it. vue-class-component never declared them, so leave them undeclared unless a component lists some.
+function leaveEmptyEmitsUndeclared(option: any) {
+  if (Array.isArray(option.emits) && option.emits.length === 0) {
+    delete option.emits
+  }
+}
+
 function collectDataWithInstance(option: any) {
   const data = option.data
   option.data = function (this: any) {
@@ -56,7 +64,12 @@ function collectDataWithInstance(option: any) {
 
 export const Component = function (optionOrClass?: any, context?: any) {
   if (typeof optionOrClass === 'function') {
-    return ComponentDecorator({ modifier: collectDataWithInstance })(optionOrClass, context)
+    return ComponentDecorator({
+      modifier: (option: any) => {
+        collectDataWithInstance(option)
+        leaveEmptyEmitsUndeclared(option)
+      },
+    })(optionOrClass, context)
   }
 
   const modifier = optionOrClass?.modifier
@@ -64,6 +77,7 @@ export const Component = function (optionOrClass?: any, context?: any) {
     ...optionOrClass,
     modifier: (option: any) => {
       collectDataWithInstance(option)
+      leaveEmptyEmitsUndeclared(option)
       modifier?.(option)
     },
   })

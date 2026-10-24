@@ -1,6 +1,6 @@
-import { createLocalVue, mount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { expect } from 'expect'
-import Vuetify from 'vuetify'
+import { createVuetify } from 'vuetify'
 
 import NumericTextField from '@vuescape/components/NumericTextField/NumericTextField.vue'
 
@@ -17,14 +17,12 @@ describe('NumericTextField.vue --', () => {
   // registerDynamicModule call so pass false to not unregister.
   // let store: Store<RootState>
   before(() => {
-    // const store = new Vuex.Store(new RootStore())
+    // const store = createStore(new RootStore())
     // registerDynamicModule(AppInfoModuleName, () => new AppInfoStore(), store, false)
   })
   describe('when initial value is --', () => {
     it('0 should render as 0', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '0'
       const formatKind    = 'number'
       const formatOptions = {
@@ -34,9 +32,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -49,8 +47,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('00 should render as 0', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '00'
       const formatKind    = 'number'
       const formatOptions = {
@@ -60,9 +56,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -75,8 +71,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('0. should render as 0.', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '0.'
       const formatKind    = 'number'
       const formatOptions = {
@@ -86,9 +80,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -101,8 +95,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('0.0 should render as 0.0', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '0.0'
       const formatKind    = 'number'
       const formatOptions = {
@@ -112,9 +104,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -127,8 +119,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('0.00 should render as 0', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '0.00'
       const formatKind    = 'number'
       const formatOptions = {
@@ -138,9 +128,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -153,8 +143,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('1 should render as 1', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '1'
       const formatKind    = 'number'
       const formatOptions = {
@@ -164,9 +152,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -179,8 +167,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('12 should render as 12', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '12'
       const formatKind    = 'number'
       const formatOptions = {
@@ -190,9 +176,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -205,8 +191,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('123 should render as 123', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '123'
       const formatKind    = 'number'
       const formatOptions = {
@@ -216,9 +200,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -231,8 +215,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('1234 should render as 1,234', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '1234'
       const formatKind    = 'number'
       const formatOptions = {
@@ -242,9 +224,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -257,8 +239,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('12345678 should render as 12,345,678', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '12345678'
       const formatKind    = 'number'
       const formatOptions = {
@@ -268,9 +248,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -283,8 +263,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('192.168.1.1 should render as 192.168.1.1', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '192.168.1.1'
       const formatKind    = 'number'
       const formatOptions = {
@@ -294,9 +272,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -309,8 +287,6 @@ describe('NumericTextField.vue --', () => {
     })
     it('1921.168.1.1 should render as 1,921.168.1.1', async () => {
       // Arrange
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
       const value         = '1921.168.1.1'
       const formatKind    = 'number'
       const formatOptions = {
@@ -320,9 +296,9 @@ describe('NumericTextField.vue --', () => {
 
       // Act
       const wrapper = mount(NumericTextField, {
-        localVue,
-        propsData: {
-          value,
+        global: { plugins: [createVuetify()] },
+        props: {
+          modelValue: value,
           formatKind,
           formatOptions,
         },
@@ -336,8 +312,6 @@ describe('NumericTextField.vue --', () => {
     describe('when setting value to --', () => {
       it('1234 should render 1,234', async () => {
         // Arrange
-        const localVue = createLocalVue()
-        localVue.use(Vuetify)
         const value         = ''
         const formatKind    = 'number'
         const formatOptions = {
@@ -347,9 +321,9 @@ describe('NumericTextField.vue --', () => {
 
         // Act
         const wrapper = mount(NumericTextField, {
-          localVue,
-          propsData: {
-            value,
+          global: { plugins: [createVuetify()] },
+          props: {
+            modelValue: value,
             formatKind,
             formatOptions,
           },
@@ -365,8 +339,6 @@ describe('NumericTextField.vue --', () => {
       })
       it('00999999,999.00000 should render 999,999,999', async () => {
         // Arrange
-        const localVue = createLocalVue()
-        localVue.use(Vuetify)
         const value         = ''
         const formatKind    = 'number'
         const formatOptions = {
@@ -376,9 +348,9 @@ describe('NumericTextField.vue --', () => {
 
         // Act
         const wrapper = mount(NumericTextField, {
-          localVue,
-          propsData: {
-            value,
+          global: { plugins: [createVuetify()] },
+          props: {
+            modelValue: value,
             formatKind,
             formatOptions,
           },

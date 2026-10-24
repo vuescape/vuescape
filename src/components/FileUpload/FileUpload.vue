@@ -34,24 +34,26 @@
       style="cursor: unset;"
       @click.prevent.stop=""
     >
-      <v-layout row>
-        <v-flex xs12>&nbsp;</v-flex>
-      </v-layout>
+      <div class="layout row">
+        <div class="flex xs12">&nbsp;</div>
+      </div>
       <v-list>
-        <v-list-tile
+        <v-list-item
           v-for="file in files"
           :key="file.name"
         >
-          <v-list-tile-action>
-            <i
-              class="vuescape-button__v-icon--font fa-duotone file-excel"
-              style="color: #555; font-size: 40px;"
-            />
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="file.name"></v-list-tile-title>
-          </v-list-tile-content>
-          <v-list-tile-avatar>
+          <template v-slot:prepend>
+            <v-list-item-action>
+              <i
+                class="vuescape-button__v-icon--font fa-duotone file-excel"
+                style="color: #555; font-size: 40px;"
+              />
+            </v-list-item-action>
+          </template>
+          <div>
+            <v-list-item-title v-text="file.name"></v-list-item-title>
+          </div>
+          <template v-slot:append>
             <span
               style="cursor: pointer;"
               @click.stop="remove(file.name)"
@@ -61,21 +63,22 @@
                 style="color: #555; font-size: 25px;"
               />
             </span>
-          </v-list-tile-avatar>
-        </v-list-tile>
+          </template>
+        </v-list-item>
       </v-list>
-      <v-layout row>
-        <v-flex xs12>&nbsp;</v-flex>
-      </v-layout>
+      <div class="layout row">
+        <div class="flex xs12">&nbsp;</div>
+      </div>
     </div>
   </v-card>
 </template>
 
 <script lang="ts">
 import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 
-const VuescapeButton = () =>
-  import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default)
+const VuescapeButton = defineAsyncComponent(() =>
+  import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(m => m.default))
 
 @Component({ components: { VuescapeButton } })
 class FileUpload extends Vue {
@@ -139,7 +142,7 @@ export default toNative(FileUpload)
   line-height:    1 !important;
   letter-spacing: 0.02em !important;
 }
-.v-list__tile:hover {
+.v-list-item:hover {
   background-color: rgb(235, 248, 240);
   padding-left:     16px;
   padding-right:    16px;

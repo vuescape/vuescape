@@ -7,28 +7,27 @@
     >
       <slot name="header"></slot>
     </page-header>
-    <v-layout
-      row
-      wrap
+    <div
+      class="layout row wrap"
       ref="page-template__body"
     >
       <slot></slot>
-    </v-layout>
-    <v-layout
-      row
-      wrap
+    </div>
+    <div
+      class="layout row wrap"
       ref="page-template__footer"
     >
       <!-- TODO: v-if if nothing in footer -->
       <slot name="footer"></slot>
-    </v-layout>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, toNative, Vue } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 
-const PageHeader = () => import(/* webpackChunkName: 'page-header' */ '@vuescape/components/PageHeader').then(m => m.default)
+const PageHeader = defineAsyncComponent(() => import(/* webpackChunkName: 'page-header' */ '@vuescape/components/PageHeader').then(m => m.default))
 
 @Component({
   components: { PageHeader },

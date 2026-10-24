@@ -1,33 +1,33 @@
-import { createLocalVue, mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { expect } from 'expect'
-import Vuetify from 'vuetify'
+import { createVuetify } from 'vuetify'
 
 import DownloadFileButton from './DownloadFileButton.vue'
-
-import VuescapeButton from '../VuescapeButton'
-
-console.log(VuescapeButton.version)
+// DownloadFileButton loads VuescapeButton lazily. Importing it here puts it in the test bundle, since jsdom doesn't load
+// webpack's lazily loaded chunks.
+import '../VuescapeButton'
 
 describe('DownloadFileButton.vue --', () => {
   describe('props --', () => {
     it('should set shouldShowCompletedMessage', () => {
       const shouldShowCompletedMessage = true
-      const wrapper                    = mount(DownloadFileButton, { propsData: { shouldShowCompletedMessage } })
+      const wrapper                    = mount(DownloadFileButton, {
+        global: { plugins: [createVuetify()] },
+        props : { shouldShowCompletedMessage },
+      })
 
-      // eslint-disable-next-line dot-notation
-      expect(wrapper.props()['shouldShowCompletedMessage']).toBe(shouldShowCompletedMessage)
+      expect((wrapper.props() as Record<string, unknown>).shouldShowCompletedMessage).toBe(shouldShowCompletedMessage)
     })
   })
 
   describe('download button --', () => {
-    it('should invoke onClick method', () => {
+    it('should invoke onClick method', async () => {
       // Arrange
       let wasClicked = false
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
 
       const wrapper = mount(DownloadFileButton, {
-        propsData: {
+        global: { plugins: [createVuetify()] },
+        props : {
           onClick   : () => {
             wasClicked = true
           },
@@ -35,34 +35,35 @@ describe('DownloadFileButton.vue --', () => {
           data: '',
           shouldShowCompletedMessage: false,
         },
-        localVue,
       })
+      // The button is loaded asynchronously
+      await flushPromises()
 
       // Act
-      wrapper.find('.vuescape-button__v-btn--style').trigger('click')
+      await wrapper.find('.vuescape-button__v-btn--style').trigger('click')
 
       // Assert
       expect(wasClicked).toBe(true)
     })
 
-    it('should not invoke onClick when disabled', () => {
+    it('should not invoke onClick when disabled', async () => {
       // Arrange
       let wasClicked = false
-      const localVue = createLocalVue()
-      localVue.use(Vuetify)
 
       const wrapper = mount(DownloadFileButton, {
-        propsData: {
+        global: { plugins: [createVuetify()] },
+        props : {
           onClick   : () => {
             wasClicked = true
           },
           isDisabled: true,
         },
-        localVue,
       })
+      // The button is loaded asynchronously
+      await flushPromises()
 
       // Act
-      wrapper.find('.vuescape-button__v-btn--style').trigger('click')
+      await wrapper.find('.vuescape-button__v-btn--style').trigger('click')
 
       // Assert
       expect(wasClicked).toBe(false)

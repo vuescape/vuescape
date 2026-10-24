@@ -1,9 +1,7 @@
 <template>
-  <v-layout>
-    <v-flex
-      xs12
-      sm6
-      offset-sm3
+  <div class="layout">
+    <div
+      class="flex xs12 sm6 offset-sm3"
     >
       <v-card v-if="isPerformingMaintenance === ''">
       </v-card>
@@ -14,9 +12,9 @@
             class="site-maintenance__card-img--header"
           />
         </div>
-        <v-card-title primary-title>
+        <v-card-title>
           <div>
-            <h3 class="headline mb-0">We're Performing Some Maintenance Right Now</h3>
+            <h3 class="text-headline-small mb-0">We're Performing Some Maintenance Right Now</h3>
             <div>{{ sitePerformanceMaintenanceMessage }}</div>
           </div>
         </v-card-title>
@@ -31,15 +29,15 @@
             class=""
           />
         </div>
-        <v-card-title primary-title>
+        <v-card-title>
           <div>
-            <h3 class="headline mb-0">We Are Back Online!</h3>
+            <h3 class="text-headline-small mb-0">We Are Back Online!</h3>
             <div>{{ sitePerformanceMaintenanceMessage }}</div>
           </div>
         </v-card-title>
       </v-card>
-    </v-flex>
-  </v-layout>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { Component, namespace, toNative, Vue, Watch } from '@vuescape/decorators'

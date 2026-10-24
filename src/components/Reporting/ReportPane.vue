@@ -4,30 +4,23 @@
     class="report-pane__container--layout"
   >
     <div :ref="reportHeaderRef">
-      <v-layout
-        align-start
-        fill-height
-        justify-start
-        row
-        report-pane__v-layout--margin
+      <div
+        class="layout align-start fill-height justify-start row report-pane__v-layout--margin"
       >
-        <v-flex
-          lg12
-          md12
-          xs12
+        <div
+          class="flex lg12 md12 xs12"
         >
           <div class="report-pane__header--title">
             {{ reportTitle }}
           </div>
-        </v-flex>
-      </v-layout>
-      <v-layout
-        row
-        class="report-pane__section--layout"
+        </div>
+      </div>
+      <div
+        class="layout row report-pane__section--layout"
         :style="subheaderStyle"
         :ref="tabHeaderRow"
       >
-        <v-flex xs11>
+        <div class="flex xs11">
           <v-btn-toggle
             v-if="areMultipleReportSections"
             style="text-align: left !important; box-shadow: unset"
@@ -39,15 +32,15 @@
               :key="section.id + '-toggle'"
               active-class="report-pane__v-btn--active"
               class="report-pane__v-btn--inactive"
-              flat
               color="black"
               :value="section.id"
               @click="changeSection"
+              variant="text"
             >{{ section.name }}
             </v-btn
             >
           </v-btn-toggle>
-        </v-flex>
+        </div>
         <v-spacer></v-spacer>
         <span class="report-pane__span--additional-info">{{ report.additionalReportInfo }}</span>
         <span class="exclude-from-pdf report-pane__span--menu">
@@ -60,7 +53,7 @@
             :clickHandlers="{ clickExcel: downloadExcel }"
           ></download-menu>
         </span>
-      </v-layout>
+      </div>
     </div>
     <tree-table
       v-loading="isPerformingLongRunningOperation"
@@ -82,10 +75,10 @@
     <v-alert
       v-if="areNoResults"
       class="report-pane__v-alert--layout"
-      :value="areNoResults"
+      :model-value="areNoResults"
       transition="fade-transition"
       type="info"
-      outline
+      variant="outlined"
     >
       No results found.
     </v-alert>
@@ -94,6 +87,7 @@
 
 <script lang="ts">
 import { Component, namespace, Prop, toNative, Watch } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 
 import { dispatchAndAwaitAction, getModuleStateByKey, registerStoreModule } from '@vuescape/store/storeHelpers'
 
@@ -102,8 +96,8 @@ import {
 } from '@vuescape/index'
 import { Link, PayloadEncodingKind, ResourceKind } from '@vuescape/reporting-domain'
 
-const DownloadMenu = () => import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default)
-const TreeTable    = () => import(/* webpackChunkName: 'tree-table' */ '@vuescape/components/TreeTable-v2/').then(m => m.default)
+const DownloadMenu = defineAsyncComponent(() => import(/* webpackChunkName: 'download-button' */ '@vuescape/components/DownloadMenu').then(m => m.default))
+const TreeTable    = defineAsyncComponent(() => import(/* webpackChunkName: 'tree-table' */ '@vuescape/components/TreeTable-v2/').then(m => m.default))
 
 @Component({
   components: {

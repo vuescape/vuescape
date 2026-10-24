@@ -106,8 +106,8 @@
         >
           <v-btn
             class="cancel"
-            flat
             @click="cancel"
+            variant="text"
           >Cancel
           </v-btn>
           <!-- <a class="cancel" @click="cancel">Cancel</a> -->
@@ -132,10 +132,11 @@
 </template>
 <script lang="ts">
 import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 import { Step } from './Step'
 
-const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
-  m => m.default)
+const VuescapeButton = defineAsyncComponent(() => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
+  m => m.default))
 
 @Component({
   components: { VuescapeButton },

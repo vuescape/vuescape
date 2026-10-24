@@ -36,6 +36,7 @@
 
 <script lang="ts">
 import { Component, namespace, Prop, toNative, Watch } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 import { RouteLocationNormalized } from 'vue-router'
 
 import { getModuleStateByKey, makeStateKey } from '@vuescape/store/storeHelpers'
@@ -45,10 +46,10 @@ import { ComponentBase } from '@vuescape/index'
 
 import { makeReportPaneNamespace, makeReportPaneNamespacePrefix, PaneKind } from '.'
 
-const ReportPane = () => import(/* webpackChunkName: 'report-pane' */ '@vuescape/components/Reporting/ReportPane.vue').then(
-  m => m.default)
+const ReportPane = defineAsyncComponent(() => import(/* webpackChunkName: 'report-pane' */ '@vuescape/components/Reporting/ReportPane.vue').then(
+  m => m.default))
 
-const SlidingPanes = () => import(/* webpackChunkName: 'sliding-panes' */ '@vuescape/components/SlidingPanes').then(m => m.default)
+const SlidingPanes = defineAsyncComponent(() => import(/* webpackChunkName: 'sliding-panes' */ '@vuescape/components/SlidingPanes').then(m => m.default))
 
 @Component({
   components: {

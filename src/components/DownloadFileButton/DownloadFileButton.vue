@@ -13,44 +13,47 @@
       v-model="shouldShowDownloadCompleted"
       :timeout="60000"
       absolute
-      bottom
       color="primary"
-      right
+      location="bottom end"
     >
       <i class="fa-duotone fa-check-circle"></i>&nbsp;&nbsp; Your file is downloading
-      <v-btn
-        color="primary"
-        flat
-        @click="shouldShowDownloadCompleted = false"
-      >Close
-      </v-btn>
+      <template v-slot:actions>
+        <v-btn
+          color="primary"
+          @click="shouldShowDownloadCompleted = false"
+          variant="text"
+        >Close
+        </v-btn>
+      </template>
     </v-snackbar>
     <v-snackbar
       v-model="shouldShowDownloadCsvMessage"
       :timeout="10000"
       absolute
-      bottom
-      right
+      location="bottom end"
     >
       Your file is being prepared for download.
-      <v-btn
-        color="primary"
-        flat
-        @click="shouldShowDownloadCsvMessage = false"
-      >Close
-      </v-btn>
+      <template v-slot:actions>
+        <v-btn
+          color="primary"
+          @click="shouldShowDownloadCsvMessage = false"
+          variant="text"
+        >Close
+        </v-btn>
+      </template>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, toNative, Vue, Watch } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 
 
 import { decodeBase64String, downloadFile } from '@vuescape/infrastructure'
 
-const VuescapeButton = () => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
-  m => m.default)
+const VuescapeButton = defineAsyncComponent(() => import(/* webpackChunkName: 'vuescape-button' */ '@vuescape/components/VuescapeButton/').then(
+  m => m.default))
 
 @Component({
   components: { VuescapeButton },

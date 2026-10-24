@@ -2,58 +2,57 @@
   <span :class="{ 'navigation-menu-item__divider--height': menu.isDivider }">
     <v-divider
       v-if="menu.isDivider"
-      class="mx-3 navigation-menu-item__divider--height"
+      class="mx-4 navigation-menu-item__divider--height"
       inset
       vertical
     ></v-divider>
     <v-menu
       content-class="navigation-menu__content"
       v-if="!menu.isDivider && menu.items"
-      auto
-      open-on-click
-      offset-y
+      location="bottom"
       :disabled="isSiteInMaintenanceMode"
     >
-      <v-btn
-        :key="menu.id"
-        :aria-label="menu.title"
-        flat
-        slot="activator"
-        :class="[{ 'v-btn--active': isSubItemActive(menu) }, 'navigation-menu__v-btn--style']"
-        :disabled="isSiteInMaintenanceMode"
-      >
-        <span
-          v-if="menu.prefixHtml"
-          v-html="menu.prefixHtml"
-        ></span>
-        <i
-          v-if="menu.icon"
-          :class="getIconArray(menu.icon).join(' ')"
-          class="navigation-menu__v-icon--layout"
-          :style="{ color: '#555' }"
-        />&nbsp;{{ menu.title }} &nbsp;
-        <v-icon
-          v-if="menu.items && menu.items.length"
-          small
-          color="#555"
-          class="navigation-menu__v-icon--dropdown"
-        >fa-solid fa-caret-down</v-icon
+      <template v-slot:activator="{ props }">
+        <v-btn
+          :key="menu.id"
+          :aria-label="menu.title"
+          v-bind="props"
+          :class="[{ 'v-btn--active': isSubItemActive(menu) }, 'navigation-menu__v-btn--style']"
+          :disabled="isSiteInMaintenanceMode"
+          variant="text"
         >
-      </v-btn>
+          <span
+            v-if="menu.prefixHtml"
+            v-html="menu.prefixHtml"
+          ></span>
+          <i
+            v-if="menu.icon"
+            :class="getIconArray(menu.icon).join(' ')"
+            class="navigation-menu__v-icon--layout"
+            :style="{ color: '#555' }"
+          />&nbsp;{{ menu.title }} &nbsp;
+          <v-icon
+            v-if="menu.items && menu.items.length"
+            color="#555"
+            class="navigation-menu__v-icon--dropdown"
+            size="small"
+          >fa-solid fa-caret-down</v-icon
+          >
+        </v-btn>
+      </template>
       <v-list
         class="navigation-menu__v-list--alignment"
         v-if="menu.items"
-        light
       >
-        <v-list-tile
+        <v-list-item
           class="navigation-menu__v-list-tile--font"
           :aria-label="menuItem.ariaLabel || menuItem.title"
           v-for="menuItem in menu.items"
           :key="menuItem.id"
           @click="handleNavigation($event, menuItem)"
         >
-          <v-list-tile-title :aria-label="menuItem.ariaLabel || menuItem.title">{{ menuItem.title }}</v-list-tile-title>
-        </v-list-tile>
+          <v-list-item-title :aria-label="menuItem.ariaLabel || menuItem.title">{{ menuItem.title }}</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
     <div
@@ -75,12 +74,12 @@
       <v-btn
         v-if="!menu.isDivider && !menu.items"
         :key="menu.id"
-        flat
         :class="['navigation-menu__v-btn--style', menu.cssClass, { 'v-btn--active': isItemActive(menu) }]"
         :title="menu.icon ? menu.title : ''"
         :aria-label="menu.ariaLabel || menu.title"
         :disabled="isSiteInMaintenanceMode"
         @click="handleNavigation($event, menu)"
+        variant="text"
       >
         <i
           class="navigation-menu__v-icon--layout"
@@ -96,13 +95,14 @@
 
 <script lang="ts">
 import { Component, namespace, Prop, toNative, Vue } from '@vuescape/decorators'
+import { defineAsyncComponent } from 'vue'
 
 import { isNavigationFailure } from 'vue-router'
 
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
 import { Menu } from '@vuescape/types'
 
-const HamburgerMenu = () => import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default)
+const HamburgerMenu = defineAsyncComponent(() => import(/* webpackChunkName: 'hamburger-menu' */ '@vuescape/components/HamburgerMenu').then(m => m.default))
 
 @Component({
   components: {
@@ -186,7 +186,7 @@ export default toNative(NavigationMenuItem)
 </script>
 
 <style>
-div.navigation-menu__v-list--alignment a.v-list__tile {
+div.navigation-menu__v-list--alignment a.v-list-item {
   height:     36px;
   max-height: 36px;
 }
@@ -207,7 +207,7 @@ i.v-icon {
   font-size: 13px;
   color:     unset;
 }
-.navigation-menu__v-list-tile--font a.v-list__tile--active div {
+.navigation-menu__v-list-tile--font a.v-list-item--active div {
   font-size:   13px;
   font-weight: 600;
   color:       rgba(0, 0, 0, 0.87);
@@ -224,7 +224,7 @@ i.v-icon {
   padding-top:    0;
   padding-bottom: 0;
 }
-.navigation-menu__content.menuable__content__active {
+.navigation-menu__content {
   max-height: 500px !important;
 }
 .navigation-menu-item__divider--height {

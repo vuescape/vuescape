@@ -1,24 +1,21 @@
 <template>
-  <v-container
+  <div
+    class="container grid-list-lg text-center chiclet-grid__container"
     ref="chicletGridContainer"
-    grid-list-lg
-    text-xs-center
     style="display: inline"
-    class="chiclet-grid__container"
   >
     <template
       v-for="rowIndex in Math.ceil(visibleChiclets.length / numberOfColumns)"
       v-bind:key="rowIndex + '_icon'"
     >
-      <v-layout
-        justify-center
-        row
+      <div
+        class="layout justify-center row"
       >
-        <v-flex
+        <div
+          class="flex chiclet-grid__chiclet--layout"
+          :class="`xs${breakpoints}`"
           v-for="chiclet in getChiclets(rowIndex, numberOfColumns)"
-          v-bind="{ [`xs${breakpoints}`]: true }"
           v-bind:key="chiclet.id + '_icon'"
-          class="chiclet-grid__chiclet--layout"
         >
           <a
             :style="chiclet.isVisible ? 'visibility: visible;' : 'visibility: hidden;'"
@@ -74,29 +71,28 @@
               {{ chiclet.title }}
             </span>
           </v-card>
-        </v-flex>
-      </v-layout>
-      <v-layout
+        </div>
+      </div>
+      <div
+        class="layout justify-center row"
         v-if="titleRenderingStrategy === 'TitleUnderChiclet'"
-        justify-center
-        row
         v-bind:key="rowIndex + '_text'"
         style="margin-top: -10px; margin-bottom: 50px"
       >
-        <v-flex
+        <div
+          class="flex chiclet-grid__chiclet--layout"
+          :class="`xs${breakpoints}`"
           v-for="chiclet in getChiclets(rowIndex, numberOfColumns)"
           v-bind:key="chiclet.id + '_text'"
-          v-bind="{ [`xs${breakpoints}`]: true }"
-          class="chiclet-grid__chiclet--layout"
         >
           <span
             class="chiclet-grid__span--title-under"
             :style="chiclet.isVisible ? 'visibility: visible;' : 'visibility: hidden;'"
           >{{ chiclet.title }}</span>
-        </v-flex>
-      </v-layout>
+        </div>
+      </div>
     </template>
-  </v-container>
+  </div>
 
 </template>
 

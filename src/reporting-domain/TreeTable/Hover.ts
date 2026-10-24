@@ -1,8 +1,10 @@
+import type { Component } from 'vue'
+
 import { HoverContentKind } from './HoverContentKind'
 
 export interface Hover {
   title?: string
   content?: string
-  component?: string | (() => Promise<any>)
+  component?: string | Component
   contentKind?: HoverContentKind
 }

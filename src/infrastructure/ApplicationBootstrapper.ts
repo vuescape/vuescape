@@ -18,6 +18,8 @@ import { aliases as faAliases, fa } from 'vuetify/iconsets/fa'
 import { aliases as fa4Aliases, fa as fa4 } from 'vuetify/iconsets/fa4'
 import 'vuetify/styles'
 
+import '@vuescape/styles/vuetify1-compat.css'
+
 type ErrorHandler = (err: unknown, instance: ComponentPublicInstance | null, info: string) => void
 
 export type ThemeColors = Dictionary<string>

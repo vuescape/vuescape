@@ -12,11 +12,11 @@
       <v-dialog
         v-model="shouldShowDialog"
         :content-class="`modal-tooltip__dialog--${cell.id}`"
-        :hide-overlay="true"
         max-width="maxWidthValue"
         origin="left center"
         :width="widthValue"
-        @input="v => v || stopVideo()"
+        @update:model-value="v => v || stopVideo()"
+        :scrim="!(true)"
       >
         <v-card flat>
           <v-card-title class="modal-tooltip__v-card--title">

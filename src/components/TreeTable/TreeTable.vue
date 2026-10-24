@@ -13,7 +13,7 @@
       :sync-footer-scroll="shouldSyncFooterScrollValue"
       :sync-header-scroll="shouldSyncHeaderScrollValue"
     >
-      <template slot="thead">
+      <template v-slot:thead>
         <tr
           v-for="headerRow in theHeaders"
           :key="headerRow.id"
@@ -37,7 +37,7 @@
       </template>
       <template
         v-if="shouldUseFunctionalRenderers"
-        slot="tbody"
+        v-slot:tbody
       >
         <functional-row-renderer
           v-for="row in rowsToDisplay"
@@ -47,7 +47,7 @@
       </template>
       <template
         v-else
-        slot="tbody"
+        v-slot:tbody
       >
         <row-renderer
           v-for="row in rowsToDisplay"

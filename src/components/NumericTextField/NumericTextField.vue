@@ -3,26 +3,26 @@
     <v-text-field
       :key="key"
       :ref="uniqueId"
-      :value="formattedValue"
+      :model-value="formattedValue"
       :label="label"
       :placeholder="placeholder"
       :readonly="readonly"
       :disabled="disabled"
-      :outline="outline"
       :hide-details="hideDetails"
       :error="errorVal"
       :error-messages="errorMessagesVal"
       :clearable="clearable"
-      :backgroundColor="backgroundColor"
+      :bg-color="backgroundColor"
       :prefix="prefix"
       :suffix="suffix"
       v-bind="additionalTextFieldProperties"
       @keypress="onKeyPress"
       @update:error="onErrorUpdate"
-      @input="onInput"
+      @update:model-value="onInput"
       :maxlength="maxLength"
       class="numeric-text-field__input--color"
       :class="cssClass"
+      :variant="(outline) ? 'outlined' : 'underlined'"
     ></v-text-field>
   </div>
 </template>
@@ -34,7 +34,8 @@ import type { ComponentPublicInstance } from 'vue'
 import { formatValue, presentationFormatKind } from '@vuescape/infrastructure/presentationFormatter'
 import { Guid } from '@vuescape/types/Guid'
 
-@Component
+// Used with v-model
+@Component({ emits: ['update:modelValue'] })
 class NumericTextField extends Vue {
   private errorVal                         = false
   private errorMessagesVal: Array<string>  = []
@@ -46,7 +47,7 @@ class NumericTextField extends Vue {
   private uniqueId: string
 
   @Prop({ type: String, default: '' })
-  private value: string
+  private modelValue: string
 
   @Prop({ type: String, default: '' })
   private label: string
@@ -140,12 +141,13 @@ class NumericTextField extends Vue {
       result = this.removeDecimalsEndingWithAtLeastTwoZeroes(result)!
     }
 
-    // Manually update the v-text-field lazy value to reflect the actual value
+    // Manually update the input to reflect the actual value
     // This accounts for scenario where the value does not change but the formatted output
     // is changed -- v-text-field was not rendering in that scenario
     const component = this.$refs[this.uniqueId] as any
-    if (component) {
-      component.lazyValue = result
+    const input     = component?.$el?.querySelector('input') as HTMLInputElement | null
+    if (input && input.value !== result) {
+      input.value = result
     }
 
     this.repositionCursor(result)
@@ -162,7 +164,7 @@ class NumericTextField extends Vue {
     formattedValue      = this.toNumber(formattedValue)
     const valueAsNumber = this.removeDecimalsEndingWithAtLeastTwoZeroes(formattedValue)!
     this.rawValue       = [valueAsNumber]
-    this.$emit('input', valueAsNumber)
+    this.$emit('update:modelValue', valueAsNumber)
     this.validateTextField(valueAsNumber, this.rules)
   }
 
@@ -299,7 +301,7 @@ class NumericTextField extends Vue {
   }
 
   private created() {
-    this.rawValue         = [this.value]
+    this.rawValue         = [this.modelValue]
     this.errorVal         = this.error
     this.errorMessagesVal = this.errorMessages
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xs-center">
+  <div class="text-center">
     <v-dialog
       v-model="shouldUpdate"
       persistent
@@ -7,8 +7,7 @@
     >
       <v-card>
         <v-card-title
-          class="headline app-info-handler__title--heading primary"
-          primary-title
+          class="text-headline-small app-info-handler__title--heading bg-primary"
         >
           Updates Available
         </v-card-title>
@@ -31,8 +30,8 @@
           <v-spacer></v-spacer>
           <v-btn
             color="primary"
-            Depressed
             @click="reload()"
+            variant="flat"
           >
             Refresh Now
           </v-btn>
