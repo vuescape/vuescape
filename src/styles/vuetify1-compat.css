@@ -38,6 +38,11 @@
 .v-toolbar__content {
   padding: 0 24px;
 }
+@media only screen and (max-width: 959px) {
+  .v-toolbar__content {
+    padding: 0 16px;
+  }
+}
 
 /* Vuetify 1.5 footers had no padding and a grey background */
 .v-footer {
