@@ -43,6 +43,9 @@
   font-weight: 500;
   letter-spacing: normal;
 }
+.v-btn--size-small {
+  padding: 0 8px;
+}
 
 /* Vuetify 1.5 toggles were as tall as a button, with narrower buttons and faded unselected ones */
 .v-btn-toggle.v-btn-group--density-default {
