@@ -409,7 +409,7 @@ div.report-pane__container--layout div.v-btn-toggle button.v-btn:hover {
   line-height:   40px;
   margin-bottom: 10px;
 }
-.report-pane__container--layout .info--text.report-pane__v-alert--layout {
+.report-pane__container--layout .text-info.report-pane__v-alert--layout {
   border-color:  #9bdddb !important;
   border-radius: 5px;
   margin-top:    10px;
