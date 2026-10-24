@@ -2,13 +2,15 @@
  * Styles that keep templates written for Vuetify 1.5 looking as they did.
  *
  * Vuetify 1.5 set the root font size to 14px, which text without its own size inherited. Vuetify 4 leaves the root
- * at the browser default and sizes its components in rem, so set 14px on the app instead of the root.
+ * at the browser default and sizes its components in rem, so set 14px on the app (and the overlays Vuetify 4 renders
+ * outside it) instead of the root.
  *
  * The Vuetify 1.5 grid (.container, .layout, .flex and their modifiers) is from vuetify 1.5.24 dist/vuetify.css (MIT).
  * Templates written for Vuetify 1.5 use these classes on plain elements in place of v-container, v-layout and
  * v-flex. New templates should use Vuetify's v-container, v-row and v-col instead.
  */
-.v-application {
+.v-application,
+.v-overlay-container {
   font-size: 14px;
   line-height: 1.5;
 }
@@ -66,6 +68,11 @@
   font-weight: inherit;
   letter-spacing: inherit;
   line-height: inherit;
+}
+
+.v-card-text {
+  padding: 16px;
+  letter-spacing: normal;
 }
 
 .v-form > .container {

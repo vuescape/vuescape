@@ -330,7 +330,8 @@ div.v-theme--light.v-application {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-size:   16.8px !important;
 }
-div.v-application {
+div.v-application,
+div.v-overlay-container {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .app__v-alert--margin i.v-icon {
