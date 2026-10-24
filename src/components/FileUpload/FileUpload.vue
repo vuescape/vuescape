@@ -46,7 +46,7 @@
           <template v-slot:prepend>
             <v-list-item-action class="file-upload__v-list-item-action--layout">
               <i
-                class="vuescape-button__v-icon--font fa-duotone file-excel"
+                class="vuescape-button__v-icon--font fa-duotone fa-file-excel"
                 style="color: #555; font-size: 40px;"
               />
             </v-list-item-action>
