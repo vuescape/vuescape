@@ -1,11 +1,18 @@
 // Class component decorators for Vue 3, keeping the signatures of vue-property-decorator and vuex-class
 // so components only need their imports changed.
+import { markRaw } from 'vue'
 import {
-  Base, Component as ComponentDecorator, createDecorator, Inject as InjectDecorator,
+  Base, Component as ComponentDecorator, createDecorator, Inject as InjectDecorator, toNative as nativeToNative,
 } from 'vue-facing-decorator'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
-export { Prop, Watch, toNative } from 'vue-facing-decorator'
+export { Prop, Watch } from 'vue-facing-decorator'
+
+// Components are often kept in reactive data (e.g. TreeTable header and cell renderers), which makes Vue warn that
+// it received a reactive component, so keep them from being made reactive.
+export function toNative<T extends Parameters<typeof nativeToNative>[0]>(cons: T): T {
+  return markRaw(nativeToNative(cons))
+}
 
 // vue-class-component collected a component's data from an instance that proxied the component, so class
 // field initializers could read props, injections and $-properties (e.g. `private items = this.initialItems`).
