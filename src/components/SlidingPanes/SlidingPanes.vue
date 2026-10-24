@@ -1,5 +1,5 @@
 <script lang="ts">
-import { CreateElement } from 'vue'
+import { CreateElement, VNodeData } from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
@@ -60,7 +60,7 @@ export default class SlidingPanes extends ComponentBase {
   @Prop({
     type   : String,
     default: 'static',
-  }) public slidingPaneHeaderPosition: string
+  }) public slidingPaneHeaderPosition: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky'
 
   // Styles to apply to underlying splitpanes
   @Prop({
@@ -68,7 +68,7 @@ export default class SlidingPanes extends ComponentBase {
     default: () => {
       return { height: '100%' }
     },
-  }) public slidingPaneStyles: object
+  }) public slidingPaneStyles: VNodeData['style']
 
   @Prop({
     type   : Boolean,
