@@ -40,12 +40,12 @@
                       :disabled="isSiteInMaintenanceMode"
                       :src="menu.imageSrc"
                       :title="menu.ariaLabel || menu.title"
-                      @click="navigateFromHamburgerMenu(menu.path)"
+                      @click.stop="navigateFromHamburgerMenu(menu.path)"
                     />
                   </div>
                   <div
                     v-else
-                    @click="() => navigateFromHamburgerMenu(menu.path)"
+                    @click.stop="() => navigateFromHamburgerMenu(menu.path)"
                   >
                     {{ menu.title }}
                   </div>
@@ -59,7 +59,7 @@
                   <i
                     v-if="!(menu.items && menu.items.length) && menu.icon"
                     :class="getIconArray(menu.icon).join(' ')"
-                    @click="() => navigateFromHamburgerMenu(menu.path)"
+                    @click.stop="() => navigateFromHamburgerMenu(menu.path)"
                   />
                 </template>
               </v-expansion-panel-title>
@@ -193,5 +193,13 @@ div.hamburger-menu__v-list--alignment a.v-list-item {
 }
 .hamburger-menu__v-menu--size {
   height: 100vh;
+}
+/* Vuetify 4 stretches menu cards to the menu's height */
+.hamburger-menu__v-menu--size > .v-card {
+  height: auto;
+}
+/* Vuetify 4 covers panel titles with an overlay, which would take the clicks meant for the menu links */
+.hamburger-menu__v-menu--size .v-expansion-panel-title__overlay {
+  pointer-events: none;
 }
 </style>
