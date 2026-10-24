@@ -112,6 +112,7 @@
 .v-card-text {
   padding: 16px;
   letter-spacing: normal;
+  line-height: inherit;
 }
 
 .v-form > .container {
