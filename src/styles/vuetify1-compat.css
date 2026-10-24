@@ -83,6 +83,10 @@
 .v-btn-toggle.v-btn-group--density-default {
   height: 36px;
 }
+.v-btn-toggle {
+  position: relative;
+  overflow: visible;
+}
 .v-btn-toggle > .v-btn {
   padding: 0 8px;
   opacity: 0.4;
