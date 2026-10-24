@@ -26,7 +26,8 @@ export type ThemeColors = Dictionary<string>
 
 const iconSets: Dictionary<{ aliases: any, set: IconSet }> = {
   fa : { aliases: faAliases, set: fa },
-  fa4: { aliases: fa4Aliases, set: fa4 },
+  // Vuetify 1.5's fa4 radio icon; the app's Font Awesome has no fa-dot-circle-o
+  fa4: { aliases: { ...fa4Aliases, radioOn: 'fa-dot-circle' }, set: fa4 },
 }
 
 export class ApplicationBootstrapper {
