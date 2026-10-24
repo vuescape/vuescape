@@ -1,7 +1,7 @@
 <template>
   <span>
     <div
-      class="layout navigation-menu__container hidden-sm-and-down row"
+      class="layout navigation-menu__container vuetify1-hidden-sm-and-down row"
       style="height: 100%"
     >
       <div
@@ -62,7 +62,7 @@
     <hamburger-menu
       :menus="hamburgerMenus"
       :style="toolbarStyle"
-      class="hidden-md-and-up"
+      class="vuetify1-hidden-md-and-up"
     ></hamburger-menu>
   </span>
 </template>

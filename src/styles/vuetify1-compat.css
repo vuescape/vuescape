@@ -1018,3 +1018,21 @@
     margin-left: 100%;
   }
 }
+
+/*
+ * Vuetify 1.5's display helpers that its breakpoints affect: Vuetify 4's md starts at 840px rather than
+ * 960px, and its own helper classes are !important in a layer, so they can't be overridden.
+ */
+@media only screen and (max-width: 959px) {
+  .vuetify1-hidden-sm-and-down {
+    display: none !important;
+  }
+}
+@media only screen and (min-width: 960px) {
+  .vuetify1-hidden-md-and-up {
+    display: none !important;
+  }
+  .vuetify1-text-md-right {
+    text-align: right !important;
+  }
+}

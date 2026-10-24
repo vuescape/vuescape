@@ -111,7 +111,7 @@ class HamburgerMenu extends Vue {
   private menus: Array<Menu>
 
   // Class to control whether to render or not
-  @Prop({ required: false, default: 'hidden-md-and-up' })
+  @Prop({ required: false, default: 'vuetify1-hidden-md-and-up' })
   private cssClass: string
 
   @State
