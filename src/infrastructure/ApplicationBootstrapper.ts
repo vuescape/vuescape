@@ -24,6 +24,17 @@ type ErrorHandler = (err: unknown, instance: ComponentPublicInstance | null, inf
 
 export type ThemeColors = Dictionary<string>
 
+// Vuetify 1.5's default theme colors, for the colors an app's theme leaves out
+const vuetify1ThemeColors: ThemeColors = {
+  primary  : '#1976D2',
+  secondary: '#424242',
+  accent   : '#82B1FF',
+  error    : '#FF5252',
+  info     : '#2196F3',
+  success  : '#4CAF50',
+  warning  : '#FFC107',
+}
+
 const iconSets: Dictionary<{ aliases: any, set: IconSet }> = {
   fa : { aliases: faAliases, set: fa },
   // Vuetify 1.5's fa4 radio icon; the app's Font Awesome has no fa-dot-circle-o
@@ -99,7 +110,7 @@ export class ApplicationBootstrapper {
         themes      : {
           light: {
             dark  : false,
-            colors: this.themeColors,
+            colors: { ...vuetify1ThemeColors, ...this.themeColors },
           },
         },
       },
