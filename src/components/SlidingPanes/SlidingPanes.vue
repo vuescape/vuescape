@@ -309,11 +309,12 @@ class SlidingPanes extends ComponentBase {
       }
     }
 
+    // splitpanes 4 keeps panes at their minimum size, so closed panes can't have one
     const wrappedSlot = h(Pane, {
       ref    : 'wrappedPane_' + index,
       class  : classes,
       size   : this.panes[index].width,
-      minSize: this.slidingPaneConfig[index].minWidth,
+      minSize: this.panes[index].width === 0 ? 0 : this.slidingPaneConfig[index].minWidth,
       maxSize: this.slidingPaneConfig[index].maxWidth,
     }, () => nodes)
     return wrappedSlot
