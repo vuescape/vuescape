@@ -1070,3 +1070,11 @@
   line-height: 20px;
   letter-spacing: normal;
 }
+
+/* Vuetify 1.5 selection controls: icons aligned to the text bottom (Vuetify 4 centers them lower) and grey labels */
+.v-selection-control .v-icon {
+  vertical-align: text-bottom;
+}
+.v-selection-control .v-label {
+  color: rgba(0, 0, 0, 0.54);
+}
