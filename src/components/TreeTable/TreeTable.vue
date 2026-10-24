@@ -237,7 +237,6 @@ class TreeTable extends ComponentBase {
 
   @Watch('rows')
   private rowsWatcher(val: Array<TreeTableRow>, oldVal: Array<TreeTableRow>) {
-    this.rows = val
     this.setRowsToDisplay()
   }
 
