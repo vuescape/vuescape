@@ -1122,3 +1122,71 @@
   padding: 0 6px;
   letter-spacing: normal;
 }
+
+/*
+ * Vuetify 1.5 switches: a 38x24 control with a 34x14 track, its thumb travelling from the left edge to
+ * 16px over, the label 8px after it, and grey off colors. Vuetify 4's 40px touch target made rows with
+ * switches, such as the peer group navigator's, taller.
+ */
+.v-switch .v-selection-control {
+  min-height: 24px;
+  height: 24px;
+  margin-bottom: 12px;
+}
+.v-switch .v-selection-control__wrapper {
+  width: 38px;
+  height: 24px;
+}
+.v-switch .v-switch__track {
+  width: 34px;
+  min-width: 34px;
+  height: 14px;
+}
+.v-switch .v-selection-control__input {
+  transform: translateX(-9px);
+}
+.v-switch .v-selection-control--dirty .v-selection-control__input {
+  transform: translateX(7px);
+}
+.v-switch .v-selection-control:not(.v-selection-control--dirty) .v-switch__track {
+  background-color: rgba(0, 0, 0, 0.38);
+}
+.v-switch .v-selection-control:not(.v-selection-control--dirty) .v-switch__thumb {
+  background-color: #fafafa;
+}
+.v-switch .v-switch__thumb {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+.v-switch .v-label {
+  padding-inline-start: 8px;
+  height: 20px;
+}
+.v-switch > .v-input__details {
+  min-height: 12px;
+  padding-top: 0;
+}
+.v-switch > .v-input__details .v-messages {
+  min-height: 12px;
+  line-height: 12px;
+}
+
+/*
+ * Vuetify 1.5 navigation drawers drew their edge over the content instead of taking 1px of its width,
+ * and open temporary ones had a deeper shadow
+ */
+.v-navigation-drawer--left {
+  border-inline-end-width: 0;
+}
+.v-navigation-drawer--left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+.v-navigation-drawer--temporary.v-navigation-drawer--active {
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
+}
