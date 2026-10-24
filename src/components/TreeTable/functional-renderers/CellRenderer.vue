@@ -31,7 +31,8 @@ class FunctionalCellRenderer extends Vue {
   }) private isExpandable: boolean
 
   private getCellRenderer(renderer: any) {
-    if (typeof renderer === 'function') {
+    // Vue 3 components are objects, not constructors
+    if (renderer && typeof renderer !== 'string') {
       return renderer
     }
 
