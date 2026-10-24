@@ -246,8 +246,9 @@ class SlidingPanes extends ComponentBase {
 
   private createSplitPanes() {
     const self = this
-    // Wrap all provided slots (components to display in the pane will be in the slots)
-    const panes      = flattenFragments(this.$slots.default?.() ?? []).map((slot, index) => this.wrapSlot(slot, index))
+    // Wrap all provided slots (components to display in the pane will be in the slots). splitpanes renders its slot
+    // in an inner component that only updates for state its slot reads, so create the panes in the slot.
+    const panes      = () => flattenFragments(this.$slots.default?.() ?? []).map((slot, index) => this.wrapSlot(slot, index))
     const splitpanes = h(Splitpanes, {
       class         : self.slidingPaneCssClass,
       style         : self.slidingPaneStyles,
@@ -264,7 +265,7 @@ class SlidingPanes extends ComponentBase {
       onPaneClick   : (event: any) => {
         self.onPaneClick(event)
       },
-    }, () => panes)
+    }, panes)
 
     // Wrap the splitpanes and set the div to the correct height to allow 100% to fill parent div
     const wrapperDiv = h('div', { style: { height: '100%' } }, [splitpanes])
