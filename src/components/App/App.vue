@@ -39,7 +39,7 @@
               v-for="notification in notifications"
               :key="notification.key"
               :type="notification.type"
-              :model-value="notification"
+              :model-value="!!notification"
               class="app__v-alert--margin"
               closable
               transition="fade-transition"
