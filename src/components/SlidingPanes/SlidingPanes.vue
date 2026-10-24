@@ -298,7 +298,7 @@ class SlidingPanes extends ComponentBase {
   }
 
   private wrapPane(index: number, nodes: Array<VNode>) {
-    const classes = []
+    const classes: Array<string> = []
     if (this.panes.filter(item => item.width !== 0).length === 1 && this.panes[index].width !== 0) {
       if (this.slidingPaneConfig[index].singlePaneCssClass) {
         classes.push(this.slidingPaneConfig[index].singlePaneCssClass)
@@ -310,14 +310,14 @@ class SlidingPanes extends ComponentBase {
       }
     }
 
-    // splitpanes 4 keeps panes at their minimum size, so closed panes can't have one
+    // splitpanes 4 keeps panes at their minimum size, so closed panes can't have one. The classes go on a div in
+    // the pane, as with splitpanes 2, so they can size the content without competing with the pane's own width.
     const wrappedSlot = h(Pane, {
       ref    : 'wrappedPane_' + index,
-      class  : classes,
       size   : this.panes[index].width,
       minSize: this.panes[index].width === 0 ? 0 : this.slidingPaneConfig[index].minWidth,
       maxSize: this.slidingPaneConfig[index].maxWidth,
-    }, () => nodes)
+    }, () => [h('div', { class: classes }, nodes)])
     return wrappedSlot
   }
 
