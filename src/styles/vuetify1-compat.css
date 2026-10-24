@@ -10,6 +10,23 @@
  */
 .v-application {
   font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Vuetify 1.5 toolbars had a lighter grey background and padded their content */
+.v-theme--light.v-toolbar {
+  background: #f5f5f5;
+}
+.v-toolbar__content {
+  padding: 0 24px;
+}
+
+/* Vuetify 1.5 footers had no padding and a grey background */
+.v-footer {
+  padding: 0;
+}
+.v-theme--light.v-footer {
+  background: #f5f5f5;
 }
 
 /* Vuetify 1.5 buttons had margins, except in toggles and groups; Vuetify 4 uses icon buttons inside its own components */
@@ -19,6 +36,22 @@
 .v-btn-toggle > .v-btn,
 .v-btn-group > .v-btn {
   margin: 0;
+}
+.v-btn {
+  font-weight: 500;
+  letter-spacing: normal;
+}
+
+/* Vuetify 1.5 toggles were as tall as a button, with narrower buttons and faded unselected ones */
+.v-btn-toggle.v-btn-group--density-default {
+  height: 36px;
+}
+.v-btn-toggle > .v-btn {
+  padding: 0 8px;
+  opacity: 0.4;
+}
+.v-btn-toggle > .v-btn.v-btn--active {
+  opacity: 1;
 }
 
 /* Vuetify 1.5 card titles were a wrapping flex row (so v-spacer works) that inherited their text style */
