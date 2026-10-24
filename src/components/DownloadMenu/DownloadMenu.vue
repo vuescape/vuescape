@@ -168,6 +168,9 @@ export default toNative(DownloadMenu)
 }
 .download-menu__v-icon--dropdown {
   margin-top: 2px !important;
+  /* Vuetify 4 makes icons square; Vuetify 1.5 left the caret its own width */
+  width:      auto;
+  min-width:  auto;
 }
 .download-menu__v-list--layout {
   padding-top:    0;
