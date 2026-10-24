@@ -34,7 +34,7 @@ import { formatValue, presentationFormatKind } from '@vuescape/infrastructure/pr
 import { Guid } from '@vuescape/types/Guid'
 
 // Used with v-model
-@Component({ emits: ['update:modelValue'] })
+@Component({ emits: ['update:modelValue', 'error-messages-changed'] })
 class NumericTextField extends Vue {
   private errorVal                         = false
   private errorMessagesVal: Array<string>  = []
