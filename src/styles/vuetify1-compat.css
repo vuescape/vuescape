@@ -125,9 +125,23 @@
   opacity: 1;
 }
 
-/* Vuetify 1.5 card actions were only as tall as their content */
+/* Vuetify 1.5 card actions were only as tall as their content, with buttons 8px apart and not slimmed */
 .v-card-actions {
   min-height: 0;
+}
+.v-card-actions .v-btn {
+  margin: 0;
+}
+.v-card-actions .v-btn--slim.v-btn--size-default {
+  padding: 0 16px;
+}
+
+/* Vuetify 1.5's darker overlay behind dialogs */
+.v-overlay {
+  --v-overlay-opacity: 0.46;
+}
+.v-overlay__scrim {
+  background: #212121;
 }
 
 .v-card-text {
