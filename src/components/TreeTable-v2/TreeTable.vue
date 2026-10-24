@@ -191,7 +191,7 @@ class TreeTable extends ComponentBase {
     this.adjustTreeTableSizingForTable()
   }
 
-  @Watch('rows')
+  @Watch('rows', { deep: 1 })
   private rowsWatcher(val: Array<TreeTableRow>, oldVal: Array<TreeTableRow>) {
     this.setRowsToDisplay()
   }

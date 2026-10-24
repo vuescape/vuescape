@@ -3,10 +3,17 @@
 import { markRaw } from 'vue'
 import {
   Base, Component as ComponentDecorator, createDecorator, Inject as InjectDecorator, toNative as nativeToNative,
+  Watch as WatchDecorator,
 } from 'vue-facing-decorator'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
-export { Prop, Watch } from 'vue-facing-decorator'
+export { Prop } from 'vue-facing-decorator'
+
+// Vue 2 watchers of an array also fired when it was mutated; Vue 3's only do with deep, and deep: 1 does just that
+// without watching the elements' properties. vue-facing-decorator passes deep to Vue but only types it as a boolean.
+export function Watch(key: string, options?: { deep?: boolean | number, immediate?: boolean, flush?: 'post' }) {
+  return WatchDecorator(key, options as Parameters<typeof WatchDecorator>[1])
+}
 
 // Components are often kept in reactive data (e.g. TreeTable header and cell renderers), which makes Vue warn that
 // it received a reactive component, so keep them from being made reactive.
