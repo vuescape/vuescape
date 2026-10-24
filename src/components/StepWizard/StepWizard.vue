@@ -347,6 +347,7 @@ export default toNative(StepWizard)
 .step-wizard__animation-slide-out {
   transition: opacity 0.3s ease-out;
 }
+/* Sizes are in px: they were rems of Vuetify 1.5's 14px root font, and Vuetify 4 leaves the root at 16px */
 .step-wizard__stepper-box {
   background-color: white;
   /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
@@ -360,7 +361,7 @@ export default toNative(StepWizard)
 }
 .step-wizard__stepper-box .top .stepper-button-top {
   z-index:         20;
-  padding:         0.4rem;
+  padding:         5.6px;
   border-radius:   100rem;
   /* cursor: pointer; */
   position:        absolute;
@@ -406,8 +407,8 @@ export default toNative(StepWizard)
   display:             inline-block;
   height:              2px;
   position:            absolute;
-  width:               calc(100% - 1rem - 4px);
-  margin-left:         calc(0.5rem + 2px);
+  width:               calc(100% - 14px - 4px);
+  margin-left:         calc(7px + 2px);
   background:          linear-gradient(to right, #16a5c6 50%, #ccc 50%);
   background-size:     200% 100%;
   background-position: right bottom;
@@ -416,10 +417,10 @@ export default toNative(StepWizard)
 .step-wizard__stepper-box .top .steps-wrapper .step .circle {
   border-style:     solid;
   border-width:     2px;
-  padding:          0 1rem;
+  padding:          0 14px;
   background-color: white;
   border-radius:    100rem;
-  padding:          0.5rem;
+  padding:          7px;
 }
 
 .step-wizard__stepper-box .top .steps-wrapper .step.deactivated .circle {
@@ -448,7 +449,7 @@ export default toNative(StepWizard)
 .step-wizard__stepper-box .top .steps-wrapper .step .step-title h3,
 .step-wizard__stepper-box .top .steps-wrapper .step .step-title h4,
 .step-wizard__stepper-box .top .steps-wrapper .step .step-title h5 {
-  margin:      0 0 0.2rem 0;
+  margin:      0 0 2.8px 0;
   color:       #333;
   font-weight: bold;
 }
@@ -459,7 +460,7 @@ export default toNative(StepWizard)
 }
 .step-wizard__stepper-box .content {
   overflow: hidden;
-  margin:   2rem 0;
+  margin:   28px 0;
 }
 .step-wizard__stepper-box .bottom .stepper-button.next {
   position: fixed;
@@ -498,6 +499,8 @@ export default toNative(StepWizard)
 .step-wizard__stepper-box .bottom .next .vuescape-button__v-btn--style.v-btn--disabled {
   color:            unset !important;
   background-color: unset !important;
+  /* Vuetify 4 also fades disabled buttons */
+  opacity:          1;
   /* border-color: #16a5c6 !important;
   background-color: unset !important;
   color: unset!important; */
