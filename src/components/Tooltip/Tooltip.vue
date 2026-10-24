@@ -137,7 +137,9 @@ class Tooltip extends ComponentBase {
   }
 
   private async enableTooltip() {
+    // Changing the singleton closes every tooltip, this one included, so open it once that's happened
     this.setTooltipSingleton([false])
+    await this.$nextTick()
     this.hasOpened        = true
     this.shouldShowDialog = true
   }
