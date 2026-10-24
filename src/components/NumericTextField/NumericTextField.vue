@@ -45,8 +45,8 @@ class NumericTextField extends Vue {
   @Prop({ type: String, required: false })
   private uniqueId: string
 
-  @Prop({ type: String, default: '' })
-  private modelValue: string
+  @Prop({ type: [String, Number], default: '' })
+  private modelValue: string | number
 
   @Prop({ type: String, default: '' })
   private label: string
@@ -318,6 +318,14 @@ export default toNative(NumericTextField)
 <style>
 div.numeric-text-field__input--color div.v-input__control input {
   color: unset;
+}
+/* Vuetify 4 fades disabled fields as a whole; keep their values readable as with Vuetify 1.5 */
+div.numeric-text-field__input--color .v-field--disabled {
+  opacity: 1;
+}
+div.numeric-text-field__input--color .v-field--disabled .v-text-field__prefix,
+div.numeric-text-field__input--color .v-field--disabled .v-text-field__suffix {
+  color: rgba(0, 0, 0, 0.87);
 }
 .numeric-text-field__shake {
   animation:           numeric-text-field__shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
