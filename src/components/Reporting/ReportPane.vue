@@ -30,7 +30,7 @@
             <v-btn
               v-for="section in report.sections"
               :key="section.id + '-toggle'"
-              active-class="report-pane__v-btn--active"
+              selected-class="report-pane__v-btn--active"
               class="report-pane__v-btn--inactive"
               color="black"
               :value="section.id"
