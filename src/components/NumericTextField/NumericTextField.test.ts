@@ -1,5 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils'
-import expect from 'expect'
+import { expect } from 'expect'
 import Vuetify from 'vuetify'
 
 import NumericTextField from '@vuescape/components/NumericTextField/NumericTextField.vue'

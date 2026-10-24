@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import expect from 'expect'
+import { expect } from 'expect'
 
 import DateRangeSlider from './DateRangeSlider.vue'
 

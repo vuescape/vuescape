@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-import expect from 'expect'
+import { expect } from 'expect'
 import Vuetify from 'vuetify'
 import Vuex from 'vuex'
 
@@ -54,7 +54,7 @@ describe('TheFooter.vue --', () => {
       // Assert
       const footerHtml = wrapper.find('.the-footer__copyright')
       const footerText = footerHtml.text()
-      expect(footerText).toContain(currentYear)
+      expect(footerText).toContain(currentYear.toString())
     })
 
     it('should contain the copyright symbol', async done => {
