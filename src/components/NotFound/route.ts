@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router'
 
 const route: RouteRecordRaw = {
-  path     : '*',
+  path     : '/:pathMatch(.*)*',
   name     : 'not-found',
   component: () => import(/* webpackChunkName: 'not-found' */
     '@vuescape/components/NotFound').then(m => m.default),
