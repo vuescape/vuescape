@@ -12,7 +12,8 @@
     <v-snackbar
       v-model="shouldShowDownloadCompleted"
       :timeout="60000"
-      absolute
+      attach
+      contained
       color="primary"
       location="bottom end"
     >

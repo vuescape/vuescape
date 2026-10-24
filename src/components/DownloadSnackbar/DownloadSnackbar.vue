@@ -1,6 +1,7 @@
 <template>
   <v-snackbar
-    absolute
+    attach
+    contained
     :timeout="-1"
     v-model="shouldShowDownloadSnackbar"
     location="bottom end"

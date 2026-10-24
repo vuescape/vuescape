@@ -1097,3 +1097,28 @@
 .v-selection-control .v-label {
   color: rgba(0, 0, 0, 0.54);
 }
+
+/*
+ * Vuetify 1.5 snackbars: 24px in from the content they're contained in (Vuetify 4 needs attach and
+ * contained for that, where 1.5 used absolute), at least 288px wide with 2px corners, wider text padding
+ * and a compact action button
+ */
+.v-snackbar.v-overlay--contained {
+  margin: 24px;
+}
+.v-snackbar__wrapper {
+  min-width: 288px;
+  border-radius: 2px;
+}
+.v-snackbar__content {
+  padding: 14px 24px;
+  letter-spacing: normal;
+}
+.v-snackbar__actions {
+  margin-inline: 18px 24px;
+}
+.v-snackbar__actions > .v-btn {
+  margin: 0;
+  padding: 0 6px;
+  letter-spacing: normal;
+}
