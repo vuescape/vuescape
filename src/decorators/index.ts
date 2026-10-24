@@ -102,14 +102,34 @@ interface BindingHelper {
   (map: string | StateTransformer, options?: BindingOptions): PropertyDecorator
 }
 
+// Components often map a namespace before the module is registered (e.g. window/availableHeight once App mounts).
+// With Vue 2 the mapping recomputed after registration because reading $store.state also tracked the root state
+// object; Vue 3 doesn't, so read the module's root state key to recompute when it's added, and skip the mapping
+// (and vuex's "module namespace not found" error) until then.
+function waitForNamespace(mapped: (this: any) => any, mapNamespace: string) {
+  const moduleNamespace = mapNamespace.endsWith('/') ? mapNamespace : `${mapNamespace}/`
+  const stateKey        = moduleNamespace.slice(0, -1)
+  return function (this: any) {
+    const store = this.$store
+    if (store.state[stateKey] === undefined && !store._modulesNamespaceMap[moduleNamespace]) {
+      return undefined
+    }
+    return mapped.call(this)
+  }
+}
+
 function createBindingHelper(bindTo: 'computed' | 'methods', mapHelper: MapHelper, defaultNamespace?: string): BindingHelper {
   const makeDecorator = (map: any, mapNamespace?: string): PropertyDecorator =>
     createDecorator((componentOptions: any, key: string) => {
       componentOptions[bindTo] ??= {}
       const mapObject = { [key]: map }
-      componentOptions[bindTo][key] = mapNamespace === undefined
-        ? mapHelper(mapObject)[key]
-        : mapHelper(mapNamespace, mapObject)[key]
+      if (mapNamespace === undefined) {
+        componentOptions[bindTo][key] = mapHelper(mapObject)[key]
+        return
+      }
+
+      const mapped = mapHelper(mapNamespace, mapObject)[key]
+      componentOptions[bindTo][key] = bindTo === 'computed' ? waitForNamespace(mapped, mapNamespace) : mapped
     }) as PropertyDecorator
 
   return function (protoOrMap: any, keyOrOptions?: any): any {
