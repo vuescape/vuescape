@@ -17,7 +17,6 @@
       :suffix="suffix"
       v-bind="additionalTextFieldProperties"
       @keypress="onKeyPress"
-      @update:error="onErrorUpdate"
       @update:model-value="onInput"
       :maxlength="maxLength"
       class="numeric-text-field__input--color"
@@ -247,6 +246,12 @@ class NumericTextField extends Vue {
     }
   }
 
+  // Vuetify 1.5's text field emitted update:error when this changed; Vuetify 4's doesn't
+  private get hasError() {
+    return this.errorVal || this.errorMessagesVal.length > 0
+  }
+
+  @Watch('hasError')
   private onErrorUpdate(isError: boolean) {
     const textField = (this.$refs[this.uniqueId] as unknown) as any
     if (isError) {
