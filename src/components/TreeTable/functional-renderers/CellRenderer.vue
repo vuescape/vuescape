@@ -1,40 +1,4 @@
 <template>
-<!--    <FunctionalTextCellRenderer-->
-<!--      v-if="getCellRenderer(cell.renderer).name === 'FunctionalTextCellRenderer'"-->
-<!--      :key="cell.id"-->
-<!--      :cell="cell"-->
-<!--      :isHovering="isHovering"-->
-<!--    >-->
-<!--    </FunctionalTextCellRenderer>-->
-<!--  <FunctionalFixedCellRenderer-->
-<!--    v-else-if="getCellRenderer(cell.renderer).name === 'FunctionalFixedCellRenderer'"-->
-<!--    :key="cell.id"-->
-<!--    :cell="cell"-->
-<!--    :isHovering="isHovering"-->
-<!--  >-->
-<!--  </FunctionalFixedCellRenderer>-->
-<!--  <FunctionalEmptyCellRenderer-->
-<!--    v-else-if="getCellRenderer(cell.renderer).name === 'FunctionalEmptyCellRenderer'"-->
-<!--    :key="cell.id"-->
-<!--    :cell="cell"-->
-<!--    :isHovering="isHovering"-->
-<!--  >-->
-<!--  </FunctionalEmptyCellRenderer>-->
-<!--  <FunctionalHeaderCellRenderer-->
-<!--    v-else-if="getCellRenderer(cell.renderer).name === 'FunctionalHeaderCellRenderer'"-->
-<!--    :key="cell.id"-->
-<!--    :cell="cell"-->
-<!--    :isHovering="isHovering"-->
-<!--  >-->
-<!--  </FunctionalHeaderCellRenderer>-->
-<!--  <FunctionalHtmlCellRenderer-->
-<!--    v-else-if="getCellRenderer(cell.renderer).name === 'FunctionalHtmlCellRenderer'"-->
-<!--    :key="cell.id"-->
-<!--    :cell="cell"-->
-<!--    :isHovering="isHovering"-->
-<!--  >-->
-<!--  </FunctionalHtmlCellRenderer>-->
-<!--  <div v-else>Oops</div>-->
   <component
     :is="getCellRenderer(cell.renderer)"
     :key="cell.id"

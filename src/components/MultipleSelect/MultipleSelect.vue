@@ -1,5 +1,4 @@
 <template>
-  <!-- Vue 3 leaves class and style in $attrs when inheritAttrs is false; Vue 2 applied them to the root -->
   <div
     :class="$attrs.class"
     :style="$attrs.style"
@@ -87,6 +86,8 @@ import { Guid } from '@vuescape/index'
 
 @Component({
   components: { Multiselect },
+  // Vue 3 leaves class and style in $attrs when inheritAttrs is false (Vue 2 applied them to the root), so the
+  // template binds them to the root
   inheritAttrs: false,
 })
 class MultipleSelect extends Vue {
