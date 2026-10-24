@@ -31,7 +31,7 @@
           v-if="index === 0"
           :class="cell.cssClasses"
         >
-          {{ cell.value }}
+          &nbsp;{{ cell.value }}
         </span>
       </span>
     </td>
