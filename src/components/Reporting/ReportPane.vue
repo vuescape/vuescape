@@ -32,7 +32,7 @@
               :key="section.id + '-toggle'"
               selected-class="report-pane__v-btn--active"
               class="report-pane__v-btn--inactive"
-              color="black"
+              base-color="black"
               :value="section.id"
               @click="changeSection"
               variant="text"
