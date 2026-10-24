@@ -21,7 +21,7 @@ export class HttpService {
   private readonly restPayloadStrategy: RestPayloadStrategy
   private readonly shouldDisableApiUseTracking: boolean
 
-  private httpCallMethodInterval: number
+  private httpCallMethodInterval: ReturnType<typeof setInterval>
 
   public constructor(
     baseUrl?: string,

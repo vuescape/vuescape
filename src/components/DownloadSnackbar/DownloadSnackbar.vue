@@ -40,9 +40,11 @@ import { StoreOperation } from '@vuescape/store/modules/types'
 
 import { ComponentBase } from '@vuescape/index'
 
+import { DownloadSnackbarNamespace } from './DownloadSnackbarNamespace'
+
 @Component({})
 export default class DownloadSnackbar extends ComponentBase {
-  public static DownloadSnackbarNamespace = 'downloadSnackbar'
+  public static DownloadSnackbarNamespace = DownloadSnackbarNamespace
 
   @namespace(DownloadSnackbar.DownloadSnackbarNamespace).State(state => {
     if (state && state.value) {

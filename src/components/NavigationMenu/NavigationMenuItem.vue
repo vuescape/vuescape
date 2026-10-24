@@ -98,6 +98,7 @@
 import Vue from 'vue'
 
 import { Component, Prop } from 'vue-property-decorator'
+import { isNavigationFailure } from 'vue-router'
 import { namespace } from 'vuex-class'
 
 import { AppInfoModuleName } from '@vuescape/store/modules/AppInfo'
@@ -167,7 +168,13 @@ export default class NavigationMenuItem extends Vue {
       document.location.href = menuItem.path
     }
     else {
-      this.$router.push({ path: menuItem.path })
+      // Navigation guards (e.g. the peer group navigators) redirect or cancel on purpose; vue-router
+      // reports that by rejecting push(), which is not an error
+      this.$router.push({ path: menuItem.path }).catch(error => {
+        if (!isNavigationFailure(error)) {
+          throw error
+        }
+      })
     }
   }
 

@@ -40,17 +40,17 @@ export class Axios {
 
 // tslint:disable-next-line: member-ordering
   public static async initCaching(cacheOptions: CacheOptions) {
-    // tslint:disable-next-line: max-line-length
-    const cacheAdapter = (await import(/* webpackChunkName: 'axios-extensions' */ 'axios-extensions')).cacheAdapterEnhancer
-    const Cache        = (await import(/* webpackChunkName: 'lru-cache' */'lru-cache' as any)).default
+    // Cache is axios-extensions' own lru-cache dependency, not whichever lru-cache is hoisted
+    const { cacheAdapterEnhancer: cacheAdapter, Cache } =
+      await import(/* webpackChunkName: 'axios-extensions' */ 'axios-extensions')
 
     // axios 1.x defaults.adapter is a list of adapter names; resolve it to the adapter function
     Axios.cacheAdapterFactory = () => cacheAdapter(axios.getAdapter(axios.defaults.adapter), {
       enabledByDefault: cacheOptions.shouldCacheAllRequests,
       cacheFlag       : cacheOptions.cacheFlag,
       defaultCache    : new (Cache as any)({
-        maxAge: cacheOptions.maxAgeMinutes * 60 * 1000,
-        max   : cacheOptions.maxSize,
+        ttl: cacheOptions.maxAgeMinutes * 60 * 1000,
+        max: cacheOptions.maxSize,
       }),
     })
 

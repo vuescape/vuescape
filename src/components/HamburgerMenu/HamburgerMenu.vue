@@ -96,6 +96,7 @@
 import Vue from 'vue'
 
 import { Component, Prop } from 'vue-property-decorator'
+import { isNavigationFailure } from 'vue-router'
 import { Getter, State } from 'vuex-class'
 
 import { AppInfoModuleName, AppInfoOperation } from '@vuescape/store/modules/AppInfo'
@@ -128,7 +129,12 @@ export default class HamburgerMenu extends Vue {
   private navigateFromHamburgerMenu(path: string) {
     this.hamburgerMenu       = false
     this.expansionPanelIndex = null
-    this.$router.push(path)
+    // Navigation guards redirect or cancel on purpose; vue-router reports that by rejecting push()
+    this.$router.push(path).catch(error => {
+      if (!isNavigationFailure(error)) {
+        throw error
+      }
+    })
   }
 
   private getIconArray(iconString: string) {
