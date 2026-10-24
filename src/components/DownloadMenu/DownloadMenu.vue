@@ -173,7 +173,8 @@ export default toNative(DownloadMenu)
   padding-top:    0;
   padding-bottom: 0;
 }
-div.download-menu__v-list--layout a.v-list-item {
+div.download-menu__v-list--layout .v-list-item {
+  min-height: 24px;
   height:     24px;
   max-height: 24px;
 }
@@ -181,8 +182,10 @@ div.download-menu__v-list--layout a.v-list-item {
   margin-left: -3.6px;
 }
 .download-menu__v-list-tile-content--layout {
-  font-size:   11px;
-  color:       rgb(136, 136, 136);
-  margin-left: -35px;
+  font-size: 11px;
+  color:     rgb(136, 136, 136);
+}
+.download-menu__v-list-tile-content--layout .v-list-item-title {
+  font-size: inherit;
 }
 </style>
