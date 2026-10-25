@@ -29,9 +29,10 @@
   ol {
     padding-left: 24px;
   }
-  /* Vuetify 1.5 colored links with the theme's primary color */
+  /* Vuetify 1.5 colored links with the theme's primary color and gave them a pointer, even without an href */
   a {
     color: rgb(var(--v-theme-primary));
+    cursor: pointer;
   }
 }
 
