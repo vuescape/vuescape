@@ -9,7 +9,7 @@
     <v-menu
       content-class="navigation-menu__content"
       v-if="!menu.isDivider && menu.items"
-      location="bottom"
+      location="bottom start"
       :disabled="isSiteInMaintenanceMode"
     >
       <template v-slot:activator="{ props }">

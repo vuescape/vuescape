@@ -1,5 +1,5 @@
 <template>
-  <v-menu location="bottom">
+  <v-menu location="bottom start">
     <template v-slot:activator="{ props }">
       <v-btn
         v-bind="props"
