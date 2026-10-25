@@ -78,6 +78,11 @@
 .v-btn--size-small {
   padding: 0 8px;
 }
+/* Vuetify 1.5 tinted hovered buttons with 12% of their text color (Vuetify 4 uses 4%); :where lets app styles that
+   change or hide the tint, such as selected toggle buttons, still win */
+:where(.v-btn:hover) > .v-btn__overlay {
+  opacity: 0.12;
+}
 
 /* Vuetify 1.5 greyed out disabled buttons with a background, whatever their color */
 .v-theme--light.v-btn--disabled.v-btn--variant-flat,
