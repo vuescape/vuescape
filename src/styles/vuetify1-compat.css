@@ -1215,6 +1215,10 @@
   opacity: 1;
   border-color: rgba(0, 0, 0, 0.12);
 }
+/* Vuetify 1.5 dividers were no wider than their container, even when given a negative margin */
+.v-divider:not(.v-divider--vertical) {
+  max-width: 100%;
+}
 
 /*
  * Vuetify 1.5 menus had an elevation 8 shadow on the menu itself; Vuetify 4 only shadows a card, sheet
