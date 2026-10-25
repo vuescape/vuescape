@@ -5,11 +5,9 @@
         :content-class="`tooltip__menu--${cell.id}`"
         v-model="shouldShowDialog"
         :close-on-content-click="false"
-        location="top start"
-        :offset="[30, 20]"
+        :location-strategy="overlapLocationStrategy"
         max-width="500"
         transition="scale-transition"
-        origin="bottom left"
       >
         <template v-slot:activator="{ props }">
           <i
@@ -63,6 +61,47 @@ import { Component, namespace, Prop, State, toNative, Watch } from '@vuescape/de
 
 import { ComponentBase, HoverContentKind, TreeTableCell, TreeTableRow } from '@vuescape/index'
 import { ModuleState, StoreOperation } from '@vuescape/store/modules'
+import { nextTick, onScopeDispose, Ref, watch } from 'vue'
+
+const viewportMargin = 12
+
+// Vuetify 1.5's `top right` menu, nudged 30px up and 20px right, overlapped the icon and slid to stay on
+// screen; Vuetify 4's connected strategy places the menu beside the icon and flips it below when it won't fit
+function overlapLocationStrategy(data: any, props: any, contentStyles: Ref<Record<string, string>>) {
+  function updateLocation() {
+    const target  = data.target.value
+    const content = data.contentEl.value as HTMLElement | undefined
+    if (!(target instanceof Element) || !content) {
+      return
+    }
+
+    const targetBox      = target.getBoundingClientRect()
+    const viewportWidth  = document.documentElement.clientWidth
+    const viewportHeight = document.documentElement.clientHeight
+    const left           = Math.min(targetBox.left + 20, viewportWidth - viewportMargin - content.offsetWidth)
+    const top            = Math.min(targetBox.bottom - 30 - content.offsetHeight, viewportHeight - viewportMargin - content.offsetHeight)
+    contentStyles.value  = {
+      top            : `${Math.max(top, viewportMargin)}px`,
+      left           : `${Math.max(left, viewportMargin)}px`,
+      transformOrigin: 'bottom left',
+    }
+  }
+
+  // The content's size isn't known until it renders
+  const observer = new ResizeObserver(updateLocation)
+  watch(data.contentEl, (newContentEl: HTMLElement, oldContentEl: HTMLElement) => {
+    if (oldContentEl) {
+      observer.unobserve(oldContentEl)
+    }
+    if (newContentEl) {
+      observer.observe(newContentEl)
+    }
+  }, { immediate: true })
+  onScopeDispose(() => observer.disconnect())
+  nextTick(updateLocation)
+
+  return { updateLocation }
+}
 
 @Component({})
 class Tooltip extends ComponentBase {
@@ -119,6 +158,8 @@ class Tooltip extends ComponentBase {
       }
     }
   }
+
+  private overlapLocationStrategy = overlapLocationStrategy
 
   private get title() {
     return this.cell.hover ? this.cell.hover.title : ''

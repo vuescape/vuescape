@@ -165,6 +165,7 @@
 
 .v-card-text {
   padding: 16px;
+  font-size: inherit;
   letter-spacing: normal;
   line-height: inherit;
 }
