@@ -1103,6 +1103,12 @@
   vertical-align: text-bottom;
 }
 
+/* Vuetify 4 makes icons square; Vuetify 1.5 left font icons in buttons their own width */
+.v-btn .v-icon {
+  width: auto;
+  min-width: auto;
+}
+
 /* Vuetify 1.5 selection control labels were grey */
 .v-selection-control .v-label {
   color: rgba(0, 0, 0, 0.54);
