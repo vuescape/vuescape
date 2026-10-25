@@ -1090,10 +1090,12 @@
   letter-spacing: normal;
 }
 
-/* Vuetify 1.5 selection controls: icons aligned to the text bottom (Vuetify 4 centers them lower) and grey labels */
-.v-selection-control .v-icon {
+/* Vuetify 1.5 aligned icons to the text bottom; Vuetify 4 aligns them to the middle, which draws them lower */
+.v-icon {
   vertical-align: text-bottom;
 }
+
+/* Vuetify 1.5 selection control labels were grey */
 .v-selection-control .v-label {
   color: rgba(0, 0, 0, 0.54);
 }
