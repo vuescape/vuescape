@@ -70,11 +70,14 @@
         </div>
       </v-main>
       <download-snackbar></download-snackbar>
+      <!-- order -1 lays the footer out before a pinned drawer, so it spans the page as Vuetify 1.5's fixed footer did
+           instead of starting beside the drawer -->
       <v-footer
         ref="theFooter"
         :height="36"
         app
         class="v-footer__layout--border"
+        :order="-1"
       >
         <component :is="footerComponent" />
       </v-footer>
