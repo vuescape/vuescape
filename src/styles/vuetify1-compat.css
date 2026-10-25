@@ -1199,3 +1199,16 @@
   opacity: 1;
   border-color: rgba(0, 0, 0, 0.12);
 }
+
+/*
+ * Vuetify 1.5 menus had an elevation 8 shadow on the menu itself; Vuetify 4 only shadows a card, sheet
+ * or list placed directly in the menu, so menus with other content, such as legends, had none
+ */
+.v-menu > .v-overlay__content {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+.v-menu > .v-overlay__content > .v-card,
+.v-menu > .v-overlay__content > .v-sheet,
+.v-menu > .v-overlay__content > .v-list {
+  box-shadow: none;
+}
