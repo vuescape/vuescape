@@ -180,6 +180,9 @@ div.download-menu__v-list--layout .v-list-item {
 }
 .download-menu__v-list-tile-action--layout {
   margin-left: -3.6px;
+  /* A fixed width lines up the labels whatever the icon's width, as Vuetify 1.5's fixed-width tile action did */
+  width:       13px;
+  min-width:   13px;
 }
 .download-menu__v-list-tile-content--layout {
   font-size: 11px;

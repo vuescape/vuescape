@@ -1234,3 +1234,8 @@
 .v-menu > .v-overlay__content > .v-list {
   box-shadow: none;
 }
+
+/* Vuetify 1.5 list item titles had no letter spacing */
+.v-list-item-title {
+  letter-spacing: normal;
+}
