@@ -1111,9 +1111,11 @@
   min-width: auto;
 }
 
-/* Vuetify 1.5 selection control labels were grey */
+/* Vuetify 1.5 selection control labels were grey, without letter spacing, and weren't clipped to their box */
 .v-selection-control .v-label {
   color: rgba(0, 0, 0, 0.54);
+  letter-spacing: normal;
+  overflow: visible;
 }
 
 /*
