@@ -169,14 +169,22 @@
   line-height: inherit;
 }
 
-/* Vuetify 1.5 alert icons were 24px, with the close icon (set in ApplicationBootstrapper) not padded like a button */
+/*
+ * Vuetify 1.5 alert icons were 24px high at their own width, with the close icon (set in
+ * ApplicationBootstrapper) not padded like a button, and no padding around the text
+ */
 .v-alert__prepend {
   min-height: 24px;
 }
 .v-alert__prepend > .v-icon {
   font-size: 24px;
   height: 24px;
-  width: 24px;
+  width: auto;
+  min-width: auto;
+}
+.v-alert__content {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .v-alert__close .v-icon {
   font-size: 24px;
