@@ -149,8 +149,9 @@ export default toNative(DataRowRenderer)
 <style>
 .data-row-renderer__icon {
   /* color: rgba(0, 0, 0, 0.87); */
-  margin-right:  3px;
-  margin-bottom: 2px;
+  /* TreeTable-v2's rule for this class used to override these when all the CSS was in one bundle */
+  margin-right:  4px;
+  margin-bottom: 1px;
   font-size:     10px;
   width:         0.875em !important;
   vertical-align: text-bottom;

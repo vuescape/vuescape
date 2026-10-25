@@ -3,7 +3,7 @@
     v-if="isExpandable"
     :class="cell.cssClasses"
     :title="cell.value"
-  > {{ cell.displayValue != null ? cell.displayValue : cell.value }}
+  ><!-- Vue 3 trims a template's leading space, so it goes in the interpolation -->{{ ' ' + (cell.displayValue != null ? cell.displayValue : cell.value) }}
   </span>
   <span
     v-else
