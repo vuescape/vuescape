@@ -2,9 +2,8 @@
   <div>
     <v-menu
       :close-on-content-click="false"
-      location="end"
+      location="end top"
       :offset="-nudgeLeft"
-      origin="center right"
       transition="scale-transition"
     >
       <template v-slot:activator="{ props }">
