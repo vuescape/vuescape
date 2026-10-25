@@ -114,6 +114,10 @@
 :where(.v-theme--light.v-btn-toggle) {
   background: #fff;
 }
+/* Vuetify 1.5 toggles had an elevation 2 shadow, which most of the app's toggles turn off */
+:where(.v-btn-toggle) {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
 .v-btn-toggle > :where(.v-btn:not(:last-child)) {
   border-right: 1px solid transparent;
 }
