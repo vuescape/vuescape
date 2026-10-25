@@ -105,13 +105,22 @@
 .v-btn-toggle > .v-btn.v-btn--active {
   opacity: 1;
 }
-/* ...with 2px corners, a 1px gap between buttons and dark grey text; :where lets app styles override these,
-   and the overrides layer lets color utilities such as text-black (from base-color) override the text color */
+/* ...with 2px corners, a white background, a 1px gap between buttons (grey after selected ones) and dark grey
+   text; :where lets app styles override these, and the overrides layer lets color utilities such as text-black
+   (from base-color) override the text color */
 .v-btn-toggle {
   border-radius: 2px;
 }
+:where(.v-theme--light.v-btn-toggle) {
+  background: #fff;
+}
 .v-btn-toggle > :where(.v-btn:not(:last-child)) {
   border-right: 1px solid transparent;
+}
+/* Vuetify 1.5's active-class replaced v-btn--active, so buttons with their own active class (named
+   *__v-btn--active here) had no grey gap; Vuetify 4 adds selected-class alongside v-btn--active */
+.v-btn-toggle > :where(.v-btn.v-btn--active:not(:last-child):not([class*='__v-btn--active'])) {
+  border-right-color: rgba(0, 0, 0, 0.26);
 }
 .v-btn-toggle > :where(.v-btn:first-child) {
   border-radius: 2px 0 0 2px;
