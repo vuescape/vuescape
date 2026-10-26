@@ -38,13 +38,31 @@
         </span>
       </span>
       <span class="tree-table__rendered-cell">
-        <component
-          v-if="shouldUseFunctionalRenderers"
-          :is="toFunctionalRenderer(cell)"
-          :key="cellKey(cell)"
-          :cell="cell"
-          :isHovering="cell.hover && isHovering"
-        ></component>
+        <template v-if="shouldUseFunctionalRenderers">
+          <!-- Built-in cells render inline: a component per cell of a large table uses gigabytes -->
+          <span
+            v-if="builtInCellKind(cell) === 'text'"
+            :class="cell.cssClasses"
+            :title="cellValue(cell)"
+          >{{ cellValue(cell) }}</span>
+          <span
+            v-else-if="builtInCellKind(cell) === 'fixed'"
+            :title="cell.value"
+            :class="cell.cssClasses"
+          >{{ cell.value }}</span>
+          <span
+            v-else-if="builtInCellKind(cell) === 'html'"
+            v-html="cellValue(cell)"
+          ></span>
+          <span v-else-if="builtInCellKind(cell) === 'empty'"></span>
+          <component
+            v-else
+            :is="toFunctionalRenderer(cell)"
+            :key="cellKey(cell)"
+            :cell="cell"
+            :isHovering="cell.hover && isHovering"
+          ></component>
+        </template>
         <component
           v-else
           :is="cell.renderer || 'TextCellRenderer'"
@@ -63,7 +81,7 @@ import { Component, Prop, toNative } from '@vuescape/decorators'
 import { ComponentBase, HorizontalAlignment, TreeTableCell, TreeTableRow } from '@vuescape/index'
 
 import FixedCellRenderer from './FixedCellRenderer.vue'
-import { resolveFunctionalCellRenderer } from './functional-renderers'
+import { getBuiltInCellKind, resolveFunctionalCellRenderer } from './functional-renderers'
 import TextCellRenderer from './TextCellRenderer.vue'
 
 @Component({
@@ -91,6 +109,14 @@ class DataRowRenderer extends ComponentBase {
 
   private toFunctionalRenderer(cell: TreeTableCell) {
     return resolveFunctionalCellRenderer(cell.renderer)
+  }
+
+  private builtInCellKind(cell: TreeTableCell) {
+    return getBuiltInCellKind(cell.renderer)
+  }
+
+  private cellValue(cell: TreeTableCell) {
+    return cell.displayValue != null ? cell.displayValue : cell.value
   }
 
   private onMouseEnter(cell: TreeTableCell) {

@@ -42,13 +42,32 @@
         <!--        <span v-if="!cell.hover || !cell.hover.component">&nbsp;</span>-->
       </span>
       <span class="data-row-renderer__span--vertical-align">
-        <functional-cell-renderer
-          v-if="shouldUseFunctionalRenderers"
-          :key="cellKey(cell)"
-          :cell="cell"
-          :isHovering="cell.hover && isHovering"
-          :isExpandable="rowToDisplay.isExpandable"
-        ></functional-cell-renderer>
+        <template v-if="shouldUseFunctionalRenderers">
+          <!-- Built-in cells render inline: a component per cell of a large table uses gigabytes -->
+          <span
+            v-if="builtInCellKind(cell) === 'text'"
+            :class="cell.cssClasses"
+            :title="cellValue(cell)"
+          >{{ cellValue(cell) }}</span>
+          <span
+            v-else-if="builtInCellKind(cell) === 'fixed'"
+            :class="cell.cssClasses"
+            :title="cell.value"
+          >{{ rowToDisplay.isExpandable ? ' ' + cellValue(cell) : cellValue(cell) }}</span>
+          <span
+            v-else-if="builtInCellKind(cell) === 'html'"
+            v-html="cellValue(cell)"
+          ></span>
+          <span v-else-if="builtInCellKind(cell) === 'empty'"></span>
+          <component
+            v-else
+            :is="toFunctionalRenderer(cell)"
+            :key="cellKey(cell)"
+            :cell="cell"
+            :isHovering="cell.hover && isHovering"
+            :isExpandable="rowToDisplay.isExpandable"
+          ></component>
+        </template>
         <cell-renderer
           v-else
           :key="cellKey(cell)"
@@ -66,12 +85,11 @@ import { Component, Prop, toNative } from '@vuescape/decorators'
 import { ComponentBase, TreeTableCell, TreeTableRow } from '@vuescape/index'
 
 import CellRenderer from './CellRenderer.vue'
-import FunctionalCellRenderer from './functional-renderers/CellRenderer.vue'
+import { getBuiltInCellKind, resolveFunctionalCellRenderer } from './functional-renderers'
 
 @Component({
   components: {
     CellRenderer,
-    FunctionalCellRenderer,
   },
 })
 class DataRowRenderer extends ComponentBase {
@@ -93,6 +111,18 @@ class DataRowRenderer extends ComponentBase {
 
   private cellKey(cell: TreeTableCell) {
     return cell.id + '_' + (cell.renderer ? (cell.renderer.name || cell.renderer) : 'TextCellRenderer')
+  }
+
+  private toFunctionalRenderer(cell: TreeTableCell) {
+    return resolveFunctionalCellRenderer(cell.renderer)
+  }
+
+  private builtInCellKind(cell: TreeTableCell) {
+    return getBuiltInCellKind(cell.renderer)
+  }
+
+  private cellValue(cell: TreeTableCell) {
+    return cell.displayValue != null ? cell.displayValue : cell.value
   }
 
   private onMouseEnter(cell: TreeTableCell) {
